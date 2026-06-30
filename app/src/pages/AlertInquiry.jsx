@@ -1,101 +1,153 @@
 import { useState } from 'react';
 import Icon from '../components/Icon';
 
-const HISTORY = [
-  { id: 1, title: '연동 대로변 심각 단계 진입', level: '심각', area: '연동', time: '2025-12-01 11:30', resolved: false },
-  { id: 2, title: 'GIS 집중구역 현황 리포트 생성', level: '정보', area: '전체', time: '2025-12-01 11:20', resolved: true },
-  { id: 3, title: '노형사거리 위험 단계 상향', level: '경고', area: '노형동', time: '2025-11-30 09:40', resolved: true },
-  { id: 4, title: '이도2동 민원 급증 감지', level: '경고', area: '이도동', time: '2025-11-29 16:15', resolved: true },
-  { id: 5, title: '주간 리포트 발송 완료', level: '정보', area: '전체', time: '2025-11-25 09:00', resolved: true },
-  { id: 6, title: '아라동 위험 단계 해제', level: '정보', area: '아라동', time: '2025-11-24 14:30', resolved: true },
-  { id: 7, title: '연동 대로변 경고 단계 진입', level: '경고', area: '연동', time: '2025-11-22 10:00', resolved: true },
+const ALERT_DATA = [
+  { level: 'severe', region: '연동', content: '민원 급증 심각 단계 감지 — 시간당 102건', datetime: '2026.06.22 14:30', count: 102 },
+  { level: 'warn', region: '노형동', content: '민원 급증 경고 단계 감지 — 시간당 67건', datetime: '2026.06.22 11:15', count: 67 },
+  { level: 'caution', region: '이도동', content: '민원 증가 주의 단계 감지 — 시간당 35건', datetime: '2026.06.21 16:45', count: 35 },
+  { level: 'warn', region: '아라동', content: '민원 급증 경고 단계 감지 — 시간당 72건', datetime: '2026.06.21 09:20', count: 72 },
+  { level: 'caution', region: '삼도동', content: '민원 증가 주의 단계 감지 — 시간당 31건', datetime: '2026.06.20 15:00', count: 31 },
+  { level: 'severe', region: '연동', content: '민원 급증 심각 단계 감지 — 시간당 98건', datetime: '2026.06.18 13:10', count: 98 },
+  { level: 'warn', region: '오라동', content: '민원 급증 경고 단계 감지 — 시간당 63건', datetime: '2026.06.15 10:30', count: 63 },
+  { level: 'caution', region: '용담동', content: '민원 증가 주의 단계 감지 — 시간당 33건', datetime: '2026.06.10 08:50', count: 33 },
 ];
 
-const LEVEL_STYLE = {
-  심각: { bg: 'var(--red-95)', color: 'var(--red-50)' },
-  경고: { bg: 'var(--orange-95)', color: 'var(--orange-50)' },
-  정보: { bg: 'var(--blue-95)', color: 'var(--blue-45)' },
-};
+const LEVEL_BADGE = { severe: 'badge--severe', warn: 'badge--warn', caution: 'badge--caution' };
+const LEVEL_LABEL = { severe: '심각', warn: '경고', caution: '주의' };
 
-const LEVELS = ['전체', '심각', '경고', '정보'];
+const AI_ICON = (
+  <svg viewBox="0 0 36 36" fill="none" width="22" height="22" aria-hidden="true" style={{ flexShrink: 0 }}>
+    <path d="M18.4 8.6c.2-2.5 2.4-4.4 4.9-4.1-.2 2.5-2.4 4.3-4.9 4.1Z" fill="#3DA35D" />
+    <path d="M18.4 8.6c-.2-2-2-3.5-4-3.3.2 2 2 3.5 4 3.3Z" fill="#4FB96A" />
+    <circle cx="18" cy="21" r="12.5" fill="#F79009" />
+    <path d="M9 18.6a9 9 0 0 1 18 0Z" fill="#FBB454" opacity="0.5" />
+    <circle cx="11.8" cy="23.2" r="2" fill="#FF8A5B" opacity="0.5" />
+    <circle cx="24.2" cy="23.2" r="2" fill="#FF8A5B" opacity="0.5" />
+    <circle cx="13.8" cy="20" r="1.7" fill="#4A3415" />
+    <circle cx="22.2" cy="20" r="1.7" fill="#4A3415" />
+    <circle cx="14.4" cy="19.4" r="0.55" fill="#fff" />
+    <circle cx="22.8" cy="19.4" r="0.55" fill="#fff" />
+    <path d="M14 24.6a4.4 4.4 0 0 0 8 0" stroke="#4A3415" strokeWidth="1.6" strokeLinecap="round" fill="none" />
+  </svg>
+);
+
+const TH = ({ center, children }) => (
+  <th style={{ padding: '12px 16px', textAlign: center ? 'center' : 'left', fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)', borderBottom: '1px solid var(--line-alternative)', whiteSpace: 'nowrap', background: 'var(--cool-neutral-99)' }}>
+    {children}
+  </th>
+);
+const TD = ({ center, gray, children }) => (
+  <td style={{ padding: '14px 16px', borderBottom: '1px solid var(--line-alternative)', color: gray ? 'var(--text-assistive)' : 'var(--text-neutral)', fontSize: gray ? 13 : 14, textAlign: center ? 'center' : 'left', verticalAlign: 'middle' }}>
+    {children}
+  </td>
+);
 
 export default function AlertInquiry() {
-  const [filter, setFilter] = useState('전체');
-  const [search, setSearch] = useState('');
+  const [levelFilter, setLevelFilter] = useState('all');
+  const [period, setPeriod] = useState('3');
 
-  const filtered = HISTORY.filter((h) => {
-    const matchLevel = filter === '전체' || h.level === filter;
-    const matchSearch = !search || h.title.includes(search) || h.area.includes(search);
-    return matchLevel && matchSearch;
-  });
+  const filtered = levelFilter === 'all' ? ALERT_DATA : ALERT_DATA.filter((a) => a.level === levelFilter);
+  const totalComplaints = filtered.reduce((s, a) => s + a.count, 0);
 
   return (
-    <div style={{ padding: '40px 48px', display: 'flex', flexDirection: 'column', gap: 28, flex: 1, minHeight: 0, overflowY: 'auto' }}>
-      <div>
-        <h1 style={{ fontSize: 28, fontWeight: 700, margin: 0 }}>위험 단계 알림 조회</h1>
-        <p style={{ color: 'var(--text-alternative)', marginTop: 4 }}>발생한 알림 이력 조회 및 현황 확인</p>
-      </div>
+    <>
+      <header className="topbar">
+        <div>
+          <h1 className="page-title">위험단계 알림 조회</h1>
+          <p className="page-sub">민원 급증·위험 단계별 알림 이력 조회</p>
+        </div>
+        <div className="topbar__actions">
+          <button className="btn btn--ai" type="button">{AI_ICON} AI 대화 시작하기</button>
+          <button className="btn" type="button"><Icon name="download" size={20} /> 내보내기</button>
+          <button className="bell" type="button" aria-label="알림">
+            <Icon name="bell" size={22} /><span className="bell__badge">3</span>
+          </button>
+        </div>
+      </header>
 
-      {/* 요약 */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
-        {[
-          { label: '전체 알림', value: HISTORY.length, color: 'var(--text-strong)' },
-          { label: '심각', value: HISTORY.filter((h) => h.level === '심각').length, color: 'var(--red-50)' },
-          { label: '경고', value: HISTORY.filter((h) => h.level === '경고').length, color: 'var(--orange-50)' },
-          { label: '정보', value: HISTORY.filter((h) => h.level === '정보').length, color: 'var(--blue-45)' },
-        ].map((s) => (
-          <div key={s.label} className="card" style={{ padding: '20px 24px', textAlign: 'center' }}>
-            <div style={{ fontSize: 12, color: 'var(--text-assistive)', fontWeight: 600, marginBottom: 8 }}>{s.label}</div>
-            <div style={{ fontSize: 32, fontWeight: 800, fontFamily: 'var(--font-sans)', color: s.color }}>{s.value}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* 필터 */}
-      <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-        <div style={{ display: 'flex', gap: 6 }}>
-          {LEVELS.map((l) => (
-            <button
-              key={l}
-              onClick={() => setFilter(l)}
-              style={{ height: 36, padding: '0 16px', borderRadius: 20, border: `1px solid ${filter === l ? 'var(--primary)' : 'var(--line-normal)'}`, background: filter === l ? 'var(--blue-95)' : 'none', color: filter === l ? 'var(--primary)' : 'var(--text-alternative)', fontFamily: 'inherit', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
-            >
-              {l}
-            </button>
+      <div className="filterbar" style={{ flexWrap: 'wrap', gap: 12 }}>
+        <span className="filterbar__label">단계</span>
+        <div className="segment">
+          {[['all', '전체'], ['severe', '심각'], ['warn', '경고'], ['caution', '주의']].map(([k, l]) => (
+            <button key={k} type="button" className={`segment__btn ${levelFilter === k ? 'segment__btn--active' : ''}`} onClick={() => setLevelFilter(k)}>{l}</button>
           ))}
         </div>
-        <div style={{ position: 'relative', flex: 1, maxWidth: 300 }}>
-          <Icon name="location" size={16} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-assistive)' }} />
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="알림명 또는 지역 검색"
-            style={{ width: '100%', height: 38, padding: '0 12px 0 36px', borderRadius: 10, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontFamily: 'inherit', fontSize: 13, outline: 'none', boxSizing: 'border-box' }}
-          />
+        <span className="filter-sep" />
+        <span className="filterbar__label">시/도</span>
+        <select style={{ height: 38, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+          <option>전체</option><option>제주시</option><option>서귀포시</option>
+        </select>
+        <select style={{ height: 38, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+          <option>읍면동 전체</option>
+        </select>
+        <span className="filter-sep" />
+        <span className="filterbar__label">기간</span>
+        <div className="segment">
+          {[['yesterday', '어제'], ['week', '최근 1주일'], ['1', '최근 1개월'], ['3', '최근 3개월']].map(([k, l]) => (
+            <button key={k} type="button" className={`segment__btn ${period === k ? 'segment__btn--active' : ''}`} onClick={() => setPeriod(k)}>{l}</button>
+          ))}
         </div>
+        <button className="btn" type="button" style={{ height: 40 }}>
+          <Icon name="calendar" size={18} /> 기간 선택
+        </button>
+        <span className="filterbar__right">조회 결과 <strong>{filtered.length}건</strong></span>
       </div>
 
-      {/* 목록 */}
-      <div className="card" style={{ overflow: 'hidden' }}>
-        <div style={{ padding: '14px 24px', borderBottom: '1px solid var(--line-alternative)' }}>
-          <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-alternative)' }}>총 {filtered.length}건</span>
-        </div>
-        {filtered.length === 0 ? (
-          <div style={{ padding: '60px 0', textAlign: 'center', color: 'var(--text-assistive)', fontSize: 14 }}>조회 결과가 없습니다.</div>
-        ) : filtered.map((h, i) => (
-          <div key={h.id} style={{ padding: '16px 24px', display: 'flex', alignItems: 'center', gap: 16, borderBottom: i < filtered.length - 1 ? '1px solid var(--line-alternative)' : 'none' }}>
-            <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, background: LEVEL_STYLE[h.level]?.bg, color: LEVEL_STYLE[h.level]?.color, flexShrink: 0 }}>{h.level}</span>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 2 }}>{h.title}</div>
-              <div style={{ fontSize: 12, color: 'var(--text-assistive)' }}>지역: {h.area}</div>
+      <div className="content">
+        <section className="stat-row">
+          <div className="card stat">
+            <div className="stat__icon stat__icon--blue"><Icon name="bell" size={28} /></div>
+            <div>
+              <div className="stat__label">조회 알림 건수</div>
+              <div className="stat__value">{filtered.length}<span style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-alternative)', marginLeft: 4 }}>건</span></div>
+              <div className="stat__delta">선택 조건 기준</div>
             </div>
-            <span style={{ fontSize: 12, color: 'var(--text-assistive)', fontFamily: 'var(--font-mono)', flexShrink: 0 }}>{h.time}</span>
-            <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, background: h.resolved ? 'var(--green-95)' : 'var(--red-95)', color: h.resolved ? 'var(--green-40)' : 'var(--red-50)', flexShrink: 0 }}>
-              {h.resolved ? '처리완료' : '처리중'}
-            </span>
           </div>
-        ))}
+          <div className="card stat">
+            <div className="stat__icon stat__icon--red"><Icon name="warning" size={28} /></div>
+            <div>
+              <div className="stat__label">심각 단계</div>
+              <div className="stat__value">{filtered.filter((a) => a.level === 'severe').length}<span style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-alternative)', marginLeft: 4 }}>건</span></div>
+              <div className="stat__delta">경고 {filtered.filter((a) => a.level === 'warn').length} · 주의 {filtered.filter((a) => a.level === 'caution').length}</div>
+            </div>
+          </div>
+          <div className="card stat">
+            <div className="stat__icon" style={{ width: 72, height: 72, borderRadius: 16, background: 'var(--orange-95)', color: 'var(--orange-39)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Icon name="chart" size={28} />
+            </div>
+            <div>
+              <div className="stat__label">누적 민원 수</div>
+              <div className="stat__value">{totalComplaints}<span style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-alternative)', marginLeft: 4 }}>건</span></div>
+              <div className="stat__delta">선택 기간 합계</div>
+            </div>
+          </div>
+        </section>
+
+        <div className="card" style={{ overflow: 'hidden' }}>
+          <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--line-alternative)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>알림 이력</h2>
+            <span style={{ fontSize: 13, color: 'var(--text-assistive)' }}>상단 필터 조건에 따라 자동 갱신</span>
+          </div>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr><TH center>단계</TH><TH center>지역</TH><TH>내용</TH><TH center>일시</TH><TH center>민원 수</TH></tr>
+            </thead>
+            <tbody>
+              {filtered.length === 0 ? (
+                <tr><td colSpan={5} style={{ padding: 40, textAlign: 'center', color: 'var(--text-assistive)' }}>조건에 해당하는 알림이 없습니다.</td></tr>
+              ) : filtered.map((a, i) => (
+                <tr key={i}>
+                  <TD center><span className={`badge ${LEVEL_BADGE[a.level]}`}>{LEVEL_LABEL[a.level]}</span></TD>
+                  <TD center><span style={{ fontWeight: 600 }}>{a.region}</span></TD>
+                  <TD>{a.content}</TD>
+                  <TD center gray>{a.datetime}</TD>
+                  <TD center><span style={{ fontWeight: 700, color: 'var(--text-strong)' }}>{a.count}건</span></TD>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
