@@ -1,4 +1,4 @@
-export default function Reports() { // hook test
+export default function Reports() {
   return (
     <div style={{ padding: '40px 48px' }}>
       <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 8 }}>보고서·알림</h1>
