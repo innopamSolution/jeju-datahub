@@ -1,133 +1,226 @@
 import { useState } from 'react';
 import Icon from '../components/Icon';
 
-const POLICIES = ['주차 단속 강화', '공영주차장 확충', '거주자 우선 주차', '주정차 금지구역 확대'];
-const REGIONS = ['제주시 전체', '연동', '노형동', '이도동', '아라동'];
+const AI_ICON = (
+  <svg viewBox="0 0 36 36" fill="none" width="22" height="22" aria-hidden="true" style={{ flexShrink: 0 }}>
+    <path d="M18.4 8.6c.2-2.5 2.4-4.4 4.9-4.1-.2 2.5-2.4 4.3-4.9 4.1Z" fill="#3DA35D" />
+    <path d="M18.4 8.6c-.2-2-2-3.5-4-3.3.2 2 2 3.5 4 3.3Z" fill="#4FB96A" />
+    <circle cx="18" cy="21" r="12.5" fill="#F79009" />
+    <path d="M9 18.6a9 9 0 0 1 18 0Z" fill="#FBB454" opacity="0.5" />
+    <circle cx="11.8" cy="23.2" r="2" fill="#FF8A5B" opacity="0.5" />
+    <circle cx="24.2" cy="23.2" r="2" fill="#FF8A5B" opacity="0.5" />
+    <circle cx="13.8" cy="20" r="1.7" fill="#4A3415" />
+    <circle cx="22.2" cy="20" r="1.7" fill="#4A3415" />
+    <circle cx="14.4" cy="19.4" r="0.55" fill="#fff" />
+    <circle cx="22.8" cy="19.4" r="0.55" fill="#fff" />
+    <path d="M14 24.6a4.4 4.4 0 0 0 8 0" stroke="#4A3415" strokeWidth="1.6" strokeLinecap="round" fill="none" />
+  </svg>
+);
 
-const BEFORE = [
-  { label: '일평균 민원 건수', value: '247건' },
-  { label: '불법주차 비율', value: '68%' },
-  { label: '집중 구역 수', value: '5개소' },
+const SCENARIOS = [
+  { name: '주차장 확충 · 연동 150면', reduction: '-23%', improvement: '+18%', cost: '고', costLevel: 'high', recommend: true },
+  { name: '이면도로 정비 · 일방통행', reduction: '-15%', improvement: '+12%', cost: '중', costLevel: 'mid', recommend: false },
+  { name: '요금제 10%', reduction: '-12%', improvement: '+9%', cost: '저', costLevel: 'low', recommend: false },
+  { name: '주차장 확충 · 노형 80면', reduction: '-18%', improvement: '+14%', cost: '중', costLevel: 'mid', recommend: false },
+  { name: '거주자 우선주차 · 연동', reduction: '-10%', improvement: '+7%', cost: '저', costLevel: 'low', recommend: false },
+  { name: '요금제 20%', reduction: '-16%', improvement: '+11%', cost: '저', costLevel: 'low', recommend: false },
 ];
-const AFTER = [
-  { label: '일평균 민원 건수', value: '161건', delta: '▼35%', up: false },
-  { label: '불법주차 비율', value: '44%', delta: '▼24%p', up: false },
-  { label: '집중 구역 수', value: '2개소', delta: '▼3', up: false },
-];
 
-const CHART_BARS = [
-  { label: '1개월', before: 247, after: 195 },
-  { label: '2개월', before: 230, after: 175 },
-  { label: '3개월', before: 220, after: 161 },
-  { label: '4개월', before: 210, after: 150 },
-  { label: '5개월', before: 200, after: 138 },
-  { label: '6개월', before: 195, after: 128 },
-];
+const COST_BADGE = {
+  high: { bg: 'var(--red-95)', color: 'var(--red-40)' },
+  mid: { bg: 'var(--orange-95)', color: 'var(--orange-39)' },
+  low: { bg: '#dcfce7', color: '#15803d' },
+};
 
-export default function PolicySimulation() {
-  const [policy, setPolicy] = useState(POLICIES[0]);
-  const [region, setRegion] = useState(REGIONS[0]);
-  const [ran, setRan] = useState(true);
+const TH = ({ center, children }) => (
+  <th style={{ padding: '12px 16px', textAlign: center ? 'center' : 'left', fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)', borderBottom: '1px solid var(--line-alternative)', whiteSpace: 'nowrap', background: 'var(--cool-neutral-99)' }}>
+    {children}
+  </th>
+);
+const TD = ({ center, children }) => (
+  <td style={{ padding: '14px 16px', borderBottom: '1px solid var(--line-alternative)', color: 'var(--text-neutral)', fontSize: 14, textAlign: center ? 'center' : 'left', verticalAlign: 'middle' }}>
+    {children}
+  </td>
+);
 
-  const max = 260;
+function EffectChart() {
+  const months = ['1월', '2월', '3월', '4월', '5월', '6월'];
+  const before = [52, 49, 55, 58, 48, 52];
+  const after =  [52, 50, 47, 43, 41, 40];
+  const max = 70;
+  const W = 380, H = 160, PAD = 32, barW = 22, gapX = 12;
+  const groupW = barW * 2 + 4;
+  const totalGroupW = groupW + gapX;
 
   return (
-    <div style={{ padding: '40px 48px', display: 'flex', flexDirection: 'column', gap: 32, flex: 1, minHeight: 0, overflowY: 'auto' }}>
-      {/* 헤더 */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+    <svg viewBox={`0 0 ${W} ${H + 40}`} style={{ width: '100%', height: 'auto' }}>
+      {months.map((m, i) => {
+        const x = PAD + i * totalGroupW;
+        const bH = (before[i] / max) * H;
+        const aH = (after[i] / max) * H;
+        return (
+          <g key={m}>
+            <rect x={x} y={H - bH + 4} width={barW} height={bH} rx={3} fill="#94a3b8" opacity={0.55} />
+            <rect x={x + barW + 4} y={H - aH + 4} width={barW} height={aH} rx={3} fill="var(--primary)" />
+            <text x={x + barW + 2} y={H + 20} textAnchor="middle" fontSize={11} fill="var(--text-assistive)">{m}</text>
+          </g>
+        );
+      })}
+      <rect x={PAD} y={H + 30} width={10} height={10} rx={2} fill="#94a3b8" opacity={0.55} />
+      <text x={PAD + 14} y={H + 39} fontSize={11} fill="var(--text-alternative)">정책 전</text>
+      <rect x={PAD + 60} y={H + 30} width={10} height={10} rx={2} fill="var(--primary)" />
+      <text x={PAD + 74} y={H + 39} fontSize={11} fill="var(--text-alternative)">정책 후</text>
+    </svg>
+  );
+}
+
+export default function PolicySimulation() {
+  const [policyType, setPolicyType] = useState('parking');
+  const [period, setPeriod] = useState('3');
+  const [roadType, setRoadType] = useState('one-way');
+  const [feeRate, setFeeRate] = useState('5');
+
+  return (
+    <>
+      <header className="topbar">
         <div>
-          <h1 style={{ fontSize: 28, fontWeight: 700, margin: 0 }}>정책 효과 시뮬레이션</h1>
-          <p style={{ color: 'var(--text-alternative)', marginTop: 4 }}>정책 적용 시 민원 감소 효과 예측</p>
+          <h1 className="page-title">정책 시뮬레이션</h1>
+          <p className="page-sub">정책 변수 입력 → 효과 예측 → 시나리오 비교</p>
+        </div>
+        <div className="topbar__actions">
+          <button className="btn btn--ai" type="button">{AI_ICON} AI 대화 시작하기</button>
+          <button className="btn" type="button"><Icon name="download" size={20} /> 내보내기</button>
+          <button className="bell" type="button" aria-label="알림"><Icon name="bell" size={22} /><span className="bell__badge">3</span></button>
+        </div>
+      </header>
+
+      <div className="content" style={{ paddingTop: 24, gap: 20 }}>
+        <section style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, alignItems: 'start' }}>
+
+          {/* 정책 변수 설정 */}
+          <div className="card" style={{ padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>정책 변수 설정</h2>
+
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>정책 유형</div>
+              <div className="segment">
+                {[['parking', '주차장 확충'], ['road', '이면도로 정비'], ['fee', '요금제 적용']].map(([k, l]) => (
+                  <button key={k} type="button" className={`segment__btn ${policyType === k ? 'segment__btn--active' : ''}`} onClick={() => setPolicyType(k)}>{l}</button>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>대상 지역</div>
+                <select style={{ width: '100%', height: 40, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+                  <option>제주시</option><option>서귀포시</option>
+                </select>
+              </div>
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>&nbsp;</div>
+                <select style={{ width: '100%', height: 40, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+                  <option>연동</option><option>노형동</option><option>이도동</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>예측 기간</div>
+              <div className="segment">
+                {[['3', '3개월'], ['6', '6개월'], ['12', '12개월'], ['24', '24개월']].map(([k, l]) => (
+                  <button key={k} type="button" className={`segment__btn ${period === k ? 'segment__btn--active' : ''}`} onClick={() => setPeriod(k)}>{l}</button>
+                ))}
+              </div>
+            </div>
+
+            {policyType === 'parking' && (
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>주차면 증설 수</div>
+                <select style={{ width: '100%', height: 40, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+                  <option>50면</option><option>80면</option><option>100면</option><option>150면</option><option>200면</option>
+                </select>
+              </div>
+            )}
+            {policyType === 'road' && (
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>정비 유형</div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                  {[['one-way', '일방통행 전환'], ['parking-zone', '주차구역 정비'], ['expand', '주차허용구역 확대'], ['resident', '거주자 우선주차 도입']].map(([k, l]) => (
+                    <button key={k} type="button" className={`segment__btn ${roadType === k ? 'segment__btn--active' : ''}`} onClick={() => setRoadType(k)}>{l}</button>
+                  ))}
+                </div>
+              </div>
+            )}
+            {policyType === 'fee' && (
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>요금 인상율</div>
+                <div className="segment">
+                  {[['5', '5%'], ['10', '10%'], ['15', '15%'], ['20', '20%']].map(([k, l]) => (
+                    <button key={k} type="button" className={`segment__btn ${feeRate === k ? 'segment__btn--active' : ''}`} onClick={() => setFeeRate(k)}>{l}</button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <button type="button" style={{ height: 44, borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+              <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
+              시뮬레이션 실행
+            </button>
+          </div>
+
+          {/* 효과 예측 */}
+          <div className="card" style={{ padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>효과 예측</h2>
+            <EffectChart />
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              <div style={{ padding: '16px 20px', borderRadius: 12, background: 'var(--blue-99)', border: '1px solid var(--blue-90)' }}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 6 }}>민원 감소 예측</div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--primary)' }}>-23%</div>
+                <div style={{ fontSize: 12, color: 'var(--text-assistive)', marginTop: 4 }}>52건 → 40건 월평균</div>
+              </div>
+              <div style={{ padding: '16px 20px', borderRadius: 12, background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 6 }}>혼잡도 개선</div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: '#16a34a' }}>+18%</div>
+                <div style={{ fontSize: 12, color: 'var(--text-assistive)', marginTop: 4 }}>혼잡 지수 0.78 → 0.64</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 시나리오 비교 */}
+        <div className="card" style={{ overflow: 'hidden' }}>
+          <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--line-alternative)' }}>
+            <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>시나리오 비교</h2>
+          </div>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr>
+                <TH>시나리오</TH>
+                <TH center>민원 감소</TH>
+                <TH center>혼잡 개선</TH>
+                <TH center>비용 수준</TH>
+                <TH center>추천</TH>
+              </tr>
+            </thead>
+            <tbody>
+              {SCENARIOS.map((s, i) => (
+                <tr key={i}>
+                  <TD><span style={{ fontWeight: 600, color: 'var(--text-strong)' }}>{s.name}</span></TD>
+                  <TD center><span style={{ fontWeight: 700, color: 'var(--primary)' }}>{s.reduction}</span></TD>
+                  <TD center><span style={{ fontWeight: 700, color: '#16a34a' }}>{s.improvement}</span></TD>
+                  <TD center>
+                    <span className="badge" style={{ background: COST_BADGE[s.costLevel].bg, color: COST_BADGE[s.costLevel].color }}>{s.cost}</span>
+                  </TD>
+                  <TD center>
+                    {s.recommend && <span className="badge" style={{ background: 'var(--blue-95)', color: 'var(--primary)', fontWeight: 700 }}>추천</span>}
+                  </TD>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
-
-      {/* 설정 카드 */}
-      <div className="card" style={{ padding: 28, display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-end' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flex: '1 1 200px' }}>
-          <label style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)' }}>정책 유형</label>
-          <select
-            value={policy} onChange={(e) => setPolicy(e.target.value)}
-            style={{ height: 46, padding: '0 16px', borderRadius: 10, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontFamily: 'inherit', fontSize: 14, fontWeight: 600, color: 'var(--text-strong)', cursor: 'pointer' }}
-          >
-            {POLICIES.map((p) => <option key={p}>{p}</option>)}
-          </select>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flex: '1 1 160px' }}>
-          <label style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)' }}>적용 지역</label>
-          <select
-            value={region} onChange={(e) => setRegion(e.target.value)}
-            style={{ height: 46, padding: '0 16px', borderRadius: 10, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontFamily: 'inherit', fontSize: 14, fontWeight: 600, color: 'var(--text-strong)', cursor: 'pointer' }}
-          >
-            {REGIONS.map((r) => <option key={r}>{r}</option>)}
-          </select>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flex: '1 1 160px' }}>
-          <label style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)' }}>적용 기간</label>
-          <div style={{ height: 46, padding: '0 16px', borderRadius: 10, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
-            6개월 <Icon name="chevron-down" size={16} />
-          </div>
-        </div>
-        <button
-          onClick={() => setRan(true)}
-          style={{ height: 46, padding: '0 28px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}
-        >
-          ▷ 시뮬레이션 실행
-        </button>
-      </div>
-
-      {ran && (
-        <>
-          {/* 비교 카드 */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
-            <div className="card" style={{ padding: 28 }}>
-              <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 20, color: 'var(--text-alternative)' }}>정책 적용 전</h2>
-              {BEFORE.map((b) => (
-                <div key={b.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--line-alternative)' }}>
-                  <span style={{ fontSize: 14, color: 'var(--text-neutral)' }}>{b.label}</span>
-                  <b style={{ fontSize: 20, fontWeight: 700, fontFamily: 'var(--font-sans)' }}>{b.value}</b>
-                </div>
-              ))}
-            </div>
-            <div className="card" style={{ padding: 28, border: '2px solid var(--primary)' }}>
-              <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 20, color: 'var(--primary)' }}>정책 적용 후 (예측)</h2>
-              {AFTER.map((a) => (
-                <div key={a.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--line-alternative)' }}>
-                  <span style={{ fontSize: 14, color: 'var(--text-neutral)' }}>{a.label}</span>
-                  <div style={{ textAlign: 'right' }}>
-                    <b style={{ fontSize: 20, fontWeight: 700, fontFamily: 'var(--font-sans)' }}>{a.value}</b>
-                    <span style={{ fontSize: 12, color: 'var(--green-40)', fontWeight: 700, marginLeft: 6 }}>{a.delta}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* 막대 차트 */}
-          <div className="card" style={{ padding: 28 }}>
-            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>월별 민원 건수 예측 비교</h2>
-            <p style={{ fontSize: 13, color: 'var(--text-assistive)', marginBottom: 24 }}>{policy} 적용 후 6개월 추이</p>
-            <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end', height: 180 }}>
-              {CHART_BARS.map((b) => (
-                <div key={b.label} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                  <div style={{ display: 'flex', gap: 4, alignItems: 'flex-end', width: '100%', height: 140 }}>
-                    <div style={{ flex: 1, background: 'var(--cool-neutral-90)', borderRadius: '4px 4px 0 0', height: `${(b.before / max) * 140}px` }} title={`이전: ${b.before}건`} />
-                    <div style={{ flex: 1, background: 'var(--primary)', borderRadius: '4px 4px 0 0', height: `${(b.after / max) * 140}px`, opacity: 0.8 }} title={`이후: ${b.after}건`} />
-                  </div>
-                  <span style={{ fontSize: 11, color: 'var(--text-assistive)' }}>{b.label}</span>
-                </div>
-              ))}
-            </div>
-            <div style={{ display: 'flex', gap: 20, marginTop: 16 }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--text-assistive)' }}>
-                <span style={{ width: 12, height: 12, borderRadius: 3, background: 'var(--cool-neutral-90)' }} />적용 전
-              </span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--text-assistive)' }}>
-                <span style={{ width: 12, height: 12, borderRadius: 3, background: 'var(--primary)', opacity: 0.8 }} />적용 후 (예측)
-              </span>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
+    </>
   );
 }
