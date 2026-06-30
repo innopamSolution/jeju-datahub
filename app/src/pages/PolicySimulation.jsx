@@ -114,15 +114,15 @@ export default function PolicySimulation() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               <div>
                 <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>대상 지역</div>
-                <select style={{ width: '100%', height: 40, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+                <DsSelect style={{ width: '100%' }}>
                   <option>제주시</option><option>서귀포시</option>
-                </select>
+                </DsSelect>
               </div>
               <div>
                 <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>&nbsp;</div>
-                <select style={{ width: '100%', height: 40, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+                <DsSelect style={{ width: '100%' }}>
                   <option>연동</option><option>노형동</option><option>이도동</option>
-                </select>
+                </DsSelect>
               </div>
             </div>
 
