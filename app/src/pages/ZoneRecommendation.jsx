@@ -129,12 +129,12 @@ export default function ZoneRecommendation() {
 
           <div>
             <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 6 }}>민원 증가율 임계값</div>
-            <select value={threshold} onChange={(e) => setThreshold(e.target.value)} style={{ width: '100%', height: 38, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+            <DsSelect value={threshold} onChange={(e) => setThreshold(e.target.value)} style={{ width: '100%' }}>
               <option value="15">15% 이상</option>
               <option value="20">20% 이상</option>
               <option value="30">30% 이상</option>
               <option value="50">50% 이상</option>
-            </select>
+            </DsSelect>
           </div>
 
           <button type="button" style={{ height: 42, borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
