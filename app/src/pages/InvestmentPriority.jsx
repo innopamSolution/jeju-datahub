@@ -83,7 +83,7 @@ export default function InvestmentPriority() {
 
               {/* 추가 버튼 */}
               <button style={{ height: 44, border: '1.5px dashed var(--line-normal)', borderRadius: 12, background: 'transparent', color: 'var(--text-assistive)', fontSize: 13, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                <Icon name="plus" size={16} /> 사업 추가
+                + 사업 추가
               </button>
             </div>
           </div>
