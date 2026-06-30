@@ -117,12 +117,12 @@ export default function InvestmentPriority() {
           <div className="card" style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
             {/* 컨트롤 바 */}
             <div style={{ padding: '14px 20px', borderBottom: '1px solid var(--line-alternative)', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-              <select style={{ height: 36, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+              <DsSelect>
                 <option>제주 전체</option><option>제주시</option><option>서귀포시</option>
-              </select>
-              <select style={{ height: 36, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+              </DsSelect>
+              <DsSelect>
                 <option>종합점수 높은순</option><option>종합점수 낮은순</option>
-              </select>
+              </DsSelect>
               <div className="segment">
                 {[['all', '전체'], ['high', '높음'], ['mid', '중간'], ['low', '낮음']].map(([k, l]) => (
                   <button key={k} type="button" className={`segment__btn ${priorityFilter === k ? 'segment__btn--active' : ''}`} onClick={() => setPriorityFilter(k)}>{l}</button>
