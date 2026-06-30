@@ -67,10 +67,11 @@ export default function Sidebar() {
           <Sub to="/analysis/investment-priority" label="투자우선순위 보드" pathname={pathname} />
         </NavGroup>
 
-        <Link to="/reports" className={`nav__item ${pathname.startsWith('/reports') ? 'nav__item--active' : ''}`}>
-          <Icon name="document" size={22} /><span>보고서·알림</span>
-          {pathname.startsWith('/reports') && <span className="nav__dot" />}
-        </Link>
+        <NavGroup label="보고서·알림" icon="document" routes={REPORT_ROUTES} pathname={pathname}>
+          <Sub to="/reports" label="보고서 관리" pathname={pathname} />
+          <Sub to="/alerts/inquiry" label="위험단계 알림 조회" pathname={pathname} />
+          <Sub to="/alerts/management" label="위험단계 알림 관리" pathname={pathname} />
+        </NavGroup>
 
         <Link to="/ai-assistant" className={`nav__item ${pathname.startsWith('/ai-assistant') ? 'nav__item--active' : ''}`}>
           <Icon name="sparkle" size={22} /><span>AI 어시스턴트</span>
