@@ -105,18 +105,18 @@ export default function LifestyleSimulation() {
 
           <div>
             <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 6 }}>분석 내용</div>
-            <select value={mode} onChange={(e) => setMode(e.target.value)} style={{ width: '100%', height: 38, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+            <DsSelect value={mode} onChange={(e) => setMode(e.target.value)} style={{ width: '100%' }}>
               <option value="complaint">민원 건수</option>
               <option value="supply">수급 현황</option>
               <option value="congestion">혼잡도</option>
-            </select>
+            </DsSelect>
           </div>
 
           <div>
             <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 6 }}>분석 지역</div>
-            <select style={{ width: '100%', height: 38, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+            <DsSelect style={{ width: '100%' }}>
               <option>제주시</option><option>서귀포시</option>
-            </select>
+            </DsSelect>
           </div>
 
           <div>
