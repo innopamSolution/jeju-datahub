@@ -4,7 +4,6 @@ import Icon from './Icon';
 import logo from '../assets/logo.svg';
 
 const ANALYSIS_ROUTES = ['/analysis/hotspot', '/analysis/policy-simulation', '/analysis/lifestyle-simulation', '/analysis/recommendation', '/analysis/investment-priority'];
-const ALERT_ROUTES = ['/alerts/management', '/alerts/inquiry'];
 
 function NavGroup({ label, icon, routes, children, pathname }) {
   const active = routes.some((r) => pathname.startsWith(r));
@@ -55,7 +54,7 @@ export default function Sidebar() {
         </Link>
 
         <Link to="/complaints" className={`nav__item ${pathname.startsWith('/complaints') ? 'nav__item--active' : ''}`}>
-          <Icon name="location" size={22} /><span>민원 현황</span>
+          <Icon name="location" size={22} /><span>민원현황</span>
           {pathname.startsWith('/complaints') && <span className="nav__dot" />}
         </Link>
 
@@ -63,13 +62,8 @@ export default function Sidebar() {
           <Sub to="/analysis/hotspot" label="집중 구역 분석" pathname={pathname} />
           <Sub to="/analysis/policy-simulation" label="정책 효과 시뮬레이션" pathname={pathname} />
           <Sub to="/analysis/lifestyle-simulation" label="생활권 시뮬레이션" pathname={pathname} />
-          <Sub to="/analysis/recommendation" label="구역 추천" pathname={pathname} />
+          <Sub to="/analysis/recommendation" label="구역추천" pathname={pathname} />
           <Sub to="/analysis/investment-priority" label="투자우선순위 보드" pathname={pathname} />
-        </NavGroup>
-
-        <NavGroup label="위험단계 알림" icon="bell" routes={ALERT_ROUTES} pathname={pathname}>
-          <Sub to="/alerts/management" label="알림 관리" pathname={pathname} />
-          <Sub to="/alerts/inquiry" label="알림 조회" pathname={pathname} />
         </NavGroup>
 
         <Link to="/reports" className={`nav__item ${pathname.startsWith('/reports') ? 'nav__item--active' : ''}`}>
