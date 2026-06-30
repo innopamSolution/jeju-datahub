@@ -75,12 +75,12 @@ export default function AlertInquiry() {
         </div>
         <span className="filter-sep" />
         <span className="filterbar__label">시/도</span>
-        <select style={{ height: 38, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+        <DsSelect>
           <option>전체</option><option>제주시</option><option>서귀포시</option>
-        </select>
-        <select style={{ height: 38, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+        </DsSelect>
+        <DsSelect>
           <option>읍면동 전체</option>
-        </select>
+        </DsSelect>
         <span className="filter-sep" />
         <span className="filterbar__label">기간</span>
         <div className="segment">
