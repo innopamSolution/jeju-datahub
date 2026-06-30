@@ -55,11 +55,11 @@ function Tag({ file, children }) {
   );
 }
 
-/* ── 가짜 Select (HTML과 동일한 field__select 스타일) ── */
+/* ── field__select — justify-content:space-between으로 chevron 오른쪽 끝 ── */
 function FakeSelect({ children }) {
   return (
-    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, height: 46, padding: '0 16px', border: '1px solid var(--line-normal)', borderRadius: 10, fontSize: 14, background: '#fff', cursor: 'pointer', color: 'var(--text-neutral)', minWidth: 120, userSelect: 'none' }}>
-      {children}
+    <div className="field__select">
+      <span>{children}</span>
       <Icon name="chevron-down" size={16} />
     </div>
   );
