@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Icon from '../components/Icon';
+import DsSelect from '../components/DsSelect';
 
 const ALERT_DATA = [
   { level: 'severe', region: '연동', content: '민원 급증 심각 단계 감지 — 시간당 102건', datetime: '2026.06.22 14:30', count: 102 },
