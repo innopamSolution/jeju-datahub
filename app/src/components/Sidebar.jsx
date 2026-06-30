@@ -4,6 +4,7 @@ import Icon from './Icon';
 import logo from '../assets/logo.svg';
 
 const ANALYSIS_ROUTES = ['/analysis/hotspot', '/analysis/policy-simulation', '/analysis/lifestyle-simulation', '/analysis/recommendation', '/analysis/investment-priority'];
+const REPORT_ROUTES = ['/reports', '/alerts/inquiry', '/alerts/management'];
 
 function NavGroup({ label, icon, routes, children, pathname }) {
   const active = routes.some((r) => pathname.startsWith(r));
