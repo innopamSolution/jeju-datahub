@@ -28,7 +28,7 @@ export default function AlertManagement() {
           <p style={{ color: 'var(--text-alternative)', marginTop: 4 }}>알림 규칙 설정 및 채널 관리</p>
         </div>
         <button style={{ display: 'flex', alignItems: 'center', gap: 8, height: 44, padding: '0 20px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
-          <Icon name="plus" size={18} /> 알림 규칙 추가
+          + 알림 규칙 추가
         </button>
       </div>
 
