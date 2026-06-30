@@ -262,15 +262,15 @@ export default function Dashboard() {
         <div style={{ margin: '0 24px', padding: '18px 24px', background: 'var(--fill-normal)', borderRadius: 12, border: '1px solid var(--line-alternative)', display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)', whiteSpace: 'nowrap' }}>행정구역</span>
-            <select style={{ height: 36, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: '#fff', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+            <DsSelect>
               <option>제주시</option><option>서귀포시</option><option>제주 전체</option>
-            </select>
+            </DsSelect>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)', whiteSpace: 'nowrap' }}>민원유형</span>
-            <select style={{ height: 36, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: '#fff', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+            <DsSelect>
               <option>전체</option><option>불법주정차</option><option>주차장 혼잡</option><option>시설 고장</option><option>기타</option>
-            </select>
+            </DsSelect>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)', whiteSpace: 'nowrap' }}>위험 단계</span>
