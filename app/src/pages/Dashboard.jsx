@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import * as echarts from 'echarts';
 import Icon from '../components/Icon';
+import DsSelect from '../components/DsSelect';
 import './Dashboard.css';
 
 const HOTSPOTS = [
