@@ -138,9 +138,9 @@ export default function PolicySimulation() {
             {policyType === 'parking' && (
               <div>
                 <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>주차면 증설 수</div>
-                <select style={{ width: '100%', height: 40, padding: '0 12px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'var(--fill-normal)', fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>
+                <DsSelect style={{ width: '100%' }}>
                   <option>50면</option><option>80면</option><option>100면</option><option>150면</option><option>200면</option>
-                </select>
+                </DsSelect>
               </div>
             )}
             {policyType === 'road' && (
