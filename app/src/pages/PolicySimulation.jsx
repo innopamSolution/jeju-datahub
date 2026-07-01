@@ -164,10 +164,7 @@ export default function PolicySimulation() {
               </div>
             )}
 
-            <button type="button" style={{ height: 44, borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-              <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
-              시뮬레이션 실행
-            </button>
+            <button className="btn-run" type="button">▷ 시뮬레이션 실행</button>
           </div>
 
           {/* 효과 예측 */}
