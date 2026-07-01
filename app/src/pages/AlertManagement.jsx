@@ -1,23 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Icon from '../components/Icon';
-
-const INIT_RECEIVERS = [
-  { dept: '주차관리', name: '김지수', email: 'jisu.kim@jeju.go.kr', groups: ['severe', 'warn'], active: true },
-  { dept: '주차관리', name: '김서연', email: 'seoyeon.kim@jeju.go.kr', groups: ['caution'], active: true },
-  { dept: '교통정책과', name: '이준호', email: 'junho.lee@jeju.go.kr', groups: ['warn'], active: false },
-  { dept: '교통정책과', name: '최하늘', email: 'haneul.choi@jeju.go.kr', groups: ['caution'], active: true },
-  { dept: '교통정책과', name: '장민호', email: 'minho.jang@jeju.go.kr', groups: ['warn'], active: false },
-  { dept: '정보화', name: '오지민', email: 'jimin.oh@jeju.go.kr', groups: ['caution'], active: true },
-];
-
-const CRITERIA = [
-  { level: 'severe', label: '심각', badge: 'badge--severe', threshold: '90건 이상' },
-  { level: 'warn', label: '경고', badge: 'badge--warn', threshold: '60건 이상' },
-  { level: 'caution', label: '주의', badge: 'badge--caution', threshold: '30건 이상' },
-];
-
-const GROUP_BADGE = { severe: 'badge--severe', warn: 'badge--warn', caution: 'badge--caution' };
-const GROUP_LABEL = { severe: '심각', warn: '경고', caution: '주의' };
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="22" height="22" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -35,36 +17,49 @@ const AI_ICON = (
   </svg>
 );
 
-function Switch({ on, onToggle }) {
-  return (
-    <button
-      role="switch"
-      aria-checked={on}
-      onClick={onToggle}
-      type="button"
-      style={{ position: 'relative', width: 44, height: 24, borderRadius: 12, border: 'none', background: on ? 'var(--primary)' : 'var(--cool-neutral-80)', cursor: 'pointer', flexShrink: 0, transition: 'background 0.2s' }}
-    >
-      <span style={{ position: 'absolute', top: 3, left: on ? 23 : 3, width: 18, height: 18, borderRadius: '50%', background: '#fff', transition: 'left 0.2s', boxShadow: '0 1px 4px rgba(0,0,0,0.2)' }} />
-    </button>
-  );
-}
+const INITIAL_RECEIVERS = [
+  { dept: '주차관리',   name: '김지수', email: 'jisu.kim@jeju.go.kr',     groups: ['severe', 'warn'], on: true },
+  { dept: '주차관리',   name: '김서연', email: 'seoyeon.kim@jeju.go.kr',  groups: ['caution'],        on: true },
+  { dept: '교통정책과', name: '이준호', email: 'junho.lee@jeju.go.kr',    groups: ['warn'],           on: false },
+  { dept: '교통정책과', name: '최하늘', email: 'haneul.choi@jeju.go.kr',  groups: ['caution'],        on: true },
+  { dept: '교통정책과', name: '장민호', email: 'minho.jang@jeju.go.kr',   groups: ['warn'],           on: false },
+  { dept: '정보화',     name: '오지민', email: 'jimin.oh@jeju.go.kr',     groups: ['caution'],        on: true },
+];
 
-const TH = ({ center, children }) => (
-  <th style={{ padding: '12px 16px', textAlign: center ? 'center' : 'left', fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)', borderBottom: '1px solid var(--line-alternative)', whiteSpace: 'nowrap', background: 'var(--cool-neutral-99)' }}>
-    {children}
-  </th>
-);
-const TD = ({ center, children }) => (
-  <td style={{ padding: '14px 16px', borderBottom: '1px solid var(--line-alternative)', color: 'var(--text-neutral)', fontSize: 14, textAlign: center ? 'center' : 'left', verticalAlign: 'middle' }}>
-    {children}
-  </td>
-);
+const GROUP_META = {
+  severe:  { label: '심각', badge: 'badge--severe' },
+  warn:    { label: '경고', badge: 'badge--warn' },
+  caution: { label: '주의', badge: 'badge--caution' },
+};
+
+const CRIT_LEVELS = [
+  { key: 'severe',  label: '심각', badge: 'badge--severe' },
+  { key: 'warn',    label: '경고', badge: 'badge--warn' },
+  { key: 'caution', label: '주의', badge: 'badge--caution' },
+];
 
 export default function AlertManagement() {
-  const [receivers, setReceivers] = useState(INIT_RECEIVERS);
+  const [receivers, setReceivers] = useState(INITIAL_RECEIVERS);
+  const [addOpen, setAddOpen] = useState(false);
+  const [critOpen, setCritOpen] = useState(false);
+  const [crit, setCrit] = useState({ severe: 90, warn: 60, caution: 30 });
+  const [critDraft, setCritDraft] = useState({ severe: 90, warn: 60, caution: 30 });
+  const [addGroups, setAddGroups] = useState({ severe: true, warn: false, caution: false });
 
-  const toggle = (i) => setReceivers((r) => r.map((x, idx) => idx === i ? { ...x, active: !x.active } : x));
-  const remove = (i) => setReceivers((r) => r.filter((_, idx) => idx !== i));
+  useEffect(() => {
+    const open = addOpen || critOpen;
+    if (!open) return;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e) => { if (e.key === 'Escape') { setAddOpen(false); setCritOpen(false); } };
+    document.addEventListener('keydown', onKey);
+    return () => { document.body.style.overflow = ''; document.removeEventListener('keydown', onKey); };
+  }, [addOpen, critOpen]);
+
+  const toggleSwitch = (i) => setReceivers((rs) => rs.map((r, j) => (j === i ? { ...r, on: !r.on } : r)));
+  const removeRow = (i) => setReceivers((rs) => rs.filter((_, j) => j !== i));
+
+  const openCrit = () => { setCritDraft(crit); setCritOpen(true); };
+  const saveCrit = () => { setCrit(critDraft); setCritOpen(false); };
 
   return (
     <>
@@ -76,69 +71,157 @@ export default function AlertManagement() {
         <div className="topbar__actions">
           <button className="btn btn--ai" type="button">{AI_ICON} AI 대화 시작하기</button>
           <button className="btn" type="button"><Icon name="download" size={20} /> 내보내기</button>
-          <button className="bell" type="button" aria-label="알림">
-            <Icon name="bell" size={22} /><span className="bell__badge">3</span>
-          </button>
+          <button className="bell" type="button" aria-label="알림"><Icon name="bell" size={22} /><span className="bell__badge">3</span></button>
         </div>
       </header>
 
-      <div className="content" style={{ paddingTop: 24 }}>
-        <section style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 20, alignItems: 'start' }}>
-
+      <div className="content content--manage">
+        <section className="manage-row">
           {/* 수신자 관리 */}
-          <div className="card" style={{ overflow: 'hidden' }}>
-            <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--line-alternative)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>수신자 관리</h2>
-              <button type="button" style={{ height: 34, padding: '0 16px', borderRadius: 8, border: '1px solid var(--primary)', background: 'var(--blue-99)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>＋ 수신자 추가</button>
+          <div className="card recv-card">
+            <div className="recv-card__head">
+              <h2 className="card-head__title">수신자 관리</h2>
+              <button className="btn-edit" type="button" onClick={() => setAddOpen(true)}>＋ 수신자 추가</button>
             </div>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr><TH>소속</TH><TH>이름</TH><TH>이메일</TH><TH>단계 그룹</TH><TH center>활성화</TH><TH center>삭제</TH></tr>
-              </thead>
-              <tbody>
-                {receivers.map((r, i) => (
-                  <tr key={i}>
-                    <TD>{r.dept}</TD>
-                    <TD><span style={{ fontWeight: 600, color: 'var(--text-strong)' }}>{r.name}</span></TD>
-                    <TD><span style={{ fontSize: 13, color: 'var(--text-assistive)' }}>{r.email}</span></TD>
-                    <TD>
-                      <span style={{ display: 'inline-flex', gap: 4 }}>
-                        {r.groups.map((g) => (
-                          <span key={g} className={`badge ${GROUP_BADGE[g]}`}>{GROUP_LABEL[g]}</span>
-                        ))}
-                      </span>
-                    </TD>
-                    <TD center><Switch on={r.active} onToggle={() => toggle(i)} /></TD>
-                    <TD center>
-                      <button type="button" onClick={() => remove(i)} style={{ height: 28, padding: '0 12px', borderRadius: 6, border: '1px solid var(--red-80)', background: 'var(--red-99)', color: 'var(--red-40)', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>삭제</button>
-                    </TD>
+            <div className="rt-wrap">
+              <table className="rt">
+                <thead>
+                  <tr>
+                    <th>소속</th>
+                    <th>이름</th>
+                    <th>이메일</th>
+                    <th>단계 그룹</th>
+                    <th className="col-center">활성화</th>
+                    <th className="col-center">삭제</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {receivers.map((r, i) => (
+                    <tr key={i}>
+                      <td>{r.dept}</td>
+                      <td><span className="rt-name">{r.name}</span></td>
+                      <td className="rt-email">{r.email}</td>
+                      <td>
+                        <span className="grp-set">
+                          {r.groups.map((g) => (
+                            <span key={g} className={`badge ${GROUP_META[g].badge}`}>{GROUP_META[g].label}</span>
+                          ))}
+                        </span>
+                      </td>
+                      <td className="col-center">
+                        <button className={`switch${r.on ? ' is-on' : ''}`} role="switch" aria-checked={r.on} aria-label="활성화" onClick={() => toggleSwitch(i)}>
+                          <span className="switch__knob" />
+                        </button>
+                      </td>
+                      <td className="col-center"><button className="mt-act mt-act--del" onClick={() => removeRow(i)}>삭제</button></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           {/* 알림 기준 */}
-          <div className="card" style={{ padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
-              <div>
-                <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>알림 기준</h2>
-                <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--text-alternative)' }}>민원건수·위험도 등 알림 발생 기준 단계 설정</p>
+          <div className="card crit-card">
+            <div className="crit-card__head">
+              <div className="crit-card__heading">
+                <h2 className="card-head__title">알림 기준</h2>
+                <p className="crit-card__sub">민원건수·위험도 등 알림 발생 기준 단계 설정</p>
               </div>
-              <button type="button" style={{ height: 32, padding: '0 14px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'none', fontSize: 13, fontWeight: 600, cursor: 'pointer', color: 'var(--text-neutral)', flexShrink: 0 }}>설정</button>
+              <button className="btn-edit" type="button" onClick={openCrit}>설정</button>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {CRITERIA.map((c) => (
-                <div key={c.level} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 0', borderBottom: '1px solid var(--line-alternative)' }}>
-                  <span className={`badge ${c.badge}`} style={{ flexShrink: 0 }}>{c.label}</span>
-                  <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-strong)' }}>{c.threshold}</span>
+            <div className="crit-list">
+              {CRIT_LEVELS.map((c) => (
+                <div key={c.key} className="crit-row">
+                  <span className={`badge ${c.badge} crit-row__tag`}>{c.label}</span>
+                  <span className="crit-row__view">{crit[c.key]}건 이상</span>
                 </div>
               ))}
             </div>
           </div>
-
         </section>
       </div>
+
+      {/* 수신자 추가 모달 */}
+      {addOpen && (
+        <div className="modal">
+          <div className="modal__overlay" onClick={() => setAddOpen(false)} />
+          <div className="modal__dialog modal__dialog--sm" role="dialog" aria-modal="true" aria-label="수신자 추가">
+            <div className="modal__head">
+              <h2 className="modal__title">수신자 추가</h2>
+              <button className="modal__close" type="button" aria-label="닫기" onClick={() => setAddOpen(false)}>
+                <svg viewBox="0 0 24 24" fill="none" width="24" height="24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+              </button>
+            </div>
+            <div className="modal__body">
+              <div className="form-field">
+                <label className="form-field__label">소속</label>
+                <div className="ds-select form-field__select">
+                  <select aria-label="소속">
+                    <option>주차관리</option>
+                    <option>교통정책과</option>
+                    <option>정보화</option>
+                  </select>
+                  <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
+                </div>
+              </div>
+              <div className="form-field">
+                <label className="form-field__label">이름</label>
+                <input type="text" className="form-inp" placeholder="이름 입력" />
+              </div>
+              <div className="form-field">
+                <label className="form-field__label">이메일</label>
+                <input type="email" className="form-inp" placeholder="name@jeju.go.kr" />
+              </div>
+              <div className="form-field">
+                <label className="form-field__label">단계 그룹</label>
+                <div className="chip-set">
+                  {CRIT_LEVELS.map((c) => (
+                    <button key={c.key} className={`fchip${addGroups[c.key] ? ' is-active' : ''}`} type="button"
+                      onClick={() => setAddGroups((g) => ({ ...g, [c.key]: !g[c.key] }))}>{c.label}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="modal__foot">
+              <button className="btn" type="button" style={{ height: 44 }} onClick={() => setAddOpen(false)}>취소</button>
+              <button className="btn-save" type="button" onClick={() => setAddOpen(false)}>추가</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 알림 기준 설정 모달 */}
+      {critOpen && (
+        <div className="modal">
+          <div className="modal__overlay" onClick={() => setCritOpen(false)} />
+          <div className="modal__dialog modal__dialog--sm" role="dialog" aria-modal="true" aria-label="알림 기준 설정">
+            <div className="modal__head">
+              <h2 className="modal__title">알림 기준 설정</h2>
+              <button className="modal__close" type="button" aria-label="닫기" onClick={() => setCritOpen(false)}>
+                <svg viewBox="0 0 24 24" fill="none" width="24" height="24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+              </button>
+            </div>
+            <div className="modal__body">
+              <p className="crit-card__sub" style={{ marginTop: 0 }}>민원 건수가 아래 기준 이상일 때 해당 단계 알림이 발생합니다.</p>
+              <div className="crit-list">
+                {CRIT_LEVELS.map((c) => (
+                  <div key={c.key} className="crit-row">
+                    <span className={`badge ${c.badge} crit-row__tag`}>{c.label}</span>
+                    <input type="number" className="crit-inp" value={critDraft[c.key]}
+                      onChange={(e) => setCritDraft((d) => ({ ...d, [c.key]: e.target.value }))} />
+                    <span className="crit-row__unit">건 이상</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="modal__foot">
+              <button className="btn" type="button" style={{ height: 44 }} onClick={() => setCritOpen(false)}>취소</button>
+              <button className="btn-save" type="button" onClick={saveCrit}>저장</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
