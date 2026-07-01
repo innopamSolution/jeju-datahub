@@ -194,6 +194,8 @@ a { color: inherit; text-decoration: none; }
   border-top: 1px solid rgba(255,255,255,0.10);
 }
 .sidebar__foot .nav__item { color: rgba(255,255,255,0.55); }
+.sidebar__foot .nav__item:hover { background: none; color: rgba(255,255,255,0.55); }
+.sidebar__foot .nav__item:hover .ic { color: rgba(255,255,255,0.66); }
 
 /* ============================================================
    Main column
