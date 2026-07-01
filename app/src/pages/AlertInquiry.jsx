@@ -1,20 +1,5 @@
-import { useState } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import Icon from '../components/Icon';
-import DsSelect from '../components/DsSelect';
-
-const ALERT_DATA = [
-  { level: 'severe', region: '연동', content: '민원 급증 심각 단계 감지 — 시간당 102건', datetime: '2026.06.22 14:30', count: 102 },
-  { level: 'warn', region: '노형동', content: '민원 급증 경고 단계 감지 — 시간당 67건', datetime: '2026.06.22 11:15', count: 67 },
-  { level: 'caution', region: '이도동', content: '민원 증가 주의 단계 감지 — 시간당 35건', datetime: '2026.06.21 16:45', count: 35 },
-  { level: 'warn', region: '아라동', content: '민원 급증 경고 단계 감지 — 시간당 72건', datetime: '2026.06.21 09:20', count: 72 },
-  { level: 'caution', region: '삼도동', content: '민원 증가 주의 단계 감지 — 시간당 31건', datetime: '2026.06.20 15:00', count: 31 },
-  { level: 'severe', region: '연동', content: '민원 급증 심각 단계 감지 — 시간당 98건', datetime: '2026.06.18 13:10', count: 98 },
-  { level: 'warn', region: '오라동', content: '민원 급증 경고 단계 감지 — 시간당 63건', datetime: '2026.06.15 10:30', count: 63 },
-  { level: 'caution', region: '용담동', content: '민원 증가 주의 단계 감지 — 시간당 33건', datetime: '2026.06.10 08:50', count: 33 },
-];
-
-const LEVEL_BADGE = { severe: 'badge--severe', warn: 'badge--warn', caution: 'badge--caution' };
-const LEVEL_LABEL = { severe: '심각', warn: '경고', caution: '주의' };
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="22" height="22" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -32,23 +17,90 @@ const AI_ICON = (
   </svg>
 );
 
-const TH = ({ center, children }) => (
-  <th style={{ padding: '12px 16px', textAlign: center ? 'center' : 'left', fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)', borderBottom: '1px solid var(--line-alternative)', whiteSpace: 'nowrap', background: 'var(--cool-neutral-99)' }}>
-    {children}
-  </th>
-);
-const TD = ({ center, gray, children }) => (
-  <td style={{ padding: '14px 16px', borderBottom: '1px solid var(--line-alternative)', color: gray ? 'var(--text-assistive)' : 'var(--text-neutral)', fontSize: gray ? 13 : 14, textAlign: center ? 'center' : 'left', verticalAlign: 'middle' }}>
-    {children}
-  </td>
-);
+const DATA = [
+  { level: 'severe',  city: '제주시',   region: '연동',   name: '연동 민원 급증',      date: '2026-05-01 14:21', count: 89 },
+  { level: 'warn',    city: '제주시',   region: '노형동', name: '노형동 주간 증가',    date: '2026-05-05 13:05', count: 62 },
+  { level: 'warn',    city: '제주시',   region: '전체',   name: '불법주차 주간 29건',  date: '2026-05-28 11:47', count: 29 },
+  { level: 'caution', city: '제주시',   region: '이도동', name: '이도동 주의 알림',    date: '2026-04-18 09:30', count: 34 },
+  { level: 'severe',  city: '제주시',   region: '노형동', name: '노형 사거리 급증',    date: '2026-03-22 16:10', count: 95 },
+  { level: 'warn',    city: '제주시',   region: '연동',   name: '연동 상권 혼잡',      date: '2026-02-14 11:00', count: 58 },
+  { level: 'caution', city: '제주시',   region: '애월읍', name: '애월 해안 주차 주의', date: '2026-01-09 10:20', count: 31 },
+  { level: 'severe',  city: '서귀포시', region: '성산읍', name: '성산 관광지 급증',    date: '2025-12-28 15:45', count: 91 },
+];
+
+const DONGS = {
+  제주시: ['연동', '노형동', '이도동', '애월읍'],
+  서귀포시: ['성산읍', '중문동', '효돈동'],
+};
+
+const META = {
+  severe:  { label: '심각', badge: 'badge--severe' },
+  warn:    { label: '경고', badge: 'badge--warn' },
+  caution: { label: '주의', badge: 'badge--caution' },
+};
+
+const TODAY = new Date('2026-05-31T23:59:59');
+
+const LEVELS = [['all', '전체'], ['severe', '심각'], ['warn', '경고'], ['caution', '주의']];
+const PERIODS = [['yesterday', '어제'], ['week', '최근 1주일'], ['1', '최근 1개월'], ['3', '최근 3개월']];
+
+function fmtDate(s) { return s.replace(/-/g, '.'); }
 
 export default function AlertInquiry() {
-  const [levelFilter, setLevelFilter] = useState('all');
+  const [level, setLevel] = useState('all');
   const [period, setPeriod] = useState('3');
+  const [city, setCity] = useState('all');
+  const [dong, setDong] = useState('all');
+  const [customRange, setCustomRange] = useState(null);
+  const [popOpen, setPopOpen] = useState(false);
+  const [dateFrom, setDateFrom] = useState('2026-01-01');
+  const [dateTo, setDateTo] = useState('2026-05-31');
+  const pickRef = useRef(null);
 
-  const filtered = levelFilter === 'all' ? ALERT_DATA : ALERT_DATA.filter((a) => a.level === levelFilter);
-  const totalComplaints = filtered.reduce((s, a) => s + a.count, 0);
+  useEffect(() => {
+    if (!popOpen) return;
+    const onDoc = (e) => { if (pickRef.current && !pickRef.current.contains(e.target)) setPopOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setPopOpen(false); };
+    document.addEventListener('click', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+  }, [popOpen]);
+
+  const rangeBounds = () => {
+    if (customRange) return customRange;
+    const from = new Date(TODAY);
+    if (period === 'yesterday') { from.setDate(from.getDate() - 1); from.setHours(0, 0, 0, 0); const to = new Date(from); to.setHours(23, 59, 59, 0); return { from, to }; }
+    if (period === 'week') { from.setDate(from.getDate() - 7); return { from, to: TODAY }; }
+    from.setMonth(from.getMonth() - parseInt(period, 10));
+    return { from, to: TODAY };
+  };
+
+  const rows = useMemo(() => {
+    const b = rangeBounds();
+    return DATA.filter((r) => {
+      if (level !== 'all' && r.level !== level) return false;
+      if (city !== 'all' && r.city !== city) return false;
+      if (dong !== 'all' && r.region !== dong) return false;
+      const d = new Date(r.date.replace(' ', 'T') + ':00');
+      return d >= b.from && d <= b.to;
+    }).sort((a, c) => new Date(c.date.replace(' ', 'T')) - new Date(a.date.replace(' ', 'T')));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [level, period, city, dong, customRange]);
+
+  const nSevere = rows.filter((r) => r.level === 'severe').length;
+  const nWarn = rows.filter((r) => r.level === 'warn').length;
+  const nCaution = rows.filter((r) => r.level === 'caution').length;
+  const sum = rows.reduce((a, r) => a + r.count, 0);
+
+  const dongList = city !== 'all' && DONGS[city] ? DONGS[city] : [];
+
+  const applyDate = () => {
+    if (dateFrom && dateTo) {
+      setCustomRange({ from: new Date(dateFrom + 'T00:00:00'), to: new Date(dateTo + 'T23:59:59') });
+      setPeriod('');
+    }
+    setPopOpen(false);
+  };
 
   return (
     <>
@@ -60,47 +112,78 @@ export default function AlertInquiry() {
         <div className="topbar__actions">
           <button className="btn btn--ai" type="button">{AI_ICON} AI 대화 시작하기</button>
           <button className="btn" type="button"><Icon name="download" size={20} /> 내보내기</button>
-          <button className="bell" type="button" aria-label="알림">
-            <Icon name="bell" size={22} /><span className="bell__badge">3</span>
-          </button>
+          <button className="bell" type="button" aria-label="알림"><Icon name="bell" size={22} /><span className="bell__badge">3</span></button>
         </div>
       </header>
 
-      <div className="filterbar" style={{ flexWrap: 'wrap', gap: 12 }}>
+      {/* 필터 바 */}
+      <div className="filterbar">
         <span className="filterbar__label">단계</span>
         <div className="segment">
-          {[['all', '전체'], ['severe', '심각'], ['warn', '경고'], ['caution', '주의']].map(([k, l]) => (
-            <button key={k} type="button" className={`segment__btn ${levelFilter === k ? 'segment__btn--active' : ''}`} onClick={() => setLevelFilter(k)}>{l}</button>
+          {LEVELS.map(([k, l]) => (
+            <button key={k} className={`segment__btn${level === k ? ' segment__btn--active' : ''}`} type="button" onClick={() => setLevel(k)}>{l}</button>
           ))}
         </div>
         <span className="filter-sep" />
         <span className="filterbar__label">시/도</span>
-        <DsSelect>
-          <option>전체</option><option>제주시</option><option>서귀포시</option>
-        </DsSelect>
-        <DsSelect>
-          <option>읍면동 전체</option>
-        </DsSelect>
+        <div className="ds-select alert-select">
+          <select aria-label="시/도" value={city} onChange={(e) => { setCity(e.target.value); setDong('all'); }}>
+            <option value="all">전체</option>
+            <option value="제주시">제주시</option>
+            <option value="서귀포시">서귀포시</option>
+          </select>
+          <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
+        </div>
+        <div className="ds-select alert-select">
+          <select aria-label="읍면동" value={dong} disabled={dongList.length === 0} onChange={(e) => setDong(e.target.value)}>
+            <option value="all">읍면동 전체</option>
+            {dongList.map((d) => <option key={d} value={d}>{d}</option>)}
+          </select>
+          <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
+        </div>
         <span className="filter-sep" />
         <span className="filterbar__label">기간</span>
         <div className="segment">
-          {[['yesterday', '어제'], ['week', '최근 1주일'], ['1', '최근 1개월'], ['3', '최근 3개월']].map(([k, l]) => (
-            <button key={k} type="button" className={`segment__btn ${period === k ? 'segment__btn--active' : ''}`} onClick={() => setPeriod(k)}>{l}</button>
+          {PERIODS.map(([k, l]) => (
+            <button key={k} className={`segment__btn${period === k ? ' segment__btn--active' : ''}`} type="button" onClick={() => { setPeriod(k); setCustomRange(null); }}>{l}</button>
           ))}
         </div>
-        <button className="btn" type="button" style={{ height: 40 }}>
-          <Icon name="calendar" size={18} /> 기간 선택
-        </button>
-        <span className="filterbar__right">조회 결과 <strong>{filtered.length}건</strong></span>
+        <div className="date-pick" ref={pickRef}>
+          <button className={`btn${customRange ? ' btn--apply' : ''}`} type="button" style={{ height: 40 }} aria-haspopup="true" aria-expanded={popOpen}
+            onClick={(e) => { e.stopPropagation(); setPopOpen((o) => !o); }}>
+            <Icon name="calendar" size={18} /> 기간 선택
+          </button>
+          {popOpen && (
+            <div className="date-pop">
+              <div className="date-pop__row">
+                <label className="date-pop__field">
+                  <span>시작일</span>
+                  <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
+                </label>
+                <label className="date-pop__field">
+                  <span>종료일</span>
+                  <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
+                </label>
+              </div>
+              <div className="date-pop__foot">
+                <button className="btn" type="button" style={{ height: 38 }} onClick={() => setPopOpen(false)}>취소</button>
+                <button className="btn btn--apply" type="button" style={{ height: 38 }} onClick={applyDate}>적용</button>
+              </div>
+            </div>
+          )}
+        </div>
+        <span className="filterbar__right">조회 결과 <strong>{rows.length}건</strong></span>
       </div>
 
-      <div className="content">
+      {/* 콘텐츠 */}
+      <div className="content content--alert">
+        {/* 통계 카드 */}
         <section className="stat-row">
           <div className="card stat">
             <div className="stat__icon stat__icon--blue"><Icon name="bell" size={28} /></div>
             <div>
               <div className="stat__label">조회 알림 건수</div>
-              <div className="stat__value">{filtered.length}<span style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-alternative)', marginLeft: 4 }}>건</span></div>
+              <div className="stat__value">{rows.length}<span className="stat__unit">건</span></div>
               <div className="stat__delta">선택 조건 기준</div>
             </div>
           </div>
@@ -108,45 +191,54 @@ export default function AlertInquiry() {
             <div className="stat__icon stat__icon--red"><Icon name="warning" size={28} /></div>
             <div>
               <div className="stat__label">심각 단계</div>
-              <div className="stat__value">{filtered.filter((a) => a.level === 'severe').length}<span style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-alternative)', marginLeft: 4 }}>건</span></div>
-              <div className="stat__delta">경고 {filtered.filter((a) => a.level === 'warn').length} · 주의 {filtered.filter((a) => a.level === 'caution').length}</div>
+              <div className="stat__value">{nSevere}<span className="stat__unit">건</span></div>
+              <div className="stat__delta">경고 {nWarn} · 주의 {nCaution}</div>
             </div>
           </div>
           <div className="card stat">
-            <div className="stat__icon" style={{ width: 72, height: 72, borderRadius: 16, background: 'var(--orange-95)', color: 'var(--orange-39)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <Icon name="chart" size={28} />
-            </div>
+            <div className="stat__icon stat__icon--orange"><Icon name="chart" size={28} /></div>
             <div>
               <div className="stat__label">누적 민원 수</div>
-              <div className="stat__value">{totalComplaints}<span style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-alternative)', marginLeft: 4 }}>건</span></div>
+              <div className="stat__value">{sum.toLocaleString()}<span className="stat__unit">건</span></div>
               <div className="stat__delta">선택 기간 합계</div>
             </div>
           </div>
         </section>
 
-        <div className="card" style={{ overflow: 'hidden' }}>
-          <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--line-alternative)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>알림 이력</h2>
-            <span style={{ fontSize: 13, color: 'var(--text-assistive)' }}>상단 필터 조건에 따라 자동 갱신</span>
+        {/* 알림 이력 */}
+        <div className="card alert-card">
+          <div className="alert-card__head">
+            <h2 className="card-head__title">알림 이력</h2>
+            <span className="alert-card__hint">상단 필터 조건에 따라 자동 갱신</span>
           </div>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr><TH center>단계</TH><TH center>지역</TH><TH>내용</TH><TH center>일시</TH><TH center>민원 수</TH></tr>
-            </thead>
-            <tbody>
-              {filtered.length === 0 ? (
-                <tr><td colSpan={5} style={{ padding: 40, textAlign: 'center', color: 'var(--text-assistive)' }}>조건에 해당하는 알림이 없습니다.</td></tr>
-              ) : filtered.map((a, i) => (
-                <tr key={i}>
-                  <TD center><span className={`badge ${LEVEL_BADGE[a.level]}`}>{LEVEL_LABEL[a.level]}</span></TD>
-                  <TD center><span style={{ fontWeight: 600 }}>{a.region}</span></TD>
-                  <TD>{a.content}</TD>
-                  <TD center gray>{a.datetime}</TD>
-                  <TD center><span style={{ fontWeight: 700, color: 'var(--text-strong)' }}>{a.count}건</span></TD>
+          <div className="rt-wrap">
+            <table className="rt">
+              <thead>
+                <tr>
+                  <th className="col-center">단계</th>
+                  <th className="col-center">지역</th>
+                  <th>내용</th>
+                  <th className="col-center">일시</th>
+                  <th className="col-center">민원 수</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {rows.map((r, i) => {
+                  const m = META[r.level];
+                  return (
+                    <tr key={i}>
+                      <td className="col-center"><span className={`badge ${m.badge}`}>{m.label}</span></td>
+                      <td className="col-center">{r.region === '전체' ? r.city : r.region}</td>
+                      <td><span className="rt-name">{r.name}</span></td>
+                      <td className="col-center rt-date">{fmtDate(r.date)}</td>
+                      <td className="col-center">{r.count}건</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            {rows.length === 0 && <div className="alert-empty">조건에 해당하는 알림이 없습니다.</div>}
+          </div>
         </div>
       </div>
     </>
