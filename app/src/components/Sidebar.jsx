@@ -2,18 +2,53 @@ import { Link, useLocation } from 'react-router-dom';
 import Icon from './Icon';
 import logo from '../assets/logo.svg';
 
-const ANALYSIS_ROUTES = [
-  '/analysis/hotspot',
-  '/analysis/policy-simulation',
-  '/analysis/lifestyle-simulation',
-  '/analysis/recommendation',
-  '/analysis/investment-priority',
+const ANALYSIS_SUB = [
+  { to: '/analysis/hotspot', label: '집중 구역 분석' },
+  { to: '/analysis/policy-simulation', label: '정책 효과 시뮬레이션' },
+  { to: '/analysis/lifestyle-simulation', label: '생활권 시뮬레이션' },
+  { to: '/analysis/recommendation', label: '구역추천' },
+  { to: '/analysis/investment-priority', label: '투자우선순위 보드' },
 ];
+
+const REPORT_SUB = [
+  { to: '/reports', label: '보고서 관리' },
+  { to: '/alerts/inquiry', label: '위험단계 알림 조회' },
+  { to: '/alerts/management', label: '위험단계 알림 관리' },
+];
+
+// 그룹: 해당 페이지에 있으면 파란 parent + 서브메뉴 펼침, 아니면 평범한 링크
+function NavGroup({ icon, label, items, pathname }) {
+  const isIn = items.some((it) => pathname.startsWith(it.to));
+
+  if (!isIn) {
+    return (
+      <Link to={items[0].to} className="nav__item">
+        <Icon name={icon} size={22} /><span>{label}</span>
+      </Link>
+    );
+  }
+
+  return (
+    <div className="nav__group">
+      <div className="nav__item nav__item--parent">
+        <Icon name={icon} size={22} /><span>{label}</span>
+      </div>
+      <div className="nav__sub">
+        {items.map((it) => {
+          const active = pathname.startsWith(it.to);
+          return (
+            <Link key={it.to} to={it.to} className={`nav__subitem${active ? ' nav__subitem--active' : ''}`}>
+              {it.label}{active && <span className="nav__dot" />}
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 export default function Sidebar() {
   const { pathname } = useLocation();
-
-  const isAnalysis = ANALYSIS_ROUTES.some(r => pathname.startsWith(r));
 
   return (
     <aside className="sidebar">
@@ -37,33 +72,9 @@ export default function Sidebar() {
           {pathname.startsWith('/complaints') && <span className="nav__dot" />}
         </Link>
 
-        <div className="nav__group">
-          <div className={`nav__item nav__item--parent${isAnalysis ? '' : ' nav__item--parent--collapsed'}`}>
-            <Icon name="chart" size={22} /><span>분석·시뮬레이션</span>
-          </div>
-          <div className="nav__sub">
-            <Link to="/analysis/hotspot" className={`nav__subitem${pathname.startsWith('/analysis/hotspot') ? ' nav__subitem--active' : ''}`}>
-              집중 구역 분석{pathname.startsWith('/analysis/hotspot') && <span className="nav__dot" />}
-            </Link>
-            <Link to="/analysis/policy-simulation" className={`nav__subitem${pathname.startsWith('/analysis/policy-simulation') ? ' nav__subitem--active' : ''}`}>
-              정책 효과 시뮬레이션{pathname.startsWith('/analysis/policy-simulation') && <span className="nav__dot" />}
-            </Link>
-            <Link to="/analysis/lifestyle-simulation" className={`nav__subitem${pathname.startsWith('/analysis/lifestyle-simulation') ? ' nav__subitem--active' : ''}`}>
-              생활권 시뮬레이션{pathname.startsWith('/analysis/lifestyle-simulation') && <span className="nav__dot" />}
-            </Link>
-            <Link to="/analysis/recommendation" className={`nav__subitem${pathname.startsWith('/analysis/recommendation') ? ' nav__subitem--active' : ''}`}>
-              구역추천{pathname.startsWith('/analysis/recommendation') && <span className="nav__dot" />}
-            </Link>
-            <Link to="/analysis/investment-priority" className={`nav__subitem${pathname.startsWith('/analysis/investment-priority') ? ' nav__subitem--active' : ''}`}>
-              투자우선순위 보드{pathname.startsWith('/analysis/investment-priority') && <span className="nav__dot" />}
-            </Link>
-          </div>
-        </div>
+        <NavGroup icon="chart" label="분석·시뮬레이션" items={ANALYSIS_SUB} pathname={pathname} />
 
-        <Link to="/reports" className={`nav__item${pathname.startsWith('/reports') ? ' nav__item--active' : ''}`}>
-          <Icon name="document" size={22} /><span>보고서·알림</span>
-          {pathname.startsWith('/reports') && <span className="nav__dot" />}
-        </Link>
+        <NavGroup icon="document" label="보고서·알림" items={REPORT_SUB} pathname={pathname} />
 
         <Link to="/ai-assistant" className={`nav__item${pathname.startsWith('/ai-assistant') ? ' nav__item--active' : ''}`}>
           <Icon name="sparkle" size={22} /><span>AI 어시스턴트</span>
