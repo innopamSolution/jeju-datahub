@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Icon from '../components/Icon';
 
 const AI_ICON = (
@@ -17,59 +17,69 @@ const AI_ICON = (
   </svg>
 );
 
-const AUTO_REPORTS = [
-  { name: '2026년 3월 월간 민원 보고서', cycle: '월간', date: '2026.04.01', status: 'done' },
-  { name: '2026년 4월 월간 민원 보고서', cycle: '월간', date: '2026.05.01', status: 'done' },
-  { name: '2026년 5월 월간 민원 보고서', cycle: '월간', date: '2026.06.01', status: 'done' },
-  { name: '2026년 6월 월간 민원 보고서', cycle: '월간', date: '2026.07.01', status: 'done' },
-  { name: '2026년 1/4분기 민원 보고서', cycle: '반기', date: '2026.04.01', status: 'neutral' },
-  { name: '2026년 3/4분기 민원 보고서', cycle: '반기', date: '2026.10.01', status: 'neutral' },
-  { name: '2026년 반기 민원 보고서', cycle: '반기', date: '2026.07.01', status: 'neutral' },
-  { name: '2026년 전체 민원 보고서', cycle: '연간', date: '2027.01.01', status: 'neutral' },
-];
-
-const MANUAL_REPORTS = [
-  { name: '주차장 확충 제주시 연동 150면', period: '2026.05.28 ~ 2026.06.15', date: '2026.05.28', author: '홍길동' },
-  { name: '집중 구역 분석 보고서 노형 사거리', period: '2026.05.28 ~ 2026.06.15', date: '2026.05.28', author: '홍길동' },
-  { name: '민원 현황 보고서 제주시', period: '2026.06.22', date: '2026.06.22', author: '홍길동' },
-];
-
-/* ── 공통 테이블 셀 ── */
-const TH = ({ center, children }) => (
-  <th style={{ padding: '12px 16px', textAlign: center ? 'center' : 'left', fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)', borderBottom: '1px solid var(--line-alternative)', whiteSpace: 'nowrap', background: 'var(--cool-neutral-99)' }}>
-    {children}
-  </th>
-);
-const TD = ({ center, muted, children }) => (
-  <td style={{ padding: '14px 16px', borderBottom: '1px solid var(--line-alternative)', color: muted ? 'var(--text-assistive)' : 'var(--text-neutral)', fontSize: muted ? 13 : 14, textAlign: center ? 'center' : 'left', verticalAlign: 'middle' }}>
-    {children}
-  </td>
+const DL_ICON = (
+  <svg viewBox="0 0 24 24" fill="none" width="15" height="15" aria-hidden="true">
+    <path d="M12 4v9m0 0 3.5-3.5M12 13 8.5 9.5M5 18h14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
 );
 
-/* ── 태그 버튼 ── */
-function Tag({ file, children }) {
-  return (
-    <button type="button" style={{ height: 28, padding: '0 12px', borderRadius: 6, border: `1px solid ${file ? 'var(--blue-90)' : 'var(--line-normal)'}`, background: file ? 'var(--blue-99)' : 'var(--fill-normal)', color: file ? 'var(--blue-45)' : 'var(--text-neutral)', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
-      {children}
-    </button>
-  );
-}
+const CYCLE_LABEL = { month: '매월', quarter: '1/4분기', year: '연간' };
 
-/* ── field__select — justify-content:space-between으로 chevron 오른쪽 끝 ── */
-function FakeSelect({ children }) {
+const AUTO_ROWS = [
+  { name: '2026년 3월 월간 민원 보고서',   cycle: '월간', date: '2026.04.01', status: 'done' },
+  { name: '2026년 4월 월간 민원 보고서',   cycle: '월간', date: '2026.05.01', status: 'done' },
+  { name: '2026년 5월 월간 민원 보고서',   cycle: '월간', date: '2026.06.01', status: 'done' },
+  { name: '2026년 6월 월간 민원 보고서',   cycle: '월간', date: '2026.07.01', status: 'done' },
+  { name: '2026년 1/4분기 민원 보고서',    cycle: '반기', date: '2026.04.01', status: 'wait' },
+  { name: '2026년 3/4분기 민원 보고서',    cycle: '반기', date: '2026.10.01', status: 'wait' },
+  { name: '2026년 반기 민원 보고서',       cycle: '반기', date: '2026.07.01', status: 'wait' },
+  { name: '2026년 전체 민원 보고서',       cycle: '연간', date: '2027.01.01', status: 'wait' },
+];
+
+const MANUAL_ROWS = [
+  { name: '주차장 확충 제주시 연동 150면',       period: '2026.05.28 ~ 2026.06.15', date: '2026.05.28', author: '홍길동' },
+  { name: '집중 구역 분석 보고서 노형 사거리',    period: '2026.05.28 ~ 2026.06.15', date: '2026.05.28', author: '홍길동' },
+  { name: '민원 현황 보고서 제주시',             period: '2026.06.22',              date: '2026.06.22', author: '홍길동' },
+];
+
+const MODAL_ROWS = [
+  { name: '홍길동', dept: '(교통정책과)', cycle: '월간',   dates: ['월 1일'] },
+  { name: '김지수', dept: '(주차관리)',   cycle: '1/4분기', dates: ['4월', '1일'] },
+  { name: '고민호', dept: '(주차관리)',   cycle: '반기',   dates: ['7월', '1일'] },
+];
+
+const PER_PAGE = 5;
+
+function Pager({ total, page, setPage }) {
+  const pages = Math.ceil(total / PER_PAGE);
+  if (pages <= 1) return null;
   return (
-    <div className="field__select">
-      <span>{children}</span>
-      <Icon name="chevron-down" size={16} />
+    <div className="pager">
+      <button className="pager__btn pager__btn--nav" disabled={page === 1} onClick={() => setPage(page - 1)}>‹</button>
+      {Array.from({ length: pages }, (_, i) => i + 1).map((p) => (
+        <button key={p} className={`pager__btn${p === page ? ' is-active' : ''}`} onClick={() => setPage(p)}>{p}</button>
+      ))}
+      <button className="pager__btn pager__btn--nav" disabled={page === pages} onClick={() => setPage(page + 1)}>›</button>
     </div>
   );
 }
 
 export default function Reports() {
   const [cycle, setCycle] = useState('quarter');
+  const [autoPage, setAutoPage] = useState(1);
+  const [manualPage, setManualPage] = useState(1);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  /* 배포 주기 라벨 */
-  const cycleLabel = cycle === 'month' ? '매월' : cycle === 'quarter' ? '1/4분기' : '매년';
+  useEffect(() => {
+    if (!modalOpen) return;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e) => { if (e.key === 'Escape') setModalOpen(false); };
+    document.addEventListener('keydown', onKey);
+    return () => { document.body.style.overflow = ''; document.removeEventListener('keydown', onKey); };
+  }, [modalOpen]);
+
+  const autoSlice = AUTO_ROWS.slice((autoPage - 1) * PER_PAGE, autoPage * PER_PAGE);
+  const manualSlice = MANUAL_ROWS.slice((manualPage - 1) * PER_PAGE, manualPage * PER_PAGE);
 
   return (
     <>
@@ -81,133 +91,161 @@ export default function Reports() {
         <div className="topbar__actions">
           <button className="btn btn--ai" type="button">{AI_ICON} AI 대화 시작하기</button>
           <button className="btn" type="button"><Icon name="download" size={20} /> 내보내기</button>
-          <button className="bell" type="button" aria-label="알림">
-            <Icon name="bell" size={22} /><span className="bell__badge">3</span>
-          </button>
+          <button className="bell" type="button" aria-label="알림"><Icon name="bell" size={22} /><span className="bell__badge">3</span></button>
         </div>
       </header>
 
-      <div className="content" style={{ paddingTop: 24, gap: 20 }}>
-
-        {/* ── 자동 생성 설정 (전체 너비) ── */}
-        <div className="card" style={{ padding: 0 }}>
-          {/* 헤더 */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '24px 28px 0' }}>
-            <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>보고서 자동 생성 설정</h2>
-            <button type="button" style={{ height: 36, padding: '0 20px', borderRadius: 8, border: '1px solid var(--line-normal)', background: '#fff', color: 'var(--text-neutral)', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>편집</button>
-          </div>
-
-          {/* 바디: 필드들 가로 한 줄 + 버튼 오른쪽 */}
-          <div style={{ padding: '24px 28px 28px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
-            {/* 필드 목록 */}
-            <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap' }}>
-
-              {/* 주기 유형 */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-alternative)', whiteSpace: 'nowrap' }}>주기 유형</span>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  {[['month', '월'], ['quarter', '분기'], ['year', '연']].map(([k, l]) => (
-                    <button key={k} type="button" onClick={() => setCycle(k)} style={{ height: 46, padding: '0 20px', borderRadius: 10, border: `1px solid ${cycle === k ? 'var(--primary)' : 'var(--line-normal)'}`, background: cycle === k ? 'var(--primary)' : '#fff', color: cycle === k ? '#fff' : 'var(--text-neutral)', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', transition: 'all 0.12s', whiteSpace: 'nowrap' }}>{l}</button>
-                  ))}
+      <div className="content content--reports">
+        <section className="rpt-top">
+          {/* 자동 생성 설정 */}
+          <div className="card rpt-cfg">
+            <div className="rpt-cfg__head">
+              <h2 className="card-head__title">보고서 자동 생성 설정</h2>
+              <button className="btn-edit" type="button" onClick={() => setModalOpen(true)}>편집</button>
+            </div>
+            <div className="rpt-cfg__body">
+              <div className="rpt-cfg__fields">
+                <div className="field">
+                  <label className="field__label">주기 유형</label>
+                  <div className="seg-row">
+                    <button className={`seg-pill${cycle === 'month' ? ' is-active' : ''}`} type="button" onClick={() => setCycle('month')}>월</button>
+                    <button className={`seg-pill${cycle === 'quarter' ? ' is-active' : ''}`} type="button" onClick={() => setCycle('quarter')}>분기</button>
+                    <button className={`seg-pill${cycle === 'year' ? ' is-active' : ''}`} type="button" onClick={() => setCycle('year')}>연</button>
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="field__label">배포 주기</label>
+                  <div className="field__select">{CYCLE_LABEL[cycle]} <Icon name="chevron-down" size={18} /></div>
+                </div>
+                <div className="field">
+                  <label className="field__label">배포 일자</label>
+                  <div className="field__dates">
+                    {cycle === 'year' && <div className="field__select field__date">4월 <Icon name="chevron-down" size={18} /></div>}
+                    <div className="field__select field__date">1일 <Icon name="chevron-down" size={18} /></div>
+                  </div>
                 </div>
               </div>
-
-              {/* 배포 주기 */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-alternative)', whiteSpace: 'nowrap' }}>배포 주기</span>
-                <FakeSelect>{cycleLabel}</FakeSelect>
-              </div>
-
-              {/* 배포 일자 */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-alternative)', whiteSpace: 'nowrap' }}>배포 일자</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  {cycle === 'month' && <FakeSelect>4월</FakeSelect>}
-                  <FakeSelect>1일</FakeSelect>
-                </div>
+              <div className="rpt-cfg__foot">
+                <button className="btn-gen" type="button">
+                  <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M8 5v14l11-7z" fill="currentColor" /></svg> 보고서 자동 생성
+                </button>
               </div>
             </div>
-
-            {/* 자동 생성 버튼 */}
-            <button type="button" style={{ height: 46, padding: '0 24px', borderRadius: 10, border: 'none', background: 'var(--cool-neutral-17, #2c2d30)', color: '#fff', fontSize: 15, fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
-              <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
-              보고서 자동 생성
-            </button>
           </div>
-        </div>
 
-        {/* ── 자동 생성 보고서 목록 (전체 너비) ── */}
-        <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-          <div style={{ padding: '24px 28px 16px' }}>
-            <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>자동 생성 보고서 목록</h2>
+          {/* 자동 생성 목록 */}
+          <div className="card rpt-list">
+            <div className="rpt-card__head"><h2 className="card-head__title">자동 생성 보고서 목록</h2></div>
+            <div className="rt-wrap">
+              <table className="rt">
+                <thead>
+                  <tr>
+                    <th>보고서 명</th>
+                    <th>배포 주기</th>
+                    <th>생성일</th>
+                    <th>상태</th>
+                    <th className="col-center">미리보기</th>
+                    <th className="col-center">다운로드</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {autoSlice.map((r, i) => (
+                    <tr key={i}>
+                      <td><span className="rt-name">{r.name}</span></td>
+                      <td>{r.cycle}</td>
+                      <td className="rt-date">{r.date}</td>
+                      <td><span className={`badge badge--${r.status}`}>{r.status === 'done' ? '완료' : '대기'}</span></td>
+                      <td className="col-center"><button className="tag">미리보기</button></td>
+                      <td className="col-center"><button className="tag tag--file">{DL_ICON}<span>PDF</span></button></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <Pager total={AUTO_ROWS.length} page={autoPage} setPage={setAutoPage} />
+            </div>
           </div>
-          <div style={{ padding: '0 16px 20px', overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        </section>
+
+        {/* 직접 생성 목록 */}
+        <div className="card rpt-manual">
+          <div className="rpt-card__head"><h2 className="card-head__title">직접 생성 보고서 목록</h2></div>
+          <div className="rt-wrap">
+            <table className="rt">
               <thead>
                 <tr>
-                  <TH>보고서 명</TH>
-                  <TH center>배포 주기</TH>
-                  <TH center>생성일</TH>
-                  <TH center>상태</TH>
-                  <TH center>미리보기</TH>
-                  <TH center>다운로드</TH>
+                  <th>보고서 명</th>
+                  <th>분석 기간</th>
+                  <th>생성일</th>
+                  <th>생성자</th>
+                  <th className="col-center">미리보기</th>
+                  <th className="col-center">다운로드</th>
                 </tr>
               </thead>
               <tbody>
-                {AUTO_REPORTS.map((r, i) => (
+                {manualSlice.map((r, i) => (
                   <tr key={i}>
-                    <TD><span style={{ fontWeight: 600, color: 'var(--text-strong)' }}>{r.name}</span></TD>
-                    <TD center muted>{r.cycle}</TD>
-                    <TD center muted>{r.date}</TD>
-                    <TD center>
-                      {r.status === 'done'
-                        ? <span className="badge badge--done">완료</span>
-                        : <span className="badge" style={{ background: 'var(--fill-strong, rgba(112,115,124,0.16))', color: 'var(--text-alternative)' }}>대기</span>
-                      }
-                    </TD>
-                    <TD center><Tag>미리보기</Tag></TD>
-                    <TD center><Tag file>PDF</Tag></TD>
+                    <td><span className="rt-name">{r.name}</span></td>
+                    <td className="rt-date">{r.period}</td>
+                    <td className="rt-date">{r.date}</td>
+                    <td>{r.author}</td>
+                    <td className="col-center"><button className="tag">미리보기</button></td>
+                    <td className="col-center"><button className="tag tag--file">{DL_ICON}<span>PDF</span></button></td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            <Pager total={MANUAL_ROWS.length} page={manualPage} setPage={setManualPage} />
           </div>
         </div>
-
-        {/* ── 직접 생성 보고서 목록 (전체 너비) ── */}
-        <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-          <div style={{ padding: '24px 28px 16px' }}>
-            <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>직접 생성 보고서 목록</h2>
-          </div>
-          <div style={{ padding: '0 16px 20px', overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <TH>보고서 명</TH>
-                  <TH>분석 기간</TH>
-                  <TH>생성일</TH>
-                  <TH>생성자</TH>
-                  <TH center>미리보기</TH>
-                  <TH center>다운로드</TH>
-                </tr>
-              </thead>
-              <tbody>
-                {MANUAL_REPORTS.map((r, i) => (
-                  <tr key={i}>
-                    <TD><span style={{ fontWeight: 600, color: 'var(--text-strong)' }}>{r.name}</span></TD>
-                    <TD muted>{r.period}</TD>
-                    <TD muted>{r.date}</TD>
-                    <TD>{r.author}</TD>
-                    <TD center><Tag>미리보기</Tag></TD>
-                    <TD center><Tag file>PDF</Tag></TD>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
       </div>
+
+      {/* 편집 모달 */}
+      {modalOpen && (
+        <div className="modal">
+          <div className="modal__overlay" onClick={() => setModalOpen(false)} />
+          <div className="modal__dialog" role="dialog" aria-modal="true" aria-label="자동 생성 설정 편집">
+            <div className="modal__head">
+              <h2 className="modal__title">자동 생성 설정 편집</h2>
+              <button className="modal__close" type="button" aria-label="닫기" onClick={() => setModalOpen(false)}>
+                <svg viewBox="0 0 24 24" fill="none" width="24" height="24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+              </button>
+            </div>
+            <div className="modal__body">
+              <table className="mt">
+                <thead>
+                  <tr>
+                    <th>설정자</th>
+                    <th>배포 주기</th>
+                    <th>배포 일자</th>
+                    <th className="col-center">수정</th>
+                    <th className="col-center">삭제</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {MODAL_ROWS.map((r, i) => (
+                    <tr key={i}>
+                      <td><span className="rt-name">{r.name}</span> <span className="mt-dept">{r.dept}</span></td>
+                      <td><div className="field__select field__select--sm">{r.cycle} <Icon name="chevron-down" size={18} /></div></td>
+                      <td>
+                        <div className="field__dates">
+                          {r.dates.map((d, j) => (
+                            <div key={j} className="field__select field__select--sm field__date">{d} <Icon name="chevron-down" size={18} /></div>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="col-center"><button className="mt-act">수정</button></td>
+                      <td className="col-center"><button className="mt-act mt-act--del">삭제</button></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="modal__foot">
+              <button className="btn-save" type="button" onClick={() => setModalOpen(false)}>저장</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
