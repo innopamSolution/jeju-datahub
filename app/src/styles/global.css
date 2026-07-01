@@ -233,7 +233,7 @@ a { color: inherit; text-decoration: none; }
   margin: 0;
 }
 .page-sub {
-  margin: var(--space-6) 0 0;
+  margin: 0;
   font-size: var(--label1-size);
   color: var(--text-assistive);
   letter-spacing: var(--label1-tracking);
