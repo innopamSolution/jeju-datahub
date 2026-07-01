@@ -226,32 +226,32 @@ export default function Dashboard() {
         </div>
 
         {/* 기간 선택 버튼 + 팝오버 */}
-        <div style={{ position: 'relative' }}>
-          <button className="btn" type="button" style={{ height: 40 }} onClick={() => setDatePopOpen((o) => !o)}>
+        <div className="date-pick">
+          <button className="btn" type="button" style={{ height: 40 }} aria-haspopup="true" aria-expanded={datePopOpen} onClick={() => setDatePopOpen((o) => !o)}>
             <Icon name="calendar" size={18} /> 기간 선택
           </button>
           {datePopOpen && (
-            <div style={{ position: 'absolute', top: 'calc(100% + 8px)', left: 0, zIndex: 100, background: '#fff', borderRadius: 12, boxShadow: '0 4px 20px rgba(0,0,0,0.15)', border: '1px solid var(--line-alternative)', padding: '16px 20px', minWidth: 280 }}>
-              <div style={{ display: 'flex', gap: 12, marginBottom: 14 }}>
-                <label style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)' }}>
-                  시작일
-                  <input type="date" defaultValue="2025-11-01" style={{ height: 36, padding: '0 10px', borderRadius: 8, border: '1px solid var(--line-normal)', fontSize: 13, fontFamily: 'inherit', outline: 'none' }} />
+            <div className="date-pop">
+              <div className="date-pop__row">
+                <label className="date-pop__field">
+                  <span>시작일</span>
+                  <input type="date" defaultValue="2025-11-01" />
                 </label>
-                <label style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)' }}>
-                  종료일
-                  <input type="date" defaultValue="2025-12-01" style={{ height: 36, padding: '0 10px', borderRadius: 8, border: '1px solid var(--line-normal)', fontSize: 13, fontFamily: 'inherit', outline: 'none' }} />
+                <label className="date-pop__field">
+                  <span>종료일</span>
+                  <input type="date" defaultValue="2025-12-01" />
                 </label>
               </div>
-              <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-                <button type="button" onClick={() => setDatePopOpen(false)} style={{ height: 38, padding: '0 16px', borderRadius: 8, border: '1px solid var(--line-normal)', background: 'none', fontSize: 13, cursor: 'pointer', color: 'var(--text-neutral)' }}>취소</button>
-                <button type="button" onClick={() => setDatePopOpen(false)} style={{ height: 38, padding: '0 16px', borderRadius: 8, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>적용</button>
+              <div className="date-pop__foot">
+                <button className="btn" type="button" style={{ height: 38 }} onClick={() => setDatePopOpen(false)}>취소</button>
+                <button className="btn btn--apply" type="button" style={{ height: 38 }} onClick={() => setDatePopOpen(false)}>적용</button>
               </div>
             </div>
           )}
         </div>
 
         <span className="filter-sep" />
-        <button type="button" aria-pressed={filterOpen} onClick={() => setFilterOpen((o) => !o)} style={{ height: 40, padding: '0 16px', borderRadius: 8, border: `1px solid ${filterOpen ? 'var(--primary)' : 'var(--line-normal)'}`, background: filterOpen ? 'var(--blue-99)' : 'none', color: filterOpen ? 'var(--primary)' : 'var(--text-neutral)', fontSize: 13, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
+        <button className="btn btn--toggle" type="button" style={{ height: 40 }} aria-pressed={filterOpen} onClick={() => setFilterOpen((o) => !o)}>
           <Icon name="filter" size={18} /> 상세 필터
         </button>
         <span className="filterbar__right">현재: <strong>{period}</strong></span>
@@ -259,30 +259,30 @@ export default function Dashboard() {
 
       {/* 상세 필터 패널 */}
       {filterOpen && (
-        <div style={{ margin: '0 24px', padding: '18px 24px', background: 'var(--fill-normal)', borderRadius: 12, border: '1px solid var(--line-alternative)', display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)', whiteSpace: 'nowrap' }}>행정구역</span>
-            <DsSelect>
+        <div className="detail-filter">
+          <div className="detail-filter__group">
+            <span className="detail-filter__label">행정구역</span>
+            <DsSelect className="detail-filter__select" aria-label="행정구역">
               <option>제주시</option><option>서귀포시</option><option>제주 전체</option>
             </DsSelect>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)', whiteSpace: 'nowrap' }}>민원유형</span>
-            <DsSelect>
+          <div className="detail-filter__group">
+            <span className="detail-filter__label">민원유형</span>
+            <DsSelect className="detail-filter__select" aria-label="민원유형">
               <option>전체</option><option>불법주정차</option><option>주차장 혼잡</option><option>시설 고장</option><option>기타</option>
             </DsSelect>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)', whiteSpace: 'nowrap' }}>위험 단계</span>
-            <div style={{ display: 'flex', gap: 4 }}>
+          <div className="detail-filter__group">
+            <span className="detail-filter__label">위험 단계</span>
+            <div className="risk-seg">
               {['전체', '심각', '주의', '보통', '양호'].map((k) => (
-                <button key={k} type="button" onClick={() => setRiskSeg(k)} style={{ height: 34, padding: '0 12px', borderRadius: 8, border: `1px solid ${riskSeg === k ? 'var(--primary)' : 'var(--line-normal)'}`, background: riskSeg === k ? 'var(--primary)' : '#fff', color: riskSeg === k ? '#fff' : 'var(--text-neutral)', fontSize: 13, fontWeight: riskSeg === k ? 700 : 400, cursor: 'pointer' }}>{k}</button>
+                <button key={k} type="button" className={riskSeg === k ? 'is-active' : ''} onClick={() => setRiskSeg(k)}>{k}</button>
               ))}
             </div>
           </div>
-          <div style={{ display: 'flex', gap: 8, marginLeft: 'auto' }}>
-            <button type="button" onClick={() => setRiskSeg('전체')} style={{ height: 38, padding: '0 16px', borderRadius: 8, border: '1px solid var(--line-normal)', background: '#fff', fontSize: 13, cursor: 'pointer', color: 'var(--text-neutral)' }}>초기화</button>
-            <button type="button" style={{ height: 38, padding: '0 16px', borderRadius: 8, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>필터 적용</button>
+          <div className="detail-filter__foot">
+            <button className="btn" type="button" style={{ height: 38 }} onClick={() => setRiskSeg('전체')}>초기화</button>
+            <button className="btn btn--apply" type="button" style={{ height: 38 }}>필터 적용</button>
           </div>
         </div>
       )}
