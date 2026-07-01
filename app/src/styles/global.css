@@ -163,7 +163,9 @@ a { color: inherit; text-decoration: none; }
   color: #fff;
   box-shadow: 0 6px 16px rgba(0,102,255,0.35);
 }
-.nav__item--parent .ic { color: #fff; }
+.nav__item--parent:hover { background: var(--primary); color: #fff; cursor: default; }
+.nav__item--parent .ic,
+.nav__item--parent:hover .ic { color: #fff; }
 .nav__sub { display: flex; flex-direction: column; gap: 2px; padding: var(--space-6) 0 0; }
 .nav__subitem {
   position: relative;
