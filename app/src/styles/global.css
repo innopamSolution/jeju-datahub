@@ -382,7 +382,7 @@ a { color: inherit; text-decoration: none; }
    ============================================================ */
 
 /* stat-row 5-column variant */
-.stat-row--5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-20); }
+.stat-row--5 { display: grid !important; grid-template-columns: repeat(5, 1fr) !important; gap: var(--space-20); }
 .stat-row--5 .stat { padding: var(--space-20); gap: var(--space-16); }
 .stat-row--5 .stat__icon { width: 56px; height: 56px; border-radius: var(--radius-14); }
 .stat-row--5 .stat__value { font-size: var(--title1-size); line-height: var(--title1-line); letter-spacing: var(--title1-tracking); }
