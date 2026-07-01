@@ -624,6 +624,7 @@ a { color: inherit; text-decoration: none; }
 .btn--apply { background: var(--primary); color: #fff; border-color: var(--primary); }
 .btn--apply:hover { background: var(--blue-45); }
 .btn--toggle[aria-pressed="true"] { background: var(--primary); color: #fff; border-color: var(--primary); }
+.btn--toggle[aria-pressed="true"] .ic { color: #fff; }
 
 /* ============================================================
    Content grid + card primitives
