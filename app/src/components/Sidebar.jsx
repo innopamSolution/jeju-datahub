@@ -14,7 +14,7 @@ function NavGroup({ label, icon, routes, children, pathname }) {
       <button
         className={`nav__item ${active ? 'nav__item--parent' : ''}`}
         onClick={() => setOpen((o) => !o)}
-        style={{ background: 'none', border: 'none', width: '100%', cursor: 'pointer', textAlign: 'left' }}
+        style={{ border: 'none', width: '100%', cursor: 'pointer', textAlign: 'left' }}
       >
         <Icon name={icon} size={22} />
         <span>{label}</span>
