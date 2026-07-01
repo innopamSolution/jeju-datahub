@@ -9,9 +9,9 @@ import Icon from './Icon';
  *     <option>A</option>
  *   </DsSelect>
  */
-export default function DsSelect({ children, style, ...props }) {
+export default function DsSelect({ children, style, className, ...props }) {
   return (
-    <div className="ds-select" style={style}>
+    <div className={`ds-select${className ? ' ' + className : ''}`} style={style}>
       <select {...props}>{children}</select>
       <span className="ds-select__ic">
         <Icon name="chevron-down" size={16} />
