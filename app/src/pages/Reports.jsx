@@ -154,7 +154,7 @@ export default function Reports() {
                       <td><span className="rt-name">{r.name}</span></td>
                       <td>{r.cycle}</td>
                       <td className="rt-date">{r.date}</td>
-                      <td><span className={`badge badge--${r.status}`}>{r.status === 'done' ? '완료' : '대기'}</span></td>
+                      <td><span className={`badge badge--${r.status === 'done' ? 'done' : 'neutral'}`}>{r.status === 'done' ? '완료' : '대기'}</span></td>
                       <td className="col-center"><button className="tag">미리보기</button></td>
                       <td className="col-center"><button className="tag tag--file">{DL_ICON}<span>PDF</span></button></td>
                     </tr>
