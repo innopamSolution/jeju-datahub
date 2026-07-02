@@ -172,7 +172,7 @@ export default function AiAssistant() {
                     onClick={(e) => { e.stopPropagation(); setPlusOpen((o) => !o); }}>
                     <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
                   </button>
-                  <input className="composer__field" type="text" placeholder="행정 정보를 검색하거나 민원 분석을 요청하세요." autoComplete="off"
+                  <input ref={fieldRef} className="composer__field" type="text" placeholder="행정 정보를 검색하거나 민원 분석을 요청하세요." autoComplete="off"
                     value={input} onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); submit(); } }} />
                   {plusOpen && (
