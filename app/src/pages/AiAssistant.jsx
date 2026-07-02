@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Icon from '../components/Icon';
+import NotificationBell from '../components/NotificationBell';
 
 const AV = (
   <svg viewBox="0 0 36 36" fill="none" width="30" height="30" aria-hidden="true">
@@ -108,7 +110,7 @@ export default function AiAssistant() {
           <p className="page-sub">sLLM 기반 — RAG 정책 문서·조례 검색</p>
         </div>
         <div className="topbar__actions">
-          <button className="bell" type="button" aria-label="알림"><Icon name="bell" size={22} /><span className="bell__badge">3</span></button>
+          <NotificationBell />
         </div>
       </header>
 
