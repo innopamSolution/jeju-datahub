@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster';
@@ -215,6 +216,7 @@ function GisMap({ layerState }) {
 
 /* ── 메인 컴포넌트 ── */
 export default function Complaints() {
+  const navigate = useNavigate();
   const [period, setPeriod]         = useState('오늘');
   const [datePopOpen, setDatePopOpen] = useState(false);
   const [filterOpen, setFilterOpen]  = useState(false);
