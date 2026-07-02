@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(jq -r '.tool_input.file_path // .tool_response.filePath // empty' 2>/dev/null); if [ -n \"$FILE\" ]; then cd /Users/gyuyoung/Documents/claude-test/figma-design-implementation && git add \"$FILE\" && git diff --cached --quiet || git commit -m \"auto: update ${FILE##*/}\" && git push origin main; fi",
+            "statusMessage": "GitHub에 커밋 중..."
+          }
+        ]
+      }
+    ]
+  }
+}

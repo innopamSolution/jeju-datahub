@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import Icon from '../components/Icon';
+import NotificationBell from '../components/NotificationBell';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="22" height="22" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -67,6 +69,7 @@ function resolveColor(cssVar) {
 }
 
 export default function HotspotAnalysis() {
+  const navigate = useNavigate();
   const mapRef    = useRef(null);
   const mapInst   = useRef(null);
   const markerMap = useRef({});
@@ -142,9 +145,9 @@ export default function HotspotAnalysis() {
           <p className="page-sub">불법 주차 집중 구역 자동 도출</p>
         </div>
         <div className="topbar__actions">
-          <button className="btn btn--ai" type="button">{AI_ICON} AI 대화 시작하기</button>
+          <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}>{AI_ICON} AI 대화 시작하기</button>
           <button className="btn" type="button"><Icon name="download" size={20} /> 내보내기</button>
-          <button className="bell" type="button" aria-label="알림"><Icon name="bell" size={22} /><span className="bell__badge">3</span></button>
+          <NotificationBell />
         </div>
       </header>
 

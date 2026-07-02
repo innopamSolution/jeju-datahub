@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
+import NotificationBell from '../components/NotificationBell';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="22" height="22" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -39,6 +41,7 @@ const CRIT_LEVELS = [
 ];
 
 export default function AlertManagement() {
+  const navigate = useNavigate();
   const [receivers, setReceivers] = useState(INITIAL_RECEIVERS);
   const [addOpen, setAddOpen] = useState(false);
   const [critOpen, setCritOpen] = useState(false);
@@ -69,9 +72,9 @@ export default function AlertManagement() {
           <p className="page-sub">민원 급증·위험 단계별 알림 기준 및 수신자 관리</p>
         </div>
         <div className="topbar__actions">
-          <button className="btn btn--ai" type="button">{AI_ICON} AI 대화 시작하기</button>
+          <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}>{AI_ICON} AI 대화 시작하기</button>
           <button className="btn" type="button"><Icon name="download" size={20} /> 내보내기</button>
-          <button className="bell" type="button" aria-label="알림"><Icon name="bell" size={22} /><span className="bell__badge">3</span></button>
+          <NotificationBell />
         </div>
       </header>
 

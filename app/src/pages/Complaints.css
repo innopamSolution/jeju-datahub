@@ -1,0 +1,189 @@
+/* ============================================================
+   민원현황 (GIS) screen — styles unique to this page.
+   Shared primitives (.card, .stat-row, .card-head, .hot, .badge,
+   .card-link, .count-badge) come from global.css / Dashboard.css.
+   ============================================================ */
+
+.stat-row--5 { grid-template-columns: repeat(5, 1fr); gap: var(--space-20); }
+.stat-row--5 .stat { padding: var(--space-20); gap: var(--space-16); }
+.stat-row--5 .stat__icon { width: 56px; height: 56px; border-radius: var(--radius-14); }
+.stat-row--5 .stat__value { font-size: var(--title1-size); line-height: var(--title1-line); letter-spacing: var(--title1-tracking); }
+.stat-row--5 .stat__label { font-size: var(--label1-size); }
+
+.stat__icon--teal { background: var(--cyan-95); color: var(--cyan-40); }
+.stat__icon--violet { background: var(--purple-95); color: var(--purple-40); }
+.stat__icon--orange { background: var(--orange-95); color: var(--orange-39); }
+
+/* layout: map + side column */
+.gis-row { display: grid; grid-template-columns: minmax(0, 2.6fr) minmax(300px, 0.85fr); gap: var(--space-24); align-items: stretch; flex: 1; min-height: 0; }
+.side-col { display: flex; flex-direction: column; gap: var(--space-24); min-height: 0; overflow-y: auto; padding-right: 6px; scrollbar-width: thin; scrollbar-color: var(--line-normal) transparent; }
+.side-col::-webkit-scrollbar { width: 6px; }
+.side-col::-webkit-scrollbar-track { background: transparent; }
+.side-col::-webkit-scrollbar-thumb { background: var(--line-normal); border-radius: var(--radius-full); }
+.side-col::-webkit-scrollbar-thumb:hover { background: var(--line-normal-strong); }
+
+/* map card */
+.map-card { padding: 0; overflow: hidden; display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.map-controls {
+  display: flex; align-items: center; gap: var(--space-16);
+  padding: var(--space-20) var(--space-24);
+  border-bottom: 1px solid var(--line-alternative);
+}
+.ctrl { display: flex; align-items: center; gap: var(--space-10); }
+.ctrl__label { font-size: var(--label1-size); color: var(--text-alternative); font-weight: var(--weight-semibold); white-space: nowrap; }
+.select {
+  display: inline-flex; align-items: center; justify-content: space-between; gap: var(--space-12);
+  min-width: 150px; height: 42px; padding: 0 var(--space-14);
+  border-radius: var(--radius-10);
+  border: 1px solid var(--line-normal);
+  background: var(--card-bg);
+  font-family: var(--font-body);
+  font-size: var(--label1-size); font-weight: var(--weight-semibold);
+  color: var(--text-strong); cursor: pointer;
+}
+.select .ic { color: var(--text-assistive); }
+.risk-group { margin-left: auto; display: flex; align-items: center; gap: var(--space-12); }
+.risk-seg { display: inline-flex; background: var(--fill-normal); border-radius: var(--radius-10); padding: 3px; gap: 2px; }
+.risk-seg button {
+  height: 32px; padding: 0 var(--space-14);
+  border: none; background: transparent; border-radius: var(--radius-8);
+  font-family: var(--font-body); font-size: var(--label2-size); font-weight: var(--weight-semibold);
+  color: var(--text-alternative); cursor: pointer; white-space: nowrap;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+.risk-seg button.is-active { background: var(--primary); color: #fff; box-shadow: var(--shadow-emphasize); }
+.btn-reset {
+  height: 38px; padding: 0 var(--space-14); border-radius: var(--radius-8);
+  border: 1px solid var(--line-normal); background: var(--card-bg);
+  font-family: var(--font-body); font-size: var(--label1-size); font-weight: var(--weight-semibold);
+  color: var(--text-neutral); cursor: pointer; white-space: nowrap;
+}
+.btn-reset:hover { background: var(--fill-alternative); }
+
+/* map body */
+.map-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background:
+    linear-gradient(0deg, var(--line-alternative) 1px, transparent 1px) 0 0 / 100% 88px,
+    linear-gradient(90deg, var(--line-alternative) 1px, transparent 1px) 0 0 / 132px 100%,
+    var(--cool-neutral-99);
+  overflow: hidden;
+}
+
+/* layer toggle panel */
+.layer-panel {
+  position: absolute; top: 20px; left: 20px;
+  width: 210px; padding: var(--space-16);
+  background: var(--card-bg); border: 1px solid var(--line-alternative);
+  border-radius: var(--radius-12); box-shadow: var(--shadow-emphasize);
+  z-index: 1000;
+}
+.layer-panel__title { font-size: var(--caption1-size); color: var(--text-assistive); font-weight: var(--weight-semibold); margin-bottom: var(--space-12); }
+.layer-row { display: flex; align-items: center; justify-content: space-between; padding: var(--space-8) 0; cursor: pointer; }
+.layer-row span { font-size: var(--label1-size); color: var(--text-neutral); font-weight: var(--weight-medium); }
+.toggle { width: 38px; height: 22px; border-radius: var(--radius-full); background: var(--fill-strong); position: relative; cursor: pointer; transition: background var(--duration-fast) var(--ease-out); flex-shrink: 0; }
+.toggle::after { content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: var(--radius-full); background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: transform var(--duration-fast) var(--ease-out); }
+.toggle.is-on { background: var(--primary); }
+.toggle.is-on::after { transform: translateX(16px); }
+
+/* map legend */
+.map-legend {
+  position: absolute; right: 20px; bottom: 20px;
+  background: var(--card-bg); border: 1px solid var(--line-alternative);
+  border-radius: var(--radius-12); box-shadow: var(--shadow-emphasize);
+  padding: var(--space-14) var(--space-16);
+  z-index: 1000;
+}
+.map-legend__title { font-size: var(--caption1-size); color: var(--text-assistive); font-weight: var(--weight-semibold); margin-bottom: var(--space-10); }
+.map-legend .row { display: flex; align-items: center; gap: var(--space-8); padding: 3px 0; font-size: var(--label2-size); color: var(--text-neutral); }
+.map-legend .dot { width: 9px; height: 9px; border-radius: var(--radius-full); flex-shrink: 0; }
+
+/* side region list */
+.rl { display: flex; flex-direction: column; }
+.rl__row {
+  display: flex; align-items: flex-start; gap: var(--space-12);
+  padding: var(--space-14) 0;
+  border-bottom: 1px solid var(--line-alternative);
+}
+.rl__row:last-child { border-bottom: none; }
+.rl__rank { flex-shrink: 0; width: 22px; font-family: var(--font-sans); font-size: var(--label1-size); line-height: var(--headline2-line); font-weight: var(--weight-bold); color: var(--text-assistive); text-align: center; }
+.rl__main { flex: 1; min-width: 0; }
+.rl__top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-12); }
+.rl__name { display: flex; align-items: center; gap: var(--space-8); font-size: var(--headline2-size); font-weight: var(--weight-bold); color: var(--text-strong); letter-spacing: -0.01em; }
+.rl__name .dot { width: 8px; height: 8px; flex-shrink: 0; border-radius: var(--radius-full); }
+.rl__sub { font-size: var(--label2-size); color: var(--text-assistive); margin-top: 3px; }
+.rl__val { text-align: right; font-family: var(--font-sans); white-space: nowrap; flex-shrink: 0; }
+.rl__cnt { font-size: var(--headline1-size); font-weight: var(--weight-bold); color: var(--text-strong); }
+.rl__delta { font-size: var(--label2-size); font-weight: var(--weight-bold); margin-left: var(--space-6); }
+
+.count-badge {
+  display: inline-flex; align-items: center; height: 26px; padding: 0 var(--space-12);
+  border-radius: var(--radius-full); background: var(--blue-95); color: var(--blue-45);
+  font-size: var(--label2-size); font-weight: var(--weight-bold);
+}
+
+.cluster { padding: var(--space-24) var(--space-28); }
+
+/* ============================================================
+   Leaflet map (open-source GIS) — Wanted-styled overlays
+   ============================================================ */
+#leafletMap { position: absolute; inset: 0; z-index: 0; background: var(--cool-neutral-99); width: 100%; height: 100%; }
+
+/* keep Leaflet controls clear of the overlay cards & on-brand */
+.leaflet-control-zoom { border: none !important; box-shadow: var(--shadow-emphasize) !important; border-radius: var(--radius-10) !important; overflow: hidden; }
+.leaflet-control-zoom a {
+  width: 34px !important; height: 34px !important; line-height: 34px !important;
+  color: var(--text-neutral) !important; background: var(--card-bg) !important;
+  border-bottom: 1px solid var(--line-alternative) !important;
+  font-size: 18px !important; font-weight: var(--weight-bold);
+}
+.leaflet-control-zoom a:hover { background: var(--fill-alternative) !important; }
+.leaflet-control-attribution { font-size: 10px; background: rgba(255,255,255,0.82); color: var(--text-assistive); }
+
+/* region marker (count pin) */
+.rmk { background: none; border: none; }
+.rmk__dot {
+  width: 18px; height: 18px; border-radius: var(--radius-full);
+  border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.30);
+}
+.rmk__lab {
+  position: absolute; left: 24px; top: 50%; transform: translateY(-50%);
+  display: inline-flex; align-items: center; gap: var(--space-6);
+  height: 28px; padding: 0 var(--space-10);
+  background: var(--card-bg); border-radius: var(--radius-full);
+  box-shadow: var(--shadow-emphasize);
+  font-family: var(--font-body); font-size: var(--label2-size); font-weight: var(--weight-bold);
+  color: var(--text-strong); white-space: nowrap;
+}
+.rmk__lab .c { color: var(--text-alternative); font-weight: var(--weight-semibold); }
+
+/* parking marker */
+.pmk {
+  background: var(--purple-50); color: #fff;
+  width: 28px !important; height: 28px !important;
+  border-radius: var(--radius-full); border: 2.5px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.28);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-sans); font-size: 14px; font-weight: var(--weight-bold);
+}
+/* marker cluster bubble — recolored to Wanted purple */
+.marker-cluster-small, .marker-cluster-medium, .marker-cluster-large { background: rgba(140,49,255,0.18); }
+.marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
+  background: var(--purple-50); color: #fff;
+  font-family: var(--font-sans); font-weight: var(--weight-bold);
+}
+
+/* popup */
+.leaflet-popup-content-wrapper { border-radius: var(--radius-12); box-shadow: var(--shadow-normal); padding: 4px; }
+.leaflet-popup-content { margin: var(--space-14) var(--space-16); font-family: var(--font-body); }
+.leaflet-popup-tip { box-shadow: var(--shadow-normal); }
+.mp { min-width: 168px; }
+.mp__h { display: flex; align-items: center; gap: var(--space-8); margin-bottom: var(--space-10); }
+.mp__dot { width: 10px; height: 10px; border-radius: var(--radius-full); flex-shrink: 0; }
+.mp__h b { font-family: var(--font-sans); font-size: var(--headline2-size); color: var(--text-strong); }
+.mp__h .badge { margin-left: auto; }
+.mp__row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-16); padding: 4px 0; font-size: var(--label1-size); color: var(--text-alternative); }
+.mp__row b { font-family: var(--font-sans); color: var(--text-strong); font-weight: var(--weight-bold); }
+.mp__row + .mp__row { border-top: 1px solid var(--line-alternative); }

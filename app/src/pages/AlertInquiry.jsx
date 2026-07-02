@@ -1,5 +1,7 @@
 import { useMemo, useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
+import NotificationBell from '../components/NotificationBell';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="22" height="22" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -47,6 +49,7 @@ const PERIODS = [['yesterday', '어제'], ['week', '최근 1주일'], ['1', '최
 function fmtDate(s) { return s.replace(/-/g, '.'); }
 
 export default function AlertInquiry() {
+  const navigate = useNavigate();
   const [level, setLevel] = useState('all');
   const [period, setPeriod] = useState('3');
   const [city, setCity] = useState('all');
@@ -110,9 +113,9 @@ export default function AlertInquiry() {
           <p className="page-sub">민원 급증·위험 단계별 알림 이력 조회</p>
         </div>
         <div className="topbar__actions">
-          <button className="btn btn--ai" type="button">{AI_ICON} AI 대화 시작하기</button>
+          <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}>{AI_ICON} AI 대화 시작하기</button>
           <button className="btn" type="button"><Icon name="download" size={20} /> 내보내기</button>
-          <button className="bell" type="button" aria-label="알림"><Icon name="bell" size={22} /><span className="bell__badge">3</span></button>
+          <NotificationBell />
         </div>
       </header>
 

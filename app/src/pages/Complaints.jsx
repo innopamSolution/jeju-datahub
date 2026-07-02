@@ -248,7 +248,7 @@ export default function Complaints() {
           <p className="page-sub">최종 업데이트 2025.12.01 · 14:32 · 자동 갱신</p>
         </div>
         <div className="topbar__actions">
-          <button className="btn btn--ai" type="button">{AI_ICON} AI 대화 시작하기</button>
+          <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}>{AI_ICON} AI 대화 시작하기</button>
           <button className="btn" type="button"><Icon name="download" size={20} /> 내보내기</button>
           <NotificationBell />
         </div>

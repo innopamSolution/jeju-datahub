@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대시보드 · 제주 주차민원분석 솔루션</title>
+
+<!-- Wanted Design System tokens -->
+<link rel="stylesheet" href="_ds/wanted-design-system-68e8b7dc-5e03-4a15-a665-d63ebe292a3a/tokens/fig-tokens.css">
+<link rel="stylesheet" href="_ds/wanted-design-system-68e8b7dc-5e03-4a15-a665-d63ebe292a3a/tokens/fig-typography.css">
+<link rel="stylesheet" href="_ds/wanted-design-system-68e8b7dc-5e03-4a15-a665-d63ebe292a3a/tokens/spacing.css">
+<style>
+/* ============================================================
+   제주 주차민원분석 솔루션 — Dashboard
+   Built on the Wanted Design System tokens.
+   ============================================================ */
+
+/* --- Wanted typography tokens (inlined from tokens/typography.css) --- */
+:root {
+  --font-sans: "Wanted Sans", "Pretendard", -apple-system, BlinkMacSystemFont,
+    system-ui, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-body: "Pretendard", "Wanted Sans", -apple-system, BlinkMacSystemFont,
+    system-ui, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-mono: "SF Mono", ui-monospace, SFMono-Regular, "Roboto Mono",
+    "Liberation Mono", Menlo, monospace;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+
+  --display1-size: 56px;   --display1-line: 72px;  --display1-tracking: -0.0319em;
+  --display2-size: 40px;   --display2-line: 52px;  --display2-tracking: -0.0282em;
+  --display3-size: 36px;   --display3-line: 48px;  --display3-tracking: -0.0270em;
+  --title1-size: 32px;     --title1-line: 44px;    --title1-tracking: -0.0253em;
+  --title2-size: 28px;     --title2-line: 38px;    --title2-tracking: -0.0236em;
+  --title3-size: 24px;     --title3-line: 32px;    --title3-tracking: -0.0230em;
+  --heading1-size: 22px;   --heading1-line: 30px;  --heading1-tracking: -0.0194em;
+  --heading2-size: 20px;   --heading2-line: 28px;  --heading2-tracking: -0.0120em;
+  --headline1-size: 18px;  --headline1-line: 26px; --headline1-tracking: -0.0020em;
+  --headline2-size: 17px;  --headline2-line: 24px; --headline2-tracking: 0em;
+  --body1-size: 16px;      --body1-line: 24px;     --body1-tracking: 0.0057em;
+  --body2-size: 15px;      --body2-line: 22px;     --body2-tracking: 0.0096em;
+  --label1-size: 14px;     --label1-line: 20px;    --label1-tracking: 0.0145em;
+  --label2-size: 13px;     --label2-line: 18px;    --label2-tracking: 0.0194em;
+  --caption1-size: 12px;   --caption1-line: 16px;  --caption1-tracking: 0.0252em;
+  --caption2-size: 11px;   --caption2-line: 14px;  --caption2-tracking: 0.0311em;
+}
+
+:root {
+  --page-bg: var(--cool-neutral-99);            /* rgb(247,247,248) */
+  --sidebar-bg: var(--cool-neutral-15);         /* rgb(27,28,30)    */
+  --card-bg: var(--static-white);
+  --primary: var(--blue-50);                    /* #0066FF */
+
+  /* complaint-type series */
+  --series-illegal: var(--blue-50);
+  --series-double: var(--green-50);
+  --series-facility: var(--orange-50);
+  --series-etc: var(--purple-50);
+
+  /* rank accents */
+  --rank-1: var(--red-50);
+  --rank-2: var(--green-50);
+  --rank-3: var(--orange-50);
+  --rank-4: var(--blue-50);
+  --rank-5: var(--purple-50);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--page-bg);
+  color: var(--text-normal);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+svg { display: block; }
+a { color: inherit; text-decoration: none; }
+
+/* ---------- App shell ---------- */
+.app {
+  display: grid;
+  grid-template-columns: 290px 1fr;
+  min-height: 100vh;
+  min-width: 1280px;
+}
+
+/* ============================================================
+   Sidebar
+   ============================================================ */
+.sidebar {
+  background: var(--sidebar-bg);
+  color: rgba(255,255,255,0.92);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10);
+  height: 88px;
+  padding: 0 var(--space-24);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  flex-shrink: 0;
+}
+.brand__mark { width: 38px; height: 38px; flex-shrink: 0; }
+.brand__text {
+  font-family: var(--font-body);
+  white-space: nowrap;
+  font-size: var(--label1-size);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.92);
+}
+.brand__logo { display: flex; flex-direction: row; align-items: center; gap: var(--space-10); }
+.brand__img { height: 26px; width: auto; display: block; flex-shrink: 0; }
+
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-20);
+  flex: 1;
+}
+
+.nav__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  white-space: nowrap;
+  height: 48px;
+  padding: 0 var(--space-16);
+  border-radius: var(--radius-8);
+  color: rgba(255,255,255,0.66);
+  font-size: var(--headline2-size);
+  font-weight: var(--weight-medium);
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+  position: relative;
+}
+.nav__item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.92); }
+.nav__item .ic { color: rgba(255,255,255,0.66); transition: color var(--duration-fast) var(--ease-out); }
+.nav__item:hover .ic { color: rgba(255,255,255,0.92); }
+
+.nav__item--active {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(0,102,255,0.35);
+}
+.nav__item--active:hover { background: var(--primary); color: #fff; }
+.nav__item--active .ic,
+.nav__item--active:hover .ic { color: #fff; }
+.nav__dot {
+  position: absolute;
+  right: var(--space-16);
+  width: 6px; height: 6px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.6);
+}
+
+.sidebar__foot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-20);
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+.sidebar__foot .nav__item { color: rgba(255,255,255,0.55); }
+
+/* ============================================================
+   Main column
+   ============================================================ */
+.main { min-width: 0; display: flex; flex-direction: column; }
+
+.topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-24);
+  padding: var(--space-28) var(--space-40) var(--space-20);
+}
+.page-title {
+  font-family: var(--font-sans);
+  font-size: var(--title1-size);
+  line-height: var(--title1-line);
+  letter-spacing: var(--title1-tracking);
+  font-weight: var(--weight-bold);
+  color: var(--text-strong);
+  margin: 0;
+}
+.page-sub {
+  margin: var(--space-6) 0 0;
+  font-size: var(--label1-size);
+  color: var(--text-assistive);
+  letter-spacing: var(--label1-tracking);
+}
+
+.topbar__actions { display: flex; align-items: center; gap: var(--space-12); flex-shrink: 0; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  white-space: nowrap;
+  height: 44px;
+  padding: 0 var(--space-16);
+  border-radius: var(--radius-10);
+  font-family: var(--font-body);
+  font-size: var(--label1-size);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.01em;
+  border: 1px solid var(--line-normal);
+  background: var(--card-bg);
+  color: var(--text-neutral);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+.btn:hover { background: var(--fill-alternative); }
+.btn .ic { color: var(--text-alternative); }
+
+.btn--ai {
+  white-space: nowrap;
+  border: 1.5px solid var(--orange-50);
+  background: var(--orange-99);
+  color: var(--orange-39);
+  box-shadow: 0 4px 14px rgba(255,146,0,0.18);
+}
+.btn--ai:hover { background: var(--orange-95); }
+
+.bell {
+  position: relative;
+  width: 44px; height: 44px;
+  border-radius: var(--radius-10);
+  border: 1px solid var(--line-normal);
+  background: var(--card-bg);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+.bell:hover { background: var(--fill-alternative); }
+.bell .ic { color: var(--text-neutral); }
+.bell__badge {
+  position: absolute;
+  top: -4px; right: -4px;
+  min-width: 18px; height: 18px;
+  padding: 0 5px;
+  border-radius: var(--radius-full);
+  background: var(--red-50);
+  color: #fff;
+  font-size: 11px;
+  font-weight: var(--weight-bold);
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--page-bg);
+}
+
+/* ---------- Filter row ---------- */
+.filterbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  padding: 0 var(--space-40) var(--space-20);
+  border-bottom: 1px solid var(--line-alternative);
+  margin-bottom: var(--space-24);
+}
+.filterbar__label { font-size: var(--label1-size); color: var(--text-alternative); font-weight: var(--weight-medium); }
+.segment {
+  display: inline-flex;
+  background: var(--fill-normal);
+  border-radius: var(--radius-10);
+  padding: 3px;
+  gap: 2px;
+}
+.segment__btn {
+  height: 36px;
+  white-space: nowrap;
+  padding: 0 var(--space-20);
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-8);
+  font-family: var(--font-body);
+  font-size: var(--label1-size);
+  font-weight: var(--weight-semibold);
+  color: var(--text-alternative);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+.segment__btn--active { background: var(--primary); color: #fff; box-shadow: var(--shadow-emphasize); }
+.filter-sep { width: 1px; height: 24px; background: var(--line-neutral); }
+.filterbar__right { margin-left: auto; font-size: var(--label1-size); color: var(--text-alternative); }
+.filterbar__right strong { color: var(--text-normal); font-weight: var(--weight-bold); }
+
+/* ============================================================
+   Content grid
+   ============================================================ */
+.content {
+  padding: 0 var(--space-40) var(--space-40);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius-16);
+  box-shadow: var(--shadow-normal);
+  border: 1px solid var(--line-alternative);
+}
+
+.card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-16);
+}
+.card-head__title {
+  font-family: var(--font-sans);
+  font-size: var(--heading2-size);
+  line-height: var(--heading2-line);
+  letter-spacing: var(--heading2-tracking);
+  font-weight: var(--weight-bold);
+  color: var(--text-strong);
+  margin: 0;
+  display: flex; align-items: center; gap: var(--space-10);
+}
+.card-head__note { font-size: var(--label2-size); font-weight: var(--weight-regular); color: var(--text-assistive); }
+.card-head__sub { margin: var(--space-4) 0 0; font-size: var(--label1-size); color: var(--text-alternative); }
+.card-link {
+  display: inline-flex; align-items: center; gap: 2px;
+  font-size: var(--label1-size); font-weight: var(--weight-semibold);
+  color: var(--primary); white-space: nowrap; cursor: pointer;
+}
+.card-link .ic { color: var(--primary); }
+
+/* ---------- Stat cards row ---------- */
+.stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-24); }
+.stat {
+  padding: var(--space-28);
+  display: flex;
+  align-items: center;
+  gap: var(--space-20);
+}
+.stat__icon {
+  width: 72px; height: 72px;
+  border-radius: var(--radius-16);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.stat__icon--blue { background: var(--blue-95); color: var(--blue-50); }
+.stat__icon--green { background: var(--green-95); color: var(--green-40); }
+.stat__icon--red { background: var(--red-95); color: var(--red-50); }
+.stat__label { font-size: var(--headline2-size); color: var(--text-alternative); font-weight: var(--weight-semibold); letter-spacing: -0.01em; white-space: nowrap; }
+.stat__value {
+  font-family: var(--font-sans);
+  font-size: var(--display2-size);
+  line-height: var(--display2-line);
+  letter-spacing: var(--display2-tracking);
+  font-weight: var(--weight-bold);
+  color: var(--text-strong);
+  margin: var(--space-4) 0;
+}
+.stat__delta { display: flex; align-items: center; gap: var(--space-6); font-size: var(--label1-size); font-weight: var(--weight-medium); color: var(--text-alternative); }
+.delta-pos { color: var(--green-40); font-weight: var(--weight-bold); display: inline-flex; align-items: center; gap: 2px; }
+.delta-neg { color: var(--red-40); font-weight: var(--weight-bold); display: inline-flex; align-items: center; gap: 2px; }
+.delta-warn { color: var(--red-40); font-weight: var(--weight-bold); }
+
+/* ---------- mid row: trend + hotspots ---------- */
+.mid-row { display: grid; grid-template-columns: 1.62fr 1fr; gap: var(--space-24); align-items: stretch; }
+.trend { padding: var(--space-28); }
+.trend__chart { margin-top: var(--space-20); }
+.legend { display: flex; gap: var(--space-24); justify-content: center; margin-top: var(--space-16); flex-wrap: wrap; }
+.legend__item { display: inline-flex; align-items: center; gap: var(--space-8); font-size: var(--label1-size); color: var(--text-neutral); font-weight: var(--weight-medium); }
+.dot { width: 9px; height: 9px; border-radius: var(--radius-full); flex-shrink: 0; }
+
+/* hotspot list */
+.hotspots { padding: var(--space-28); display: flex; flex-direction: column; }
+.hot-list { margin-top: var(--space-20); display: flex; flex-direction: column; }
+.hot {
+  display: flex; align-items: center; gap: var(--space-12);
+  padding: var(--space-14) 0;
+  border-bottom: 1px solid var(--line-alternative);
+}
+.hot:last-child { border-bottom: none; }
+.hot__rank {
+  width: 24px; height: 24px; flex-shrink: 0;
+  border-radius: var(--radius-full);
+  color: #fff; font-size: var(--caption1-size); font-weight: var(--weight-bold);
+  display: flex; align-items: center; justify-content: center;
+}
+.hot__body { flex: 1; min-width: 0; }
+.hot__name { font-size: var(--headline2-size); font-weight: var(--weight-semibold); color: var(--text-strong); letter-spacing: -0.01em; }
+.hot__meta { font-size: var(--label2-size); color: var(--text-assistive); margin-top: 1px; }
+
+.badge {
+  display: inline-flex; align-items: center;
+  height: 24px; padding: 0 var(--space-10);
+  border-radius: var(--radius-6);
+  font-size: var(--caption1-size); font-weight: var(--weight-bold);
+  letter-spacing: 0.01em; white-space: nowrap;
+}
+.badge--severe { background: var(--red-95); color: var(--red-40); }
+.badge--warn { background: var(--orange-95); color: var(--orange-39); }
+.badge--caution { background: var(--blue-95); color: var(--blue-45); }
+.badge--done { background: var(--green-95); color: var(--green-40); }
+.badge--progress { background: var(--blue-95); color: var(--blue-45); }
+.badge--pending { background: var(--orange-95); color: var(--orange-39); }
+.badge--wait { background: var(--red-95); color: var(--red-40); }
+
+/* ---------- region ranking cards ---------- */
+.region-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-16); }
+.section-title {
+  font-family: var(--font-sans);
+  font-size: var(--title3-size);
+  line-height: var(--title3-line);
+  letter-spacing: var(--title3-tracking);
+  font-weight: var(--weight-bold);
+  color: var(--text-strong);
+  margin: 0;
+}
+.section-sub { margin: var(--space-6) 0 0; font-size: var(--label1-size); color: var(--text-alternative); }
+.region-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-20); margin-top: var(--space-20); }
+.region {
+  padding: var(--space-20);
+  display: flex; flex-direction: column; gap: var(--space-12);
+}
+.region__top { display: flex; align-items: center; justify-content: space-between; }
+.region__id { display: flex; align-items: center; gap: var(--space-10); }
+.region__num {
+  width: 26px; height: 26px; border-radius: var(--radius-full);
+  color: #fff; font-size: var(--label2-size); font-weight: var(--weight-bold);
+  display: flex; align-items: center; justify-content: center;
+}
+.region__name { font-family: var(--font-sans); font-size: var(--heading2-size); font-weight: var(--weight-bold); color: var(--text-strong); letter-spacing: -0.01em; }
+.region__trend { font-size: var(--label2-size); font-weight: var(--weight-bold); display: inline-flex; align-items: center; gap: 2px; }
+.t-up { color: var(--green-40); }
+.t-down { color: var(--red-40); }
+.t-flat { color: var(--text-assistive); }
+.region__value { font-family: var(--font-sans); font-weight: var(--weight-bold); color: var(--text-strong); display: flex; align-items: baseline; gap: 2px; }
+.region__value b { font-size: var(--title1-size); line-height: 1; letter-spacing: var(--title1-tracking); }
+.region__value span { font-size: var(--label1-size); color: var(--text-alternative); font-weight: var(--weight-semibold); }
+.region__delta { font-size: var(--label2-size); color: var(--text-alternative); display: flex; align-items: center; gap: var(--space-6); }
+
+.stackbar { display: flex; height: 8px; border-radius: var(--radius-full); overflow: hidden; background: var(--fill-normal); }
+.stackbar > i { display: block; height: 100%; }
+.region__breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 12px; }
+.bd { display: inline-flex; align-items: center; gap: var(--space-6); font-size: var(--caption1-size); color: var(--text-neutral); }
+.bd .dot { width: 7px; height: 7px; }
+
+/* ---------- bottom row ---------- */
+.bottom-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-24); }
+.panel { padding: var(--space-24) var(--space-28); display: flex; flex-direction: column; }
+.panel__icon {
+  width: 36px; height: 36px; border-radius: var(--radius-10);
+  display: flex; align-items: center; justify-content: center;
+  background: var(--blue-95); color: var(--blue-50);
+}
+.panel__icon--violet { background: var(--purple-95); color: var(--purple-40); }
+.panel__icon--green { background: var(--green-95); color: var(--green-40); }
+.list { margin-top: var(--space-16); display: flex; flex-direction: column; }
+.list__row {
+  display: flex; align-items: center; gap: var(--space-12);
+  padding: var(--space-14) 0;
+  border-bottom: 1px solid var(--line-alternative);
+  font-size: var(--body2-size); color: var(--text-neutral);
+}
+.list__row:last-child { border-bottom: none; }
+.list__row .name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.list__row .time { font-size: var(--label2-size); color: var(--text-assistive); white-space: nowrap; }
+
+/* AI assistant card */
+.ai-input {
+  margin-top: var(--space-16);
+  height: 48px; border-radius: var(--radius-12);
+  background: var(--fill-normal);
+  border: 1px solid var(--line-alternative);
+  display: flex; align-items: center;
+  padding: 0 var(--space-16);
+  font-size: var(--body2-size); color: var(--text-assistive);
+}
+.ai-suggest { margin-top: var(--space-12); display: flex; flex-direction: column; gap: 2px; }
+.ai-suggest button {
+  display: flex; align-items: center; gap: var(--space-8);
+  background: transparent; border: none; cursor: pointer;
+  padding: var(--space-10) 0;
+  font-family: var(--font-body);
+  font-size: var(--body2-size); color: var(--text-neutral); text-align: left;
+}
+.ai-suggest button .chev { color: var(--text-assistive); }
+.ai-suggest button:hover { color: var(--primary); }
+.ai-suggest button:hover .chev { color: var(--primary); }
+
+@media (max-width: 1500px) {
+  .region-row { grid-template-columns: repeat(5, 1fr); }
+}
+
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============================ Sidebar ============================ -->
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <div class="brand__logo">
+        <img class="brand__img" src="logo.svg" alt="Jeju">
+        <div class="brand__text" style="font-weight:600;font-size:15px;color:rgba(255,255,255,0.92);">주차민원분석 솔루션</div>
+      </div>
+    </div>
+
+    <nav class="sidebar__nav">
+      <a class="nav__item nav__item--active">
+        <i data-icon="home" data-size="22"></i>
+        <span>대시보드</span>
+        <span class="nav__dot"></span>
+      </a>
+      <a class="nav__item" href="complaints.html">
+        <i data-icon="location" data-size="22"></i>
+        <span>민원 현황</span>
+      </a>
+      <a class="nav__item">
+        <i data-icon="chart" data-size="22"></i>
+        <span>분석·시뮬레이션</span>
+      </a>
+      <a class="nav__item">
+        <i data-icon="document" data-size="22"></i>
+        <span>보고서·알림</span>
+      </a>
+      <a class="nav__item">
+        <i data-icon="sparkle" data-size="22"></i>
+        <span>AI 어시스턴트</span>
+      </a>
+    </nav>
+
+    <div class="sidebar__foot">
+      <a class="nav__item">
+        <i data-icon="setting" data-size="22"></i>
+        <span>설정</span>
+      </a>
+      <a class="nav__item">
+        <i data-icon="arrow-right" data-size="22"></i>
+        <span>로그아웃</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ============================ Main ============================ -->
+  <main class="main">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <div>
+        <h1 class="page-title">대시보드</h1>
+        <p class="page-sub">최종 업데이트 2025.12.01 · 14:32 · 자동 갱신</p>
+      </div>
+      <div class="topbar__actions">
+        <button class="btn btn--ai">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0">
+            <path d="M12.6 3.5c1-1.3 2.5-1 2.5.7 0 1.9-1.6 4.3-2.5 4.6-1.1.2-2.2-2.2-2.5-3.7-.1-.3 0-.6.2-.8.5-.5 1.3-.4 1.9.1Z" fill="#1FA463"/>
+            <circle cx="12" cy="14.5" r="6.8" fill="#F08300"/>
+            <circle cx="9.7" cy="13" r="1" fill="#fff"/><circle cx="14.3" cy="13" r="1" fill="#fff"/>
+            <path d="M10 16.2c.6.7 3.4.7 4 0" stroke="#fff" stroke-width="1.1" stroke-linecap="round"/>
+          </svg>
+          AI 대화 시작하기
+        </button>
+        <button class="btn">
+          <i data-icon="download" data-size="20"></i>
+          내보내기
+        </button>
+        <button class="bell" aria-label="알림">
+          <i data-icon="bell" data-size="22"></i>
+          <span class="bell__badge">3</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Filter bar -->
+    <div class="filterbar">
+      <span class="filterbar__label">조회 단위</span>
+      <div class="segment">
+        <button class="segment__btn segment__btn--active">오늘</button>
+        <button class="segment__btn">주간</button>
+        <button class="segment__btn">월간</button>
+      </div>
+      <span class="filter-sep"></span>
+      <button class="btn" style="height:40px">
+        <i data-icon="filter" data-size="18"></i>
+        상세 필터
+      </button>
+      <span class="filterbar__right">현재: <strong>오늘</strong></span>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Stat cards -->
+      <section class="stat-row">
+        <div class="card stat">
+          <div class="stat__icon stat__icon--blue"><i data-icon="document" data-size="32"></i></div>
+          <div>
+            <div class="stat__label">총 민원 건수</div>
+            <div class="stat__value">247</div>
+            <div class="stat__delta"><span class="delta-pos">↗ +12%</span> 전일 대비</div>
+          </div>
+        </div>
+        <div class="card stat">
+          <div class="stat__icon stat__icon--green"><i data-icon="location" data-size="32"></i></div>
+          <div>
+            <div class="stat__label">불법주차 발생</div>
+            <div class="stat__value">183</div>
+            <div class="stat__delta"><span class="delta-pos">↗ +6%</span> 전일 대비</div>
+          </div>
+        </div>
+        <div class="card stat">
+          <div class="stat__icon stat__icon--red"><i data-icon="warning" data-size="32"></i></div>
+          <div>
+            <div class="stat__label">위험 단계 발생</div>
+            <div class="stat__value">3</div>
+            <div class="stat__delta"><span class="delta-warn">⚠ 경보 1, 경고 2</span> 전일 대비</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trend + hotspots -->
+      <section class="mid-row">
+        <div class="card trend">
+          <div class="card-head">
+            <div>
+              <h2 class="card-head__title">민원 발생 추이 <span class="card-head__note">(오늘 · 전체 유형)</span></h2>
+              <p class="card-head__sub">기간별 민원 건수 및 유형별 분포</p>
+            </div>
+          </div>
+          <div class="trend__chart" id="trendChart"></div>
+          <div class="legend">
+            <span class="legend__item"><span class="dot" style="background:var(--series-illegal)"></span>불법주차</span>
+            <span class="legend__item"><span class="dot" style="background:var(--series-double)"></span>이중주차</span>
+            <span class="legend__item"><span class="dot" style="background:var(--series-facility)"></span>시설점거</span>
+            <span class="legend__item"><span class="dot" style="background:var(--series-etc)"></span>기타</span>
+          </div>
+        </div>
+
+        <div class="card hotspots">
+          <div class="card-head">
+            <div>
+              <h2 class="card-head__title">민원 집중구역 순위</h2>
+              <p class="card-head__sub">AI 클러스터링 자동 분석 결과</p>
+            </div>
+            <a class="card-link">GIS 보기 <i data-icon="chevron-right" data-size="16"></i></a>
+          </div>
+          <div class="hot-list">
+            <div class="hot">
+              <span class="hot__rank" style="background:var(--rank-1)">1</span>
+              <div class="hot__body"><div class="hot__name">연동 대로변</div><div class="hot__meta">연동동 · 반경 200m</div></div>
+              <span class="badge badge--severe">심각</span>
+            </div>
+            <div class="hot">
+              <span class="hot__rank" style="background:var(--rank-3)">2</span>
+              <div class="hot__body"><div class="hot__name">노형사거리 인근</div><div class="hot__meta">노형동 · 반경 150m</div></div>
+              <span class="badge badge--warn">경고</span>
+            </div>
+            <div class="hot">
+              <span class="hot__rank" style="background:var(--rank-3)">3</span>
+              <div class="hot__body"><div class="hot__name">이도2동 상업지구</div><div class="hot__meta">이도동 · 반경 180m</div></div>
+              <span class="badge badge--warn">경고</span>
+            </div>
+            <div class="hot">
+              <span class="hot__rank" style="background:var(--rank-4)">4</span>
+              <div class="hot__body"><div class="hot__name">아라동 주변</div><div class="hot__meta">아라동 · 반경 120m</div></div>
+              <span class="badge badge--caution">주의</span>
+            </div>
+            <div class="hot">
+              <span class="hot__rank" style="background:var(--rank-5)">5</span>
+              <div class="hot__body"><div class="hot__name">삼도1동 골목</div><div class="hot__meta">삼도동 · 반경 100m</div></div>
+              <span class="badge badge--caution">주의</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Region ranking -->
+      <section>
+        <div class="region-head">
+          <div>
+            <h2 class="section-title">읍·면·동 민원 순위</h2>
+            <p class="section-sub">오늘 민원 건수 · 순위 · 전기 대비 변화 비교</p>
+          </div>
+          <a class="card-link">전체 보기 <i data-icon="chevron-right" data-size="16"></i></a>
+        </div>
+        <div class="region-row">
+
+          <div class="card region">
+            <div class="region__top">
+              <span class="region__id"><span class="region__num" style="background:var(--rank-4)">1</span><span class="region__name">연동</span></span>
+              <span class="region__trend t-up">↗ 1위</span>
+            </div>
+            <div class="region__value"><b>52</b><span>건</span></div>
+            <div class="region__delta"><span class="t-up">↗ ▲15%</span> 전일 대비</div>
+            <div class="stackbar">
+              <i style="width:53.8%;background:var(--series-illegal)"></i>
+              <i style="width:26.9%;background:var(--series-double)"></i>
+              <i style="width:11.5%;background:var(--series-facility)"></i>
+              <i style="width:7.7%;background:var(--series-etc)"></i>
+            </div>
+            <div class="region__breakdown">
+              <span class="bd"><span class="dot" style="background:var(--series-illegal)"></span>불법주차 28</span>
+              <span class="bd"><span class="dot" style="background:var(--series-double)"></span>이중주차 14</span>
+              <span class="bd"><span class="dot" style="background:var(--series-facility)"></span>시설점거 6</span>
+              <span class="bd"><span class="dot" style="background:var(--series-etc)"></span>기타 4</span>
+            </div>
+          </div>
+
+          <div class="card region">
+            <div class="region__top">
+              <span class="region__id"><span class="region__num" style="background:var(--rank-2)">2</span><span class="region__name">노형동</span></span>
+              <span class="region__trend t-down">↘ 1위</span>
+            </div>
+            <div class="region__value"><b>38</b><span>건</span></div>
+            <div class="region__delta"><span class="t-up">↗ ▲6%</span> 전일 대비</div>
+            <div class="stackbar">
+              <i style="width:55.3%;background:var(--series-illegal)"></i>
+              <i style="width:28.9%;background:var(--series-double)"></i>
+              <i style="width:10.5%;background:var(--series-facility)"></i>
+              <i style="width:5.3%;background:var(--series-etc)"></i>
+            </div>
+            <div class="region__breakdown">
+              <span class="bd"><span class="dot" style="background:var(--series-illegal)"></span>불법주차 21</span>
+              <span class="bd"><span class="dot" style="background:var(--series-double)"></span>이중주차 11</span>
+              <span class="bd"><span class="dot" style="background:var(--series-facility)"></span>시설점거 4</span>
+              <span class="bd"><span class="dot" style="background:var(--series-etc)"></span>기타 2</span>
+            </div>
+          </div>
+
+          <div class="card region">
+            <div class="region__top">
+              <span class="region__id"><span class="region__num" style="background:var(--rank-3)">3</span><span class="region__name">이도동</span></span>
+              <span class="region__trend t-flat">—</span>
+            </div>
+            <div class="region__value"><b>29</b><span>건</span></div>
+            <div class="region__delta"><span class="t-down">↘ ▼3%</span> 전일 대비</div>
+            <div class="stackbar">
+              <i style="width:51.7%;background:var(--series-illegal)"></i>
+              <i style="width:27.6%;background:var(--series-double)"></i>
+              <i style="width:13.8%;background:var(--series-facility)"></i>
+              <i style="width:6.9%;background:var(--series-etc)"></i>
+            </div>
+            <div class="region__breakdown">
+              <span class="bd"><span class="dot" style="background:var(--series-illegal)"></span>불법주차 15</span>
+              <span class="bd"><span class="dot" style="background:var(--series-double)"></span>이중주차 8</span>
+              <span class="bd"><span class="dot" style="background:var(--series-facility)"></span>시설점거 4</span>
+              <span class="bd"><span class="dot" style="background:var(--series-etc)"></span>기타 2</span>
+            </div>
+          </div>
+
+          <div class="card region">
+            <div class="region__top">
+              <span class="region__id"><span class="region__num" style="background:var(--rank-1)">4</span><span class="region__name">아라동</span></span>
+              <span class="region__trend t-up">↗ 1위</span>
+            </div>
+            <div class="region__value"><b>21</b><span>건</span></div>
+            <div class="region__delta"><span class="t-down">↘ ▼8%</span> 전일 대비</div>
+            <div class="stackbar">
+              <i style="width:52.4%;background:var(--series-illegal)"></i>
+              <i style="width:28.6%;background:var(--series-double)"></i>
+              <i style="width:9.5%;background:var(--series-facility)"></i>
+              <i style="width:9.5%;background:var(--series-etc)"></i>
+            </div>
+            <div class="region__breakdown">
+              <span class="bd"><span class="dot" style="background:var(--series-illegal)"></span>불법주차 11</span>
+              <span class="bd"><span class="dot" style="background:var(--series-double)"></span>이중주차 6</span>
+              <span class="bd"><span class="dot" style="background:var(--series-facility)"></span>시설점거 2</span>
+              <span class="bd"><span class="dot" style="background:var(--series-etc)"></span>기타 2</span>
+            </div>
+          </div>
+
+          <div class="card region">
+            <div class="region__top">
+              <span class="region__id"><span class="region__num" style="background:var(--rank-5)">5</span><span class="region__name">삼도동</span></span>
+              <span class="region__trend t-down">↘ 1위</span>
+            </div>
+            <div class="region__value"><b>18</b><span>건</span></div>
+            <div class="region__delta">전기 동일 · 전일 대비</div>
+            <div class="stackbar">
+              <i style="width:55.6%;background:var(--series-illegal)"></i>
+              <i style="width:27.8%;background:var(--series-double)"></i>
+              <i style="width:11.1%;background:var(--series-facility)"></i>
+              <i style="width:5.6%;background:var(--series-etc)"></i>
+            </div>
+            <div class="region__breakdown">
+              <span class="bd"><span class="dot" style="background:var(--series-illegal)"></span>불법주차 10</span>
+              <span class="bd"><span class="dot" style="background:var(--series-double)"></span>이중주차 5</span>
+              <span class="bd"><span class="dot" style="background:var(--series-facility)"></span>시설점거 2</span>
+              <span class="bd"><span class="dot" style="background:var(--series-etc)"></span>기타 1</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Bottom row -->
+      <section class="bottom-row">
+        <div class="card panel">
+          <div class="card-head">
+            <h2 class="card-head__title"><span class="panel__icon"><i data-icon="chart" data-size="20"></i></span>분석</h2>
+            <a class="card-link">전체 <i data-icon="arrow-right" data-size="16"></i></a>
+          </div>
+          <div class="list">
+            <div class="list__row"><span class="name">연동동 정책 시뮬레이션</span><span class="badge badge--done">완료</span></div>
+            <div class="list__row"><span class="name">11월 생활권 집중도 분석</span><span class="badge badge--progress">진행</span></div>
+            <div class="list__row"><span class="name">요일제 적용구역 추천</span><span class="badge badge--pending">처리중</span></div>
+            <div class="list__row"><span class="name">불법주차 집중구역 도출</span><span class="badge badge--done">완료</span></div>
+          </div>
+        </div>
+
+        <div class="card panel">
+          <div class="card-head">
+            <h2 class="card-head__title"><span class="panel__icon panel__icon--green"><i data-icon="document" data-size="20"></i></span>보고서</h2>
+            <a class="card-link">전체 <i data-icon="arrow-right" data-size="16"></i></a>
+          </div>
+          <div class="list">
+            <div class="list__row"><span class="name">11월 주차민원 분석 리포트</span><span class="time">11:30</span></div>
+            <div class="list__row"><span class="name">정책 시뮬레이션 효과 비교</span><span class="time">11:23</span></div>
+            <div class="list__row"><span class="name">4분기 정책 보고서</span><span class="badge badge--wait">대기</span><span class="time">11:20</span></div>
+            <div class="list__row"><span class="name">GIS 집중구역 현황 리포트</span><span class="time">11:20</span></div>
+          </div>
+        </div>
+
+        <div class="card panel">
+          <div class="card-head">
+            <h2 class="card-head__title"><span class="panel__icon panel__icon--violet"><i data-icon="sparkle" data-size="20"></i></span>AI 어시스턴트</h2>
+            <a class="card-link">대화 열기 <i data-icon="arrow-right" data-size="16"></i></a>
+          </div>
+          <div class="ai-input">오늘 민원 현황을 요약해줘...</div>
+          <div class="ai-suggest">
+            <button><i class="chev" data-icon="chevron-right" data-size="16"></i>불법주차 관련 조례 검색</button>
+            <button><i class="chev" data-icon="chevron-right" data-size="16"></i>이번 달 민원 현황 요약</button>
+            <button><i class="chev" data-icon="chevron-right" data-size="16"></i>공영주차장 운영 관련 지침</button>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /content -->
+  </main>
+</div>
+
+<!-- React + Wanted Design System bundle (exposes window.WantedDesignSystem_68e8b7) -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="_ds/wanted-design-system-68e8b7dc-5e03-4a15-a665-d63ebe292a3a/_ds_bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<script>
+/* ============================================================
+   Dashboard runtime — Wanted icon injection + trend chart.
+   Icons reuse the Wanted Design System geometry (ICON_PATHS).
+   ============================================================ */
+(function () {
+  var DS = window.WantedDesignSystem_68e8b7 || {};
+  var PATHS = DS.ICON_PATHS || {};
+
+  // A few solid glyphs the Wanted set doesn't ship, drawn in the same
+  // fill style (24x24, currentColor) so they sit beside DS icons cleanly.
+  var EXTRA = {
+    "warning": [{ x: 0, y: 0, r: "evenodd",
+      d: "M12 3 C12.66 3 13.27 3.35 13.6 3.93 L23.1 20.4 C23.43 20.97 23.43 21.67 23.1 22.24 C22.78 22.8 22.18 23.15 21.52 23.15 L2.48 23.15 C1.82 23.15 1.22 22.8 0.9 22.24 C0.57 21.67 0.57 20.97 0.9 20.4 L10.4 3.93 C10.73 3.35 11.34 3 12 3 Z M11 9.4 H13 V15 H11 Z M11 17.2 H13 V19.4 H11 Z" }],
+    "chart": [
+      { x: 0, y: 0, r: "nonzero", d: "M4 11.5 H7.2 V20.2 H4 Z" },
+      { x: 0, y: 0, r: "nonzero", d: "M10.4 5.2 H13.6 V20.2 H10.4 Z" },
+      { x: 0, y: 0, r: "nonzero", d: "M16.8 13.4 H20 V20.2 H16.8 Z" }
+    ],
+    "download": [
+      { x: 0, y: 0, r: "nonzero", d: "M11 3.5 H13 V11.6 H15.7 C16.2 11.6 16.45 12.2 16.1 12.55 L12.4 16.25 C12.18 16.47 11.82 16.47 11.6 16.25 L7.9 12.55 C7.55 12.2 7.8 11.6 8.3 11.6 H11 Z" },
+      { x: 0, y: 0, r: "nonzero", d: "M4.5 18.4 H19.5 C20.05 18.4 20.5 18.85 20.5 19.4 C20.5 19.95 20.05 20.4 19.5 20.4 H4.5 C3.95 20.4 3.5 19.95 3.5 19.4 C3.5 18.85 3.95 18.4 4.5 18.4 Z" }
+    ]
+  };
+
+  function get(name) { return PATHS[name] || EXTRA[name]; }
+
+  function svgFor(name, size) {
+    var paths = get(name);
+    if (!paths) return "";
+    var inner = paths.map(function (p) {
+      var fr = p.r === "evenodd" ? "evenodd" : "nonzero";
+      var cr = p.r === "evenodd" ? ' clip-rule="evenodd"' : "";
+      return '<path d="' + p.d + '" transform="translate(' + p.x + ' ' + p.y +
+        ')" fill="currentColor" fill-rule="' + fr + '"' + cr + "></path>";
+    }).join("");
+    return '<svg class="ic" width="' + size + '" height="' + size +
+      '" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="display:inline-block;flex-shrink:0">' +
+      inner + "</svg>";
+  }
+
+  function injectIcons() {
+    document.querySelectorAll("[data-icon]").forEach(function (el) {
+      var name = el.getAttribute("data-icon");
+      var size = parseInt(el.getAttribute("data-size") || "20", 10);
+      el.innerHTML = svgFor(name, size);
+      var span = el.firstChild;
+      if (span) span.classList.add("ic");
+    });
+  }
+
+  /* -------------------- Trend chart (Apache ECharts) -------------------- */
+  function cssVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+  // Resolve a CSS var (possibly nested, e.g. --series-illegal: var(--blue-50))
+  // to a concrete rgb() string by reading a temp element's computed color.
+  var _probe = document.createElement("span");
+  _probe.style.cssText = "position:absolute;left:-9999px;top:-9999px";
+  document.body.appendChild(_probe);
+  function resolveColor(varName) {
+    _probe.style.color = "var(" + varName + ")";
+    return getComputedStyle(_probe).color;
+  }
+  function rgba(color, a) {
+    var c = document.createElement("canvas").getContext("2d");
+    c.fillStyle = color;
+    var hex = c.fillStyle;
+    if (hex[0] === "#") {
+      var r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+      return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+    }
+    return hex.replace(/rgba?\(([^)]+)\)/, function (_, body) {
+      var p = body.split(",").slice(0, 3).join(",");
+      return "rgba(" + p + "," + a + ")";
+    });
+  }
+
+  var _chart = null;
+  function buildChart() {
+    var host = document.getElementById("trendChart");
+    if (!host || typeof echarts === "undefined") return;
+    host.style.height = "300px";
+
+    var labels = ["00","02","04","06","08","10","12","14","16","18","20","22"].map(function (h) { return h + "시"; });
+    var fontBody = cssVar("--font-body");
+    var cAxis = resolveColor("--text-assistive");
+    var cGrid = resolveColor("--line-alternative");
+
+    var defs = [
+      { name: "불법주차", color: resolveColor("--series-illegal"),  area: true,  data: [16,13,11,12,18,28,36,44,50,52,47,41] },
+      { name: "이중주차", color: resolveColor("--series-double"),   area: false, data: [8,6,5,6,10,16,22,28,31,33,30,26] },
+      { name: "시설점거", color: resolveColor("--series-facility"), area: false, data: [4,3,3,4,6,8,10,11,12,12,11,9] },
+      { name: "기타",     color: resolveColor("--series-etc"),      area: false, data: [3,2,2,3,4,5,6,7,7,7,6,5] }
+    ];
+
+    var series = defs.map(function (d) {
+      var s = {
+        name: d.name, type: "line", smooth: 0.4, symbol: "circle", symbolSize: 7,
+        showSymbol: false, lineStyle: { width: 2.5, color: d.color },
+        itemStyle: { color: d.color, borderColor: "#fff", borderWidth: 2 },
+        emphasis: { focus: "series" }, data: d.data, z: d.area ? 3 : 2
+      };
+      if (d.area) {
+        s.areaStyle = {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: rgba(d.color, 0.22) },
+            { offset: 1, color: rgba(d.color, 0.0) }
+          ])
+        };
+      }
+      return s;
+    });
+
+    _chart = echarts.init(host, null, { renderer: "svg" });
+    _chart.setOption({
+      color: defs.map(function (d) { return d.color; }),
+      textStyle: { fontFamily: fontBody },
+      grid: { left: 8, right: 16, top: 16, bottom: 8, containLabel: true },
+      tooltip: {
+        trigger: "axis",
+        backgroundColor: resolveColor("--cool-neutral-15") || "#1b1c1e",
+        borderWidth: 0, padding: [10, 14],
+        textStyle: { color: "#fff", fontFamily: fontBody, fontSize: 13 },
+        axisPointer: { type: "line", lineStyle: { color: cGrid, width: 1 } },
+        valueFormatter: function (v) { return v + "건"; }
+      },
+      xAxis: {
+        type: "category", boundaryGap: false, data: labels,
+        axisLine: { lineStyle: { color: cGrid } },
+        axisTick: { show: false },
+        axisLabel: { color: cAxis, fontSize: 12, fontFamily: fontBody, margin: 12 }
+      },
+      yAxis: {
+        type: "value", min: 0, max: 60, interval: 15,
+        axisLine: { show: false }, axisTick: { show: false },
+        splitLine: { lineStyle: { color: cGrid, type: "solid" } },
+        axisLabel: { color: cAxis, fontSize: 12, fontFamily: fontBody }
+      },
+      series: series
+    });
+  }
+
+  function onResize() { if (_chart) _chart.resize(); }
+  window.addEventListener("resize", onResize);
+
+  function ready(fn) {
+    if (document.readyState !== "loading") fn();
+    else document.addEventListener("DOMContentLoaded", fn);
+  }
+  ready(function () { injectIcons(); buildChart(); });
+})();
+
+</script>
+</body>
+</html>

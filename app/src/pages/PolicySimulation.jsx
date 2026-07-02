@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as echarts from 'echarts';
 import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
@@ -157,6 +158,7 @@ function EffectChart() {
 }
 
 export default function PolicySimulation() {
+  const navigate = useNavigate();
   const [policyType, setPolicyType] = useState('parking');
   const [period, setPeriod] = useState('3');
   const [roadType, setRoadType] = useState('one-way');
@@ -170,7 +172,7 @@ export default function PolicySimulation() {
           <p className="page-sub">정책 변수 입력 → 효과 예측 → 시나리오 비교</p>
         </div>
         <div className="topbar__actions">
-          <button className="btn btn--ai" type="button">{AI_ICON} AI 대화 시작하기</button>
+          <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}>{AI_ICON} AI 대화 시작하기</button>
           <button className="btn" type="button"><Icon name="download" size={20} /> 내보내기</button>
           <NotificationBell />
         </div>

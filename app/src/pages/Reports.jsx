@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
+import NotificationBell from '../components/NotificationBell';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="22" height="22" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -65,6 +67,7 @@ function Pager({ total, page, setPage }) {
 }
 
 export default function Reports() {
+  const navigate = useNavigate();
   const [cycle, setCycle] = useState('quarter');
   const [autoPage, setAutoPage] = useState(1);
   const [manualPage, setManualPage] = useState(1);
@@ -89,9 +92,9 @@ export default function Reports() {
           <p className="page-sub">민원 분석 결과 자동 보고서 생성 및 관리</p>
         </div>
         <div className="topbar__actions">
-          <button className="btn btn--ai" type="button">{AI_ICON} AI 대화 시작하기</button>
+          <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}>{AI_ICON} AI 대화 시작하기</button>
           <button className="btn" type="button"><Icon name="download" size={20} /> 내보내기</button>
-          <button className="bell" type="button" aria-label="알림"><Icon name="bell" size={22} /><span className="bell__badge">3</span></button>
+          <NotificationBell />
         </div>
       </header>
 

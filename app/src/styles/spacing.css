@@ -1,0 +1,118 @@
+/* ============================================================
+   Wanted Design System — Spacing, Radius, Elevation & Semantic aliases
+   Short, friendly names that map onto the raw Figma variables in
+   fig-tokens.css. Components and UI kits consume THESE.
+   ============================================================ */
+
+:root {
+  /* Spacing scale (4px base) ------------------------------------- */
+  --space-0: 0px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-14: 14px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-28: 28px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-56: 56px;
+  --space-64: 64px;
+  --space-80: 80px;
+  --space-96: 96px;
+
+  /* Radius — Wanted uses generously rounded corners -------------- */
+  --radius-2px: 2px;
+  --radius-4: 4px;
+  --radius-6: 6px;
+  --radius-8: 8px;
+  --radius-10: 10px;
+  --radius-12: 12px;   /* default card / control radius */
+  --radius-14: 14px;
+  --radius-16: 16px;
+  --radius-20: 20px;   /* large surfaces, sheets */
+  --radius-24: 24px;
+  --radius-full: 999px;
+
+  /* Layout widths (from Frame/Component variables) -------------- */
+  --viewport-lg: 1100px;
+  --viewport-xl: 1440px;
+  --content-max: 1060px;
+
+  /* Elevation / shadow system ----------------------------------- */
+  --shadow-emphasize:
+    0 0 1px 0 rgba(23,23,23,0.06),
+    0 1px 2px 0 rgba(23,23,23,0.07);
+  --shadow-normal:
+    0 1px 4px 0 rgba(23,23,23,0.06),
+    0 0 1px 0 rgba(23,23,23,0.10);
+  --shadow-strong:
+    0 2px 8px 0 rgba(0,0,0,0.08),
+    0 0 1px 0 rgba(0,0,0,0.12);
+  --shadow-heavy:
+    0 6px 16px 0 rgba(0,0,0,0.08),
+    0 0 1px 0 rgba(0,0,0,0.12);
+  --shadow-overlay:
+    0 8px 28px 0 rgba(0,0,0,0.12),
+    0 0 1px 0 rgba(0,0,0,0.12);
+
+  /* ---------- Semantic color aliases ---------- */
+  /* Brand primary — Wanted blue #0066FF */
+  --color-primary: var(--blue-50);
+  --color-primary-strong: var(--blue-45);
+  --color-primary-heavy: var(--blue-40);
+  --color-primary-bg: var(--blue-95);
+  --color-on-primary: var(--static-white);
+
+  /* Secondary brand accent — Wanted violet */
+  --color-accent-violet: var(--violet-50);
+  --color-accent-cyan: var(--cyan-50);
+  --color-accent-green: var(--green-50);
+
+  /* Text / label */
+  --text-strong: var(--label-strong);
+  --text-normal: var(--label-normal);
+  --text-neutral: var(--label-neutral);
+  --text-alternative: var(--label-alternative);
+  --text-assistive: var(--label-assistive);
+  --text-disable: var(--label-disable);
+  --text-on-color: var(--static-white);
+
+  /* Surfaces / backgrounds */
+  --surface-normal: var(--background-normal-normal);
+  --surface-alternative: var(--background-normal-alternative);
+  --surface-elevated: var(--background-elevated-normal);
+
+  /* Fills (translucent neutral) */
+  --fill: var(--fill-normal);
+  --fill-strong: var(--fill-strong);
+  --fill-alternative: var(--fill-alternative);
+
+  /* Lines / borders */
+  --line-normal: var(--line-normal-normal);
+  --line-neutral: var(--line-normal-neutral);
+  --line-alternative: var(--line-normal-alternative);
+  --line-strong: var(--line-normal-strong);
+
+  /* Status */
+  --status-positive: var(--green-50);
+  --status-negative: var(--red-50);
+  --status-cautionary: var(--orange-50);
+  --status-info: var(--blue-50);
+
+  /* Interaction */
+  --interaction-inactive: var(--interaction-inactive);
+  --interaction-disable: var(--interaction-disable);
+
+  /* Motion — Wanted favours quick, soft ease-out transitions ---- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 120ms;
+  --duration-normal: 200ms;
+  --duration-slow: 320ms;
+}
