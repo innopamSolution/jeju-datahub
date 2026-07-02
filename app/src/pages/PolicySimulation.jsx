@@ -46,35 +46,114 @@ const TD = ({ center, children }) => (
   </td>
 );
 
-function EffectChart() {
-  const months = ['1월', '2월', '3월', '4월', '5월', '6월'];
-  const before = [52, 49, 55, 58, 48, 52];
-  const after =  [52, 50, 47, 43, 41, 40];
-  const max = 70;
-  const W = 380, H = 160, PAD = 32, barW = 22, gapX = 12;
-  const groupW = barW * 2 + 4;
-  const totalGroupW = groupW + gapX;
+function resolveColor(varName, probe) {
+  probe.style.color = `var(${varName})`;
+  return getComputedStyle(probe).color;
+}
 
-  return (
-    <svg viewBox={`0 0 ${W} ${H + 40}`} style={{ width: '100%', height: 'auto' }}>
-      {months.map((m, i) => {
-        const x = PAD + i * totalGroupW;
-        const bH = (before[i] / max) * H;
-        const aH = (after[i] / max) * H;
-        return (
-          <g key={m}>
-            <rect x={x} y={H - bH + 4} width={barW} height={bH} rx={3} fill="#94a3b8" opacity={0.55} />
-            <rect x={x + barW + 4} y={H - aH + 4} width={barW} height={aH} rx={3} fill="var(--primary)" />
-            <text x={x + barW + 2} y={H + 20} textAnchor="middle" fontSize={11} fill="var(--text-assistive)">{m}</text>
-          </g>
-        );
-      })}
-      <rect x={PAD} y={H + 30} width={10} height={10} rx={2} fill="#94a3b8" opacity={0.55} />
-      <text x={PAD + 14} y={H + 39} fontSize={11} fill="var(--text-alternative)">정책 전</text>
-      <rect x={PAD + 60} y={H + 30} width={10} height={10} rx={2} fill="var(--primary)" />
-      <text x={PAD + 74} y={H + 39} fontSize={11} fill="var(--text-alternative)">정책 후</text>
-    </svg>
-  );
+function rgba(color, a) {
+  const c = document.createElement('canvas').getContext('2d');
+  c.fillStyle = color;
+  const hex = c.fillStyle;
+  if (hex[0] === '#') {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
+  return hex.replace(/rgba?\(([^)]+)\)/, (_, body) => {
+    const p = body.split(',').slice(0, 3).join(',');
+    return `rgba(${p},${a})`;
+  });
+}
+
+// Apache Superset의 시계열 라인 차트(Time-series Line Chart)와 동일한
+// 오픈소스 렌더링 엔진(Apache ECharts)을 사용해 정책 전/후 추이를 시각화
+function EffectChart() {
+  const hostRef = useRef(null);
+  const chartRef = useRef(null);
+
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+
+    const probe = document.createElement('span');
+    probe.style.cssText = 'position:absolute;left:-9999px;top:-9999px';
+    document.body.appendChild(probe);
+
+    const months = ['1월', '2월', '3월', '4월', '5월', '6월'];
+    const before = [52, 49, 55, 58, 48, 52];
+    const after = [52, 50, 47, 43, 41, 40];
+
+    const fontBody = getComputedStyle(document.documentElement).getPropertyValue('--font-body').trim();
+    const cAxis = resolveColor('--text-assistive', probe);
+    const cGrid = resolveColor('--line-alternative', probe);
+    const cBefore = resolveColor('--cool-neutral-60', probe) || '#94a3b8';
+    const cAfter = resolveColor('--primary', probe);
+
+    const chart = echarts.init(host, null, { renderer: 'svg' });
+    chartRef.current = chart;
+    chart.setOption({
+      color: [cBefore, cAfter],
+      textStyle: { fontFamily: fontBody },
+      grid: { left: 8, right: 16, top: 36, bottom: 8, containLabel: true },
+      legend: {
+        top: 0, right: 0, itemWidth: 10, itemHeight: 10, icon: 'roundRect',
+        textStyle: { color: cAxis, fontFamily: fontBody, fontSize: 12 },
+      },
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: resolveColor('--cool-neutral-15', probe) || '#1b1c1e',
+        borderWidth: 0, padding: [10, 14],
+        textStyle: { color: '#fff', fontFamily: fontBody, fontSize: 13 },
+        axisPointer: { type: 'line', lineStyle: { color: cGrid, width: 1 } },
+        valueFormatter: (v) => `${v}건`,
+      },
+      xAxis: {
+        type: 'category', boundaryGap: false, data: months,
+        axisLine: { lineStyle: { color: cGrid } },
+        axisTick: { show: false },
+        axisLabel: { color: cAxis, fontSize: 12, fontFamily: fontBody, margin: 12 },
+      },
+      yAxis: {
+        type: 'value', min: 0, max: 70, interval: 14,
+        axisLine: { show: false }, axisTick: { show: false },
+        splitLine: { lineStyle: { color: cGrid, type: 'solid' } },
+        axisLabel: { color: cAxis, fontSize: 12, fontFamily: fontBody },
+      },
+      series: [
+        {
+          name: '정책 전', type: 'line', smooth: 0.4, symbol: 'circle', symbolSize: 6,
+          showSymbol: false, lineStyle: { width: 2.5, color: cBefore, type: 'dashed' },
+          itemStyle: { color: cBefore, borderColor: '#fff', borderWidth: 2 },
+          emphasis: { focus: 'series' }, data: before, z: 2,
+        },
+        {
+          name: '정책 후', type: 'line', smooth: 0.4, symbol: 'circle', symbolSize: 7,
+          showSymbol: false, lineStyle: { width: 2.5, color: cAfter },
+          itemStyle: { color: cAfter, borderColor: '#fff', borderWidth: 2 },
+          emphasis: { focus: 'series' }, data: after, z: 3,
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: rgba(cAfter, 0.22) },
+              { offset: 1, color: rgba(cAfter, 0.0) },
+            ]),
+          },
+        },
+      ],
+    });
+
+    const onResize = () => chart.resize();
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+      chart.dispose();
+      probe.remove();
+    };
+  }, []);
+
+  return <div ref={hostRef} style={{ width: '100%', height: 220 }} />;
 }
 
 export default function PolicySimulation() {
