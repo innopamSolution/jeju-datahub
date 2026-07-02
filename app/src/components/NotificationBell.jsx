@@ -30,7 +30,6 @@ export default function NotificationBell() {
   const rootRef = useRef(null);
   const navigate = useNavigate();
 
-  const unread = items.filter((i) => !i.unread === false).length; // placeholder overwritten below
   const unreadCount = items.filter((i) => i.unread).length;
 
   useEffect(() => {
