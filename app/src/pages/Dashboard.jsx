@@ -430,13 +430,13 @@ export default function Dashboard() {
           <div className="card panel">
             <div className="card-head">
               <h2 className="card-head__title"><span className="panel__icon panel__icon--violet"><Icon name="sparkle" size={20} /></span>AI 어시스턴트</h2>
-              <a className="card-link">대화 열기 <Icon name="arrow-right" size={16} /></a>
+              <a className="card-link" onClick={() => goToAiInput()} style={{ cursor: 'pointer' }}>대화 열기 <Icon name="arrow-right" size={16} /></a>
             </div>
-            <div className="ai-input">오늘 민원 현황을 요약해줘...</div>
+            <div className="ai-input" onClick={() => goToAiInput()} style={{ cursor: 'pointer' }}>오늘 민원 현황을 요약해줘...</div>
             <div className="ai-suggest">
-              <button type="button"><Icon className="chev" name="chevron-right" size={16} />불법주차 관련 조례 검색</button>
-              <button type="button"><Icon className="chev" name="chevron-right" size={16} />이번 달 민원 현황 요약</button>
-              <button type="button"><Icon className="chev" name="chevron-right" size={16} />공영주차장 운영 관련 지침</button>
+              <button type="button" onClick={() => goToAiInput('불법주차 관련 조례 검색')}><Icon className="chev" name="chevron-right" size={16} />불법주차 관련 조례 검색</button>
+              <button type="button" onClick={() => goToAiInput('이번 달 민원 현황 요약')}><Icon className="chev" name="chevron-right" size={16} />이번 달 민원 현황 요약</button>
+              <button type="button" onClick={() => goToAiInput('공영주차장 운영 관련 지침')}><Icon className="chev" name="chevron-right" size={16} />공영주차장 운영 관련 지침</button>
             </div>
           </div>
         </section>
