@@ -53,12 +53,12 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar__brand">
-        <div className="brand__logo">
+        <Link to="/" className="brand__logo" aria-label="대시보드로 이동">
           <img className="brand__img" src={logo} alt="Jeju" />
           <div className="brand__text" style={{ fontWeight: 600, fontSize: 15, color: 'rgba(255,255,255,0.92)' }}>
             주차민원분석 솔루션
           </div>
-        </div>
+        </Link>
       </div>
 
       <nav className="sidebar__nav">
