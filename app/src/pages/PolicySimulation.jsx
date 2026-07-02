@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import * as echarts from 'echarts';
 import Icon from '../components/Icon';
+import NotificationBell from '../components/NotificationBell';
 import DsSelect from '../components/DsSelect';
 
 const AI_ICON = (
@@ -91,7 +93,7 @@ export default function PolicySimulation() {
         <div className="topbar__actions">
           <button className="btn btn--ai" type="button">{AI_ICON} AI 대화 시작하기</button>
           <button className="btn" type="button"><Icon name="download" size={20} /> 내보내기</button>
-          <button className="bell" type="button" aria-label="알림"><Icon name="bell" size={22} /><span className="bell__badge">3</span></button>
+          <NotificationBell />
         </div>
       </header>
 
