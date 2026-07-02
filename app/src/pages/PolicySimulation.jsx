@@ -153,7 +153,7 @@ function EffectChart() {
     };
   }, []);
 
-  return <div ref={hostRef} style={{ width: '100%', height: 220 }} />;
+  return <div ref={hostRef} style={{ width: '100%', height: '100%', minHeight: 180 }} />;
 }
 
 export default function PolicySimulation() {
