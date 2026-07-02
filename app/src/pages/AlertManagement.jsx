@@ -183,7 +183,7 @@ export default function AlertManagement() {
                 </div>
               </div>
             </div>
-            <div className="modal__foot">
+            <div className="modal__foot modal__foot--split">
               <button className="btn" type="button" style={{ height: 44 }} onClick={() => setAddOpen(false)}>취소</button>
               <button className="btn-save" type="button" onClick={() => setAddOpen(false)}>추가</button>
             </div>
@@ -215,7 +215,7 @@ export default function AlertManagement() {
                 ))}
               </div>
             </div>
-            <div className="modal__foot">
+            <div className="modal__foot modal__foot--split">
               <button className="btn" type="button" style={{ height: 44 }} onClick={() => setCritOpen(false)}>취소</button>
               <button className="btn-save" type="button" onClick={saveCrit}>저장</button>
             </div>
