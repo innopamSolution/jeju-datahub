@@ -274,32 +274,34 @@ export default function PolicySimulation() {
           <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--line-alternative)' }}>
             <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>시나리오 비교</h2>
           </div>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr>
-                <TH>시나리오</TH>
-                <TH center>민원 감소</TH>
-                <TH center>혼잡 개선</TH>
-                <TH center>비용 수준</TH>
-                <TH center>추천</TH>
-              </tr>
-            </thead>
-            <tbody>
-              {SCENARIOS.map((s, i) => (
-                <tr key={i}>
-                  <TD><span style={{ fontWeight: 600, color: 'var(--text-strong)' }}>{s.name}</span></TD>
-                  <TD center><span style={{ fontWeight: 700, color: 'var(--primary)' }}>{s.reduction}</span></TD>
-                  <TD center><span style={{ fontWeight: 700, color: '#16a34a' }}>{s.improvement}</span></TD>
-                  <TD center>
-                    <span className="badge" style={{ background: COST_BADGE[s.costLevel].bg, color: COST_BADGE[s.costLevel].color }}>{s.cost}</span>
-                  </TD>
-                  <TD center>
-                    {s.recommend && <span className="badge" style={{ background: 'var(--blue-95)', color: 'var(--primary)', fontWeight: 700 }}>추천</span>}
-                  </TD>
+          <div style={{ maxHeight: 320, overflowY: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <TH>시나리오</TH>
+                  <TH center>민원 감소</TH>
+                  <TH center>혼잡 개선</TH>
+                  <TH center>비용 수준</TH>
+                  <TH center>추천</TH>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {SCENARIOS.map((s, i) => (
+                  <tr key={i}>
+                    <TD><span style={{ fontWeight: 600, color: 'var(--text-strong)' }}>{s.name}</span></TD>
+                    <TD center><span style={{ fontWeight: 700, color: 'var(--primary)' }}>{s.reduction}</span></TD>
+                    <TD center><span style={{ fontWeight: 700, color: '#16a34a' }}>{s.improvement}</span></TD>
+                    <TD center>
+                      <span className="badge" style={{ background: COST_BADGE[s.costLevel].bg, color: COST_BADGE[s.costLevel].color }}>{s.cost}</span>
+                    </TD>
+                    <TD center>
+                      {s.recommend && <span className="badge" style={{ background: 'var(--blue-95)', color: 'var(--primary)', fontWeight: 700 }}>추천</span>}
+                    </TD>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </>
