@@ -298,6 +298,63 @@ a { color: inherit; text-decoration: none; }
   border: 2px solid var(--page-bg);
 }
 
+/* ============================================================
+   알림 드롭다운 (notif-pop) — 헤더 알림 벨 클릭 시 표시
+   ============================================================ */
+.notif-pop {
+  position: absolute; top: calc(100% + 10px); right: 0; z-index: 3000;
+  width: 380px;
+  background: var(--card-bg); border: 1px solid var(--line-normal);
+  border-radius: var(--radius-16);
+  box-shadow: 0 16px 44px rgba(23,25,30,0.18);
+  overflow: hidden;
+  animation: notifIn 0.16s cubic-bezier(.2,.7,.3,1);
+}
+@keyframes notifIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+.notif-head { display: flex; align-items: center; gap: var(--space-10); padding: var(--space-18, 18px) var(--space-20); border-bottom: 1px solid var(--line-alternative); }
+.notif-head__ic { width: 34px; height: 34px; border-radius: var(--radius-10); background: var(--red-95); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.notif-head__title { font-family: var(--font-sans); font-size: var(--headline1-size); font-weight: var(--weight-bold); color: var(--text-strong); letter-spacing: -0.01em; }
+.notif-head__count {
+  margin-left: auto; min-width: 24px; height: 24px; padding: 0 7px;
+  border-radius: var(--radius-full); background: var(--red-50); color: #fff;
+  font-family: var(--font-sans); font-size: var(--caption1-size); font-weight: var(--weight-bold);
+  display: flex; align-items: center; justify-content: center;
+}
+.notif-head__x {
+  margin-left: var(--space-8); width: 30px; height: 30px; border-radius: var(--radius-8);
+  border: none; background: transparent; cursor: pointer; color: var(--text-alternative);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+.notif-head__x:hover { background: var(--fill-alternative); }
+.notif-list { max-height: 300px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line-normal) transparent; }
+.notif-list::-webkit-scrollbar { width: 6px; }
+.notif-list::-webkit-scrollbar-thumb { background: var(--line-normal); border-radius: var(--radius-full); }
+.notif-row {
+  display: flex; align-items: flex-start; gap: var(--space-12); width: 100%; text-align: left;
+  border: none; background: transparent;
+  padding: var(--space-14) var(--space-20); cursor: pointer;
+  border-bottom: 1px solid var(--line-alternative);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+.notif-row:last-child { border-bottom: none; }
+.notif-row:hover { background: var(--fill-alternative); }
+.notif-row__dot { width: 9px; height: 9px; border-radius: var(--radius-full); flex-shrink: 0; margin-top: 6px; }
+.notif-row--read .notif-row__dot { opacity: 0.32; }
+.notif-row__body { flex: 1; min-width: 0; }
+.notif-row__title { font-family: var(--font-body); font-size: var(--label1-size); font-weight: var(--weight-semibold); color: var(--text-strong); line-height: 1.4; letter-spacing: -0.01em; }
+.notif-row--read .notif-row__title { font-weight: var(--weight-medium); color: var(--text-neutral); }
+.notif-row__time { font-size: var(--caption1-size); color: var(--text-assistive); flex-shrink: 0; margin-top: 1px; text-align: right; white-space: nowrap; font-family: var(--font-sans); }
+.notif-foot { display: flex; align-items: stretch; border-top: 1px solid var(--line-alternative); }
+.notif-foot__btn {
+  flex: 1; height: 48px; border: none; background: transparent; cursor: pointer;
+  font-family: var(--font-body); font-size: var(--label2-size); font-weight: var(--weight-semibold); color: var(--text-neutral);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+.notif-foot__btn:hover { background: var(--fill-alternative); }
+.notif-foot__btn + .notif-foot__btn { border-left: 1px solid var(--line-alternative); }
+.notif-foot__btn--primary { color: var(--primary); }
+
 /* ---------- Filter row ---------- */
 .filterbar {
   display: flex;
