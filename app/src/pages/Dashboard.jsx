@@ -200,10 +200,13 @@ const AI_ICON_DASH = (
 );
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const [period, setPeriod] = useState('오늘');
   const [filterOpen, setFilterOpen] = useState(false);
   const [datePopOpen, setDatePopOpen] = useState(false);
   const [riskSeg, setRiskSeg] = useState('전체');
+
+  const goToAiInput = (prefill) => navigate('/ai-assistant', { state: prefill ? { prefill } : { focus: true } });
 
   return (
     <>
