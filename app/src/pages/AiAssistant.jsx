@@ -54,17 +54,27 @@ const INITIAL_MSGS = [
 let msgId = 100;
 
 export default function AiAssistant() {
+  const location = useLocation();
   const [messages, setMessages] = useState(INITIAL_MSGS);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(location.state?.prefill ?? '');
   const [plusOpen, setPlusOpen] = useState(false);
   const scrollRef = useRef(null);
   const plusRef = useRef(null);
   const fileRef = useRef(null);
+  const fieldRef = useRef(null);
   const timers = useRef([]);
 
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages]);
+
+  useEffect(() => {
+    if (location.state?.focus || location.state?.prefill) {
+      fieldRef.current?.focus();
+      window.history.replaceState({}, '');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
 
