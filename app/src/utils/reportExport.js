@@ -20,7 +20,7 @@ function saveBlob(blob, filename) {
  * 보고서 카드 하나를 렌더링해 PDF로 캡처.
  * 화면 렌더링을 그대로 캡처하므로 한글 폰트 임베딩 없이도 깨지지 않음.
  */
-export async function exportReportPdf(report, fields) {
+export async function exportReportPdf(report, fields, mode = 'save') {
   const host = document.createElement('div');
   host.style.cssText = 'position:fixed;left:-9999px;top:0;width:640px;background:#fff;padding:32px;font-family:var(--font-body, sans-serif);color:#171717;';
   host.innerHTML = `
@@ -41,7 +41,11 @@ export async function exportReportPdf(report, fields) {
     const img = canvas.toDataURL('image/png');
     const pdf = new jsPDF({ unit: 'px', format: [canvas.width, canvas.height] });
     pdf.addImage(img, 'PNG', 0, 0, canvas.width, canvas.height);
-    pdf.save(`${report.name}.pdf`);
+    if (mode === 'preview') {
+      window.open(pdf.output('bloburl'), '_blank');
+    } else {
+      pdf.save(`${report.name}.pdf`);
+    }
   } finally {
     host.remove();
   }
