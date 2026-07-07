@@ -85,19 +85,6 @@ export default function Reports() {
   const autoSlice = AUTO_ROWS.slice((autoPage - 1) * PER_PAGE, autoPage * PER_PAGE);
   const manualSlice = MANUAL_ROWS.slice((manualPage - 1) * PER_PAGE, manualPage * PER_PAGE);
 
-  const autoFields = (r) => ([
-    ['보고서 명', r.name],
-    ['배포 주기', r.cycle],
-    ['생성일', r.date],
-    ['상태', r.status === 'done' ? '완료' : '대기'],
-  ]);
-  const manualFields = (r) => ([
-    ['보고서 명', r.name],
-    ['분석 기간', r.period],
-    ['생성일', r.date],
-    ['생성자', r.author],
-  ]);
-
   return (
     <>
       <header className="topbar">
