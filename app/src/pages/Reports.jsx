@@ -74,6 +74,7 @@ export default function Reports() {
   const [autoPage, setAutoPage] = useState(1);
   const [manualPage, setManualPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
+  const [previewReport, setPreviewReport] = useState(null);
 
   useEffect(() => {
     if (!modalOpen) return;
