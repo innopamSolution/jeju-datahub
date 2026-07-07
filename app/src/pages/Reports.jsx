@@ -159,11 +159,11 @@ export default function Reports() {
                       <td>{r.cycle}</td>
                       <td className="rt-date">{r.date}</td>
                       <td><span className={`badge badge--${r.status === 'done' ? 'done' : 'neutral'}`}>{r.status === 'done' ? '완료' : '대기'}</span></td>
-                      <td className="col-center"><button className="tag" onClick={() => exportReportPdf(r, autoFields(r), 'preview')}>미리보기</button></td>
+                      <td className="col-center"><button className="tag" onClick={() => exportReportPdf(r, 'preview')}>미리보기</button></td>
                       <td className="col-center">
                         <div style={{ display: 'inline-flex', gap: 6 }}>
-                          <button className="tag tag--file" onClick={() => exportReportPdf(r, autoFields(r), 'save')}>{DL_ICON}<span>PDF</span></button>
-                          <button className="tag tag--file" onClick={() => exportReportDocx(r, autoFields(r))}>{DL_ICON}<span>DOCX</span></button>
+                          <button className="tag tag--file" onClick={() => exportReportPdf(r, 'save')}>{DL_ICON}<span>PDF</span></button>
+                          <button className="tag tag--file" onClick={() => exportReportDocx(r)}>{DL_ICON}<span>DOCX</span></button>
                         </div>
                       </td>
                     </tr>
