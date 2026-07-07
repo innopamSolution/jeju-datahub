@@ -161,7 +161,7 @@ export default function Reports() {
                       <td>{r.cycle}</td>
                       <td className="rt-date">{r.date}</td>
                       <td><span className={`badge badge--${r.status === 'done' ? 'done' : 'neutral'}`}>{r.status === 'done' ? '완료' : '대기'}</span></td>
-                      <td className="col-center"><button className="tag" onClick={() => exportReportPdf(r, 'preview')}>미리보기</button></td>
+                      <td className="col-center"><button className="tag" onClick={() => setPreviewReport(r)}>미리보기</button></td>
                       <td className="col-center">
                         <div style={{ display: 'inline-flex', gap: 6 }}>
                           <button className="tag tag--file" onClick={() => exportReportPdf(r, 'save')}>{DL_ICON}<span>PDF</span></button>
@@ -199,7 +199,7 @@ export default function Reports() {
                     <td className="rt-date">{r.period}</td>
                     <td className="rt-date">{r.date}</td>
                     <td>{r.author}</td>
-                    <td className="col-center"><button className="tag" onClick={() => exportReportPdf(r, 'preview')}>미리보기</button></td>
+                    <td className="col-center"><button className="tag" onClick={() => setPreviewReport(r)}>미리보기</button></td>
                     <td className="col-center">
                       <div style={{ display: 'inline-flex', gap: 6 }}>
                         <button className="tag tag--file" onClick={() => exportReportPdf(r, 'save')}>{DL_ICON}<span>PDF</span></button>
@@ -261,6 +261,10 @@ export default function Reports() {
             </div>
           </div>
         </div>
+      )}
+
+      {previewReport && (
+        <ReportPreviewModal report={previewReport} onClose={() => setPreviewReport(null)} />
       )}
     </>
   );
