@@ -168,7 +168,7 @@ export default function PolicySimulation() {
     <>
       <header className="topbar">
         <div>
-          <h1 className="page-title">정책 시뮬레이션</h1>
+          <h1 className="page-title">정책효과시뮬레이션</h1>
           <p className="page-sub">정책 변수 입력 → 효과 예측 → 시나리오 비교</p>
         </div>
         <div className="topbar__actions">
