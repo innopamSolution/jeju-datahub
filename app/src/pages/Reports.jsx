@@ -197,11 +197,11 @@ export default function Reports() {
                     <td className="rt-date">{r.period}</td>
                     <td className="rt-date">{r.date}</td>
                     <td>{r.author}</td>
-                    <td className="col-center"><button className="tag" onClick={() => exportReportPdf(r, manualFields(r), 'preview')}>미리보기</button></td>
+                    <td className="col-center"><button className="tag" onClick={() => exportReportPdf(r, 'preview')}>미리보기</button></td>
                     <td className="col-center">
                       <div style={{ display: 'inline-flex', gap: 6 }}>
-                        <button className="tag tag--file" onClick={() => exportReportPdf(r, manualFields(r), 'save')}>{DL_ICON}<span>PDF</span></button>
-                        <button className="tag tag--file" onClick={() => exportReportDocx(r, manualFields(r))}>{DL_ICON}<span>DOCX</span></button>
+                        <button className="tag tag--file" onClick={() => exportReportPdf(r, 'save')}>{DL_ICON}<span>PDF</span></button>
+                        <button className="tag tag--file" onClick={() => exportReportDocx(r)}>{DL_ICON}<span>DOCX</span></button>
                       </div>
                     </td>
                   </tr>
