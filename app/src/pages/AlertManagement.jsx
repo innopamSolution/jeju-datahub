@@ -206,14 +206,14 @@ export default function AlertManagement() {
               </button>
             </div>
             <div className="modal__body">
-              <p className="crit-card__sub" style={{ marginTop: 0 }}>민원 건수가 아래 기준 이상일 때 해당 단계 알림이 발생합니다.</p>
+              <p className="crit-card__sub" style={{ marginTop: 0 }}>민원 증가율이 아래 기준 이상일 때 해당 단계 알림이 발생합니다.</p>
               <div className="crit-list">
                 {CRIT_LEVELS.map((c) => (
                   <div key={c.key} className="crit-row">
                     <span className={`badge ${c.badge} crit-row__tag`}>{c.label}</span>
                     <input type="number" className="crit-inp" value={critDraft[c.key]}
                       onChange={(e) => setCritDraft((d) => ({ ...d, [c.key]: e.target.value }))} />
-                    <span className="crit-row__unit">건 이상</span>
+                    <span className="crit-row__unit">% 이상</span>
                   </div>
                 ))}
               </div>
