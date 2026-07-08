@@ -162,7 +162,7 @@ export default function PolicySimulation() {
   const [policyType, setPolicyType] = useState('parking');
   const [period, setPeriod] = useState('3');
   const [roadType, setRoadType] = useState('one-way');
-  const [feeRate, setFeeRate] = useState('5');
+  const [feeRate, setFeeRate] = useState('1');
 
   return (
     <>
