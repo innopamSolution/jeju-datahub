@@ -238,9 +238,9 @@ export default function PolicySimulation() {
             )}
             {policyType === 'fee' && (
               <div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>요금 인상율</div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>요금 급지</div>
                 <div className="segment">
-                  {[['5', '5%'], ['10', '10%'], ['15', '15%'], ['20', '20%']].map(([k, l]) => (
+                  {[['1', '1급지'], ['2', '2급지'], ['3', '3급지'], ['4', '4급지']].map(([k, l]) => (
                     <button key={k} type="button" className={`segment__btn ${feeRate === k ? 'segment__btn--active' : ''}`} onClick={() => setFeeRate(k)}>{l}</button>
                   ))}
                 </div>
