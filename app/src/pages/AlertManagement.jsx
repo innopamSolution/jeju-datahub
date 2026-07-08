@@ -129,7 +129,7 @@ export default function AlertManagement() {
             <div className="crit-card__head">
               <div className="crit-card__heading">
                 <h2 className="card-head__title">알림 기준</h2>
-                <p className="crit-card__sub">민원건수·위험도 등 알림 발생 기준 단계 설정</p>
+                <p className="crit-card__sub">민원 증가율 기준 알림 발생 단계 설정</p>
               </div>
               <button className="btn-edit" type="button" onClick={openCrit}>설정</button>
             </div>
@@ -137,7 +137,7 @@ export default function AlertManagement() {
               {CRIT_LEVELS.map((c) => (
                 <div key={c.key} className="crit-row">
                   <span className={`badge ${c.badge} crit-row__tag`}>{c.label}</span>
-                  <span className="crit-row__view">{crit[c.key]}건 이상</span>
+                  <span className="crit-row__view">{crit[c.key]}% 이상</span>
                 </div>
               ))}
             </div>
