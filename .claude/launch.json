@@ -6,6 +6,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "app", "run", "dev", "--", "--port", "5183", "--strictPort"],
       "port": 5183
+    },
+    {
+      "name": "sams",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "sams", "run", "dev", "--", "--port", "5184", "--strictPort"],
+      "port": 5184
     }
   ]
 }
