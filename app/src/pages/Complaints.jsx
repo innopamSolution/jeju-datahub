@@ -282,31 +282,30 @@ export default function Complaints() {
         </div>
 
         {/* 기간 선택 팝오버 */}
-        <div style={{ position: 'relative' }}>
+        <div className="date-pick" ref={datePickRef}>
           <button
-            className="btn"
+            className={`btn${customRange ? ' btn--apply' : ''}`}
             type="button"
             style={{ height: 40 }}
-            onClick={() => setDatePopOpen((o) => !o)}
+            onClick={(e) => { e.stopPropagation(); setDatePopOpen((o) => !o); }}
+            aria-haspopup="true"
             aria-expanded={datePopOpen}
           >
-            <Icon name="calendar" size={18} /> 기간 선택
+            <Icon name="calendar" size={18} /> {customRange || '기간 선택'}
           </button>
           {datePopOpen && (
-            <div style={{ position: 'absolute', top: 'calc(100% + 10px)', left: 0, zIndex: 40, background: 'var(--card-bg)', border: '1px solid var(--line-normal)', borderRadius: 14, boxShadow: '0 16px 40px rgba(23,23,25,0.18)', padding: 20, minWidth: 360 }}>
-              <div style={{ display: 'flex', gap: 16 }}>
-                <label style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)' }}>시작일</span>
-                  <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)}
-                    style={{ height: 44, padding: '0 14px', border: '1px solid var(--line-normal)', borderRadius: 10, fontFamily: 'inherit', fontSize: 15, color: 'var(--text-normal)', background: 'var(--card-bg)', outline: 'none' }} />
+            <div className="date-pop">
+              <div className="date-pop__row">
+                <label className="date-pop__field">
+                  <span>시작일</span>
+                  <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
                 </label>
-                <label style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)' }}>종료일</span>
-                  <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)}
-                    style={{ height: 44, padding: '0 14px', border: '1px solid var(--line-normal)', borderRadius: 10, fontFamily: 'inherit', fontSize: 15, color: 'var(--text-normal)', background: 'var(--card-bg)', outline: 'none' }} />
+                <label className="date-pop__field">
+                  <span>종료일</span>
+                  <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
                 </label>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 20 }}>
+              <div className="date-pop__foot">
                 <button className="btn" type="button" style={{ height: 38 }} onClick={() => setDatePopOpen(false)}>취소</button>
                 <button className="btn btn--apply" type="button" style={{ height: 38 }} onClick={applyDate}>적용</button>
               </div>
