@@ -296,7 +296,7 @@ export default function Dashboard() {
           <div className="detail-filter__group">
             <span className="detail-filter__label">민원유형</span>
             <DsSelect className="detail-filter__select" aria-label="민원유형">
-              <option>전체</option><option>불법주정차</option><option>주차장 혼잡</option><option>시설 고장</option><option>기타</option>
+              <option>전체</option><option>인도·횡단보도 점유</option><option>안전시설 인근 위반</option><option>장애인전용구역 위반</option><option>기타 불법주정차</option><option>친환경차충전구역 위반</option>
             </DsSelect>
           </div>
           <div className="detail-filter__group">
