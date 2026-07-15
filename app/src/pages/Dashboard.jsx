@@ -247,30 +247,31 @@ export default function Dashboard() {
         <span className="filterbar__label">조회 단위</span>
         <div className="segment">
           {['오늘', '주간', '월간'].map((k) => (
-            <button key={k} type="button" className={`segment__btn ${period === k ? 'segment__btn--active' : ''}`} onClick={() => setPeriod(k)}>{k}</button>
+            <button key={k} type="button" className={`segment__btn ${period === k ? 'segment__btn--active' : ''}`} onClick={() => { setPeriod(k); setCustomRange(null); }}>{k}</button>
           ))}
         </div>
 
         {/* 기간 선택 버튼 + 팝오버 */}
-        <div className="date-pick">
-          <button className="btn" type="button" style={{ height: 40 }} aria-haspopup="true" aria-expanded={datePopOpen} onClick={() => setDatePopOpen((o) => !o)}>
-            <Icon name="calendar" size={18} /> 기간 선택
+        <div className="date-pick" ref={datePickRef}>
+          <button className={`btn${customRange ? ' btn--apply' : ''}`} type="button" style={{ height: 40 }} aria-haspopup="true" aria-expanded={datePopOpen}
+            onClick={(e) => { e.stopPropagation(); setDatePopOpen((o) => !o); }}>
+            <Icon name="calendar" size={18} /> {customRange ? `${customRange.from} ~ ${customRange.to}` : '기간 선택'}
           </button>
           {datePopOpen && (
             <div className="date-pop">
               <div className="date-pop__row">
                 <label className="date-pop__field">
                   <span>시작일</span>
-                  <input type="date" defaultValue="2025-11-01" />
+                  <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
                 </label>
                 <label className="date-pop__field">
                   <span>종료일</span>
-                  <input type="date" defaultValue="2025-12-01" />
+                  <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
                 </label>
               </div>
               <div className="date-pop__foot">
                 <button className="btn" type="button" style={{ height: 38 }} onClick={() => setDatePopOpen(false)}>취소</button>
-                <button className="btn btn--apply" type="button" style={{ height: 38 }} onClick={() => setDatePopOpen(false)}>적용</button>
+                <button className="btn btn--apply" type="button" style={{ height: 38 }} onClick={applyDateRange}>적용</button>
               </div>
             </div>
           )}
