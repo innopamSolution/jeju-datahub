@@ -458,7 +458,7 @@ export default function Dashboard() {
           <div className="card panel">
             <div className="card-head">
               <h2 className="card-head__title"><span className="panel__icon panel__icon--violet"><Icon name="sparkle" size={20} /></span>AI 어시스턴트</h2>
-              <a className="card-link" onClick={() => goToAiInput()} style={{ cursor: 'pointer' }}>대화 열기 <Icon name="arrow-right" size={16} /></a>
+              <Link to="/ai-assistant" state={{ focus: true }} className="card-link">대화 열기 <Icon name="arrow-right" size={16} /></Link>
             </div>
             <div className="ai-input" onClick={() => goToAiInput()} style={{ cursor: 'pointer' }}>오늘 민원 현황을 요약해줘...</div>
             <div className="ai-suggest">
