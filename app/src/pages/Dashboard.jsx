@@ -281,7 +281,7 @@ export default function Dashboard() {
         <button className="btn btn--toggle" type="button" style={{ height: 40 }} aria-pressed={filterOpen} onClick={() => setFilterOpen((o) => !o)}>
           <Icon name="filter" size={18} /> 상세 필터
         </button>
-        <span className="filterbar__right">현재: <strong>{period}</strong></span>
+        <span className="filterbar__right">현재: <strong>{customRange ? `${customRange.from} ~ ${customRange.to}` : period}</strong></span>
       </div>
 
       {/* 상세 필터 패널 */}
