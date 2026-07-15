@@ -80,11 +80,30 @@
 .region__value span { font-size: var(--label1-size); color: var(--text-alternative); font-weight: var(--weight-semibold); }
 .region__delta { font-size: var(--label2-size); color: var(--text-alternative); display: flex; align-items: center; gap: var(--space-6); }
 
-.stackbar { display: flex; height: 8px; border-radius: var(--radius-full); overflow: hidden; background: var(--fill-normal); }
-.stackbar > i { display: block; height: 100%; }
-.region__breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 12px; }
-.bd { display: inline-flex; align-items: center; gap: var(--space-6); font-size: var(--caption1-size); color: var(--text-neutral); }
-.bd .dot { width: 7px; height: 7px; }
+.stackbar { display: flex; height: 8px; border-radius: var(--radius-full); background: var(--fill-normal); }
+.stackbar__seg { position: relative; height: 100%; cursor: default; }
+.stackbar__seg > i { display: block; height: 100%; width: 100%; transition: filter var(--duration-fast) var(--ease-out); }
+.stackbar__seg:hover > i { filter: brightness(0.9); }
+.stackbar__seg:first-child > i { border-radius: var(--radius-full) 0 0 var(--radius-full); }
+.stackbar__seg:last-child > i { border-radius: 0 var(--radius-full) var(--radius-full) 0; }
+
+.stackbar__tip {
+  position: absolute; bottom: calc(100% + 8px); left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  display: flex; align-items: center; gap: var(--space-6);
+  padding: 6px 10px; border-radius: var(--radius-8);
+  background: var(--cool-neutral-15); color: #fff;
+  font-size: var(--caption1-size); font-weight: var(--weight-semibold); white-space: nowrap;
+  box-shadow: var(--shadow-normal);
+  opacity: 0; pointer-events: none; z-index: 20;
+  transition: opacity var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+}
+.stackbar__tip .dot { width: 7px; height: 7px; }
+.stackbar__tip::after {
+  content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: var(--cool-neutral-15);
+}
+.stackbar__seg:hover .stackbar__tip { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* ---------- bottom row ---------- */
 .bottom-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-24); }
