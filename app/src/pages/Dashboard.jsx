@@ -247,7 +247,7 @@ export default function Dashboard() {
         <span className="filterbar__label">조회 단위</span>
         <div className="segment">
           {['오늘', '주간', '월간'].map((k) => (
-            <button key={k} type="button" className={`segment__btn ${period === k ? 'segment__btn--active' : ''}`} onClick={() => { setPeriod(k); setCustomRange(null); }}>{k}</button>
+            <button key={k} type="button" className={`segment__btn ${!customRange && period === k ? 'segment__btn--active' : ''}`} onClick={() => { setPeriod(k); setCustomRange(null); }}>{k}</button>
           ))}
         </div>
 
