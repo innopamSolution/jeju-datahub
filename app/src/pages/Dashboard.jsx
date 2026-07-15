@@ -445,7 +445,7 @@ export default function Dashboard() {
           <div className="card panel">
             <div className="card-head">
               <h2 className="card-head__title"><span className="panel__icon panel__icon--green"><Icon name="document" size={20} /></span>보고서</h2>
-              <a className="card-link">전체 <Icon name="arrow-right" size={16} /></a>
+              <Link to="/reports" className="card-link">전체 <Icon name="arrow-right" size={16} /></Link>
             </div>
             <div className="list">
               <div className="list__row"><span className="name">11월 주차민원 분석 리포트</span><span className="time">11:30</span></div>
