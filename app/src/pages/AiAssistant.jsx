@@ -148,7 +148,7 @@ export default function AiAssistant() {
                           <div className="cite">
                             <div className="cite__title"><span className="cite__mark" />제주특별자치도 주차장 설치 및 관리 조례</div>
                             <p className="cite__body">제7조(불법주정차 단속) ① 도로에서의 주차 또는 정차는 「도로교통법」 제32조에 따라 금지구역에서 행하지 아니한다…</p>
-                            <a className="cite__link">조례 원문 보기 <span aria-hidden="true">→</span></a>
+                            <button type="button" className="cite__link">조례 원문 보기 <span aria-hidden="true">→</span></button>
                           </div>
                           <p className="bubble__p">연동은 상업지역으로 단속 우선 지역에 해당합니다.</p>
                           <div className="chip-row">
