@@ -414,14 +414,12 @@ export default function Dashboard() {
                 </div>
                 <div className="stackbar">
                   {r.breakdown.map((b) => (
-                    <i key={b.key} style={{ width: `${b.pct}%`, background: `var(${SERIES_COLOR_VAR[b.key]})` }} />
-                  ))}
-                </div>
-                <div className="region__breakdown">
-                  {r.breakdown.map((b) => (
-                    <span className="bd" key={b.key}>
-                      <span className="dot" style={{ background: `var(${SERIES_COLOR_VAR[b.key]})` }} />
-                      {b.label} {b.value}
+                    <span key={b.key} className="stackbar__seg" style={{ width: `${b.pct}%` }}>
+                      <i style={{ background: `var(${SERIES_COLOR_VAR[b.key]})` }} />
+                      <span className="stackbar__tip">
+                        <span className="dot" style={{ background: `var(${SERIES_COLOR_VAR[b.key]})` }} />
+                        {b.label} <b>{b.value}건</b> ({b.pct}%)
+                      </span>
                     </span>
                   ))}
                 </div>
