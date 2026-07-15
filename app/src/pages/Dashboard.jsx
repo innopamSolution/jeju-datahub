@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as echarts from 'echarts';
 import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
