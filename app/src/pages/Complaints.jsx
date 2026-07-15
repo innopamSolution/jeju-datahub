@@ -224,16 +224,29 @@ export default function Complaints() {
   const [dateFrom, setDateFrom]      = useState('2025-11-01');
   const [dateTo, setDateTo]          = useState('2025-12-01');
   const [riskSeg, setRiskSeg]        = useState('전체');
+  const [customRange, setCustomRange] = useState(null);
   const [layers, setLayers]          = useState(() =>
     Object.fromEntries(LAYER_DEFS.map((d) => [d.key, d.defaultOn]))
   );
+  const datePickRef = useRef(null);
 
   const toggleLayer = (key) => setLayers((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  useEffect(() => {
+    if (!datePopOpen) return;
+    const onDoc = (e) => { if (datePickRef.current && !datePickRef.current.contains(e.target)) setDatePopOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setDatePopOpen(false); };
+    document.addEventListener('click', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+  }, [datePopOpen]);
 
   const applyDate = () => {
     if (dateFrom && dateTo) {
       const fmt = (s) => s.replace(/-/g, '.');
-      setRangeLabel(`${fmt(dateFrom)} ~ ${fmt(dateTo)}`);
+      const label = `${fmt(dateFrom)} ~ ${fmt(dateTo)}`;
+      setCustomRange(label);
+      setRangeLabel(label);
       setPeriod('');
     }
     setDatePopOpen(false);
