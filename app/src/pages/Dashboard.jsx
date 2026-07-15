@@ -432,7 +432,7 @@ export default function Dashboard() {
           <div className="card panel">
             <div className="card-head">
               <h2 className="card-head__title"><span className="panel__icon"><Icon name="chart" size={20} /></span>분석</h2>
-              <a className="card-link">전체 <Icon name="arrow-right" size={16} /></a>
+              <Link to="/analysis/hotspot" className="card-link">전체 <Icon name="arrow-right" size={16} /></Link>
             </div>
             <div className="list">
               <div className="list__row"><span className="name">연동동 정책 시뮬레이션</span><span className="badge badge--done">완료</span></div>
