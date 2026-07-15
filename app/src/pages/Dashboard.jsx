@@ -396,7 +396,7 @@ export default function Dashboard() {
               <h2 className="section-title">읍·면·동 민원 순위</h2>
               <p className="section-sub">오늘 민원 건수 · 순위 · 전기 대비 변화 비교</p>
             </div>
-            <a className="card-link">전체 보기 <Icon name="chevron-right" size={16} /></a>
+            <Link to="/complaints" className="card-link">전체 보기 <Icon name="chevron-right" size={16} /></Link>
           </div>
           <div className="region-row">
             {REGIONS.map((r) => (
