@@ -425,11 +425,11 @@ a { color: inherit; text-decoration: none; }
   font-weight: var(--weight-semibold);
   color: var(--text-strong);
   cursor: pointer;
-  outline: none;
   width: 100%;
   transition: border-color var(--duration-fast) var(--ease-out);
 }
 .ds-select select:hover { border-color: var(--line-strong); }
+.ds-select select:focus-visible { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,102,255,0.25); }
 .ds-select__ic {
   position: absolute;
   right: 10px;
