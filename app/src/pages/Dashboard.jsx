@@ -14,55 +14,61 @@ const HOTSPOTS = [
   { rank: 5, accent: 'var(--rank-5)', name: '삼도1동 골목', meta: '삼도동 · 반경 100m', badge: 'caution', label: '주의' },
 ];
 
+// 안전신문고 불법주정차 신고현황('25.1월~'26.5월) 유형 비중(41.9/24.0/18.5/9.6/6.0%)을 각 지역 총 건수에 배분
 const REGIONS = [
   {
     num: 1, accent: 'var(--rank-4)', name: '연동', trend: 'up', trendLabel: '↗ 1위', value: 52,
     delta: { dir: 'up', label: '↗ ▲15%' },
     breakdown: [
-      { key: 'illegal', label: '불법주차', value: 28, pct: 53.8 },
-      { key: 'double', label: '이중주차', value: 14, pct: 26.9 },
-      { key: 'facility', label: '시설점거', value: 6, pct: 11.5 },
-      { key: 'etc', label: '기타', value: 4, pct: 7.7 },
+      { key: 'illegal', label: '인도·횡단보도 점유', value: 22, pct: 42.3 },
+      { key: 'double', label: '안전시설 인근 위반', value: 12, pct: 23.1 },
+      { key: 'facility', label: '장애인전용구역 위반', value: 10, pct: 19.2 },
+      { key: 'etc', label: '기타 불법주정차', value: 5, pct: 9.6 },
+      { key: 'ev', label: '친환경차충전구역 위반', value: 3, pct: 5.8 },
     ],
   },
   {
     num: 2, accent: 'var(--rank-2)', name: '노형동', trend: 'down', trendLabel: '↘ 1위', value: 38,
     delta: { dir: 'up', label: '↗ ▲6%' },
     breakdown: [
-      { key: 'illegal', label: '불법주차', value: 21, pct: 55.3 },
-      { key: 'double', label: '이중주차', value: 11, pct: 28.9 },
-      { key: 'facility', label: '시설점거', value: 4, pct: 10.5 },
-      { key: 'etc', label: '기타', value: 2, pct: 5.3 },
+      { key: 'illegal', label: '인도·횡단보도 점유', value: 16, pct: 42.1 },
+      { key: 'double', label: '안전시설 인근 위반', value: 9, pct: 23.7 },
+      { key: 'facility', label: '장애인전용구역 위반', value: 7, pct: 18.4 },
+      { key: 'etc', label: '기타 불법주정차', value: 4, pct: 10.5 },
+      { key: 'ev', label: '친환경차충전구역 위반', value: 2, pct: 5.3 },
     ],
   },
   {
     num: 3, accent: 'var(--rank-3)', name: '이도동', trend: 'flat', trendLabel: '—', value: 29,
     delta: { dir: 'down', label: '↘ ▼3%' },
     breakdown: [
-      { key: 'illegal', label: '불법주차', value: 15, pct: 51.7 },
-      { key: 'double', label: '이중주차', value: 8, pct: 27.6 },
-      { key: 'facility', label: '시설점거', value: 4, pct: 13.8 },
-      { key: 'etc', label: '기타', value: 2, pct: 6.9 },
+      { key: 'illegal', label: '인도·횡단보도 점유', value: 12, pct: 41.4 },
+      { key: 'double', label: '안전시설 인근 위반', value: 7, pct: 24.1 },
+      { key: 'facility', label: '장애인전용구역 위반', value: 5, pct: 17.2 },
+      { key: 'etc', label: '기타 불법주정차', value: 3, pct: 10.3 },
+      { key: 'ev', label: '친환경차충전구역 위반', value: 2, pct: 6.9 },
     ],
   },
   {
     num: 4, accent: 'var(--rank-1)', name: '아라동', trend: 'up', trendLabel: '↗ 1위', value: 21,
     delta: { dir: 'down', label: '↘ ▼8%' },
     breakdown: [
-      { key: 'illegal', label: '불법주차', value: 11, pct: 52.4 },
-      { key: 'double', label: '이중주차', value: 6, pct: 28.6 },
-      { key: 'facility', label: '시설점거', value: 2, pct: 9.5 },
-      { key: 'etc', label: '기타', value: 2, pct: 9.5 },
+      { key: 'illegal', label: '인도·횡단보도 점유', value: 9, pct: 42.9 },
+      { key: 'double', label: '안전시설 인근 위반', value: 5, pct: 23.8 },
+      { key: 'facility', label: '장애인전용구역 위반', value: 4, pct: 19.0 },
+      { key: 'etc', label: '기타 불법주정차', value: 2, pct: 9.5 },
+      { key: 'ev', label: '친환경차충전구역 위반', value: 1, pct: 4.8 },
     ],
   },
   {
     num: 5, accent: 'var(--rank-5)', name: '삼도동', trend: 'down', trendLabel: '↘ 1위', value: 18,
     delta: null,
     breakdown: [
-      { key: 'illegal', label: '불법주차', value: 10, pct: 55.6 },
-      { key: 'double', label: '이중주차', value: 5, pct: 27.8 },
-      { key: 'facility', label: '시설점거', value: 2, pct: 11.1 },
-      { key: 'etc', label: '기타', value: 1, pct: 5.6 },
+      { key: 'illegal', label: '인도·횡단보도 점유', value: 8, pct: 44.4 },
+      { key: 'double', label: '안전시설 인근 위반', value: 4, pct: 22.2 },
+      { key: 'facility', label: '장애인전용구역 위반', value: 3, pct: 16.7 },
+      { key: 'etc', label: '기타 불법주정차', value: 2, pct: 11.1 },
+      { key: 'ev', label: '친환경차충전구역 위반', value: 1, pct: 5.6 },
     ],
   },
 ];
@@ -72,6 +78,7 @@ const SERIES_COLOR_VAR = {
   double: '--series-double',
   facility: '--series-facility',
   etc: '--series-etc',
+  ev: '--series-ev',
 };
 
 function cssVar(name) {
