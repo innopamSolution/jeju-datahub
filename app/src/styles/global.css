@@ -198,12 +198,14 @@ a { color: inherit; text-decoration: none; }
 .sidebar__foot .nav__item--active,
 .sidebar__foot .nav__item:hover,
 .sidebar__foot .nav__item:active,
-.sidebar__foot .nav__item:focus,
 .sidebar__foot .nav__item--active:hover {
   background: none;
   color: rgba(255,255,255,0.55);
   box-shadow: none;
-  outline: none;
+}
+.sidebar__foot .nav__item:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: -2px;
 }
 .sidebar__foot .nav__item .ic,
 .sidebar__foot .nav__item:hover .ic,
