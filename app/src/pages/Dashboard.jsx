@@ -116,11 +116,14 @@ function TrendChart() {
     const cAxis = resolveColor('--text-assistive', probe);
     const cGrid = resolveColor('--line-alternative', probe);
 
+    // 안전신문고 불법주정차 신고현황('25.1월~'26.5월) 유형별 비중을 기준으로 재구성
+    // 인도·횡단보도(41.9%) > 안전시설 인근(24.0%) > 장애인전용구역(18.5%) > 기타 불법주정차(9.6%) > 친환경차충전구역(6.0%)
     const defs = [
-      { name: '불법주차', color: resolveColor('--series-illegal', probe), area: true, data: [16, 13, 11, 12, 18, 28, 36, 44, 50, 52, 47, 41] },
-      { name: '이중주차', color: resolveColor('--series-double', probe), area: false, data: [8, 6, 5, 6, 10, 16, 22, 28, 31, 33, 30, 26] },
-      { name: '시설점거', color: resolveColor('--series-facility', probe), area: false, data: [4, 3, 3, 4, 6, 8, 10, 11, 12, 12, 11, 9] },
-      { name: '기타', color: resolveColor('--series-etc', probe), area: false, data: [3, 2, 2, 3, 4, 5, 6, 7, 7, 7, 6, 5] },
+      { name: '인도·횡단보도 점유', color: resolveColor('--series-illegal', probe), area: true, data: [13, 11, 9, 10, 15, 24, 30, 37, 42, 44, 40, 35] },
+      { name: '안전시설 인근 위반', color: resolveColor('--series-double', probe), area: false, data: [8, 6, 5, 6, 9, 13, 17, 21, 24, 25, 23, 20] },
+      { name: '장애인전용구역 위반', color: resolveColor('--series-facility', probe), area: false, data: [6, 5, 4, 4, 7, 10, 13, 16, 19, 19, 18, 16] },
+      { name: '기타 불법주정차', color: resolveColor('--series-etc', probe), area: false, data: [3, 3, 2, 2, 3, 5, 7, 8, 10, 10, 9, 9] },
+      { name: '친환경차충전구역 위반', color: resolveColor('--series-ev', probe), area: false, data: [2, 2, 1, 1, 2, 3, 4, 5, 6, 6, 6, 6] },
     ];
 
     const series = defs.map((d) => {
