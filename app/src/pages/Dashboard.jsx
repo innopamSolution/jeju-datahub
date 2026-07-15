@@ -333,10 +333,11 @@ export default function Dashboard() {
             </div>
             <TrendChart />
             <div className="legend">
-              <span className="legend__item"><span className="dot" style={{ background: 'var(--series-illegal)' }} />불법주차</span>
-              <span className="legend__item"><span className="dot" style={{ background: 'var(--series-double)' }} />이중주차</span>
-              <span className="legend__item"><span className="dot" style={{ background: 'var(--series-facility)' }} />시설점거</span>
-              <span className="legend__item"><span className="dot" style={{ background: 'var(--series-etc)' }} />기타</span>
+              <span className="legend__item"><span className="dot" style={{ background: 'var(--series-illegal)' }} />인도·횡단보도 점유</span>
+              <span className="legend__item"><span className="dot" style={{ background: 'var(--series-double)' }} />안전시설 인근 위반</span>
+              <span className="legend__item"><span className="dot" style={{ background: 'var(--series-facility)' }} />장애인전용구역 위반</span>
+              <span className="legend__item"><span className="dot" style={{ background: 'var(--series-etc)' }} />기타 불법주정차</span>
+              <span className="legend__item"><span className="dot" style={{ background: 'var(--series-ev)' }} />친환경차충전구역 위반</span>
             </div>
           </div>
 
