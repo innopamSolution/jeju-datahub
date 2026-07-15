@@ -207,7 +207,25 @@ export default function Dashboard() {
   const [period, setPeriod] = useState('오늘');
   const [filterOpen, setFilterOpen] = useState(false);
   const [datePopOpen, setDatePopOpen] = useState(false);
+  const [customRange, setCustomRange] = useState(null);
+  const [dateFrom, setDateFrom] = useState('2025-11-01');
+  const [dateTo, setDateTo] = useState('2025-12-01');
   const [riskSeg, setRiskSeg] = useState('전체');
+  const datePickRef = useRef(null);
+
+  useEffect(() => {
+    if (!datePopOpen) return;
+    const onDoc = (e) => { if (datePickRef.current && !datePickRef.current.contains(e.target)) setDatePopOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setDatePopOpen(false); };
+    document.addEventListener('click', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+  }, [datePopOpen]);
+
+  const applyDateRange = () => {
+    if (dateFrom && dateTo) setCustomRange({ from: dateFrom, to: dateTo });
+    setDatePopOpen(false);
+  };
 
   const goToAiInput = (prefill) => navigate('/ai-assistant', { state: prefill ? { prefill } : { focus: true } });
 
