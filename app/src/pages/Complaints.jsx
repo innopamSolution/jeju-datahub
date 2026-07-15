@@ -275,8 +275,8 @@ export default function Complaints() {
             <button
               key={k}
               type="button"
-              className={`segment__btn${period === k ? ' segment__btn--active' : ''}`}
-              onClick={() => { setPeriod(k); setRangeLabel(l); }}
+              className={`segment__btn${!customRange && period === k ? ' segment__btn--active' : ''}`}
+              onClick={() => { setPeriod(k); setRangeLabel(l); setCustomRange(null); }}
             >{l}</button>
           ))}
         </div>
