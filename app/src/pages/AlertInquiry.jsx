@@ -114,7 +114,6 @@ export default function AlertInquiry() {
         </div>
         <div className="topbar__actions">
           <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}>{AI_ICON} AI 대화 시작하기</button>
-          <button className="btn" type="button"><Icon name="download" size={20} /> 내보내기</button>
           <NotificationBell />
         </div>
       </header>
