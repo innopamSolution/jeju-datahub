@@ -417,7 +417,7 @@ export default function Complaints() {
             <div>
               <div className="stat__label">공영주차장</div>
               <div className="stat__value">{SEOGWIPO_PARKING.length}</div>
-              <div className="stat__delta">서귀포시 · 운영 중</div>
+              <div className="stat__delta"><span className="delta-pos">↗ +2개소</span> 전기 대비</div>
             </div>
           </div>
         </section>
