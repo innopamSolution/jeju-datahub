@@ -372,21 +372,13 @@ export default function Complaints() {
       <div className="content" style={{ flex: 1, minHeight: 0 }}>
 
         {/* Stat cards — 5열 */}
-        <section className="stat-row stat-row--5">
+        <section className="stat-row stat-row--4">
           <div className="card stat">
             <div className="stat__icon stat__icon--blue"><Icon name="document" size={26} /></div>
             <div>
               <div className="stat__label">총 민원 건수</div>
               <div className="stat__value">247</div>
               <div className="stat__delta"><span className="delta-pos">↗ +12%</span> 전기 대비</div>
-            </div>
-          </div>
-          <div className="card stat">
-            <div className="stat__icon stat__icon--red"><Icon name="location" size={26} /></div>
-            <div>
-              <div className="stat__label">집중구역 수</div>
-              <div className="stat__value">5</div>
-              <div className="stat__delta"><span className="delta-pos">↗ +1개</span> 전기 대비</div>
             </div>
           </div>
           <div className="card stat">
