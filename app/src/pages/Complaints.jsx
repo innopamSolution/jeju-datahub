@@ -82,16 +82,7 @@ function GisMap({ layerState }) {
       { name: '삼도동', c: [33.5120, 126.5210], count: 10, level: '양호',    color: COLORS.good,    illegal: 7,  etc: 3  },
     ];
 
-    const parking = [
-      ['시청 공영주차장',    33.4996, 126.5285],
-      ['연동 지하주차장',    33.4880, 126.4925],
-      ['노형 공영주차장',    33.4775, 126.4790],
-      ['이도 환승주차장',    33.4950, 126.5360],
-      ['아라 공영주차장',    33.4585, 126.5440],
-      ['탑동 해변주차장',    33.5170, 126.5235],
-      ['중앙로 공영주차장',  33.5110, 126.5260],
-      ['삼도 공영주차장',    33.5085, 126.5180],
-    ];
+    const parking = SEOGWIPO_PARKING;
 
     const map = L.map(ref.current, { zoomControl: false, attributionControl: true })
       .setView([33.486, 126.512], 13);
