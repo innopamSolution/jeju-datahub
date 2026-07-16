@@ -10,6 +10,12 @@
 .stat-row--5 .stat__value { font-size: var(--title1-size); line-height: var(--title1-line); letter-spacing: var(--title1-tracking); }
 .stat-row--5 .stat__label { font-size: var(--label1-size); }
 
+.stat-row--4 { grid-template-columns: repeat(4, 1fr); gap: var(--space-20); }
+.stat-row--4 .stat { padding: var(--space-20); gap: var(--space-16); }
+.stat-row--4 .stat__icon { width: 56px; height: 56px; border-radius: var(--radius-14); }
+.stat-row--4 .stat__value { font-size: var(--title1-size); line-height: var(--title1-line); letter-spacing: var(--title1-tracking); }
+.stat-row--4 .stat__label { font-size: var(--label1-size); }
+
 .stat__icon--teal { background: var(--cyan-95); color: var(--cyan-40); }
 .stat__icon--violet { background: var(--purple-95); color: var(--purple-40); }
 .stat__icon--orange { background: var(--orange-95); color: var(--orange-39); }
