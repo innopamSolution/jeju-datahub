@@ -141,16 +141,23 @@ function GisMap({ layerState }) {
       L.marker(r.c, { icon }).bindPopup(popupHtml(r)).addTo(regionGroup);
     });
 
-    /* ── 공영주차장 클러스터 ── */
+    /* ── 공영주차장 클러스터 (서귀포시 공영주차장 현황, 서귀포시 교통행정과) ── */
     const parkingGroup = L.markerClusterGroup({ maxClusterRadius: 50, showCoverageOnHover: false });
-    parking.forEach(([name, lat, lng]) => {
+    parking.forEach((p) => {
       const icon = L.divIcon({
         className: '',
         iconSize: [28, 28], iconAnchor: [14, 14],
         html: `<div style="width:28px;height:28px;border-radius:50%;background:${COLORS.park};color:#fff;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.28);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800">P</div>`,
       });
-      L.marker([lat, lng], { icon })
-        .bindPopup(`<div style="font-family:system-ui;min-width:140px"><b style="font-size:15px">${name}</b><div style="margin-top:8px;font-size:13px;color:#70737c">구분: <b style="color:#171717">공영주차장</b></div><div style="font-size:13px;color:#70737c">상태: <b style="color:#171717">운영중</b></div></div>`)
+      const feeBadge = p.fee === '유료' ? '#f97316' : p.fee === '무료' ? '#22c55e' : '#70737c';
+      L.marker([p.lat, p.lng], { icon })
+        .bindPopup(`<div style="font-family:system-ui;min-width:180px">
+          <b style="font-size:15px;color:#171717">${p.name}</b>
+          <div style="margin-top:8px;font-size:13px;color:#70737c">주소: <b style="color:#171717">${p.addr}</b></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;color:#70737c;border-top:1px solid rgba(112,115,124,0.08);margin-top:6px">행정동<b style="color:#171717">${p.dong}</b></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;color:#70737c;border-top:1px solid rgba(112,115,124,0.08)">주차 면수<b style="color:#171717">${p.spaces}면</b></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;color:#70737c;border-top:1px solid rgba(112,115,124,0.08)">요금<b style="color:${feeBadge}">${p.fee}</b></div>
+        </div>`)
         .addTo(parkingGroup);
     });
 
