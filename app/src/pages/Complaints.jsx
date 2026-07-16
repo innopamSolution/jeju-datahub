@@ -8,6 +8,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import Icon from '../components/Icon';
 import DsSelect from '../components/DsSelect';
 import NotificationBell from '../components/NotificationBell';
+import { SEOGWIPO_PARKING } from '../data/seogwipoParking';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="22" height="22" aria-hidden="true" style={{ flexShrink: 0 }}>
