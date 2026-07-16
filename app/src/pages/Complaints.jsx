@@ -141,8 +141,24 @@ function GisMap({ layerState }) {
       L.marker(r.c, { icon }).bindPopup(popupHtml(r)).addTo(regionGroup);
     });
 
-    /* ── 공영주차장 클러스터 (서귀포시 공영주차장 현황, 서귀포시 교통행정과) ── */
-    const parkingGroup = L.markerClusterGroup({ maxClusterRadius: 50, showCoverageOnHover: false });
+    /* ── 공영주차장 클러스터 (서귀포시 공영주차장 현황, 서귀포시 교통행정과) ──
+       다른 레이어의 클러스터(숫자만 있는 원형 버블)와 헷갈리지 않도록,
+       줌아웃 시에도 P 마커 모양을 유지하고 우측 상단에 작은 개수 배지만 붙인다. */
+    const parkingGroup = L.markerClusterGroup({
+      maxClusterRadius: 50,
+      showCoverageOnHover: false,
+      iconCreateFunction: (cluster) => {
+        const count = cluster.getChildCount();
+        return L.divIcon({
+          className: '',
+          iconSize: [28, 28], iconAnchor: [14, 14],
+          html: `<div style="position:relative;width:28px;height:28px">
+            <div style="width:28px;height:28px;border-radius:50%;background:${COLORS.park};color:#fff;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.28);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800">P</div>
+            <div style="position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;padding:0 3px;border-radius:999px;background:#fff;color:${COLORS.park};border:1.5px solid ${COLORS.park};font-size:10px;font-weight:800;line-height:13px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.2)">${count}</div>
+          </div>`,
+        });
+      },
+    });
     parking.forEach((p) => {
       const icon = L.divIcon({
         className: '',
