@@ -400,8 +400,8 @@ export default function Complaints() {
             <div className="stat__icon stat__icon--violet"><Icon name="company" size={26} /></div>
             <div>
               <div className="stat__label">공영주차장</div>
-              <div className="stat__value">19</div>
-              <div className="stat__delta">운영 중</div>
+              <div className="stat__value">{SEOGWIPO_PARKING.length}</div>
+              <div className="stat__delta">서귀포시 · 운영 중</div>
             </div>
           </div>
         </section>
