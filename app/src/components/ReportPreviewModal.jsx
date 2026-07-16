@@ -32,8 +32,8 @@ export default function ReportPreviewModal({ report, onClose }) {
 
         <div className="modal__body" style={{ maxHeight: '70vh' }}>
           <div style={{ fontSize: 20, fontWeight: 800, marginBottom: 4, color: 'var(--text-strong)' }}>{report.name}</div>
-          <div style={{ fontSize: 12, color: 'var(--text-assistive)', marginBottom: 4 }}>제주 주차민원분석 솔루션 · 자동 생성 보고서</div>
-          <div style={{ fontSize: 12, color: 'var(--text-assistive)', marginBottom: 20 }}>
+          <div style={{ fontSize: 12, color: 'var(--text-neutral)', marginBottom: 4 }}>제주 주차민원분석 솔루션 · 자동 생성 보고서</div>
+          <div style={{ fontSize: 12, color: 'var(--text-neutral)', marginBottom: 20 }}>
             {metaEntries.map(([k, v], i) => (
               <span key={k} style={{ marginRight: 16 }}>
                 {META_LABEL[k]}: <b style={{ color: 'var(--text-neutral)' }}>{STATUS_LABEL[v] ?? v}</b>
@@ -45,7 +45,7 @@ export default function ReportPreviewModal({ report, onClose }) {
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 24, padding: '16px 18px', background: 'var(--blue-99)', borderRadius: 10 }}>
             <span style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-strong)' }}>{total.count}건</span>
             <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--primary)' }}>↗ {total.deltaValue}</span>
-            <span style={{ fontSize: 12, color: 'var(--text-assistive)' }}>{total.deltaLabel}</span>
+            <span style={{ fontSize: 12, color: 'var(--text-neutral)' }}>{total.deltaLabel}</span>
           </div>
 
           <SectionTitle>2. 지역별 민원현황</SectionTitle>
@@ -61,8 +61,8 @@ export default function ReportPreviewModal({ report, onClose }) {
                   <Td>{r.num}</Td>
                   <Td><b>{r.name}</b></Td>
                   <Td align="right">{r.value}건</Td>
-                  <Td align="right" color={r.dir === 'up' ? '#e5322a' : r.dir === 'down' ? 'var(--primary)' : 'var(--text-assistive)'}>{r.deltaLabel}</Td>
-                  <Td color="var(--text-assistive)">{r.breakdown.map(([l, v]) => `${l} ${v}`).join(' · ')}</Td>
+                  <Td align="right" color={r.dir === 'up' ? '#e5322a' : r.dir === 'down' ? 'var(--primary)' : 'var(--text-neutral)'}>{r.deltaLabel}</Td>
+                  <Td color="var(--text-neutral)">{r.breakdown.map(([l, v]) => `${l} ${v}`).join(' · ')}</Td>
                 </tr>
               ))}
             </tbody>
@@ -80,7 +80,7 @@ export default function ReportPreviewModal({ report, onClose }) {
                 <tr key={h.rank}>
                   <Td>{h.rank}</Td>
                   <Td><b>{h.name}</b></Td>
-                  <Td color="var(--text-assistive)">{h.meta}</Td>
+                  <Td color="var(--text-neutral)">{h.meta}</Td>
                   <Td align="center">
                     <span style={{ display: 'inline-block', padding: '2px 10px', borderRadius: 999, fontSize: 11, fontWeight: 700, color: '#fff', background: LEVEL_COLOR[h.level] }}>{h.level}</span>
                   </Td>
@@ -93,7 +93,7 @@ export default function ReportPreviewModal({ report, onClose }) {
           <div style={{ display: 'flex', gap: 10, marginBottom: 24 }}>
             {Object.entries(risk).map(([label, cnt]) => (
               <div key={label} style={{ flex: 1, padding: 14, borderRadius: 10, background: 'var(--fill-normal)', textAlign: 'center' }}>
-                <div style={{ fontSize: 11, color: 'var(--text-assistive)', marginBottom: 4 }}>{label}</div>
+                <div style={{ fontSize: 11, color: 'var(--text-neutral)', marginBottom: 4 }}>{label}</div>
                 <div style={{ fontSize: 20, fontWeight: 800, color: LEVEL_COLOR[label] }}>{cnt}건</div>
               </div>
             ))}
@@ -126,7 +126,7 @@ function SectionTitle({ children }) {
 }
 
 function Th({ children, align = 'left' }) {
-  return <th style={{ padding: '8px 10px', textAlign: align, borderBottom: '1px solid var(--line-alternative)', color: 'var(--text-alternative)', fontWeight: 600 }}>{children}</th>;
+  return <th style={{ padding: '8px 10px', textAlign: align, borderBottom: '1px solid var(--line-alternative)', color: 'var(--text-neutral)', fontWeight: 600 }}>{children}</th>;
 }
 
 function Td({ children, align = 'left', color }) {

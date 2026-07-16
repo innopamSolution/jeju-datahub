@@ -37,7 +37,7 @@ const COST_BADGE = {
 };
 
 const TH = ({ center, children }) => (
-  <th style={{ padding: '12px 16px', textAlign: center ? 'center' : 'left', fontSize: 13, fontWeight: 600, color: 'var(--text-alternative)', borderBottom: '1px solid var(--line-alternative)', whiteSpace: 'nowrap', background: 'var(--cool-neutral-99)', position: 'sticky', top: 0, zIndex: 1 }}>
+  <th style={{ padding: '12px 16px', textAlign: center ? 'center' : 'left', fontSize: 13, fontWeight: 600, color: 'var(--text-neutral)', borderBottom: '1px solid var(--line-alternative)', whiteSpace: 'nowrap', background: 'var(--cool-neutral-99)', position: 'sticky', top: 0, zIndex: 1 }}>
     {children}
   </th>
 );
@@ -186,7 +186,7 @@ export default function PolicySimulation() {
             <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>정책 변수 설정</h2>
 
             <div>
-              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>정책 유형</div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>정책 유형</div>
               <div className="segment">
                 {[['parking', '주차장 확충'], ['road', '이면도로 정비'], ['fee', '요금제 적용']].map(([k, l]) => (
                   <button key={k} type="button" className={`segment__btn ${policyType === k ? 'segment__btn--active' : ''}`} onClick={() => setPolicyType(k)}>{l}</button>
@@ -196,13 +196,13 @@ export default function PolicySimulation() {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               <div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>대상 지역</div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>대상 지역</div>
                 <DsSelect style={{ width: '100%' }}>
                   <option>제주시</option><option>서귀포시</option>
                 </DsSelect>
               </div>
               <div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>&nbsp;</div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>&nbsp;</div>
                 <DsSelect style={{ width: '100%' }}>
                   <option>연동</option><option>노형동</option><option>이도동</option>
                 </DsSelect>
@@ -210,7 +210,7 @@ export default function PolicySimulation() {
             </div>
 
             <div>
-              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>예측 기간</div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>예측 기간</div>
               <div className="segment">
                 {[['3', '3개월'], ['6', '6개월'], ['12', '12개월'], ['24', '24개월']].map(([k, l]) => (
                   <button key={k} type="button" className={`segment__btn ${period === k ? 'segment__btn--active' : ''}`} onClick={() => setPeriod(k)}>{l}</button>
@@ -220,7 +220,7 @@ export default function PolicySimulation() {
 
             {policyType === 'parking' && (
               <div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>주차면 증설 수</div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>주차면 증설 수</div>
                 <DsSelect style={{ width: '100%' }}>
                   <option>50면</option><option>80면</option><option>100면</option><option>150면</option><option>200면</option>
                 </DsSelect>
@@ -228,7 +228,7 @@ export default function PolicySimulation() {
             )}
             {policyType === 'road' && (
               <div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>정비 유형</div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>정비 유형</div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                   {[['one-way', '일방통행 전환'], ['parking-zone', '주차구역 정비'], ['expand', '주차허용구역 확대'], ['resident', '거주자 우선주차 도입']].map(([k, l]) => (
                     <button key={k} type="button" className={`segment__btn ${roadType === k ? 'segment__btn--active' : ''}`} onClick={() => setRoadType(k)}>{l}</button>
@@ -238,7 +238,7 @@ export default function PolicySimulation() {
             )}
             {policyType === 'fee' && (
               <div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 8 }}>요금 급지</div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>요금 급지</div>
                 <div className="segment">
                   {[['1', '1급지'], ['2', '2급지'], ['3', '3급지'], ['4', '4급지']].map(([k, l]) => (
                     <button key={k} type="button" className={`segment__btn ${feeRate === k ? 'segment__btn--active' : ''}`} onClick={() => setFeeRate(k)}>{l}</button>
@@ -256,14 +256,14 @@ export default function PolicySimulation() {
             <div style={{ flex: 1, minHeight: 0 }}><EffectChart /></div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div style={{ padding: '16px 20px', borderRadius: 12, background: 'var(--blue-99)', border: '1px solid var(--blue-90)' }}>
-                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 6 }}>민원 감소 예측</div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 6 }}>민원 감소 예측</div>
                 <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--primary)' }}>-23%</div>
-                <div style={{ fontSize: 12, color: 'var(--text-assistive)', marginTop: 4 }}>52건 → 40건 월평균</div>
+                <div style={{ fontSize: 12, color: 'var(--text-neutral)', marginTop: 4 }}>52건 → 40건 월평균</div>
               </div>
               <div style={{ padding: '16px 20px', borderRadius: 12, background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
-                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginBottom: 6 }}>혼잡도 개선</div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 6 }}>혼잡도 개선</div>
                 <div style={{ fontSize: 28, fontWeight: 800, color: '#16a34a' }}>+18%</div>
-                <div style={{ fontSize: 12, color: 'var(--text-assistive)', marginTop: 4 }}>혼잡 지수 0.78 → 0.64</div>
+                <div style={{ fontSize: 12, color: 'var(--text-neutral)', marginTop: 4 }}>혼잡 지수 0.78 → 0.64</div>
               </div>
             </div>
           </div>

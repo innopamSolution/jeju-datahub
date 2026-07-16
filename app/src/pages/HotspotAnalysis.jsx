@@ -4,6 +4,8 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
+import DateRangeField from '../components/DateRangeField';
+import RegionSelect from '../components/RegionSelect';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="22" height="22" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -76,6 +78,8 @@ export default function HotspotAnalysis() {
   const rowRefs   = useRef([]);
   const bodyRef   = useRef(null);
   const [period, setPeriod]     = useState('직접설정');
+  const [city, setCity]         = useState('전체');
+  const [dong, setDong]         = useState('전체');
   const [showResult, setShowResult] = useState(true);
   const [activeRank, setActiveRank] = useState(null);
 
@@ -169,10 +173,7 @@ export default function HotspotAnalysis() {
 
             <div className="field">
               <label className="field__label">분석 지역</label>
-              <div className="field__select">
-                제주시
-                <Icon name="chevron-down" size={18} />
-              </div>
+              <RegionSelect city={city} dong={dong} onCityChange={setCity} onDongChange={setDong} />
             </div>
 
             <div className="field">
@@ -183,11 +184,7 @@ export default function HotspotAnalysis() {
                 ))}
               </div>
               {period === '직접설정' && (
-                <div className="field__dates">
-                  <span className="field__date">2026-01-01 <Icon name="calendar" size={16} /></span>
-                  <span className="field__tilde">~</span>
-                  <span className="field__date">2026-05-31 <Icon name="calendar" size={16} /></span>
-                </div>
+                <DateRangeField defaultFrom="2026-01-01" defaultTo="2026-05-31" />
               )}
             </div>
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Icon from '../components/Icon';
+import { useTheme } from '../hooks/useTheme';
 
 const SECTIONS = [
   {
@@ -12,26 +13,14 @@ const SECTIONS = [
     ],
   },
   {
-    title: '알림 설정',
-    items: [
-      { label: '심각 단계 즉시 알림', value: true, type: 'toggle' },
-      { label: '경고 단계 알림', value: true, type: 'toggle' },
-      { label: '주간 리포트 이메일', value: true, type: 'toggle' },
-      { label: '시스템 업데이트 알림', value: false, type: 'toggle' },
-    ],
-  },
-  {
     title: '화면 설정',
-    items: [
-      { label: '기본 조회 단위', value: '오늘', type: 'select', options: ['오늘', '주간', '월간'] },
-      { label: '지도 기본 확대 수준', value: '13', type: 'select', options: ['11', '12', '13', '14'] },
-      { label: '언어', value: '한국어', type: 'select', options: ['한국어', 'English'] },
-    ],
+    items: [],
   },
 ];
 
 export default function Settings() {
   const [data, setData] = useState(SECTIONS);
+  const [theme, setTheme] = useTheme();
 
   const updateToggle = (si, ii) => {
     setData((d) => d.map((s, sIdx) => sIdx !== si ? s : {
@@ -49,9 +38,22 @@ export default function Settings() {
 
       {data.map((section, si) => (
         <div key={section.title} className="card" style={{ padding: 0, overflow: 'hidden' }}>
-          <div style={{ padding: '18px 28px', borderBottom: '1px solid var(--line-alternative)', background: 'var(--cool-neutral-99)' }}>
+          <div style={{ padding: '18px 28px', borderBottom: '1px solid var(--line-alternative)', background: 'var(--surface-alternative)' }}>
             <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-strong)' }}>{section.title}</span>
           </div>
+          {section.title === '화면 설정' && (
+            <div style={{ padding: '18px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontSize: 14, color: 'var(--text-neutral)', fontWeight: 500 }}>테마</span>
+              <div className="segment">
+                <button type="button" className={`segment__btn${theme === 'light' ? ' segment__btn--active' : ''}`} onClick={() => setTheme('light')}>
+                  라이트모드
+                </button>
+                <button type="button" className={`segment__btn${theme === 'dark' ? ' segment__btn--active' : ''}`} onClick={() => setTheme('dark')}>
+                  다크모드
+                </button>
+              </div>
+            </div>
+          )}
           {section.items.map((item, ii) => (
             <div key={item.label} style={{ padding: '18px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: ii < section.items.length - 1 ? '1px solid var(--line-alternative)' : 'none' }}>
               <span style={{ fontSize: 14, color: 'var(--text-neutral)', fontWeight: 500 }}>{item.label}</span>

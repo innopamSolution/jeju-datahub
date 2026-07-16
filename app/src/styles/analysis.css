@@ -23,7 +23,7 @@
   font-weight: var(--weight-bold); color: var(--text-strong); margin: 0;
 }
 .field { display: flex; flex-direction: column; gap: var(--space-8); }
-.field__label { font-size: var(--label1-size); font-weight: var(--weight-semibold); color: var(--text-alternative); }
+.field__label { font-size: var(--label1-size); font-weight: var(--weight-semibold); color: var(--text-neutral); }
 .field__select {
   display: flex; align-items: center; justify-content: space-between;
   height: 46px; padding: 0 var(--space-16);
@@ -45,14 +45,14 @@
   font-weight: var(--weight-semibold); color: var(--text-strong);
   white-space: nowrap;
 }
-.field__tilde { color: var(--text-assistive); font-weight: var(--weight-semibold); }
+.field__tilde { color: var(--text-neutral); font-weight: var(--weight-semibold); }
 .grid-seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
 .grid-seg button {
   height: 42px; border-radius: var(--radius-10);
   border: 1px solid var(--line-normal); background: var(--fill-normal);
   font-family: var(--font-body); font-size: var(--label2-size); font-weight: var(--weight-semibold);
   letter-spacing: -0.02em; white-space: nowrap; padding: 0 var(--space-4);
-  color: var(--text-alternative); cursor: pointer;
+  color: var(--text-neutral); cursor: pointer;
 }
 .grid-seg button.is-active { background: var(--primary); color: #fff; border-color: var(--primary); }
 .btn-run {
@@ -94,7 +94,7 @@
 .sim-sec + .sim-sec { margin-top: var(--space-24); padding-top: var(--space-24); border-top: 1px solid var(--line-alternative); }
 .sim-sec__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-12); margin-bottom: var(--space-16); }
 .sim-sec__title { font-family: var(--font-sans); font-size: var(--heading2-size); font-weight: var(--weight-bold); color: var(--text-strong); margin: 0; }
-.sim-sec__sub { font-size: var(--label2-size); color: var(--text-assistive); margin: var(--space-4) 0 var(--space-16); }
+.sim-sec__sub { font-size: var(--label2-size); color: var(--text-neutral); margin: var(--space-4) 0 var(--space-16); }
 .size-chip {
   flex-shrink: 0; display: inline-flex; align-items: center;
   height: 26px; padding: 0 var(--space-12);
@@ -122,11 +122,11 @@
   border-bottom: 1px solid var(--line-alternative);
 }
 .rl__row:last-child { border-bottom: none; }
-.rl__rank { flex-shrink: 0; width: 22px; font-family: var(--font-sans); font-size: var(--label1-size); font-weight: var(--weight-bold); color: var(--text-assistive); text-align: center; padding-top: 3px; }
+.rl__rank { flex-shrink: 0; width: 22px; font-family: var(--font-sans); font-size: var(--label1-size); font-weight: var(--weight-bold); color: var(--text-neutral); text-align: center; padding-top: 3px; }
 .rl__main { flex: 1; min-width: 0; }
 .rl__top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-12); }
 .rl__name { display: flex; align-items: center; gap: var(--space-8); font-size: var(--headline2-size); font-weight: var(--weight-bold); color: var(--text-strong); }
 .rl__name .dot { width: 8px; height: 8px; flex-shrink: 0; border-radius: 50%; }
-.rl__sub { font-size: var(--label2-size); color: var(--text-assistive); margin-top: 3px; }
+.rl__sub { font-size: var(--label2-size); color: var(--text-neutral); margin-top: 3px; }
 .rl__val { text-align: right; font-family: var(--font-sans); white-space: nowrap; flex-shrink: 0; }
 .rl__cnt { font-size: var(--headline1-size); font-weight: var(--weight-bold); color: var(--text-strong); }
