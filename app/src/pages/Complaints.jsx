@@ -583,6 +583,11 @@ export default function Complaints() {
                   </div>
                 ))}
               </div>
+              {SENTIMENT_REGIONS.length > 5 && (
+                <button className="card-link" type="button" style={{ width: '100%', justifyContent: 'center' }} onClick={() => setSentiExpanded((v) => !v)}>
+                  {sentiExpanded ? '접기' : `더보기 (${SENTIMENT_REGIONS.length - 5})`} <Icon name={sentiExpanded ? 'chevron-down' : 'chevron-right'} size={16} />
+                </button>
+              )}
               <div style={{ display: 'flex', gap: 12, paddingTop: 8, borderTop: '1px solid var(--line-alternative)', marginTop: 4 }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: 'var(--text-alternative)' }}>
                   <span style={{ width: 7, height: 7, borderRadius: 2, background: 'var(--green-50)', display: 'inline-block' }} /> 긍정
