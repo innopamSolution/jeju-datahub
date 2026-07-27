@@ -419,7 +419,7 @@ export default function Complaints() {
       {/* ── Content ── */}
       <div className="content" style={{ flex: 1, minHeight: 0 }}>
 
-        {/* Stat cards — 5열 */}
+        {/* Stat cards — 4열 (Figma 250727 수정본: 공영주차장 KPI → 민원 감정 분석 KPI로 교체) */}
         <section className="stat-row stat-row--4">
           <div className="card stat">
             <div className="stat__icon stat__icon--blue"><Icon name="document" size={26} /></div>
@@ -427,6 +427,17 @@ export default function Complaints() {
               <div className="stat__label">총 민원 건수</div>
               <div className="stat__value">247</div>
               <div className="stat__delta"><span className="delta-pos">↗ +12%</span> 전기 대비</div>
+            </div>
+          </div>
+          <div className="card stat">
+            <div className="stat__icon stat__icon--violet"><Icon name="chart" size={26} /></div>
+            <div>
+              <div className="stat__label">민원 감정 분석</div>
+              <div className="stat__value">부정 {SENTIMENT_OVERALL.neg}%</div>
+              <SentiBar pos={SENTIMENT_OVERALL.pos} neu={SENTIMENT_OVERALL.neu} neg={SENTIMENT_OVERALL.neg} width={140} height={5} />
+              <div className="stat__delta">
+                긍정 {SENTIMENT_OVERALL.pos}% · 보통 {SENTIMENT_OVERALL.neu}% · <span className="delta-neg">▲{SENTIMENT_OVERALL.deltaPp}%p</span> 전기 대비
+              </div>
             </div>
           </div>
           <div className="card stat">
@@ -443,14 +454,6 @@ export default function Complaints() {
               <div className="stat__label">수요 부족 지역</div>
               <div className="stat__value">7</div>
               <div className="stat__delta"><span className="delta-neg">↘ -1개</span> 전기 대비</div>
-            </div>
-          </div>
-          <div className="card stat">
-            <div className="stat__icon stat__icon--violet"><Icon name="company" size={26} /></div>
-            <div>
-              <div className="stat__label">공영주차장</div>
-              <div className="stat__value">{SEOGWIPO_PARKING.length}</div>
-              <div className="stat__delta">2026년 5월말 기준</div>
             </div>
           </div>
         </section>
