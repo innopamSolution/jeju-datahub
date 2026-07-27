@@ -10,6 +10,15 @@ import DsSelect from '../components/DsSelect';
 import NotificationBell from '../components/NotificationBell';
 import { SEOGWIPO_PARKING } from '../data/seogwipoParking';
 
+const FROWN_ICON = (
+  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" aria-hidden="true">
+    <circle cx="12" cy="12" r="9.25" stroke="currentColor" strokeWidth="1.6" />
+    <circle cx="8.5" cy="10" r="1.1" fill="currentColor" />
+    <circle cx="15.5" cy="10" r="1.1" fill="currentColor" />
+    <path d="M8.3 16c.9-1.4 2.2-2.1 3.7-2.1s2.8.7 3.7 2.1" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" fill="none" />
+  </svg>
+);
+
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="22" height="22" aria-hidden="true" style={{ flexShrink: 0 }}>
     <path d="M18.4 8.6c.2-2.5 2.4-4.4 4.9-4.1-.2 2.5-2.4 4.3-4.9 4.1Z" fill="#3DA35D" />
