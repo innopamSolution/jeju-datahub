@@ -205,11 +205,21 @@ function GisMap({ layerState }) {
         .addTo(demandLayer);
     });
 
+    /* ── 행정동 경계 레이어 (신규) ── */
+    const dongBoundaryLayer = L.layerGroup();
+    regions.forEach((r) => {
+      L.polygon(hexPoly(r.c, 0.017, 0.013), {
+        color: '#9e9e9e', weight: 1.2, opacity: 0.8, dashArray: '3,3',
+        fillOpacity: 0,
+      }).bindPopup(`<b>${r.name} 행정동 경계</b>`).addTo(dongBoundaryLayer);
+    });
+
     layerGroupsRef.current = {
       hotspot: [boundaryLayer, regionGroup],
       parking: [parkingGroup],
       enforce: [enforceLayer],
       demand:  [demandLayer],
+      dongBoundary: [dongBoundaryLayer],
     };
     mapRef.current = map;
 
