@@ -563,12 +563,9 @@ export default function Complaints() {
                   <h2 className="card-head__title">부정 민원 상위 지역</h2>
                   <p className="card-head__sub">감정 분석 기준 · 부정 비율 순</p>
                 </div>
-                <button className="card-link" type="button">
-                  전체 <Icon name="chevron-right" size={16} />
-                </button>
               </div>
               <div className="rl">
-                {SENTIMENT_REGIONS.map((s) => (
+                {(sentiExpanded ? SENTIMENT_REGIONS : SENTIMENT_REGIONS.slice(0, 5)).map((s) => (
                   <div key={s.rank} className="rl__row">
                     <span className="rl__rank">{s.rank}</span>
                     <div className="rl__main">
