@@ -1,6 +1,6 @@
 import { ICON_PATHS } from '../styles/iconPaths';
 
-export default function Icon({ name, size = 20, className = '' }) {
+export default function Icon({ name, size = 20, className = '', style }) {
   const paths = ICON_PATHS[name];
   if (!paths) return null;
   return (
@@ -11,7 +11,7 @@ export default function Icon({ name, size = 20, className = '' }) {
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden="true"
-      style={{ display: 'inline-block', flexShrink: 0 }}
+      style={{ display: 'inline-block', flexShrink: 0, ...style }}
     >
       {paths.map((p, i) => (
         <path
