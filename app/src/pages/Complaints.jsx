@@ -58,11 +58,21 @@ const REGIONS = [
 const SENTIMENT_OVERALL = { pos: 12, neu: 26, neg: 62, deltaPp: 5 };
 
 const SENTIMENT_REGIONS = [
-  { rank: 1, name: '연동동', pos: 6,  neu: 16, neg: 78, negCount: 41 },
-  { rank: 2, name: '이도동', pos: 8,  neu: 21, neg: 71, negCount: 21 },
-  { rank: 3, name: '노형동', pos: 9,  neu: 25, neg: 66, negCount: 25 },
-  { rank: 4, name: '아라동', pos: 14, neu: 28, neg: 58, negCount: 12 },
-  { rank: 5, name: '삼도동', pos: 18, neu: 33, neg: 49, negCount: 5  },
+  { rank: 1,  name: '연동동',  pos: 6,  neu: 16, neg: 78, negCount: 41 },
+  { rank: 2,  name: '이도동',  pos: 8,  neu: 21, neg: 71, negCount: 21 },
+  { rank: 3,  name: '노형동',  pos: 9,  neu: 25, neg: 66, negCount: 25 },
+  { rank: 4,  name: '아라동',  pos: 14, neu: 28, neg: 58, negCount: 12 },
+  { rank: 5,  name: '삼도동',  pos: 18, neu: 33, neg: 49, negCount: 5  },
+  { rank: 6,  name: '이도2동', pos: 20, neu: 35, neg: 45, negCount: 9  },
+  { rank: 7,  name: '화북동',  pos: 22, neu: 38, neg: 40, negCount: 8  },
+  { rank: 8,  name: '삼양동',  pos: 25, neu: 40, neg: 35, negCount: 7  },
+  { rank: 9,  name: '봉개동',  pos: 28, neu: 42, neg: 30, negCount: 6  },
+  { rank: 10, name: '오라동',  pos: 30, neu: 45, neg: 25, negCount: 5  },
+  { rank: 11, name: '외도동',  pos: 33, neu: 47, neg: 20, negCount: 4  },
+  { rank: 12, name: '이호동',  pos: 36, neu: 49, neg: 15, negCount: 3  },
+  { rank: 13, name: '도두동',  pos: 40, neu: 48, neg: 12, negCount: 2  },
+  { rank: 14, name: '용담동',  pos: 44, neu: 46, neg: 10, negCount: 2  },
+  { rank: 15, name: '건입동',  pos: 47, neu: 45, neg: 8,  negCount: 1  },
 ];
 
 const LAYER_DEFS = [
