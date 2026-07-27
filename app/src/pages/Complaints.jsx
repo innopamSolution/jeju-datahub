@@ -287,6 +287,8 @@ function GisMap({ layerState }) {
 export default function Complaints() {
   const navigate = useNavigate();
   const [period, setPeriod]         = useState('오늘');
+  const [regionsExpanded, setRegionsExpanded] = useState(false);
+  const [sentiExpanded, setSentiExpanded]     = useState(false);
   const [datePopOpen, setDatePopOpen] = useState(false);
   const [filterOpen, setFilterOpen]  = useState(false);
   const [rangeLabel, setRangeLabel]  = useState('오늘');
