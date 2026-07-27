@@ -273,8 +273,7 @@ export default function Complaints() {
   const [dateFrom, setDateFrom]      = useState('2025-11-01');
   const [dateTo, setDateTo]          = useState('2025-12-01');
   const [riskSeg, setRiskSeg]        = useState('전체');
-  const [mapRiskTab, setMapRiskTab]   = useState('전체');
-  const [mapSentiTab, setMapSentiTab] = useState('전체');
+  const [sentiSeg, setSentiSeg]      = useState('전체');
   const [customRange, setCustomRange] = useState(null);
   const [layers, setLayers]          = useState(() =>
     Object.fromEntries(LAYER_DEFS.map((d) => [d.key, d.defaultOn]))
