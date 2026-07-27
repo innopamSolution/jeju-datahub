@@ -43,11 +43,23 @@ const HOTSPOTS = [
   { rank: 5, rankColor: 'var(--rank-5)', name: '삼도1동 골목',      meta: '삼도동 · 반경 100m',  badge: 'badge--caution', label: '주의' },
 ];
 
+/* ── 민원 감정 분석 (Figma 250727 수정본 신규) ── */
+const SENTIMENT_OVERALL = { pos: 12, neu: 26, neg: 62, deltaPp: 5 };
+
+const SENTIMENT_REGIONS = [
+  { rank: 1, name: '연동동', pos: 6,  neu: 16, neg: 78, negCount: 41 },
+  { rank: 2, name: '이도동', pos: 8,  neu: 21, neg: 71, negCount: 21 },
+  { rank: 3, name: '노형동', pos: 9,  neu: 25, neg: 66, negCount: 25 },
+  { rank: 4, name: '아라동', pos: 14, neu: 28, neg: 58, negCount: 12 },
+  { rank: 5, name: '삼도동', pos: 18, neu: 33, neg: 49, negCount: 5  },
+];
+
 const LAYER_DEFS = [
-  { key: 'hotspot', label: '민원 다발 지역', defaultOn: true  },
-  { key: 'enforce', label: '단속 집중 지역', defaultOn: false },
-  { key: 'demand',  label: '수요 부족 지역', defaultOn: false },
-  { key: 'parking', label: '공영주차장',     defaultOn: true  },
+  { key: 'hotspot',     label: '민원 다발 지역', defaultOn: true  },
+  { key: 'enforce',     label: '단속 집중 지역', defaultOn: false },
+  { key: 'demand',      label: '수요 부족 지역', defaultOn: false },
+  { key: 'parking',     label: '공영주차장',     defaultOn: true  },
+  { key: 'dongBoundary', label: '행정동 경계',    defaultOn: true  },
 ];
 
 const LEGEND_ITEMS = [
