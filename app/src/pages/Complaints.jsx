@@ -550,8 +550,8 @@ export default function Complaints() {
                 ))}
               </div>
               {REGIONS.length > 5 && (
-                <button className="card-link" type="button" style={{ width: '100%', justifyContent: 'center' }} onClick={() => setRegionsExpanded((v) => !v)}>
-                  {regionsExpanded ? '접기' : `더보기 (${REGIONS.length - 5})`} <Icon name="chevron-down" size={16} style={regionsExpanded ? { transform: 'rotate(180deg)' } : undefined} />
+                <button className="card-link" type="button" style={{ width: '100%', justifyContent: 'center', color: 'var(--text-alternative)' }} onClick={() => setRegionsExpanded((v) => !v)}>
+                  {regionsExpanded ? '접기' : `더보기 (${REGIONS.length - 5})`} <Icon name="chevron-down" size={16} style={{ color: 'var(--text-alternative)', ...(regionsExpanded ? { transform: 'rotate(180deg)' } : null) }} />
                 </button>
               )}
             </div>
