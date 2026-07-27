@@ -433,10 +433,10 @@ export default function Complaints() {
             </div>
           </div>
           <div className="card stat">
-            <div className="stat__icon stat__icon--violet"><Icon name="chart" size={26} /></div>
+            <div className="stat__icon stat__icon--violet">{FROWN_ICON}</div>
             <div>
               <div className="stat__label">민원 감정 분석</div>
-              <div className="stat__value"><span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-alternative)', marginRight: 4 }}>부정</span>{SENTIMENT_OVERALL.neg}%</div>
+              <div className="stat__value"><span style={{ fontSize: 18, fontWeight: 700, marginRight: 4 }}>부정</span>{SENTIMENT_OVERALL.neg}%</div>
               <SentiBar pos={SENTIMENT_OVERALL.pos} neu={SENTIMENT_OVERALL.neu} neg={SENTIMENT_OVERALL.neg} width={140} height={5} />
               <div className="stat__delta">
                 긍정 {SENTIMENT_OVERALL.pos}% · 보통 {SENTIMENT_OVERALL.neu}% · <span className="delta-neg">▲{SENTIMENT_OVERALL.deltaPp}%p</span> 전기 대비
