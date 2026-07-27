@@ -528,12 +528,9 @@ export default function Complaints() {
                   <h2 className="card-head__title">지역별 민원 현황</h2>
                   <p className="card-head__sub">읍·면·동 기준 집계</p>
                 </div>
-                <button className="card-link" type="button">
-                  전체 <Icon name="chevron-right" size={16} />
-                </button>
               </div>
               <div className="rl">
-                {REGIONS.map((r) => (
+                {(regionsExpanded ? REGIONS : REGIONS.slice(0, 5)).map((r) => (
                   <div key={r.rank} className="rl__row">
                     <span className="rl__rank">{r.rank}</span>
                     <div className="rl__main">
@@ -552,6 +549,11 @@ export default function Complaints() {
                   </div>
                 ))}
               </div>
+              {REGIONS.length > 5 && (
+                <button className="card-link" type="button" style={{ width: '100%', justifyContent: 'center' }} onClick={() => setRegionsExpanded((v) => !v)}>
+                  {regionsExpanded ? '접기' : `더보기 (${REGIONS.length - 5})`} <Icon name={regionsExpanded ? 'chevron-down' : 'chevron-right'} size={16} />
+                </button>
+              )}
             </div>
 
             {/* 부정 민원 상위 지역 (Figma 250727 수정본: 민원 집중구역 → 감정 분석 랭킹으로 교체) */}
