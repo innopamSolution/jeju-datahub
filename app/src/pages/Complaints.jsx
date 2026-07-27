@@ -411,9 +411,22 @@ export default function Complaints() {
               ))}
             </div>
           </div>
+          <div className="detail-filter__group">
+            <span className="detail-filter__label">감정</span>
+            <div className="risk-seg">
+              {['전체','긍정','보통','부정'].map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  className={sentiSeg === v ? 'is-active' : ''}
+                  onClick={() => setSentiSeg(v)}
+                >{v}</button>
+              ))}
+            </div>
+          </div>
           <div className="detail-filter__foot">
             <button className="btn" type="button" style={{ height: 38 }}
-              onClick={() => setRiskSeg('전체')}>초기화</button>
+              onClick={() => { setRiskSeg('전체'); setSentiSeg('전체'); }}>초기화</button>
             <button className="btn btn--apply" type="button" style={{ height: 38 }}>필터 적용</button>
           </div>
         </div>
