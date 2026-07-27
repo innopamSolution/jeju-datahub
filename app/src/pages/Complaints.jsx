@@ -584,8 +584,8 @@ export default function Complaints() {
                 ))}
               </div>
               {SENTIMENT_REGIONS.length > 5 && (
-                <button className="card-link" type="button" style={{ width: '100%', justifyContent: 'center' }} onClick={() => setSentiExpanded((v) => !v)}>
-                  {sentiExpanded ? '접기' : `더보기 (${SENTIMENT_REGIONS.length - 5})`} <Icon name="chevron-down" size={16} style={sentiExpanded ? { transform: 'rotate(180deg)' } : undefined} />
+                <button className="card-link" type="button" style={{ width: '100%', justifyContent: 'center', color: 'var(--text-alternative)' }} onClick={() => setSentiExpanded((v) => !v)}>
+                  {sentiExpanded ? '접기' : `더보기 (${SENTIMENT_REGIONS.length - 5})`} <Icon name="chevron-down" size={16} style={{ color: 'var(--text-alternative)', ...(sentiExpanded ? { transform: 'rotate(180deg)' } : null) }} />
                 </button>
               )}
               <div style={{ display: 'flex', gap: 12, paddingTop: 8, borderTop: '1px solid var(--line-alternative)', marginTop: 4 }}>
