@@ -35,14 +35,6 @@ const REGIONS = [
   { rank: 5, name: '삼도동', dotColor: 'var(--green-50)',  count: 10, delta: '—',    deltaClass: 't-flat', illegal: 14, etc: 4 },
 ];
 
-const HOTSPOTS = [
-  { rank: 1, rankColor: 'var(--rank-1)', name: '연동 대로변',      meta: '반경 200m · 52건',    badge: 'badge--severe',  label: '심각' },
-  { rank: 2, rankColor: 'var(--rank-3)', name: '노형사거리 인근',   meta: '반경 150m · 38건',    badge: 'badge--warn',    label: '경고' },
-  { rank: 3, rankColor: 'var(--rank-3)', name: '이도2동 상업지구',  meta: '반경 180m · 28건',    badge: 'badge--warn',    label: '경고' },
-  { rank: 4, rankColor: 'var(--rank-4)', name: '아라동 주변',       meta: '아라동 · 반경 120m',  badge: 'badge--caution', label: '주의' },
-  { rank: 5, rankColor: 'var(--rank-5)', name: '삼도1동 골목',      meta: '삼도동 · 반경 100m',  badge: 'badge--caution', label: '주의' },
-];
-
 /* ── 민원 감정 분석 (Figma 250727 수정본 신규) ── */
 const SENTIMENT_OVERALL = { pos: 12, neu: 26, neg: 62, deltaPp: 5 };
 
