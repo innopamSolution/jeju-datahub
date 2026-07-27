@@ -673,18 +673,6 @@ input[type='number']:focus-visible {
 }
 .risk-seg button.is-active { background: var(--primary); color: #fff; box-shadow: var(--shadow-emphasize); }
 
-.risk-seg--sm button { height: 24px; padding: 0 var(--space-10); font-size: var(--caption1-size); }
-
-/* 민원현황 지도 전용 필터 (행정구역/민원유형/위험단계/감정) */
-.map-filters {
-  display: flex; align-items: center; gap: var(--space-10); flex-wrap: wrap;
-  padding: var(--space-10) var(--space-14);
-  border-bottom: 1px solid var(--line-alternative);
-}
-.map-filters__group { display: flex; align-items: center; gap: var(--space-8); }
-.map-filters__label { font-size: var(--caption1-size); color: var(--text-alternative); white-space: nowrap; }
-.map-filters__select select { height: 32px; font-size: var(--caption1-size); }
-
 /* ============================================================
    투자우선순위 보드 (map-controls, prio list, lot popup)
    ============================================================ */
