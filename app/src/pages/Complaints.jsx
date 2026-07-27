@@ -69,6 +69,17 @@ const LEGEND_ITEMS = [
   { label: '양호 (10건 미만)', color: 'var(--cool-neutral-80)' },
 ];
 
+/* 민원 감정 3분할 바 (긍정/보통/부정) */
+function SentiBar({ pos, neu, neg, width = 120, height = 6 }) {
+  return (
+    <div style={{ display: 'flex', width, height, borderRadius: height / 2, overflow: 'hidden', flexShrink: 0 }}>
+      <div style={{ width: `${pos}%`, background: 'var(--green-50)' }} />
+      <div style={{ width: `${neu}%`, background: 'var(--cool-neutral-80)' }} />
+      <div style={{ width: `${neg}%`, background: 'var(--red-50)' }} />
+    </div>
+  );
+}
+
 /* ── Leaflet 지도 컴포넌트 ── */
 function GisMap({ layerState }) {
   const ref = useRef(null);
