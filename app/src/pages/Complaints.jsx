@@ -479,37 +479,6 @@ export default function Complaints() {
 
           {/* 지도 카드 */}
           <div className="card map-card">
-            {/* 지도 전용 필터 (Figma 250727 수정본 신규: 항상 노출되는 행정구역/민원유형/위험단계/감정 필터) */}
-            <div className="map-filters">
-              <DsSelect className="map-filters__select" style={{ minWidth: 100 }}>
-                <option>제주시</option>
-                <option>서귀포시</option>
-                <option>제주 전체</option>
-              </DsSelect>
-              <DsSelect className="map-filters__select" style={{ minWidth: 100 }}>
-                <option>전체</option>
-                <option>불법주정차</option>
-                <option>주차장 혼잡</option>
-                <option>시설 고장</option>
-                <option>기타</option>
-              </DsSelect>
-              <div className="map-filters__group">
-                <span className="map-filters__label">위험 단계</span>
-                <div className="risk-seg risk-seg--sm">
-                  {['전체', '심각', '주의', '보통', '양호'].map((v) => (
-                    <button key={v} type="button" className={mapRiskTab === v ? 'is-active' : ''} onClick={() => setMapRiskTab(v)}>{v}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="map-filters__group">
-                <span className="map-filters__label">감정</span>
-                <div className="risk-seg risk-seg--sm">
-                  {['전체', '긍정', '보통', '부정'].map((v) => (
-                    <button key={v} type="button" className={mapSentiTab === v ? 'is-active' : ''} onClick={() => setMapSentiTab(v)}>{v}</button>
-                  ))}
-                </div>
-              </div>
-            </div>
             <div className="map-body">
               <GisMap layerState={layers} />
 
