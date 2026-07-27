@@ -564,28 +564,48 @@ export default function Complaints() {
               </div>
             </div>
 
-            {/* 민원 집중구역 */}
+            {/* 부정 민원 상위 지역 (Figma 250727 수정본: 민원 집중구역 → 감정 분석 랭킹으로 교체) */}
             <div className="card cluster">
               <div className="card-head">
                 <div>
-                  <h2 className="card-head__title">
-                    민원 집중구역 <span className="count-badge">5개소</span>
-                  </h2>
-                  <p className="card-head__sub">AI 클러스터링 자동 분석 결과</p>
+                  <h2 className="card-head__title">부정 민원 상위 지역</h2>
+                  <p className="card-head__sub">감정 분석 기준 · 부정 비율 순</p>
                 </div>
+                <button className="card-link" type="button">
+                  전체 <Icon name="chevron-right" size={16} />
+                </button>
               </div>
-              <div className="hot-list">
-                {HOTSPOTS.map((h) => (
-                  <div key={h.rank} className="hot">
-                    <span className="hot__rank" style={{ background: h.rankColor }}>{h.rank}</span>
-                    <div className="hot__body">
-                      <div className="hot__name">{h.name}</div>
-                      <div className="hot__meta">{h.meta}</div>
+              <div className="rl">
+                {SENTIMENT_REGIONS.map((s) => (
+                  <div key={s.rank} className="rl__row">
+                    <span className="rl__rank">{s.rank}</span>
+                    <div className="rl__main">
+                      <div className="rl__top">
+                        <span className="rl__name">{s.name}</span>
+                        <span className="rl__val">
+                          <span className="rl__cnt">{s.neg}%</span>
+                        </span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                        <SentiBar pos={s.pos} neu={s.neu} neg={s.neg} width={120} height={5} />
+                        <span className="rl__sub" style={{ whiteSpace: 'nowrap' }}>부정 {s.negCount}건</span>
+                      </div>
                     </div>
-                    <span className={`badge ${h.badge}`}>{h.label}</span>
                   </div>
                 ))}
               </div>
+              <div style={{ display: 'flex', gap: 12, paddingTop: 8, borderTop: '1px solid var(--line-alternative)', marginTop: 4 }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: 'var(--text-alternative)' }}>
+                  <span style={{ width: 7, height: 7, borderRadius: 2, background: 'var(--green-50)', display: 'inline-block' }} /> 긍정
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: 'var(--text-alternative)' }}>
+                  <span style={{ width: 7, height: 7, borderRadius: 2, background: 'var(--cool-neutral-80)', display: 'inline-block' }} /> 보통
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: 'var(--text-alternative)' }}>
+                  <span style={{ width: 7, height: 7, borderRadius: 2, background: 'var(--red-50)', display: 'inline-block' }} /> 부정
+                </span>
+              </div>
+              <p style={{ fontSize: 10, color: 'var(--text-alternative)', margin: '4px 0 0' }}>부정 비율 = 부정 민원 ÷ 지역 전체 민원</p>
             </div>
 
           </div>
