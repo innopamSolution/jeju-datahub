@@ -37,11 +37,21 @@ const AI_ICON = (
 
 /* ── 지역 데이터 (HTML 민원현황.html 기준) ── */
 const REGIONS = [
-  { rank: 1, name: '연동동', dotColor: 'var(--red-50)',    count: 52, delta: '▲13%', deltaClass: 't-up',   illegal: 41, etc: 11 },
-  { rank: 2, name: '노형동', dotColor: 'var(--orange-50)', count: 38, delta: '▲6%',  deltaClass: 't-up',   illegal: 30, etc: 8 },
-  { rank: 3, name: '이도동', dotColor: 'var(--orange-50)', count: 29, delta: '▼3%',  deltaClass: 't-down', illegal: 22, etc: 7 },
-  { rank: 4, name: '아라동', dotColor: 'var(--blue-50)',   count: 21, delta: '▼6%',  deltaClass: 't-down', illegal: 16, etc: 5 },
-  { rank: 5, name: '삼도동', dotColor: 'var(--green-50)',  count: 10, delta: '—',    deltaClass: 't-flat', illegal: 14, etc: 4 },
+  { rank: 1,  name: '연동동',   dotColor: 'var(--red-50)',    count: 52, delta: '▲13%', deltaClass: 't-up',   illegal: 41, etc: 11 },
+  { rank: 2,  name: '노형동',   dotColor: 'var(--orange-50)', count: 38, delta: '▲6%',  deltaClass: 't-up',   illegal: 30, etc: 8 },
+  { rank: 3,  name: '이도동',   dotColor: 'var(--orange-50)', count: 29, delta: '▼3%',  deltaClass: 't-down', illegal: 22, etc: 7 },
+  { rank: 4,  name: '아라동',   dotColor: 'var(--blue-50)',   count: 21, delta: '▼6%',  deltaClass: 't-down', illegal: 16, etc: 5 },
+  { rank: 5,  name: '삼도동',   dotColor: 'var(--green-50)',  count: 10, delta: '—',    deltaClass: 't-flat', illegal: 7,  etc: 3 },
+  { rank: 6,  name: '이도2동',  dotColor: 'var(--green-50)',  count: 9,  delta: '▲2%',  deltaClass: 't-up',   illegal: 6,  etc: 3 },
+  { rank: 7,  name: '화북동',   dotColor: 'var(--green-50)',  count: 8,  delta: '▼1%',  deltaClass: 't-down', illegal: 6,  etc: 2 },
+  { rank: 8,  name: '삼양동',   dotColor: 'var(--green-50)',  count: 7,  delta: '—',    deltaClass: 't-flat', illegal: 5,  etc: 2 },
+  { rank: 9,  name: '봉개동',   dotColor: 'var(--green-50)',  count: 6,  delta: '▲4%',  deltaClass: 't-up',   illegal: 4,  etc: 2 },
+  { rank: 10, name: '오라동',   dotColor: 'var(--green-50)',  count: 5,  delta: '▼2%',  deltaClass: 't-down', illegal: 4,  etc: 1 },
+  { rank: 11, name: '외도동',   dotColor: 'var(--green-50)',  count: 4,  delta: '—',    deltaClass: 't-flat', illegal: 3,  etc: 1 },
+  { rank: 12, name: '이호동',   dotColor: 'var(--green-50)',  count: 4,  delta: '▲1%',  deltaClass: 't-up',   illegal: 3,  etc: 1 },
+  { rank: 13, name: '도두동',   dotColor: 'var(--green-50)',  count: 3,  delta: '—',    deltaClass: 't-flat', illegal: 2,  etc: 1 },
+  { rank: 14, name: '용담동',   dotColor: 'var(--green-50)',  count: 2,  delta: '▼1%',  deltaClass: 't-down', illegal: 1,  etc: 1 },
+  { rank: 15, name: '건입동',   dotColor: 'var(--green-50)',  count: 2,  delta: '—',    deltaClass: 't-flat', illegal: 1,  etc: 1 },
 ];
 
 /* ── 민원 감정 분석 (Figma 250727 수정본 신규) ── */
