@@ -163,13 +163,6 @@ export default function HotspotAnalysis() {
           <div className="card sim-panel sim-panel--left">
             <h2 className="sim-panel__title">집중 구역 분석 설정</h2>
 
-            <div className="field">
-              <label className="field__label">분석 내용</label>
-              <div className="field__select">
-                불법 주차 집중 구역
-                <Icon name="chevron-down" size={18} />
-              </div>
-            </div>
 
             <div className="field">
               <label className="field__label">분석 지역</label>
