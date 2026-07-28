@@ -202,10 +202,6 @@ export default function AiAssistant() {
                             <button type="button" className="cite__link">조례 원문 보기 <span aria-hidden="true">→</span></button>
                           </div>
                           <p className="bubble__p">연동은 상업지역으로 단속 우선 지역에 해당합니다.</p>
-                          <div className="chip-row">
-                            <button className="chip" onClick={() => submit('5월달 민원현황 요약해줘')}>민원 현황 요약 <span aria-hidden="true">→</span></button>
-                            <button className="chip" onClick={() => setReportPreview(SUMMARY_REPORT)}>리포트 생성 <span aria-hidden="true">→</span></button>
-                          </div>
                         </>
                       ) : m.kind === 'summary' ? (
                         <>
