@@ -346,7 +346,7 @@ export default function LifestyleSimulation() {
                     <span className="size-chip">{sizeChip}</span>
                   </div>
                   <div className="sum">
-                    {SUMMARY.map(s => (
+                    {modeCfg.summary.map(s => (
                       <div key={s.label} className={`sum__row${s.total ? ' sum__row--total' : ''}`}>
                         <span>{s.dot && <span className="dot" style={{ background: s.dot }} />}{s.label}</span>
                         <b>{s.val}</b>
@@ -356,10 +356,10 @@ export default function LifestyleSimulation() {
                 </div>
 
                 <div className="sim-sec">
-                  <h3 className="sim-sec__title">민원 집중 구역</h3>
-                  <p className="sim-sec__sub">격자 기반 민원 집중 구역</p>
+                  <h3 className="sim-sec__title">{modeCfg.sectionTitle}</h3>
+                  <p className="sim-sec__sub">{modeCfg.sectionSub}</p>
                   <div className="rl">
-                    {RANKING.map((r, i) => (
+                    {buildRanking(analysisType).map((r, i) => (
                       <div key={i} className="rl__row">
                         <span className="rl__rank">{r.rank}</span>
                         <div className="rl__main">
