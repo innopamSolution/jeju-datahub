@@ -1202,6 +1202,27 @@ input[type='number']:focus-visible {
 .crit-row__unit { font-size: var(--body2-size); color: var(--text-neutral); white-space: nowrap; }
 
 .modal__dialog--sm { max-width: 460px; }
+.modal__dialog--rpt { max-width: 640px; }
+
+/* AI 어시스턴트 · 리포트 미리보기 */
+.ai-rpt-body { display: flex; flex-direction: column; gap: var(--space-20); max-height: 70vh; }
+.ai-rpt-doc__title { font-size: var(--headline1-size); font-weight: var(--weight-bold); color: var(--text-strong); margin: 0 0 var(--space-4); }
+.ai-rpt-doc__meta { font-size: var(--label2-size); color: var(--text-alternative); margin: 0 0 var(--space-14); }
+.ai-rpt-doc__rule { height: 1px; background: var(--line-alternative); }
+.ai-rpt-kpis { display: flex; gap: var(--space-12); }
+.ai-rpt-kpi { flex: 1; display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-14); border: 1px solid var(--line-alternative); border-radius: var(--radius-8); background: var(--surface-alternative); }
+.ai-rpt-kpi__label { font-size: var(--label2-size); color: var(--text-alternative); }
+.ai-rpt-kpi__value { font-size: var(--heading2-size); font-weight: var(--weight-bold); color: var(--text-strong); }
+.ai-rpt-kpi__delta { font-size: var(--caption1-size); color: var(--text-alternative); }
+.ai-rpt-summary__title { font-size: var(--label1-size); font-weight: var(--weight-semibold); color: var(--text-strong); margin: 0 0 var(--space-6); }
+.ai-rpt-summary__body { font-size: var(--body2-size); line-height: 1.6; color: var(--text-neutral); margin: 0; }
+.ai-rpt-chart { border: 1px solid var(--line-alternative); border-radius: var(--radius-8); padding: var(--space-14); display: flex; flex-direction: column; gap: var(--space-10); }
+.ai-rpt-chart__title { font-size: var(--label1-size); font-weight: var(--weight-semibold); color: var(--text-strong); margin: 0; }
+.ai-rpt-chart__row { display: flex; align-items: center; gap: var(--space-8); }
+.ai-rpt-chart__label { width: 56px; flex-shrink: 0; font-size: var(--label2-size); color: var(--text-neutral); }
+.ai-rpt-chart__track { flex: 1; height: 14px; background: var(--fill-normal); border-radius: var(--radius-full); overflow: hidden; }
+.ai-rpt-chart__bar { height: 100%; background: var(--primary); border-radius: var(--radius-full); }
+.ai-rpt-chart__val { width: 40px; flex-shrink: 0; text-align: right; font-size: var(--label2-size); color: var(--text-alternative); }
 .form-field { display: flex; flex-direction: column; gap: var(--space-8); margin-bottom: var(--space-20); }
 .form-field__label { font-size: var(--label1-size); font-weight: var(--weight-semibold); color: var(--text-neutral); }
 .form-field__select { width: 100%; }
