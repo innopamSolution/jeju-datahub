@@ -7,7 +7,7 @@ export default function AiReportPreview({ report, onClose }) {
   return (
     <div className="modal">
       <div className="modal__overlay" onClick={onClose} />
-      <div className="modal__dialog modal__dialog--sm" role="dialog" aria-modal="true" aria-label="리포트 미리보기">
+      <div className="modal__dialog modal__dialog--rpt" role="dialog" aria-modal="true" aria-label="리포트 미리보기">
         <div className="modal__head">
           <h2 className="modal__title" style={{ fontSize: 'var(--headline1-size)' }}>리포트 미리보기</h2>
           <button type="button" className="modal__close" aria-label="닫기" onClick={onClose}>✕</button>
