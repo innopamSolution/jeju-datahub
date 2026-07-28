@@ -660,10 +660,10 @@ input[type='number']:focus-visible {
 .detail-filter__foot { margin-left: auto; display: flex; align-items: flex-end; gap: var(--space-8); align-self: stretch; }
 
 /* risk segment (inside detail filter) */
-.risk-seg { display: inline-flex; background: var(--fill-normal); border-radius: var(--radius-10); padding: 3px; gap: 2px; }
+.risk-seg { display: inline-flex; gap: 6px; flex-wrap: wrap; }
 .risk-seg button {
   height: 32px; padding: 0 var(--space-14);
-  border: none; background: transparent; border-radius: var(--radius-8);
+  border: none; background: var(--fill-normal); border-radius: var(--radius-8);
   font-family: var(--font-body); font-size: var(--label2-size); font-weight: var(--weight-semibold);
   color: var(--text-neutral); cursor: pointer; white-space: nowrap;
   transition: all var(--duration-fast) var(--ease-out);
