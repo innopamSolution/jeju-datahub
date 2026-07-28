@@ -170,11 +170,9 @@ export default function ReportManagement() {
                       <tr key={i}>
                         <td><span className="rt-name">{r.author}</span></td>
                         <td>
-                          <div className="field__select field__select--sm" style={{ position: 'relative', padding: 0 }}>
-                            <DsSelect value={draft.dept} onChange={(e) => setDraft((d) => ({ ...d, dept: e.target.value }))}>
-                              {DEPTS.map((v) => <option key={v} value={v}>{v}</option>)}
-                            </DsSelect>
-                          </div>
+                          <DsSelect value={draft.dept} onChange={(e) => setDraft((d) => ({ ...d, dept: e.target.value }))}>
+                            {DEPTS.map((v) => <option key={v} value={v}>{v}</option>)}
+                          </DsSelect>
                         </td>
                         <td>
                           <DsSelect value={draft.cycle} onChange={(e) => setDraft((d) => ({ ...d, cycle: e.target.value }))}>
