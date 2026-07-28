@@ -419,17 +419,14 @@ a { color: inherit; text-decoration: none; }
 .filterbar__label { font-size: var(--label1-size); color: var(--text-neutral); font-weight: var(--weight-medium); }
 .segment {
   display: inline-flex;
-  background: var(--fill-normal);
-  border-radius: var(--radius-10);
-  padding: 3px;
-  gap: 2px;
+  gap: 6px;
 }
 .segment__btn {
   height: 36px;
   white-space: nowrap;
   padding: 0 var(--space-20);
   border: none;
-  background: transparent;
+  background: var(--fill-normal);
   border-radius: var(--radius-8);
   font-family: var(--font-body);
   font-size: var(--label1-size);
