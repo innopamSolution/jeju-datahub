@@ -1087,6 +1087,8 @@ input[type='number']:focus-visible {
 .col-center { text-align: center; }
 .rpt-list .rt td:not(:first-child),
 .rpt-manual .rt td:not(:first-child) { text-align: center; }
+.rpt-list .rt th:first-child,
+.rpt-manual .rt th:first-child { text-align: left; }
 
 .tag { height: 28px; padding: 0 var(--space-12); border-radius: var(--radius-full); border: 1px solid var(--line-normal); background: var(--card-bg); font-family: var(--font-body); font-size: var(--label2-size); font-weight: var(--weight-semibold); color: var(--text-neutral); cursor: pointer; display: inline-flex; align-items: center; gap: var(--space-6); transition: background var(--duration-fast) var(--ease-out); }
 .tag:hover { background: var(--fill-alternative); }
