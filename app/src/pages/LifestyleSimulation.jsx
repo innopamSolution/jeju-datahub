@@ -158,11 +158,14 @@ export default function LifestyleSimulation() {
   const gridLayer   = useRef(null);
   const labelLayer  = useRef(null);
   const cellRef     = useRef(500);
+  const modeRef     = useRef('complaints');
   const [city, setCity] = useState('전체');
   const [dong, setDong] = useState('전체');
   const [gridSize, setGridSize] = useState('500m');
   const [sizeChip, setSizeChip] = useState('500M');
+  const [analysisType, setAnalysisType] = useState('complaints');
   const [showResult, setShowResult] = useState(true);
+  const modeCfg = MODE_CONFIG[analysisType];
 
   useEffect(() => {
     if (mapInst.current) return;
