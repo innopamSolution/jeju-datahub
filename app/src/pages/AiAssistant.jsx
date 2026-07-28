@@ -203,8 +203,30 @@ export default function AiAssistant() {
                           </div>
                           <p className="bubble__p">연동은 상업지역으로 단속 우선 지역에 해당합니다.</p>
                           <div className="chip-row">
-                            <button className="chip" onClick={() => submit('민원 현황 요약')}>민원 현황 요약 <span aria-hidden="true">→</span></button>
-                            <button className="chip" onClick={() => submit('리포트 생성')}>리포트 생성 <span aria-hidden="true">→</span></button>
+                            <button className="chip" onClick={() => submit('5월달 민원현황 요약해줘')}>민원 현황 요약 <span aria-hidden="true">→</span></button>
+                            <button className="chip" onClick={() => setReportPreview(SUMMARY_REPORT)}>리포트 생성 <span aria-hidden="true">→</span></button>
+                          </div>
+                        </>
+                      ) : m.kind === 'summary' ? (
+                        <>
+                          <div className="cite">
+                            <div className="cite__title"><span className="cite__mark" />2026년 5월 민원 요약</div>
+                            <p className="cite__body">2026년 5월 총 민원 247건이 접수되어 전월 대비 12% 증가했습니다. 이 중 불법주차가 183건(74%)으로 가장 많았고, 위험단계 발생은 3건입니다. 읍·면·동별로는 연동 52건, 노형동 38건, 이도동 29건 순으로 민원이 집중되었습니다.</p>
+                          </div>
+                          <p className="bubble__p">연동·노형동이 상업지역을 중심으로 민원이 집중되어 단속 우선 관리가 필요합니다.</p>
+                          <div className="chip-row">
+                            <button className="chip" onClick={() => setReportPreview(SUMMARY_REPORT)}>리포트 생성 <span aria-hidden="true">→</span></button>
+                          </div>
+                        </>
+                      ) : m.kind === 'fire' ? (
+                        <>
+                          <div className="cite">
+                            <div className="cite__title"><span className="cite__mark" />최근 3개월 화재·과열 이벤트 × 주차 민원 상관 분석</div>
+                            <p className="cite__body">최근 3개월(2026.03~05) 화재·과열 이벤트가 많았던 공영주차장과 주차 민원을 교차 분석한 결과, 두 지표가 함께 증가하는 양(+)의 상관관계(상관계수 0.71)를 보였습니다. 노형공영주차장이 이벤트 62건·민원 48건으로 모두 최다였고, 이도(이벤트 41·민원 33), 연동(이벤트 28·민원 25) 순입니다. 다만 애월공영주차장은 이벤트(24건) 대비 민원(6건)이 적어 예외로, 이용량보다 시설 노후가 원인으로 추정됩니다.</p>
+                          </div>
+                          <p className="bubble__p">화재·과열과 민원이 함께 증가한 노형·이도 주차장은 안전 보강·주차 관리를 우선 검토해야 합니다.</p>
+                          <div className="chip-row">
+                            <button className="chip" onClick={() => setReportPreview(FIRE_REPORT)}>리포트 생성 <span aria-hidden="true">→</span></button>
                           </div>
                         </>
                       ) : (
