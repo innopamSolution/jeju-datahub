@@ -186,16 +186,18 @@ export default function LifestyleSimulation() {
     }).addTo(map);
 
     const badgeClass = (b) => ({ severe: 'badge--severe', warn: 'badge--warn', caution: 'badge--caution', good: 'badge--done' })[b];
-    const levelOf = (v) => {
-      if (v >= 40) return ['심각', 'severe', C.severe];
-      if (v >= 20) return ['경고', 'warn', C.warn];
-      if (v >= 10) return ['주의', 'caution', C.caution];
+    const levelOf = (v, thresholds) => {
+      const [t1, t2, t3] = thresholds;
+      if (v >= t1) return ['심각', 'severe', C.severe];
+      if (v >= t2) return ['경고', 'warn', C.warn];
+      if (v >= t3) return ['주의', 'caution', C.caution];
       return ['양호', 'good', C.good];
     };
 
     const ZOOM = { 500: 13, 300: 13.5, 200: 14, 100: 15 };
 
-    const renderGrid = (cellM) => {
+    const renderGrid = (cellM, mode) => {
+      const cfg = MODE_CONFIG[mode];
       if (gridLayer.current) map.removeLayer(gridLayer.current);
       if (labelLayer.current) map.removeLayer(labelLayer.current);
       gridLayer.current = L.layerGroup().addTo(map);
