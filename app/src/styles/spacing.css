@@ -88,10 +88,9 @@
   --surface-alternative: var(--background-normal-alternative);
   --surface-elevated: var(--background-elevated-normal);
 
-  /* Fills (translucent neutral) */
+  /* Fills (translucent neutral) — --fill-strong / --fill-alternative already
+     defined as raw tokens in fig-tokens.css; only alias the one that needs renaming. */
   --fill: var(--fill-normal);
-  --fill-strong: var(--fill-strong);
-  --fill-alternative: var(--fill-alternative);
 
   /* Lines / borders */
   --line-normal: var(--line-normal-normal);
