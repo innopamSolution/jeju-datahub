@@ -1128,6 +1128,8 @@ input[type='number']:focus-visible {
 .mt-act:hover { background: var(--fill-alternative); border-color: var(--line-strong); }
 .mt-act--del { color: var(--red-50); border-color: var(--red-90); }
 .mt-act--del:hover { background: var(--red-99); border-color: var(--red-50); }
+.mt-act--save { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: var(--shadow-emphasize); }
+.mt-act--save:hover { background: var(--blue-45); border-color: var(--blue-45); }
 .modal__foot { display: flex; justify-content: flex-end; padding: var(--space-16) var(--space-28) var(--space-24); }
 .modal__foot--split { justify-content: space-between; }
 .btn-save { height: 44px; padding: 0 var(--space-28); border: none; border-radius: var(--radius-10); background: var(--cool-neutral-17); color: #fff; font-family: var(--font-body); font-size: var(--body2-size); font-weight: var(--weight-bold); cursor: pointer; transition: background var(--duration-fast) var(--ease-out); }
