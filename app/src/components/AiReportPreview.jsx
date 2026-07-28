@@ -5,14 +5,15 @@ export default function AiReportPreview({ report, onClose }) {
   const maxVal = Math.max(...report.chart.map((c) => c.value));
 
   return (
-    <div className="ai-rpt-overlay" onClick={onClose}>
-      <div className="ai-rpt-modal" role="dialog" aria-modal="true" aria-label="리포트 미리보기" onClick={(e) => e.stopPropagation()}>
-        <div className="ai-rpt-modal__head">
-          <span className="ai-rpt-modal__title">리포트 미리보기</span>
-          <button type="button" className="ai-rpt-modal__close" aria-label="닫기" onClick={onClose}>✕</button>
+    <div className="modal">
+      <div className="modal__overlay" onClick={onClose} />
+      <div className="modal__dialog modal__dialog--sm" role="dialog" aria-modal="true" aria-label="리포트 미리보기">
+        <div className="modal__head">
+          <h2 className="modal__title" style={{ fontSize: 'var(--headline1-size)' }}>리포트 미리보기</h2>
+          <button type="button" className="modal__close" aria-label="닫기" onClick={onClose}>✕</button>
         </div>
 
-        <div className="ai-rpt-modal__body">
+        <div className="modal__body ai-rpt-body">
           <div className="ai-rpt-doc">
             <h2 className="ai-rpt-doc__title">{report.title}</h2>
             <p className="ai-rpt-doc__meta">{report.meta}</p>
