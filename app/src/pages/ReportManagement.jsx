@@ -192,7 +192,7 @@ export default function ReportManagement() {
                           </div>
                         </td>
                         <td className="rt-date">{r.lastRun}</td>
-                        <td className="col-center"><button className="mt-act" onClick={saveEdit}>저장</button></td>
+                        <td className="col-center"><button className="mt-act mt-act--save" onClick={saveEdit}>저장</button></td>
                         <td className="col-center"><button className="mt-act" onClick={cancelEdit}>취소</button></td>
                       </tr>
                     );
