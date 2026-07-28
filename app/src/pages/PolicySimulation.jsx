@@ -229,7 +229,7 @@ export default function PolicySimulation() {
             {policyType === 'road' && (
               <div>
                 <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>정비 유형</div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                <div className="segment" style={{ flexWrap: 'wrap', width: '100%' }}>
                   {[['one-way', '일방통행 전환'], ['parking-zone', '주차구역 정비'], ['expand', '주차허용구역 확대'], ['resident', '거주자 우선주차 도입']].map(([k, l]) => (
                     <button key={k} type="button" className={`segment__btn ${roadType === k ? 'segment__btn--active' : ''}`} onClick={() => setRoadType(k)}>{l}</button>
                   ))}
