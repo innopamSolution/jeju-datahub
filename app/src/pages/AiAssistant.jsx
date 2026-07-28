@@ -129,11 +129,13 @@ export default function AiAssistant() {
     return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
   }, [plusOpen]);
 
-  const respond = (aiText) => {
+  const [reportPreview, setReportPreview] = useState(null);
+
+  const respond = (aiMsg) => {
     const typingId = ++msgId;
     setMessages((m) => [...m, { role: 'ai', typing: true, id: typingId }]);
     const t = setTimeout(() => {
-      setMessages((m) => m.filter((x) => x.id !== typingId).concat({ role: 'ai', text: aiText, id: ++msgId }));
+      setMessages((m) => m.filter((x) => x.id !== typingId).concat({ role: 'ai', id: ++msgId, ...aiMsg }));
     }, 900);
     timers.current.push(t);
   };
@@ -143,7 +145,14 @@ export default function AiAssistant() {
     if (!v) return;
     setMessages((m) => [...m, { role: 'user', text: v, id: ++msgId }]);
     setInput('');
-    respond('요청하신 내용을 분석하고 있습니다. 관련 조례·민원 데이터를 검색해 결과를 정리해 드릴게요.');
+
+    if (v.includes('민원현황') || v.includes('민원 현황')) {
+      respond({ kind: 'summary' });
+    } else if (v.includes('화재') || v.includes('과열')) {
+      respond({ kind: 'fire' });
+    } else {
+      respond({ text: '요청하신 내용을 분석하고 있습니다. 관련 조례·민원 데이터를 검색해 결과를 정리해 드릴게요.' });
+    }
   };
 
   const onFile = (e) => {
