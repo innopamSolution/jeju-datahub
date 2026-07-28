@@ -104,9 +104,8 @@
   --status-cautionary: var(--orange-50);
   --status-info: var(--blue-50);
 
-  /* Interaction */
-  --interaction-inactive: var(--interaction-inactive);
-  --interaction-disable: var(--interaction-disable);
+  /* Interaction — --interaction-inactive / --interaction-disable already
+     defined as raw tokens in fig-tokens.css. */
 
   /* Motion — Wanted favours quick, soft ease-out transitions ---- */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
