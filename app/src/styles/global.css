@@ -1117,7 +1117,9 @@ input[type='number']:focus-visible {
 .modal__body { padding: var(--space-12) var(--space-28) var(--space-16); max-height: 60vh; overflow-y: auto; }
 .mt { width: 100%; border-collapse: collapse; }
 .mt th { font-size: var(--label1-size); font-weight: var(--weight-semibold); color: var(--text-neutral); text-align: center; padding: var(--space-12) var(--space-12) var(--space-14); border-bottom: 1px solid var(--line-normal); white-space: nowrap; }
+.mt th:first-child { text-align: left; }
 .mt td { padding: var(--space-14) var(--space-12); border-bottom: 1px solid var(--line-alternative); font-size: var(--body2-size); color: var(--text-neutral); vertical-align: middle; }
+.mt td:not(:first-child) { text-align: center; }
 .mt tbody tr:last-child td { border-bottom: none; }
 .mt-dept { font-size: var(--label2-size); color: var(--text-neutral); }
 .field__select--sm { height: 40px; padding: 0 var(--space-12); font-size: var(--label1-size); }
