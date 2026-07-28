@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
+import AiReportPreview from '../components/AiReportPreview';
 
 const AV = (
   <svg viewBox="0 0 36 36" fill="none" width="30" height="30" aria-hidden="true">
