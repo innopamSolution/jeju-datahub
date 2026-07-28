@@ -308,6 +308,10 @@ export default function AiAssistant() {
           </div>
         </section>
       </div>
+
+      {reportPreview && (
+        <AiReportPreview report={reportPreview} onClose={() => setReportPreview(null)} />
+      )}
     </>
   );
 }
