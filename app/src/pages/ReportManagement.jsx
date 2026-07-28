@@ -180,13 +180,13 @@ export default function ReportManagement() {
                           </DsSelect>
                         </td>
                         <td>
-                          <div className="field__dates">
+                          <div style={{ display: 'flex', gap: 6 }}>
                             {draft.cycle === '연간' && (
-                              <DsSelect className="field__select--sm" value={draft.month} onChange={(e) => setDraft((d) => ({ ...d, month: e.target.value }))}>
+                              <DsSelect value={draft.month} onChange={(e) => setDraft((d) => ({ ...d, month: e.target.value }))}>
                                 {MONTHS.map((v) => <option key={v} value={v}>{v}</option>)}
                               </DsSelect>
                             )}
-                            <DsSelect className="field__select--sm" value={draft.day} onChange={(e) => setDraft((d) => ({ ...d, day: e.target.value }))}>
+                            <DsSelect value={draft.day} onChange={(e) => setDraft((d) => ({ ...d, day: e.target.value }))}>
                               {DAYS.map((v) => <option key={v} value={v}>{v}</option>)}
                             </DsSelect>
                           </div>
