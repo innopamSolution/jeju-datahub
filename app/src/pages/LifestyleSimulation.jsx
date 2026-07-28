@@ -381,10 +381,10 @@ export default function LifestyleSimulation() {
           <div className="sim-legend">
             <div className="map-legend">
               <div className="map-legend__title">범례</div>
-              <div className="row"><span className="dot" style={{ background: 'var(--red-50)' }} />심각 (40건 이상)</div>
-              <div className="row"><span className="dot" style={{ background: 'var(--orange-50)' }} />경고 (20~39건)</div>
-              <div className="row"><span className="dot" style={{ background: 'var(--blue-50)' }} />주의 (10~19건)</div>
-              <div className="row"><span className="dot" style={{ background: 'var(--cool-neutral-80)' }} />양호 (10건 미만)</div>
+              <div className="row"><span className="dot" style={{ background: 'var(--red-50)' }} />{modeCfg.legend[0]}</div>
+              <div className="row"><span className="dot" style={{ background: 'var(--orange-50)' }} />{modeCfg.legend[1]}</div>
+              <div className="row"><span className="dot" style={{ background: 'var(--blue-50)' }} />{modeCfg.legend[2]}</div>
+              <div className="row"><span className="dot" style={{ background: 'var(--cool-neutral-80)' }} />{modeCfg.legend[3]}</div>
             </div>
             <div className="sim-gridchip"><span className="dot" style={{ background: 'var(--blue-50)' }} />격자 {gridSize} × {gridSize}</div>
           </div>
