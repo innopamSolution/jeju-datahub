@@ -11,16 +11,29 @@ const ANALYSIS_SUB = [
 ];
 
 const REPORT_SUB = [
-  { to: '/reports', label: '보고서 관리' },
+  { to: '/reports', label: '보고서 목록' },
+  { to: '/reports/management', label: '보고서 관리' },
   { to: '/alerts/inquiry', label: '위험단계 알림 조회' },
   { to: '/alerts/management', label: '위험단계 알림 관리' },
 ];
 
+/* 가장 구체적인(긴) to 경로를 가진 항목을 활성화한다.
+   (예: '/reports/management'가 '/reports'보다 우선 매칭되어야 함) */
+function findActiveItem(items, pathname) {
+  let best = null;
+  for (const it of items) {
+    if (pathname === it.to || pathname.startsWith(`${it.to}/`)) {
+      if (!best || it.to.length > best.to.length) best = it;
+    }
+  }
+  return best;
+}
+
 // 그룹: 해당 페이지에 있으면 파란 parent + 서브메뉴 펼침, 아니면 평범한 링크
 function NavGroup({ icon, label, items, pathname }) {
-  const isIn = items.some((it) => pathname.startsWith(it.to));
+  const activeItem = findActiveItem(items, pathname);
 
-  if (!isIn) {
+  if (!activeItem) {
     return (
       <Link to={items[0].to} className="nav__item">
         <Icon name={icon} size={22} /><span>{label}</span>
@@ -35,7 +48,7 @@ function NavGroup({ icon, label, items, pathname }) {
       </div>
       <div className="nav__sub">
         {items.map((it) => {
-          const active = pathname.startsWith(it.to);
+          const active = it === activeItem;
           return (
             <Link key={it.to} to={it.to} className={`nav__subitem${active ? ' nav__subitem--active' : ''}`}>
               {it.label}{active && <span className="nav__dot" />}
