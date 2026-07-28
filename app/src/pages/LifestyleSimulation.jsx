@@ -298,8 +298,12 @@ export default function LifestyleSimulation() {
             <h2 className="sim-panel__title">생활권 분석 설정</h2>
 
             <div className="field">
-              <label className="field__label">분석 내용</label>
-              <div className="field__select">민원 건수 <Icon name="chevron-down" size={18} /></div>
+              <label className="field__label">분석 유형</label>
+              <div className="segment" style={{ flexWrap: 'wrap', width: '100%' }}>
+                {ANALYSIS_TYPES.map((t) => (
+                  <button key={t.key} type="button" className={`segment__btn${analysisType === t.key ? ' segment__btn--active' : ''}`} onClick={() => applyMode(t.key)}>{t.label}</button>
+                ))}
+              </div>
             </div>
 
             <div className="field">
