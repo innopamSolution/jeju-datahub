@@ -545,7 +545,7 @@ export default function Complaints() {
                           <span className={`rl__delta ${r.deltaClass}`}>{r.delta}</span>
                         </span>
                       </div>
-                      <span className="rl__sub">{r.topType}</span>
+                      <span className="rl__sub">{r.topType} {r.topPct}%</span>
                     </div>
                   </div>
                 ))}
