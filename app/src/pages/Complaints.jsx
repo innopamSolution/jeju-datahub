@@ -545,7 +545,7 @@ export default function Complaints() {
                           <span className={`rl__delta ${r.deltaClass}`}>{r.delta}</span>
                         </span>
                       </div>
-                      <span className="rl__sub">불법주차 {r.illegal} · 기타 {r.etc}</span>
+                      <span className="rl__sub">{r.topType}</span>
                     </div>
                   </div>
                 ))}
