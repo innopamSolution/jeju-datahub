@@ -25,24 +25,112 @@ const AI_ICON = (
 
 const GRID_SIZES = ['100m', '200m', '300m', '500m'];
 
-const SUMMARY = [
-  { label: '총 분석 격자', dot: null,                     val: '156개', total: true },
-  { label: '심각',         dot: 'var(--red-50)',          val: '52개'  },
-  { label: '경고',         dot: 'var(--orange-50)',       val: '38개'  },
-  { label: '주의',         dot: 'var(--blue-50)',         val: '19개'  },
-  { label: '양호',         dot: 'var(--cool-neutral-80)', val: '4개'   },
+const ANALYSIS_TYPES = [
+  { key: 'complaints', label: '민원 건수' },
+  { key: 'demand',     label: '주차 수급' },
+  { key: 'congestion', label: '혼잡도' },
 ];
 
-const RANKING = [
-  { rank: 1, name: '연동 대로변',       dot: 'var(--red-50)',    cnt: '52건', sub: '불법주차 41 · 기타 11' },
-  { rank: 2, name: '제주도청 인근',     dot: 'var(--orange-50)', cnt: '38건', sub: '불법주차 30 · 기타 8'  },
-  { rank: 3, name: '신광초등학교 주변', dot: 'var(--orange-50)', cnt: '29건', sub: '불법주차 22 · 기타 7'  },
-  { rank: 4, name: '제주공항 인근',     dot: 'var(--blue-50)',   cnt: '21건', sub: '불법주차 16 · 기타 5'  },
-  { rank: 5, name: '동문시장 주변',     dot: 'var(--green-50)',  cnt: '10건', sub: '불법주차 14 · 기타 4'  },
-  { rank: 6, name: '동문시장 주변',     dot: 'var(--green-50)',  cnt: '10건', sub: '불법주차 14 · 기타 4'  },
-  { rank: 7, name: '동문시장 주변',     dot: 'var(--green-50)',  cnt: '10건', sub: '불법주차 14 · 기타 4'  },
-  { rank: 8, name: '한림해수욕장 근처', dot: 'var(--red-50)',    cnt: '18건', sub: '불법주차 12 · 기타 6'  },
-];
+const LOCATIONS = ['연동 대로변', '제주도청 인근', '신광초등학교 주변', '제주공항 인근', '동문시장 주변', '동문시장 주변', '동문시장 주변', '한림해수욕장 근처'];
+const LOC_DOTS = ['var(--red-50)', 'var(--orange-50)', 'var(--orange-50)', 'var(--blue-50)', 'var(--green-50)', 'var(--green-50)', 'var(--green-50)', 'var(--red-50)'];
+
+/* 분석 유형별 표시 단위·기준·목데이터. 격자 맵의 공간 분포(Gaussian 핫스팟)는
+   공통이며, 유형에 따라 값의 의미(건수/부족률/혼잡지수)와 임계값만 달라진다. */
+const MODE_CONFIG = {
+  complaints: {
+    unit: '건',
+    thresholds: [40, 20, 10], // [심각, 경고, 주의] 하한값
+    transform: (v) => Math.round(v),
+    legend: ['심각 (40건 이상)', '경고 (20~39건)', '주의 (10~19건)', '양호 (10건 미만)'],
+    popup: (val, near) => {
+      const il = Math.round(val * (near ? near.il / (near.il + near.et) : 0.78));
+      const et = Math.max(0, val - il);
+      return `<div class="gp__big">${val}건<span>/3개월</span></div><div class="gp__bd"><span>불법주차 <b>${il}</b></span><span>기타 <b>${et}</b></span></div>`;
+    },
+    sectionTitle: '민원 집중 구역',
+    sectionSub: '격자 기반 민원 집중 구역',
+    summary: [
+      { label: '총 분석 격자', val: '156개', total: true },
+      { label: '심각', dot: 'var(--red-50)',          val: '52개' },
+      { label: '경고', dot: 'var(--orange-50)',       val: '38개' },
+      { label: '주의', dot: 'var(--blue-50)',         val: '19개' },
+      { label: '양호', dot: 'var(--cool-neutral-80)', val: '4개'  },
+    ],
+    ranking: [
+      { cnt: '52건', sub: '불법주차 41 · 기타 11' },
+      { cnt: '38건', sub: '불법주차 30 · 기타 8'  },
+      { cnt: '29건', sub: '불법주차 22 · 기타 7'  },
+      { cnt: '21건', sub: '불법주차 16 · 기타 5'  },
+      { cnt: '10건', sub: '불법주차 14 · 기타 4'  },
+      { cnt: '10건', sub: '불법주차 14 · 기타 4'  },
+      { cnt: '10건', sub: '불법주차 14 · 기타 4'  },
+      { cnt: '18건', sub: '불법주차 12 · 기타 6'  },
+    ],
+  },
+  demand: {
+    unit: '%',
+    thresholds: [70, 40, 20],
+    transform: (v) => Math.min(96, Math.round(v * 1.3)),
+    legend: ['심각 (70% 이상 부족)', '경고 (40~69% 부족)', '주의 (20~39% 부족)', '양호 (20% 미만)'],
+    popup: (val) => {
+      const demand = Math.round(20 + val * 0.6);
+      const supply = Math.max(1, Math.round(demand * (1 - val / 100)));
+      return `<div class="gp__big">부족률 ${val}%</div><div class="gp__bd"><span>수요 <b>${demand}대</b></span><span>공급 <b>${supply}면</b></span></div>`;
+    },
+    sectionTitle: '주차 수급 부족 구역',
+    sectionSub: '격자 기반 수요·공급 격차',
+    summary: [
+      { label: '총 분석 격자', val: '156개', total: true },
+      { label: '심각', dot: 'var(--red-50)',          val: '34개' },
+      { label: '경고', dot: 'var(--orange-50)',       val: '45개' },
+      { label: '주의', dot: 'var(--blue-50)',         val: '52개' },
+      { label: '양호', dot: 'var(--cool-neutral-80)', val: '25개' },
+    ],
+    ranking: [
+      { cnt: '82%', sub: '수요 69대 · 공급 12면' },
+      { cnt: '74%', sub: '수요 58대 · 공급 15면' },
+      { cnt: '65%', sub: '수요 49대 · 공급 17면' },
+      { cnt: '58%', sub: '수요 42대 · 공급 18면' },
+      { cnt: '39%', sub: '수요 31대 · 공급 19면' },
+      { cnt: '38%', sub: '수요 30대 · 공급 19면' },
+      { cnt: '37%', sub: '수요 30대 · 공급 19면' },
+      { cnt: '61%', sub: '수요 44대 · 공급 17면' },
+    ],
+  },
+  congestion: {
+    unit: '점',
+    thresholds: [80, 60, 40],
+    transform: (v) => Math.min(99, Math.round(v * 1.15)),
+    legend: ['심각 (80점 이상)', '경고 (60~79점)', '주의 (40~59점)', '양호 (40점 미만)'],
+    popup: (val) => `<div class="gp__big">혼잡 지수 ${val}점</div><div class="gp__bd"><span>피크시간 통행 <b>${Math.min(99, Math.round(40 + val * 0.4))}%</b></span></div>`,
+    sectionTitle: '혼잡 집중 구역',
+    sectionSub: '격자 기반 혼잡도 분석',
+    summary: [
+      { label: '총 분석 격자', val: '156개', total: true },
+      { label: '심각', dot: 'var(--red-50)',          val: '28개' },
+      { label: '경고', dot: 'var(--orange-50)',       val: '41개' },
+      { label: '주의', dot: 'var(--blue-50)',         val: '58개' },
+      { label: '양호', dot: 'var(--cool-neutral-80)', val: '29개' },
+    ],
+    ranking: [
+      { cnt: '91점', sub: '피크시간 통행 76%' },
+      { cnt: '78점', sub: '피크시간 통행 71%' },
+      { cnt: '68점', sub: '피크시간 통행 67%' },
+      { cnt: '55점', sub: '피크시간 통행 62%' },
+      { cnt: '32점', sub: '피크시간 통행 53%' },
+      { cnt: '31점', sub: '피크시간 통행 52%' },
+      { cnt: '30점', sub: '피크시간 통행 52%' },
+      { cnt: '48점', sub: '피크시간 통행 59%' },
+    ],
+  },
+};
+
+function buildRanking(mode) {
+  const cfg = MODE_CONFIG[mode];
+  return LOCATIONS.map((name, i) => ({
+    rank: i + 1, name, dot: LOC_DOTS[i], cnt: cfg.ranking[i].cnt, sub: cfg.ranking[i].sub,
+  }));
+}
 
 function resolveColor(cssVar) {
   const probe = document.createElement('span');
