@@ -119,13 +119,13 @@ export default function ReportManagement() {
               </div>
               <div className="field">
                 <label className="field__label">배포 일자</label>
-                <div className="field__dates">
+                <div style={{ display: 'flex', gap: 8 }}>
                   {cycle === '연간' && (
-                    <DsSelect className="field__date" value={month} onChange={(e) => setMonth(e.target.value)}>
+                    <DsSelect value={month} onChange={(e) => setMonth(e.target.value)}>
                       {MONTHS.map((v) => <option key={v} value={v}>{v}</option>)}
                     </DsSelect>
                   )}
-                  <DsSelect className="field__date" value={day} onChange={(e) => setDay(e.target.value)}>
+                  <DsSelect value={day} onChange={(e) => setDay(e.target.value)}>
                     {DAYS.map((v) => <option key={v} value={v}>{v}</option>)}
                   </DsSelect>
                 </div>
