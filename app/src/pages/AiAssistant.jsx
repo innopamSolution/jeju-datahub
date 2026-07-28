@@ -159,7 +159,7 @@ export default function AiAssistant() {
     const f = e.target.files && e.target.files[0];
     if (!f) return;
     setMessages((m) => [...m, { role: 'user', text: '📎 ' + f.name, id: ++msgId }]);
-    respond('첨부하신 파일을 확인했습니다. 내용을 분석해 드릴까요?');
+    respond({ text: '첨부하신 파일을 확인했습니다. 내용을 분석해 드릴까요?' });
     e.target.value = '';
   };
 
