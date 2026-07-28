@@ -26,7 +26,8 @@ export default function App() {
           <Route path="analysis/policy-simulation" element={<PolicySimulation />} />
           <Route path="analysis/recommendation" element={<ZoneRecommendation />} />
           <Route path="analysis/investment-priority" element={<InvestmentPriority />} />
-          <Route path="reports" element={<Reports />} />
+          <Route path="reports" element={<ReportList />} />
+          <Route path="reports/management" element={<ReportManagement />} />
           <Route path="ai-assistant" element={<AiAssistant />} />
           <Route path="alerts/management" element={<AlertManagement />} />
           <Route path="alerts/inquiry" element={<AlertInquiry />} />
