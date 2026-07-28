@@ -229,24 +229,21 @@ export default function LifestyleSimulation() {
             if (d2 < nd) { nd = d2; near = h; }
           }
           v += (rnd() - 0.5) * 6;
-          const val = Math.round(v);
-          if (val < 4) continue;
+          if (v < 4) continue;
+          const val = cfg.transform(v);
           const cellSW = [sw[0] + r * dLat, sw[1] + c * dLng];
           const bounds = [[cellSW[0], cellSW[1]], [cellSW[0] + dLat, cellSW[1] + dLng]];
-          const lv = levelOf(val);
+          const lv = levelOf(val, cfg.thresholds);
           const op = lv[1] === 'good' ? 0.30 : 0.58;
           const rect = L.rectangle(bounds, { color: '#fff', weight: 1, fillColor: lv[2], fillOpacity: op });
-          const il = Math.round(val * (near ? near.il / (near.il + near.et) : 0.78));
-          const et = Math.max(0, val - il);
           rect.bindPopup(
             '<div class="gp"><div class="gp__h"><span class="badge ' + badgeClass(lv[1]) + '">' + lv[0] + '</span>' +
             '<span class="gp__loc">' + (near ? near.name : '격자 셀') + '</span></div>' +
-            '<div class="gp__big">' + val + '건<span>/3개월</span></div>' +
-            '<div class="gp__bd"><span>불법주차 <b>' + il + '</b></span><span>기타 <b>' + et + '</b></span></div></div>',
+            cfg.popup(val, near) + '</div>',
             { closeButton: false, offset: [0, -2] });
           rect.on('mouseover', function () { this.openPopup(); });
           rect.addTo(gridLayer.current);
-          if (val >= 10) {
+          if (val >= cfg.thresholds[2]) {
             const ctr = [cellSW[0] + dLat / 2, cellSW[1] + dLng / 2];
             L.marker(ctr, {
               interactive: false, keyboard: false,
@@ -257,7 +254,7 @@ export default function LifestyleSimulation() {
       }
     };
 
-    renderGrid(cellRef.current);
+    renderGrid(cellRef.current, modeRef.current);
     setTimeout(() => map.invalidateSize(), 250);
     window.addEventListener('resize', () => map.invalidateSize());
     mapInst.current = map;
@@ -269,7 +266,13 @@ export default function LifestyleSimulation() {
     cellRef.current = meters;
     setGridSize(label);
     setSizeChip(label.toUpperCase());
-    if (mapInst.current && mapInst.current._renderGrid) mapInst.current._renderGrid(meters);
+    if (mapInst.current && mapInst.current._renderGrid) mapInst.current._renderGrid(meters, modeRef.current);
+  };
+
+  const applyMode = (key) => {
+    modeRef.current = key;
+    setAnalysisType(key);
+    if (mapInst.current && mapInst.current._renderGrid) mapInst.current._renderGrid(cellRef.current, key);
   };
 
   return (
