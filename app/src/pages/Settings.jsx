@@ -301,7 +301,7 @@ export default function Settings() {
                   <div className="st-savewrap">
                     {permSaved && <span className="st-saved">저장되었습니다</span>}
                     {permDirty && !permSaved && <span className="st-dirty">저장되지 않은 변경사항이 있습니다</span>}
-                    <button type="button" className="btn-save" style={{ height: 41 }} disabled={!permDirty} onClick={savePerms}>권한 저장</button>
+                    <button type="button" className="btn-save" disabled={!permDirty} onClick={savePerms}>권한 저장</button>
                   </div>
                 </div>
               </div>
@@ -399,7 +399,7 @@ export default function Settings() {
 
               <div className="st-actions">
                 <button type="button" className="btn" onClick={() => setWeights(DEFAULT_WEIGHTS)}>기본값으로 초기화</button>
-                <button type="button" className="btn-save" style={{ height: 41 }} disabled={sum !== 100}>설정 저장</button>
+                <button type="button" className="btn-save" disabled={sum !== 100}>설정 저장</button>
               </div>
             </>
           )}
