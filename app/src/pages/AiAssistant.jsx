@@ -342,19 +342,19 @@ export default function AiAssistant() {
                     <span className="report__dl">{REPORT_DL}</span>
                   </button>
                 ))}
-              </div>
+              </ScrollList>
             </div>
 
             <div className="card ai-card">
               <h2 className="ai-card__title">자주 하는 질문</h2>
-              <div className="faq">
+              <ScrollList className="faq">
                 {FAQ.map((q, i) => (
                   <button key={i} className="faq__row" onClick={() => submit(q)}>
                     <span className="faq__ic">{AV}</span>
                     <span className="faq__text">{q}</span>
                   </button>
                 ))}
-              </div>
+              </ScrollList>
             </div>
           </div>
         </section>
