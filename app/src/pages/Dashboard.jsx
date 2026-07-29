@@ -213,7 +213,9 @@ export default function Dashboard() {
   const [dateFrom, setDateFrom] = useState('2025-11-01');
   const [dateTo, setDateTo] = useState('2025-12-01');
   const [riskSeg, setRiskSeg] = useState('전체');
+  const [exportOpen, setExportOpen] = useState(false);
   const datePickRef = useRef(null);
+  const exportRef = useRef(null);
 
   useEffect(() => {
     if (!datePopOpen) return;
@@ -223,6 +225,45 @@ export default function Dashboard() {
     document.addEventListener('keydown', onKey);
     return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
   }, [datePopOpen]);
+
+  useEffect(() => {
+    if (!exportOpen) return;
+    const onDoc = (e) => { if (exportRef.current && !exportRef.current.contains(e.target)) setExportOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setExportOpen(false); };
+    document.addEventListener('click', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+  }, [exportOpen]);
+
+  const exportData = () => ({
+    fileBase: '대시보드_현황',
+    title: '대시보드 현황',
+    subtitle: `조회 단위: ${customRange ? `${customRange.from} ~ ${customRange.to}` : period}`,
+    sections: [
+      {
+        title: '핵심 지표',
+        columns: ['지표', '값', '전일 대비'],
+        rows: [
+          ['총 민원 건수', '247건', '▲ +12%'],
+          ['불법주차 발생', '183건', '▲ +6%'],
+          ['위험 단계 발생', '3건', '경보 1 · 경고 2'],
+        ],
+      },
+      {
+        title: '불법주차 집중구역 순위',
+        columns: ['순위', '구역', '위치', '위험도'],
+        rows: HOTSPOTS.map((h) => [h.rank, h.name, h.meta, h.label]),
+      },
+      {
+        title: '읍·면·동 민원 순위',
+        columns: ['순위', '지역', '민원 건수', '전일 대비', '주요 유형'],
+        rows: REGIONS.map((r) => [
+          r.num, r.name, `${r.value}건`, r.delta ? r.delta.label : '—',
+          `${r.breakdown[0].label} ${r.breakdown[0].pct}%`,
+        ]),
+      },
+    ],
+  });
 
   const applyDateRange = () => {
     if (dateFrom && dateTo) setCustomRange({ from: dateFrom, to: dateTo });
