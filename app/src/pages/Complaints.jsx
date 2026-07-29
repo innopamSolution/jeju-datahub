@@ -9,6 +9,7 @@ import Icon from '../components/Icon';
 import DsSelect from '../components/DsSelect';
 import NotificationBell from '../components/NotificationBell';
 import { SEOGWIPO_PARKING } from '../data/seogwipoParking';
+import { exportSectionsPdf, exportSectionsDocx } from '../utils/pageExport';
 
 const FROWN_ICON = (
   <svg viewBox="0 0 24 24" width="26" height="26" fill="none" aria-hidden="true">
