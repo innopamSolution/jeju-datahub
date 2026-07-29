@@ -308,7 +308,11 @@ export default function AiAssistant() {
               <h2 className="ai-card__title">최근 대화</h2>
               <div className="recent">
                 {RECENT.map((r, i) => (
-                  <button key={i} className="recent__row">
+                  <button
+                    key={i}
+                    className="recent__row"
+                    onClick={() => setMessages(r.convo.map((m) => ({ ...m, id: ++msgId })))}
+                  >
                     <div className="recent__name">{r.name}</div>
                     <div className="recent__time">{r.time}</div>
                   </button>
