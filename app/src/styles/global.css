@@ -747,7 +747,7 @@ input[type='number']:focus-visible {
    ============================================================ */
 .map-controls {
   display: flex; align-items: center; gap: var(--space-16);
-  padding: var(--space-20) var(--space-24);
+  padding: var(--space-12) var(--space-24);
   border-bottom: 1px solid var(--line-alternative);
 }
 .ctrl { display: flex; align-items: center; gap: var(--space-10); }
