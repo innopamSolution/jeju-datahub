@@ -140,15 +140,23 @@ export default function Settings() {
   }), [query, roleFilter]);
   const roleCounts = useMemo(() => USERS.reduce((acc, u) => ({ ...acc, [u.role]: (acc[u.role] ?? 0) + 1 }), {}), []);
 
-  /* 메뉴 권한 관리 */
+  /* 메뉴 권한 관리 — 체크 변경은 draft에만 반영, 저장 시 확정. 메뉴 전환 시 미저장 변경 폐기 */
   const [selMenu, setSelMenu] = useState(MENUS[0].name);
   const [perms, setPerms] = useState(DEFAULT_PERMS);
+  const [draft, setDraft] = useState(DEFAULT_PERMS[MENUS[0].name]);
   const [permSaved, setPermSaved] = useState(false);
+  const permDirty = ['system', 'service', 'user'].some((r) => draft[r] !== perms[selMenu][r]);
+  const selectMenu = (name) => {
+    setSelMenu(name);
+    setDraft(perms[name]);
+    setPermSaved(false);
+  };
   const togglePerm = (role) => {
     setPermSaved(false);
-    setPerms((p) => ({ ...p, [selMenu]: { ...p[selMenu], [role]: !p[selMenu][role] } }));
+    setDraft((d) => ({ ...d, [role]: !d[role] }));
   };
   const savePerms = () => {
+    setPerms((p) => ({ ...p, [selMenu]: draft }));
     setPermSaved(true);
     setTimeout(() => setPermSaved(false), 2000);
   };
