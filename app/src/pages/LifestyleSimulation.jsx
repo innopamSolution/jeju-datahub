@@ -4,6 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
+import PageCrumb from '../components/PageCrumb';
 import DateRangeField from '../components/DateRangeField';
 import RegionSelect from '../components/RegionSelect';
 import { exportLifestylePdf, exportLifestyleDocx } from '../utils/lifestyleExport';
@@ -293,6 +294,7 @@ export default function LifestyleSimulation() {
     <>
       <header className="topbar">
         <div>
+          <PageCrumb group="분석·시뮬레이션" page="생활권 시뮬레이션" />
           <h1 className="page-title">생활권 시뮬레이션</h1>
           <p className="page-sub">격자(Grid) 기반 민원·수급·혼잡도 분석</p>
         </div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
+import PageCrumb from '../components/PageCrumb';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="24" height="24" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -62,6 +63,7 @@ export default function AlertManagement() {
     <>
       <header className="topbar">
         <div>
+          <PageCrumb group="보고서·알림" page="위험단계 알림 관리" />
           <h1 className="page-title">위험단계 알림 관리</h1>
           <p className="page-sub">민원 급증·위험 단계별 알림 기준 및 수신자 관리</p>
         </div>

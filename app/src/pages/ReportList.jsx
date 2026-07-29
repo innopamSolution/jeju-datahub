@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NotificationBell from '../components/NotificationBell';
+import PageCrumb from '../components/PageCrumb';
 import { exportReportPdf, exportReportDocx } from '../utils/reportExport';
 import ReportPreviewModal from '../components/ReportPreviewModal';
 
@@ -66,6 +67,7 @@ export default function ReportList() {
     <>
       <header className="topbar">
         <div>
+          <PageCrumb group="보고서·알림" page="보고서 목록" />
           <h1 className="page-title">보고서 목록</h1>
           <p className="page-sub">민원 분석 결과 보고서 목록</p>
         </div>

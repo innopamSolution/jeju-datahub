@@ -4,6 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
+import PageCrumb from '../components/PageCrumb';
 import DateRangeField from '../components/DateRangeField';
 import RegionSelect from '../components/RegionSelect';
 import { exportSectionsPdf, exportSectionsDocx, hBarChartHtml } from '../utils/pageExport';
@@ -175,6 +176,7 @@ export default function ZoneRecommendation() {
     <>
       <header className="topbar">
         <div>
+          <PageCrumb group="분석·시뮬레이션" page="구역추천" />
           <h1 className="page-title">요금제·공유주차제 적용 구역 추천</h1>
           <p className="page-sub">민원 증가 추세를 분석하여 최적 구역 자동 추천</p>
         </div>

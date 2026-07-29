@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NotificationBell from '../components/NotificationBell';
+import PageCrumb from '../components/PageCrumb';
 import DsSelect from '../components/DsSelect';
 import { isAdmin, CURRENT_USER } from '../data/currentUser';
 
@@ -44,6 +45,7 @@ export default function ReportManagement() {
       <>
         <header className="topbar">
           <div>
+            <PageCrumb group="보고서·알림" page="보고서 관리" />
             <h1 className="page-title">보고서 관리</h1>
             <p className="page-sub">민원 분석 결과 자동 보고서 생성 및 관리</p>
           </div>
@@ -75,6 +77,7 @@ export default function ReportManagement() {
     <>
       <header className="topbar">
         <div>
+          <PageCrumb group="보고서·알림" page="보고서 관리" />
           <h1 className="page-title">보고서 관리</h1>
           <p className="page-sub">민원 분석 결과 자동 보고서 생성 및 관리</p>
         </div>

@@ -4,6 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
+import PageCrumb from '../components/PageCrumb';
 import { exportSectionsPdf, exportSectionsDocx, hBarChartHtml } from '../utils/pageExport';
 
 const AI_ICON = (
@@ -181,6 +182,7 @@ export default function InvestmentPriority() {
     <>
       <header className="topbar">
         <div>
+          <PageCrumb group="분석·시뮬레이션" page="투자우선순위 보드" />
           <h1 className="page-title">공영주차장 투자·보강 우선순위 보드</h1>
           <p className="page-sub">안전위험도 · 민원빈도 · 이용패턴 · 사고이력 종합 지표 자동 산정</p>
         </div>

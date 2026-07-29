@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as echarts from 'echarts';
 import NotificationBell from '../components/NotificationBell';
+import PageCrumb from '../components/PageCrumb';
 import DsSelect from '../components/DsSelect';
 import Icon from '../components/Icon';
 import { exportSectionsPdf, exportSectionsDocx, toPngDataUrl } from '../utils/pageExport';
@@ -219,6 +220,7 @@ export default function PolicySimulation() {
     <>
       <header className="topbar">
         <div>
+          <PageCrumb group="분석·시뮬레이션" page="정책 효과 시뮬레이션" />
           <h1 className="page-title">정책효과시뮬레이션</h1>
           <p className="page-sub">정책 변수 입력 → 효과 예측 → 시나리오 비교</p>
         </div>
