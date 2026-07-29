@@ -295,8 +295,49 @@ export default function Complaints() {
     Object.fromEntries(LAYER_DEFS.map((d) => [d.key, d.defaultOn]))
   );
   const datePickRef = useRef(null);
+  const [exportOpen, setExportOpen] = useState(false);
+  const exportRef = useRef(null);
 
   const toggleLayer = (key) => setLayers((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  useEffect(() => {
+    if (!exportOpen) return;
+    const onDoc = (e) => { if (exportRef.current && !exportRef.current.contains(e.target)) setExportOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setExportOpen(false); };
+    document.addEventListener('click', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+  }, [exportOpen]);
+
+  const exportData = () => ({
+    fileBase: '민원현황',
+    title: '민원현황',
+    subtitle: `조회 기간: ${rangeLabel}`,
+    sections: [
+      {
+        title: '핵심 지표',
+        columns: ['지표', '값', '비고'],
+        rows: [
+          ['총 민원 건수', '247건', '▲ +12% 전기 대비'],
+          ['민원 감정 분석', `부정 ${SENTIMENT_OVERALL.neg}%`, `긍정 ${SENTIMENT_OVERALL.pos}% · 보통 ${SENTIMENT_OVERALL.neu}% · ▲${SENTIMENT_OVERALL.deltaPp}%p 전기 대비`],
+          ['단속 집중 지역', '3곳', '변동 없음'],
+          ['수요 부족 지역', '7곳', '▼ -1% 전기 대비'],
+        ],
+      },
+      {
+        title: '지역별 민원 현황',
+        columns: ['순위', '지역', '민원 건수', '전기 대비', '주요 유형'],
+        rows: REGIONS.map((r) => [r.rank, r.name, `${r.count}건`, r.delta, `${r.topType} ${r.topPct}%`]),
+      },
+      {
+        title: '부정 민원 상위 지역',
+        columns: ['순위', '지역', '부정 비율', '부정 건수', '감정 분포'],
+        rows: SENTIMENT_REGIONS.map((s) => [
+          s.rank, s.name, `${s.neg}%`, `${s.negCount}건`, `긍정 ${s.pos}% · 보통 ${s.neu}% · 부정 ${s.neg}%`,
+        ]),
+      },
+    ],
+  });
 
   useEffect(() => {
     if (!datePopOpen) return;
