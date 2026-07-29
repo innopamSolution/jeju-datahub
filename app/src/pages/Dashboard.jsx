@@ -236,13 +236,13 @@ export default function Dashboard() {
   }, [exportOpen]);
 
   const exportData = async () => {
-    /* 화면의 민원 발생 추이 차트(ECharts)를 이미지로 캡처해 리포트에 포함 */
+    /* 화면의 민원 발생 추이 차트(ECharts svg 렌더러)를 이미지로 캡처해 리포트에 포함 */
     let trendImage = null;
-    const chartEl = document.querySelector('.trend__chart');
-    const inst = chartEl && echarts.getInstanceByDom(chartEl);
-    if (inst) {
+    const svg = document.querySelector('.trend__chart svg');
+    if (svg) {
       try {
-        trendImage = await toPngDataUrl(inst.getDataURL({ backgroundColor: '#fff' }));
+        const xml = new XMLSerializer().serializeToString(svg);
+        trendImage = await toPngDataUrl(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(xml)}`);
       } catch { /* 차트 캡처 실패 시 표만 내보냄 */ }
     }
 
