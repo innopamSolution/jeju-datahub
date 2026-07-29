@@ -324,6 +324,25 @@ export default function Dashboard() {
           <Icon name="filter" size={18} /> 상세 필터
         </button>
         <span className="filterbar__right">현재: <strong>{customRange ? `${customRange.from} ~ ${customRange.to}` : period}</strong></span>
+        <div className="sim-export" ref={exportRef}>
+          <button className="btn" type="button" style={{ height: 40 }}
+            aria-haspopup="menu" aria-expanded={exportOpen}
+            onClick={(e) => { e.stopPropagation(); setExportOpen((o) => !o); }}>
+            <Icon name="download" size={18} /> 내보내기
+          </button>
+          {exportOpen && (
+            <div className="sim-export__menu" role="menu">
+              <button type="button" role="menuitem" className="sim-export__item"
+                onClick={() => { setExportOpen(false); exportSectionsPdf(exportData()); }}>
+                PDF 파일 (.pdf)
+              </button>
+              <button type="button" role="menuitem" className="sim-export__item"
+                onClick={() => { setExportOpen(false); exportSectionsDocx(exportData()); }}>
+                Word 파일 (.docx)
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* 상세 필터 패널 */}
