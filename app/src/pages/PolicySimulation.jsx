@@ -324,10 +324,12 @@ export default function PolicySimulation() {
           <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--line-alternative)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
             <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>시나리오 비교</h2>
             <div className="sim-export" ref={exportRef}>
-              <button className="btn" type="button" style={{ height: 36, padding: '0 var(--space-12)', fontSize: 'var(--label2-size)' }}
+              <button className="btn" type="button"
+                style={{ height: 36, padding: '0 var(--space-12)', fontSize: 'var(--label2-size)', opacity: selectedScenarios.length === 0 ? 0.4 : 1 }}
+                disabled={selectedScenarios.length === 0}
                 aria-haspopup="menu" aria-expanded={exportOpen}
                 onClick={(e) => { e.stopPropagation(); setExportOpen((o) => !o); }}>
-                <Icon name="download" size={16} /> 내보내기
+                <Icon name="download" size={16} /> 내보내기 ({selectedScenarios.length})
               </button>
               {exportOpen && (
                 <div className="sim-export__menu" role="menu">
