@@ -22,6 +22,20 @@ const AV = (
 
 const RECENT = [
   {
+    name: '5월달 민원현황 요약', time: '2026.06.01 09:12',
+    convo: [
+      { role: 'user', text: '5월달 민원현황 요약해줘' },
+      { role: 'ai', kind: 'summary' },
+    ],
+  },
+  {
+    name: '화재·과열 이벤트 상관 분석', time: '2026.06.01 09:40',
+    convo: [
+      { role: 'user', text: '최근 3개월간 화재·과열 이벤트가 많았던 공영주차장에서 주차 민원도 함께 늘었는지 분석해줘' },
+      { role: 'ai', kind: 'fire' },
+    ],
+  },
+  {
     name: '주차장 요금 및 운영 조례 제7조', time: '2026.03.24 13:26',
     convo: [
       { role: 'user', text: '연동 불법주차 관련 제주시 조례를 알려줘' },
