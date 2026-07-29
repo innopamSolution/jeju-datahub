@@ -1,14 +1,14 @@
 /* ---------- Stat cards row ---------- */
 .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-24); }
 .stat {
-  padding: var(--space-28);
+  padding: var(--space-16) var(--space-20);
   display: flex;
   align-items: center;
-  gap: var(--space-20);
+  gap: var(--space-16);
 }
 .stat__icon {
-  width: 72px; height: 72px;
-  border-radius: var(--radius-16);
+  width: 56px; height: 56px;
+  border-radius: var(--radius-14);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
