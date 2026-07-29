@@ -354,11 +354,11 @@ export default function Dashboard() {
           {exportOpen && (
             <div className="sim-export__menu" role="menu">
               <button type="button" role="menuitem" className="sim-export__item"
-                onClick={() => { setExportOpen(false); exportSectionsPdf(exportData()); }}>
+                onClick={async () => { setExportOpen(false); exportSectionsPdf(await exportData()); }}>
                 PDF 파일 (.pdf)
               </button>
               <button type="button" role="menuitem" className="sim-export__item"
-                onClick={() => { setExportOpen(false); exportSectionsDocx(exportData()); }}>
+                onClick={async () => { setExportOpen(false); exportSectionsDocx(await exportData()); }}>
                 Word 파일 (.docx)
               </button>
             </div>
