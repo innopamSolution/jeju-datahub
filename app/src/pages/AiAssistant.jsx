@@ -6,17 +6,11 @@ import AiReportPreview from '../components/AiReportPreview';
 
 const AV = (
   <svg viewBox="0 0 36 36" fill="none" width="30" height="30" aria-hidden="true">
-    <path d="M18.4 8.6c.2-2.5 2.4-4.4 4.9-4.1-.2 2.5-2.4 4.3-4.9 4.1Z" fill="#3DA35D" />
-    <path d="M18.4 8.6c-.2-2-2-3.5-4-3.3.2 2 2 3.5 4 3.3Z" fill="#4FB96A" />
+    <path d="M18.6 8.4c0-2.6 2.1-4.6 4.7-4.6 0 2.6-2.1 4.6-4.7 4.6Z" fill="#3DA35D" />
     <circle cx="18" cy="21" r="12.5" fill="#F79009" />
-    <path d="M9 18.6a9 9 0 0 1 18 0Z" fill="#FBB454" opacity="0.5" />
-    <circle cx="11.8" cy="23.2" r="2" fill="#FF8A5B" opacity="0.5" />
-    <circle cx="24.2" cy="23.2" r="2" fill="#FF8A5B" opacity="0.5" />
-    <circle cx="13.8" cy="20" r="1.7" fill="#4A3415" />
-    <circle cx="22.2" cy="20" r="1.7" fill="#4A3415" />
-    <circle cx="14.4" cy="19.4" r="0.55" fill="#fff" />
-    <circle cx="22.8" cy="19.4" r="0.55" fill="#fff" />
-    <path d="M14 24.6a4.4 4.4 0 0 0 8 0" stroke="#4A3415" strokeWidth="1.6" strokeLinecap="round" fill="none" />
+    <circle cx="13.6" cy="19.6" r="1.8" fill="#4A3415" />
+    <circle cx="22.4" cy="19.6" r="1.8" fill="#4A3415" />
+    <path d="M14.2 24.4a4.6 4.6 0 0 0 7.6 0" stroke="#4A3415" strokeWidth="1.7" strokeLinecap="round" fill="none" />
   </svg>
 );
 
