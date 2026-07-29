@@ -197,14 +197,14 @@ export default function HotspotAnalysis() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                 <div className="sim-export" ref={exportRef}>
                   <button
-                    className="sim-result__x"
-                    aria-label="내보내기"
-                    title="내보내기"
+                    className="btn"
+                    type="button"
+                    style={{ height: 36, padding: '0 var(--space-12)', fontSize: 'var(--label2-size)' }}
                     aria-haspopup="menu"
                     aria-expanded={exportOpen}
                     onClick={(e) => { e.stopPropagation(); setExportOpen((o) => !o); }}
                   >
-                    <Icon name="download" size={20} />
+                    <Icon name="download" size={16} /> 내보내기
                   </button>
                   {exportOpen && (
                     <div className="sim-export__menu" role="menu">
