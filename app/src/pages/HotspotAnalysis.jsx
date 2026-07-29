@@ -194,6 +194,7 @@ export default function HotspotAnalysis() {
             <div className="sim-result">
               <div className="sim-result__top">
                 <button className="sim-result__x" aria-label="뒤로가기"><Icon name="chevron-left" size={22} /></button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                 <div className="sim-export" ref={exportRef}>
                   <button
                     className="sim-result__x"
