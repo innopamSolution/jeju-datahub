@@ -316,6 +316,7 @@ export default function Complaints() {
     subtitle: `조회 기간: ${rangeLabel}`,
     sections: [
       {
+        type: 'table',
         title: '핵심 지표',
         columns: ['지표', '값', '비고'],
         rows: [
@@ -326,11 +327,33 @@ export default function Complaints() {
         ],
       },
       {
+        type: 'chart',
+        title: '지역별 민원 건수',
+        html: hBarChartHtml(REGIONS.map((r) => ({
+          label: r.name, value: r.count, valueLabel: `${r.count}건`, color: r.dotColor,
+        }))),
+      },
+      {
+        type: 'table',
         title: '지역별 민원 현황',
         columns: ['순위', '지역', '민원 건수', '전기 대비', '주요 유형'],
         rows: REGIONS.map((r) => [r.rank, r.name, `${r.count}건`, r.delta, `${r.topType} ${r.topPct}%`]),
       },
       {
+        type: 'chart',
+        title: '부정 민원 상위 지역 감정 분포 (긍정·보통·부정)',
+        html: stackBarChartHtml(SENTIMENT_REGIONS.map((s) => ({
+          label: s.name,
+          valueLabel: `부정 ${s.neg}%`,
+          segments: [
+            { pct: s.pos, color: '#0da34e' },
+            { pct: s.neu, color: '#c9cbd1' },
+            { pct: s.neg, color: '#e5322a' },
+          ],
+        }))),
+      },
+      {
+        type: 'table',
         title: '부정 민원 상위 지역',
         columns: ['순위', '지역', '부정 비율', '부정 건수', '감정 분포'],
         rows: SENTIMENT_REGIONS.map((s) => [
