@@ -112,15 +112,34 @@ export default function Sidebar() {
         <Link to="/settings" className={`nav__item${pathname.startsWith('/settings') ? ' nav__item--active' : ''}`}>
           <Icon name="setting" size={22} /><span>설정</span>
         </Link>
-        <div className="sb-user">
+        <div className="sb-user" ref={userRef}>
           <span className="sb-user__avatar"><Icon name="user" size={20} /></span>
           <div className="sb-user__info">
             <div className="sb-user__name">{CURRENT_USER.name}</div>
             <div className="sb-user__dept">{CURRENT_USER.dept}</div>
           </div>
-          <button className="sb-user__logout" type="button" aria-label="로그아웃" title="로그아웃">
+          <button
+            className="sb-user__logout"
+            type="button"
+            aria-label="로그아웃"
+            title="로그아웃"
+            aria-haspopup="dialog"
+            aria-expanded={logoutOpen}
+            onClick={(e) => { e.stopPropagation(); setLogoutOpen((o) => !o); }}
+          >
             <Icon name="logout" size={18} />
           </button>
+
+          {logoutOpen && (
+            <div className="sb-logout-pop" role="dialog" aria-label="로그아웃 확인">
+              <div className="sb-logout-pop__title">로그아웃 하시겠습니까?</div>
+              <p className="sb-logout-pop__sub">{CURRENT_USER.name} · {CURRENT_USER.dept}</p>
+              <div className="sb-logout-pop__actions">
+                <button type="button" className="sb-logout-pop__btn" onClick={() => setLogoutOpen(false)}>취소</button>
+                <button type="button" className="sb-logout-pop__btn sb-logout-pop__btn--danger" onClick={() => setLogoutOpen(false)}>로그아웃</button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </aside>
