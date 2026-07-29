@@ -160,7 +160,26 @@ export default function LifestyleSimulation() {
   const [sizeChip, setSizeChip] = useState('500M');
   const [analysisType, setAnalysisType] = useState('complaints');
   const [showResult, setShowResult] = useState(true);
+  const [exportOpen, setExportOpen] = useState(false);
+  const exportRef = useRef(null);
   const modeCfg = MODE_CONFIG[analysisType];
+
+  useEffect(() => {
+    if (!exportOpen) return;
+    const onDoc = (e) => { if (exportRef.current && !exportRef.current.contains(e.target)) setExportOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setExportOpen(false); };
+    document.addEventListener('click', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+  }, [exportOpen]);
+
+  const exportData = () => ({
+    modeLabel: ANALYSIS_TYPES.find((t) => t.key === analysisType)?.label ?? analysisType,
+    gridSize: sizeChip,
+    summary: modeCfg.summary,
+    sectionTitle: modeCfg.sectionTitle,
+    ranking: buildRanking(analysisType),
+  });
 
   useEffect(() => {
     if (mapInst.current) return;
