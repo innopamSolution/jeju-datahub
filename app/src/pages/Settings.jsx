@@ -247,7 +247,7 @@ export default function Settings() {
                         <td>{u.dept}</td>
                         <td className="st-td-name">{u.name}</td>
                         <td className="st-td-dim">{u.email}</td>
-                        <td><RoleChip role={u.role} sm /></td>
+                        <td><RoleChip role={u.role} /></td>
                         <td className="st-td-dim">{u.last}</td>
                       </tr>
                     ))}
