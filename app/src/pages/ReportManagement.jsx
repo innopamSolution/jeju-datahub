@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NotificationBell from '../components/NotificationBell';
 import DsSelect from '../components/DsSelect';
-import { isAdmin } from '../data/currentUser';
+import { isAdmin, CURRENT_USER } from '../data/currentUser';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="24" height="24" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -79,7 +79,7 @@ export default function ReportManagement() {
           <p className="page-sub">민원 분석 결과 자동 보고서 생성 및 관리</p>
         </div>
         <div className="topbar__actions">
-          <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}><span className="btn--ai__chip">{AI_ICON}</span> AI 대화 시작하기</button>
+          <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}>{AI_ICON} AI 대화 시작하기</button>
           <NotificationBell />
         </div>
       </header>
