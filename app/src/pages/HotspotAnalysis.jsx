@@ -220,6 +220,7 @@ export default function HotspotAnalysis() {
                   )}
                 </div>
                 <button className="sim-result__x" aria-label="닫기" onClick={() => setShowResult(false)}><Icon name="close" size={22} /></button>
+                </div>
               </div>
 
               <div className="sim-result__body" ref={bodyRef}>
