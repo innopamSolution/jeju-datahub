@@ -51,13 +51,17 @@ const MENUS = [
   { name: '위험단계 알림 관리', type: '관리' },
   { name: '사용자 정보 관리', type: '관리' },
   { name: '메뉴 권한 관리', type: '관리' },
+  { name: '분석 지표 가중치 설정', type: '관리' },
 ];
+
+/* 관리자 전용(시스템 관리자만) 메뉴 */
+const SYSTEM_ONLY = ['사용자 정보 관리', '메뉴 권한 관리', '분석 지표 가중치 설정'];
 
 const DEFAULT_PERMS = Object.fromEntries(MENUS.map((m) => [
   m.name,
   m.type === '메뉴'
     ? { system: true, service: true, user: true }
-    : (m.name === '사용자 정보 관리' || m.name === '메뉴 권한 관리'
+    : (SYSTEM_ONLY.includes(m.name)
         ? { system: true, service: false, user: false }
         : { system: true, service: true, user: false }),
 ]));
