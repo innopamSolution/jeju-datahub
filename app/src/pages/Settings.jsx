@@ -115,10 +115,10 @@ const HISTORY = [
 
 const TABS = ['사용자 정보', '메뉴 권한 관리', '분석 지표 가중치 설정'];
 
-function RoleChip({ role, sm }) {
+function RoleChip({ role }) {
   const r = ROLES[role];
   return (
-    <span className={`st-chip${sm ? ' st-chip--sm' : ''}`}>
+    <span className="st-chip">
       <i className="st-chip__dot" style={{ background: r.dot }} />
       {r.label}
     </span>
