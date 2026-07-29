@@ -345,7 +345,7 @@ export default function PolicySimulation() {
               )}
             </div>
           </div>
-          <div style={{ maxHeight: 320, overflowY: 'auto' }}>
+          <div style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
