@@ -129,7 +129,7 @@ export default function ReportManagement() {
                 className="btn-gen"
                 type="button"
                 onClick={() => setRows((r) => [
-                  { author: '김제주', dept, cycle, month: cycle === '연간' ? month : (cycle === '1분기' ? '4월' : cycle === '상반기' ? '7월' : '월'), day, lastRun: '방금 생성' },
+                  { author: CURRENT_USER.name, dept, cycle, month: cycle === '연간' ? month : (cycle === '1분기' ? '4월' : cycle === '상반기' ? '7월' : '월'), day, lastRun: '방금 생성' },
                   ...r,
                 ])}
               >
