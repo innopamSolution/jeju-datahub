@@ -1436,6 +1436,11 @@ input[type='number']:focus-visible {
 .faq::-webkit-scrollbar-track { background: transparent; }
 .faq::-webkit-scrollbar-thumb { background: var(--line-alternative); border-radius: var(--radius-full); }
 .faq:hover::-webkit-scrollbar-thumb { background: var(--line-normal); }
+
+/* Firefox 등 ::-webkit-scrollbar 미지원 브라우저용 폴백 */
+@supports not selector(::-webkit-scrollbar) {
+  .recent, .report, .faq { scrollbar-width: thin; scrollbar-color: var(--line-alternative) transparent; }
+}
 .faq__row { display: flex; align-items: center; gap: var(--space-12); width: 100%; text-align: left; background: var(--fill-normal); border: none; border-radius: var(--radius-12); padding: var(--space-14) var(--space-16); cursor: pointer; transition: background var(--duration-fast) var(--ease-out); }
 .faq__row:hover { background: var(--fill-strong); }
 .faq__ic { width: 30px; height: 30px; border-radius: var(--radius-full); background: var(--orange-95); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
