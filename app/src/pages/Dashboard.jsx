@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as echarts from 'echarts';
 import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
-import { exportSectionsPdf, exportSectionsDocx } from '../utils/pageExport';
+import { exportSectionsPdf, exportSectionsDocx, hBarChartHtml, toPngDataUrl } from '../utils/pageExport';
 import DsSelect from '../components/DsSelect';
 import './Dashboard.css';
 
