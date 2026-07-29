@@ -289,7 +289,7 @@ export default function Settings() {
                   </div>
                   <div className="st-opts">
                     {Object.entries(ROLES).map(([key, r]) => {
-                      const on = perms[selMenu][key];
+                      const on = draft[key];
                       return (
                         <button key={key} type="button" className={`st-opt${on ? ' st-opt--on' : ''}`} onClick={() => togglePerm(key)}>
                           <span className={`st-chk${on ? ' st-chk--on' : ''}`}>{CHECK}</span>
@@ -300,7 +300,8 @@ export default function Settings() {
                   </div>
                   <div className="st-savewrap">
                     {permSaved && <span className="st-saved">저장되었습니다</span>}
-                    <button type="button" className="btn-save" style={{ height: 41 }} onClick={savePerms}>권한 저장</button>
+                    {permDirty && !permSaved && <span className="st-dirty">저장되지 않은 변경사항이 있습니다</span>}
+                    <button type="button" className="btn-save" style={{ height: 41 }} disabled={!permDirty} onClick={savePerms}>권한 저장</button>
                   </div>
                 </div>
               </div>
