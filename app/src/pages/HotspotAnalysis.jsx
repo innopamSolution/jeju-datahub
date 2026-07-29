@@ -152,8 +152,8 @@ export default function HotspotAnalysis() {
     <>
       <header className="topbar">
         <div>
-          <PageCrumb group="분석·시뮬레이션" page="집중 구역 분석" />
-          <h1 className="page-title">집중 구역 분석</h1>
+          <PageCrumb group="분석·시뮬레이션" page="불법 주차 집중 구역 분석" />
+          <h1 className="page-title">불법 주차 집중 구역 분석</h1>
           <p className="page-sub">불법 주차 집중 구역 자동 도출</p>
         </div>
         <div className="topbar__actions">

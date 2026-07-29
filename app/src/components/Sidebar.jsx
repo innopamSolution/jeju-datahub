@@ -5,7 +5,7 @@ import logo from '../assets/logo.svg';
 import { CURRENT_USER } from '../data/currentUser';
 
 const ANALYSIS_SUB = [
-  { to: '/analysis/hotspot', label: '집중 구역 분석' },
+  { to: '/analysis/hotspot', label: '불법 주차 집중 구역 분석' },
   { to: '/analysis/policy-simulation', label: '정책 효과 시뮬레이션' },
   { to: '/analysis/lifestyle-simulation', label: '생활권 시뮬레이션' },
   { to: '/analysis/recommendation', label: '구역추천' },

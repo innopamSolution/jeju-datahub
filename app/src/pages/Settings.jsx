@@ -39,7 +39,7 @@ const USERS = [
 const MENUS = [
   { name: '대시보드', type: '메뉴' },
   { name: '민원 현황', type: '메뉴' },
-  { name: '집중구역 분석', type: '메뉴' },
+  { name: '불법 주차 집중구역 분석', type: '메뉴' },
   { name: '정책 시뮬레이션', type: '메뉴' },
   { name: '생활권 시뮬레이션', type: '메뉴' },
   { name: '구역 추천', type: '메뉴' },
