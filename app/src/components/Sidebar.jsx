@@ -64,6 +64,17 @@ function NavGroup({ icon, label, items, pathname }) {
 
 export default function Sidebar() {
   const { pathname } = useLocation();
+  const [logoutOpen, setLogoutOpen] = useState(false);
+  const userRef = useRef(null);
+
+  useEffect(() => {
+    if (!logoutOpen) return;
+    const onDoc = (e) => { if (userRef.current && !userRef.current.contains(e.target)) setLogoutOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setLogoutOpen(false); };
+    document.addEventListener('click', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+  }, [logoutOpen]);
 
   return (
     <aside className="sidebar">
