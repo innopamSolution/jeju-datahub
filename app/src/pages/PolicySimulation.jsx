@@ -230,7 +230,7 @@ export default function PolicySimulation() {
         </div>
       </header>
 
-      <div className="content" style={{ paddingTop: 24, gap: 20 }}>
+      <div className="content" style={{ gap: 20 }}>
         <section style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, alignItems: 'stretch' }}>
 
           {/* 정책 변수 설정 */}

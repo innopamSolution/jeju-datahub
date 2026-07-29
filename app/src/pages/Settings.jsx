@@ -185,7 +185,7 @@ export default function Settings() {
         </div>
       </header>
 
-      <div className="content" style={{ paddingTop: 24 }}>
+      <div className="content">
         <div className="card st-body">
           {/* 탭 */}
           <div className="segment">
