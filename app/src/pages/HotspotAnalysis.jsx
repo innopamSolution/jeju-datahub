@@ -194,6 +194,30 @@ export default function HotspotAnalysis() {
             <div className="sim-result">
               <div className="sim-result__top">
                 <button className="sim-result__x" aria-label="뒤로가기"><Icon name="chevron-left" size={22} /></button>
+                <div className="sim-export" ref={exportRef}>
+                  <button
+                    className="sim-result__x"
+                    aria-label="내보내기"
+                    title="내보내기"
+                    aria-haspopup="menu"
+                    aria-expanded={exportOpen}
+                    onClick={(e) => { e.stopPropagation(); setExportOpen((o) => !o); }}
+                  >
+                    <Icon name="download" size={20} />
+                  </button>
+                  {exportOpen && (
+                    <div className="sim-export__menu" role="menu">
+                      <button type="button" role="menuitem" className="sim-export__item"
+                        onClick={() => { setExportOpen(false); exportHotspotPdf(RANKING); }}>
+                        PDF 파일 (.pdf)
+                      </button>
+                      <button type="button" role="menuitem" className="sim-export__item"
+                        onClick={() => { setExportOpen(false); exportHotspotDocx(RANKING); }}>
+                        Word 파일 (.docx)
+                      </button>
+                    </div>
+                  )}
+                </div>
                 <button className="sim-result__x" aria-label="닫기" onClick={() => setShowResult(false)}><Icon name="close" size={22} /></button>
               </div>
 
