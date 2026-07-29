@@ -331,7 +331,7 @@ export default function AiAssistant() {
 
             <div className="card ai-card">
               <h2 className="ai-card__title">최근 리포트</h2>
-              <div className="report">
+              <ScrollList className="report">
                 {REPORTS.map((r, i) => (
                   <button key={i} className="report__row">
                     <span className="report__ic">P</span>
