@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import * as echarts from 'echarts';
 import NotificationBell from '../components/NotificationBell';
 import DsSelect from '../components/DsSelect';
+import Icon from '../components/Icon';
+import { exportSectionsPdf, exportSectionsDocx, toPngDataUrl } from '../utils/pageExport';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="24" height="24" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -147,7 +149,7 @@ function EffectChart() {
     };
   }, []);
 
-  return <div ref={hostRef} style={{ width: '100%', height: '100%', minHeight: 180 }} />;
+  return <div ref={hostRef} className="effect-chart" style={{ width: '100%', height: '100%', minHeight: 180 }} />;
 }
 
 export default function PolicySimulation() {
@@ -156,6 +158,54 @@ export default function PolicySimulation() {
   const [period, setPeriod] = useState('3');
   const [roadType, setRoadType] = useState('one-way');
   const [feeRate, setFeeRate] = useState('1');
+  const [exportOpen, setExportOpen] = useState(false);
+  const exportRef = useRef(null);
+
+  useEffect(() => {
+    if (!exportOpen) return;
+    const onDoc = (e) => { if (exportRef.current && !exportRef.current.contains(e.target)) setExportOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setExportOpen(false); };
+    document.addEventListener('click', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+  }, [exportOpen]);
+
+  const exportData = async () => {
+    /* 효과 예측 차트(ECharts svg)를 이미지로 캡처해 리포트에 포함 */
+    let effectImage = null;
+    const svg = document.querySelector('.effect-chart svg');
+    if (svg) {
+      try {
+        const xml = new XMLSerializer().serializeToString(svg);
+        effectImage = await toPngDataUrl(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(xml)}`);
+      } catch { /* 차트 캡처 실패 시 표만 내보냄 */ }
+    }
+
+    const policyLabel = { parking: '주차장 확충', road: '이면도로 정비', fee: '요금제 적용' }[policyType];
+    return {
+      fileBase: '정책효과_시뮬레이션',
+      title: '정책효과 시뮬레이션',
+      subtitle: `정책 유형: ${policyLabel} · 예측 기간: ${period}개월`,
+      sections: [
+        {
+          type: 'table',
+          title: '효과 예측 요약',
+          columns: ['지표', '예측', '상세'],
+          rows: [
+            ['민원 감소 예측', '-23%', '52건 → 40건 월평균'],
+            ['혼잡도 개선', '+18%', '혼잡 지수 0.78 → 0.64'],
+          ],
+        },
+        ...(effectImage ? [{ type: 'chart', title: '정책 전·후 민원 추이', image: effectImage }] : []),
+        {
+          type: 'table',
+          title: '시나리오 비교',
+          columns: ['순번', '시나리오', '민원 감소', '혼잡 개선', '비용 수준', '추천'],
+          rows: SCENARIOS.map((sc, i) => [i + 1, sc.name, sc.reduction, sc.improvement, sc.cost, sc.recommend ? '추천' : '—']),
+        },
+      ],
+    };
+  };
 
   return (
     <>
@@ -165,7 +215,7 @@ export default function PolicySimulation() {
           <p className="page-sub">정책 변수 입력 → 효과 예측 → 시나리오 비교</p>
         </div>
         <div className="topbar__actions">
-          <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}><span className="btn--ai__chip">{AI_ICON}</span> AI 대화 시작하기</button>
+          <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}>{AI_ICON} AI 대화 시작하기</button>
           <NotificationBell />
         </div>
       </header>
@@ -263,8 +313,27 @@ export default function PolicySimulation() {
 
         {/* 시나리오 비교 */}
         <div className="card" style={{ overflow: 'hidden' }}>
-          <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--line-alternative)' }}>
+          <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--line-alternative)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
             <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>시나리오 비교</h2>
+            <div className="sim-export" ref={exportRef}>
+              <button className="btn" type="button" style={{ height: 36, padding: '0 var(--space-12)', fontSize: 'var(--label2-size)' }}
+                aria-haspopup="menu" aria-expanded={exportOpen}
+                onClick={(e) => { e.stopPropagation(); setExportOpen((o) => !o); }}>
+                <Icon name="download" size={16} /> 내보내기
+              </button>
+              {exportOpen && (
+                <div className="sim-export__menu" role="menu">
+                  <button type="button" role="menuitem" className="sim-export__item"
+                    onClick={async () => { setExportOpen(false); exportSectionsPdf(await exportData()); }}>
+                    PDF 파일 (.pdf)
+                  </button>
+                  <button type="button" role="menuitem" className="sim-export__item"
+                    onClick={async () => { setExportOpen(false); exportSectionsDocx(await exportData()); }}>
+                    Word 파일 (.docx)
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
           <div style={{ maxHeight: 320, overflowY: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
