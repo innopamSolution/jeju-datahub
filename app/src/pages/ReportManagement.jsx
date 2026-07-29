@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
+import { exportReportPdf } from '../utils/reportExport';
 import DsSelect from '../components/DsSelect';
 import { isAdmin } from '../data/currentUser';
 
