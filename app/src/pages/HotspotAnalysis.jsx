@@ -12,9 +12,9 @@ const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="24" height="24" aria-hidden="true" style={{ flexShrink: 0 }}>
     <path d="M18.6 8.4c0-2.6 2.1-4.6 4.7-4.6 0 2.6-2.1 4.6-4.7 4.6Z" fill="#3DA35D" />
     <circle cx="18" cy="21" r="12.5" fill="#F79009" />
-    <circle cx="13.6" cy="19.6" r="1.8" fill="#4A3415" />
-    <circle cx="22.4" cy="19.6" r="1.8" fill="#4A3415" />
-    <path d="M14.2 24.4a4.6 4.6 0 0 0 7.6 0" stroke="#4A3415" strokeWidth="1.7" strokeLinecap="round" fill="none" />
+    <circle cx="13.6" cy="19.6" r="1.4" fill="#4A3415" opacity="0.85" />
+    <circle cx="22.4" cy="19.6" r="1.4" fill="#4A3415" opacity="0.85" />
+    <path d="M14.9 24.2a3.9 3.9 0 0 0 6.2 0" stroke="#4A3415" strokeWidth="1.3" strokeLinecap="round" fill="none" opacity="0.85" />
   </svg>
 );
 
