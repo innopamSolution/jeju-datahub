@@ -1431,9 +1431,11 @@ input[type='number']:focus-visible {
 .report__time { font-size: var(--caption1-size); color: var(--text-neutral); margin-top: 2px; }
 .report__dl { color: var(--text-neutral); flex-shrink: 0; display: flex; }
 
-.faq { display: flex; flex-direction: column; gap: var(--space-10); max-height: 320px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line-normal) transparent; }
+.faq { display: flex; flex-direction: column; gap: var(--space-10); max-height: 320px; overflow-y: auto; }
 .faq::-webkit-scrollbar { width: 6px; }
-.faq::-webkit-scrollbar-thumb { background: var(--line-normal); border-radius: var(--radius-full); }
+.faq::-webkit-scrollbar-track { background: transparent; }
+.faq::-webkit-scrollbar-thumb { background: var(--line-alternative); border-radius: var(--radius-full); }
+.faq:hover::-webkit-scrollbar-thumb { background: var(--line-normal); }
 .faq__row { display: flex; align-items: center; gap: var(--space-12); width: 100%; text-align: left; background: var(--fill-normal); border: none; border-radius: var(--radius-12); padding: var(--space-14) var(--space-16); cursor: pointer; transition: background var(--duration-fast) var(--ease-out); }
 .faq__row:hover { background: var(--fill-strong); }
 .faq__ic { width: 30px; height: 30px; border-radius: var(--radius-full); background: var(--orange-95); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
