@@ -4,20 +4,15 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
+import { exportSectionsPdf, exportSectionsDocx, hBarChartHtml } from '../utils/pageExport';
 
 const AI_ICON = (
-  <svg viewBox="0 0 36 36" fill="none" width="22" height="22" aria-hidden="true" style={{ flexShrink: 0 }}>
-    <path d="M18.4 8.6c.2-2.5 2.4-4.4 4.9-4.1-.2 2.5-2.4 4.3-4.9 4.1Z" fill="#3DA35D" />
-    <path d="M18.4 8.6c-.2-2-2-3.5-4-3.3.2 2 2 3.5 4 3.3Z" fill="#4FB96A" />
+  <svg viewBox="0 0 36 36" fill="none" width="24" height="24" aria-hidden="true" style={{ flexShrink: 0 }}>
+    <path d="M18.6 8.4c0-2.6 2.1-4.6 4.7-4.6 0 2.6-2.1 4.6-4.7 4.6Z" fill="#3DA35D" />
     <circle cx="18" cy="21" r="12.5" fill="#F79009" />
-    <path d="M9 18.6a9 9 0 0 1 18 0Z" fill="#FBB454" opacity="0.5" />
-    <circle cx="11.8" cy="23.2" r="2" fill="#FF8A5B" opacity="0.5" />
-    <circle cx="24.2" cy="23.2" r="2" fill="#FF8A5B" opacity="0.5" />
-    <circle cx="13.8" cy="20" r="1.7" fill="#4A3415" />
-    <circle cx="22.2" cy="20" r="1.7" fill="#4A3415" />
-    <circle cx="14.4" cy="19.4" r="0.55" fill="#fff" />
-    <circle cx="22.8" cy="19.4" r="0.55" fill="#fff" />
-    <path d="M14 24.6a4.4 4.4 0 0 0 8 0" stroke="#4A3415" strokeWidth="1.6" strokeLinecap="round" fill="none" />
+    <circle cx="13.6" cy="19.6" r="1.8" fill="#4A3415" />
+    <circle cx="22.4" cy="19.6" r="1.8" fill="#4A3415" />
+    <path d="M14.2 24.4a4.6 4.6 0 0 0 7.6 0" stroke="#4A3415" strokeWidth="1.7" strokeLinecap="round" fill="none" />
   </svg>
 );
 
@@ -79,6 +74,46 @@ export default function InvestmentPriority() {
   const listRef   = useRef(null);
   const [risk, setRisk] = useState('전체');
   const [activeRank, setActiveRank] = useState(null);
+  const [exportOpen, setExportOpen] = useState(false);
+  const exportRef = useRef(null);
+
+  useEffect(() => {
+    if (!exportOpen) return;
+    const onDoc = (e) => { if (exportRef.current && !exportRef.current.contains(e.target)) setExportOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setExportOpen(false); };
+    document.addEventListener('click', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+  }, [exportOpen]);
+
+  const exportData = () => ({
+    fileBase: '투자보강_우선순위',
+    title: '투자·보강 우선순위',
+    subtitle: '종합점수 기준 : 안전위험도 35% / 민원빈도 25% / 이용패턴 20% / 사고이력 20%',
+    sections: [
+      {
+        type: 'chart',
+        title: '주차장별 종합점수',
+        html: hBarChartHtml(LOTS.map((lot) => ({
+          label: lot.name, value: lot.score, valueLabel: `${lot.score}점`, color: TIER[lot.tier].cssVar,
+        }))),
+      },
+      {
+        type: 'table',
+        title: '투자·보강 우선순위 목록',
+        columns: ['순위', '주차장', '종합점수', '우선순위', '주소', '면수', '준공연도'],
+        rows: LOTS.map((lot) => [
+          lot.rank, lot.name, `${lot.score}점`, TIER[lot.tier].label, lot.addr, `${lot.spaces}면`, `${lot.year} (${lot.age}년 경과)`,
+        ]),
+      },
+      {
+        type: 'table',
+        title: '세부 지표 (안전위험도 · 민원빈도 · 이용패턴 · 사고이력)',
+        columns: ['순위', '주차장', '안전위험도', '민원빈도', '이용패턴', '사고이력'],
+        rows: LOTS.map((lot) => [lot.rank, lot.name, lot.m.safety, lot.m.civil, lot.m.usage, lot.m.accident]),
+      },
+    ],
+  });
 
   function setActiveRow(rank) {
     setActiveRank(rank);
@@ -151,7 +186,6 @@ export default function InvestmentPriority() {
         </div>
         <div className="topbar__actions">
           <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}>{AI_ICON} AI 대화 시작하기</button>
-          <button className="btn" type="button"><Icon name="download" size={20} /> 내보내기</button>
           <NotificationBell />
         </div>
       </header>
@@ -228,6 +262,25 @@ export default function InvestmentPriority() {
                 <div>
                   <h2 className="card-head__title">투자·보강 우선순위</h2>
                   <p className="card-head__sub">종합점수 기준 : 안전위험도 35% / 민원빈도 25% / 이용패턴 20% / 사고이력 20%</p>
+                </div>
+                <div className="sim-export" ref={exportRef}>
+                  <button className="btn" type="button" style={{ height: 36, padding: '0 var(--space-12)', fontSize: 'var(--label2-size)' }}
+                    aria-haspopup="menu" aria-expanded={exportOpen}
+                    onClick={(e) => { e.stopPropagation(); setExportOpen((o) => !o); }}>
+                    <Icon name="download" size={16} /> 내보내기
+                  </button>
+                  {exportOpen && (
+                    <div className="sim-export__menu" role="menu">
+                      <button type="button" role="menuitem" className="sim-export__item"
+                        onClick={() => { setExportOpen(false); exportSectionsPdf(exportData()); }}>
+                        PDF 파일 (.pdf)
+                      </button>
+                      <button type="button" role="menuitem" className="sim-export__item"
+                        onClick={() => { setExportOpen(false); exportSectionsDocx(exportData()); }}>
+                        Word 파일 (.docx)
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="prio-list" ref={listRef}>
