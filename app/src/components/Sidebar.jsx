@@ -101,13 +101,13 @@ export default function Sidebar() {
           <Icon name="setting" size={22} /><span>설정</span>
         </Link>
         <div className="sb-user">
-          <span className="sb-user__avatar">{CURRENT_USER.name[0]}</span>
+          <span className="sb-user__avatar"><Icon name="user" size={20} /></span>
           <div className="sb-user__info">
             <div className="sb-user__name">{CURRENT_USER.name}</div>
             <div className="sb-user__dept">{CURRENT_USER.dept}</div>
           </div>
           <button className="sb-user__logout" type="button" aria-label="로그아웃" title="로그아웃">
-            <Icon name="arrow-right" size={18} />
+            <Icon name="logout" size={18} />
           </button>
         </div>
       </div>
