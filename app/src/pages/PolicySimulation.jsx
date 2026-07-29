@@ -347,6 +347,11 @@ export default function PolicySimulation() {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
+                  <TH center>
+                    <input type="checkbox" aria-label="전체 선택" checked={allSelected}
+                      onChange={toggleAllScenarios}
+                      style={{ width: 16, height: 16, accentColor: 'var(--cool-neutral-17)', cursor: 'pointer', verticalAlign: 'middle' }} />
+                  </TH>
                   <TH>시나리오</TH>
                   <TH center>민원 감소</TH>
                   <TH center>혼잡 개선</TH>
@@ -357,6 +362,11 @@ export default function PolicySimulation() {
               <tbody>
                 {SCENARIOS.map((s, i) => (
                   <tr key={i}>
+                    <TD center>
+                      <input type="checkbox" aria-label={`${s.name} 선택`} checked={selectedScenarios.includes(i)}
+                        onChange={() => toggleScenario(i)}
+                        style={{ width: 16, height: 16, accentColor: 'var(--cool-neutral-17)', cursor: 'pointer', verticalAlign: 'middle' }} />
+                    </TD>
                     <TD><span style={{ fontWeight: 600, color: 'var(--text-strong)' }}>{s.name}</span></TD>
                     <TD center><span style={{ fontWeight: 700, color: 'var(--primary)' }}>{s.reduction}</span></TD>
                     <TD center><span style={{ fontWeight: 700, color: '#16a34a' }}>{s.improvement}</span></TD>
