@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import Icon from './Icon';
 import logo from '../assets/logo.svg';
+import { CURRENT_USER } from '../data/currentUser';
 
 const ANALYSIS_SUB = [
   { to: '/analysis/hotspot', label: '집중 구역 분석' },
