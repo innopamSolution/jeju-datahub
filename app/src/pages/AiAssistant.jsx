@@ -315,7 +315,7 @@ export default function AiAssistant() {
           <div className="ai-side">
             <div className="card ai-card">
               <h2 className="ai-card__title">최근 대화</h2>
-              <div className="recent">
+              <ScrollList className="recent">
                 {RECENT.map((r, i) => (
                   <button
                     key={i}
@@ -326,7 +326,7 @@ export default function AiAssistant() {
                     <div className="recent__time">{r.time}</div>
                   </button>
                 ))}
-              </div>
+              </ScrollList>
             </div>
 
             <div className="card ai-card">
