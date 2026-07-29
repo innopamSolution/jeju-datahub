@@ -77,6 +77,17 @@ export default function HotspotAnalysis() {
   const [dong, setDong]         = useState('전체');
   const [showResult, setShowResult] = useState(true);
   const [activeRank, setActiveRank] = useState(null);
+  const [exportOpen, setExportOpen] = useState(false);
+  const exportRef = useRef(null);
+
+  useEffect(() => {
+    if (!exportOpen) return;
+    const onDoc = (e) => { if (exportRef.current && !exportRef.current.contains(e.target)) setExportOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setExportOpen(false); };
+    document.addEventListener('click', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+  }, [exportOpen]);
 
   function setActiveRow(rank) {
     setActiveRank(rank);
