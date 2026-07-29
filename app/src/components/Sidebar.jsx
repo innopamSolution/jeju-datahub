@@ -100,9 +100,16 @@ export default function Sidebar() {
         <Link to="/settings" className={`nav__item${pathname.startsWith('/settings') ? ' nav__item--active' : ''}`}>
           <Icon name="setting" size={22} /><span>설정</span>
         </Link>
-        <button className="nav__item" style={{ border: 'none', width: '100%', cursor: 'pointer', textAlign: 'left' }}>
-          <Icon name="arrow-right" size={22} /><span>로그아웃</span>
-        </button>
+        <div className="sb-user">
+          <span className="sb-user__avatar">{CURRENT_USER.name[0]}</span>
+          <div className="sb-user__info">
+            <div className="sb-user__name">{CURRENT_USER.name}</div>
+            <div className="sb-user__dept">{CURRENT_USER.dept}</div>
+          </div>
+          <button className="sb-user__logout" type="button" aria-label="로그아웃" title="로그아웃">
+            <Icon name="arrow-right" size={18} />
+          </button>
+        </div>
       </div>
     </aside>
   );
