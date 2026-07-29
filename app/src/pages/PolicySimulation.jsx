@@ -160,6 +160,12 @@ export default function PolicySimulation() {
   const [feeRate, setFeeRate] = useState('1');
   const [exportOpen, setExportOpen] = useState(false);
   const exportRef = useRef(null);
+  /* 시나리오 비교 — 내보낼 시나리오 선택 (기본 전체 선택) */
+  const [selectedScenarios, setSelectedScenarios] = useState(() => SCENARIOS.map((_, i) => i));
+  const allSelected = selectedScenarios.length === SCENARIOS.length;
+  const toggleScenario = (i) => setSelectedScenarios((sel) =>
+    sel.includes(i) ? sel.filter((x) => x !== i) : [...sel, i].sort((a, b) => a - b));
+  const toggleAllScenarios = () => setSelectedScenarios(allSelected ? [] : SCENARIOS.map((_, i) => i));
 
   useEffect(() => {
     if (!exportOpen) return;
