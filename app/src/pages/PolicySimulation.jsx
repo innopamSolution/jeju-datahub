@@ -319,8 +319,8 @@ export default function PolicySimulation() {
           </div>
         </section>
 
-        {/* 시나리오 비교 */}
-        <div className="card" style={{ overflow: 'hidden' }}>
+        {/* 시나리오 비교 — 남은 화면 높이를 채움 */}
+        <div className="card" style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
           <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--line-alternative)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
             <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>시나리오 비교</h2>
             <div className="sim-export" ref={exportRef}>
