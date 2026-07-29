@@ -207,7 +207,9 @@ export default function PolicySimulation() {
           type: 'table',
           title: '시나리오 비교',
           columns: ['순번', '시나리오', '민원 감소', '혼잡 개선', '비용 수준', '추천'],
-          rows: SCENARIOS.map((sc, i) => [i + 1, sc.name, sc.reduction, sc.improvement, sc.cost, sc.recommend ? '추천' : '—']),
+          rows: SCENARIOS
+            .filter((_, i) => selectedScenarios.includes(i))
+            .map((sc, i) => [i + 1, sc.name, sc.reduction, sc.improvement, sc.cost, sc.recommend ? '추천' : '—']),
         },
       ],
     };
