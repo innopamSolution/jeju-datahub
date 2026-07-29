@@ -1,6 +1,12 @@
 // Icon path data extracted from the Wanted Design System bundle, plus a few
 // extra glyphs (warning, chart, download, car) drawn in the same 24x24 currentColor style.
 export const ICON_PATHS = {
+  "search": [
+    {
+      "r": "evenodd",
+      "d": "M 10.5 3 C 6.358 3 3 6.358 3 10.5 C 3 14.642 6.358 18 10.5 18 C 12.21 18 13.786 17.428 15.048 16.465 L 19.09 20.508 C 19.482 20.899 20.116 20.899 20.508 20.508 C 20.899 20.116 20.899 19.482 20.508 19.09 L 16.465 15.048 C 17.428 13.786 18 12.21 18 10.5 C 18 6.358 14.642 3 10.5 3 Z M 4.9 10.5 C 4.9 7.407 7.407 4.9 10.5 4.9 C 13.593 4.9 16.1 7.407 16.1 10.5 C 16.1 13.593 13.593 16.1 10.5 16.1 C 7.407 16.1 4.9 13.593 4.9 10.5 Z"
+    }
+  ],
   "arrow-right": [
     {
       "x": 2.6,
