@@ -1029,6 +1029,40 @@ input[type='number']:focus-visible {
 .sim-result__x:hover { background: var(--fill-normal); }
 .sim-result__x .ic { color: var(--text-neutral); }
 
+/* 결과 패널 내보내기 드롭다운 (PDF/DOCX 선택) */
+.sim-export { position: relative; }
+.sim-export__menu {
+  position: absolute;
+  top: calc(100% + var(--space-4));
+  right: 0;
+  z-index: 40;
+  min-width: 168px;
+  background: var(--card-bg);
+  border: 1px solid var(--line-normal);
+  border-radius: var(--radius-12);
+  box-shadow: var(--shadow-overlay);
+  padding: var(--space-8);
+  animation: datePopIn var(--duration-fast) var(--ease-out);
+}
+.sim-export__item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--space-12);
+  border: none;
+  border-radius: var(--radius-8);
+  background: none;
+  font-family: var(--font-body);
+  font-size: var(--label1-size);
+  font-weight: var(--weight-semibold);
+  color: var(--text-normal);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+.sim-export__item:hover { background: var(--fill-normal); }
+
 .sim-result__body {
   flex: 1; min-height: 0; overflow-y: auto;
   padding: var(--space-8) var(--space-24) var(--space-24);
