@@ -273,7 +273,7 @@ export default function Settings() {
                         key={m.name}
                         type="button"
                         className={`st-menu-row${selMenu === m.name ? ' st-menu-row--on' : ''}`}
-                        onClick={() => { setSelMenu(m.name); setPermSaved(false); }}
+                        onClick={() => selectMenu(m.name)}
                       >
                         <span>{m.name}</span>
                         <span className={`st-tag${m.type === '관리' ? ' st-tag--manage' : ''}`}>{m.type}</span>
