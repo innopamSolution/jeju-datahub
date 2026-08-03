@@ -176,7 +176,7 @@ export default function ReportManagement() {
                           </DsSelect>
                         </td>
                         <td>
-                          <div style={{ display: 'flex', gap: 6 }}>
+                          <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
                             {draft.cycle === '연간' && (
                               <DsSelect value={draft.month} onChange={(e) => setDraft((d) => ({ ...d, month: e.target.value }))}>
                                 {MONTHS.map((v) => <option key={v} value={v}>{v}</option>)}
