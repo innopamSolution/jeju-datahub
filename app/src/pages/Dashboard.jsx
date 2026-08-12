@@ -370,27 +370,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* 상세 필터 패널 */}
-      {filterOpen && (
-        <div className="detail-filter">
-          <div className="detail-filter__group">
-            <span className="detail-filter__label">행정구역</span>
-            <DsSelect className="detail-filter__select" aria-label="행정구역">
-              <option>제주시</option><option>서귀포시</option><option>제주 전체</option>
-            </DsSelect>
-          </div>
-          <div className="detail-filter__group">
-            <span className="detail-filter__label">민원유형</span>
-            <DsSelect className="detail-filter__select" aria-label="민원유형">
-              <option>전체</option><option>인도·횡단보도 점유</option><option>안전시설 인근 위반</option><option>장애인전용구역 위반</option><option>기타 불법주정차</option><option>친환경차충전구역 위반</option>
-            </DsSelect>
-          </div>
-          <div className="detail-filter__foot">
-            <button className="btn" type="button" style={{ height: 38 }}>초기화</button>
-            <button className="btn btn--apply" type="button" style={{ height: 38 }} onClick={() => setFilterOpen(false)}>필터 적용</button>
-          </div>
-        </div>
-      )}
 
       <div className="content">
         <section className="stat-row">
