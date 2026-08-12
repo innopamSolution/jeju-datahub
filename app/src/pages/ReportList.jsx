@@ -79,9 +79,23 @@ export default function ReportList() {
       </header>
 
       <div className="content content--reports">
+        {/* 목록 전환 탭 */}
+        <div className="segment">
+          <button
+            className={`segment__btn${tab === 'auto' ? ' segment__btn--active' : ''}`}
+            type="button"
+            onClick={() => setTab('auto')}
+          >자동 생성 보고서</button>
+          <button
+            className={`segment__btn${tab === 'manual' ? ' segment__btn--active' : ''}`}
+            type="button"
+            onClick={() => setTab('manual')}
+          >직접 생성 보고서</button>
+        </div>
+
         {/* 자동 생성 목록 */}
+        {tab === 'auto' && (
         <div className="card rpt-list">
-          <div className="rpt-card__head"><h2 className="card-head__title">자동 생성 보고서 목록</h2></div>
           <div className="rt-wrap">
             <table className="rt">
               <thead>
