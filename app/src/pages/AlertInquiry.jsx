@@ -98,6 +98,10 @@ export default function AlertInquiry() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [level, period, city, dong, customRange]);
 
+  useEffect(() => { setPage(1); }, [level, period, city, dong, customRange]);
+
+  const pageRows = rows.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+
   const nSevere = rows.filter((r) => r.level === 'severe').length;
   const nWarn = rows.filter((r) => r.level === 'warn').length;
   const nCaution = rows.filter((r) => r.level === 'caution').length;
