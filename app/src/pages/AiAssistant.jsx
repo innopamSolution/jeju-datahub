@@ -168,15 +168,6 @@ export default function AiAssistant() {
 
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
 
-  useEffect(() => {
-    if (!plusOpen) return;
-    const onDoc = (e) => { if (plusRef.current && !plusRef.current.contains(e.target)) setPlusOpen(false); };
-    const onKey = (e) => { if (e.key === 'Escape') setPlusOpen(false); };
-    document.addEventListener('click', onDoc);
-    document.addEventListener('keydown', onKey);
-    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
-  }, [plusOpen]);
-
   const [reportPreview, setReportPreview] = useState(null);
 
   const respond = (aiMsg) => {
