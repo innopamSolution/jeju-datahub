@@ -139,6 +139,10 @@ export default function AlertManagement() {
               <button className="btn-edit" type="button" onClick={openCrit}>설정</button>
             </div>
             <div className="crit-list">
+              <div className="crit-row">
+                <span className="crit-row__tag crit-row__region-label">지역</span>
+                <span className="crit-row__view">{critRegionLabel(crit)}</span>
+              </div>
               {CRIT_LEVELS.map((c) => (
                 <div key={c.key} className="crit-row">
                   <span className={`badge ${c.badge} crit-row__tag`}>{c.label}</span>
