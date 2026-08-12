@@ -16,15 +16,26 @@ const AI_ICON = (
 );
 
 const DATA = [
-  { level: 'severe',  city: '제주시',   region: '연동',   name: '연동 민원 45% 증가',   date: '2026-05-01 14:21', count: 89 },
-  { level: 'warn',    city: '제주시',   region: '노형동', name: '노형동 민원 28% 증가', date: '2026-05-05 13:05', count: 62 },
   { level: 'warn',    city: '제주시',   region: '전체',   name: '제주시 민원 15% 증가', date: '2026-05-28 11:47', count: 29 },
+  { level: 'caution', city: '제주시',   region: '삼도동', name: '삼도동 민원 10% 증가', date: '2026-05-24 10:12', count: 22 },
+  { level: 'warn',    city: '서귀포시', region: '중문동', name: '중문동 민원 22% 증가', date: '2026-05-19 15:38', count: 47 },
+  { level: 'severe',  city: '제주시',   region: '이도동', name: '이도동 민원 46% 증가', date: '2026-05-14 09:52', count: 84 },
+  { level: 'caution', city: '제주시',   region: '아라동', name: '아라동 민원 11% 증가', date: '2026-05-09 17:03', count: 26 },
+  { level: 'warn',    city: '제주시',   region: '노형동', name: '노형동 민원 28% 증가', date: '2026-05-05 13:05', count: 62 },
+  { level: 'severe',  city: '제주시',   region: '연동',   name: '연동 민원 45% 증가',   date: '2026-05-01 14:21', count: 89 },
+  { level: 'warn',    city: '서귀포시', region: '전체',   name: '서귀포시 민원 18% 증가', date: '2026-04-27 11:26', count: 41 },
   { level: 'caution', city: '제주시',   region: '이도동', name: '이도동 민원 12% 증가', date: '2026-04-18 09:30', count: 34 },
+  { level: 'warn',    city: '제주시',   region: '연동',   name: '연동 민원 24% 증가',   date: '2026-04-11 16:44', count: 53 },
+  { level: 'caution', city: '서귀포시', region: '효돈동', name: '효돈동 민원 9% 증가',  date: '2026-04-03 10:55', count: 19 },
   { level: 'severe',  city: '제주시',   region: '노형동', name: '노형동 민원 52% 증가', date: '2026-03-22 16:10', count: 95 },
+  { level: 'caution', city: '제주시',   region: '애월읍', name: '애월읍 민원 12% 증가', date: '2026-03-15 14:07', count: 28 },
+  { level: 'warn',    city: '제주시',   region: '삼도동', name: '삼도동 민원 19% 증가', date: '2026-03-06 09:18', count: 44 },
   { level: 'warn',    city: '제주시',   region: '연동',   name: '연동 민원 31% 증가',   date: '2026-02-14 11:00', count: 58 },
   { level: 'caution', city: '제주시',   region: '애월읍', name: '애월읍 민원 9% 증가',  date: '2026-01-09 10:20', count: 31 },
   { level: 'severe',  city: '서귀포시', region: '성산읍', name: '성산읍 민원 48% 증가', date: '2025-12-28 15:45', count: 91 },
 ];
+
+const PER_PAGE = 10;
 
 const DONGS = {
   제주시: ['연동', '노형동', '이도동', '애월읍'],
