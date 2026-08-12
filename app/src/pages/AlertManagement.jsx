@@ -15,12 +15,12 @@ const AI_ICON = (
 );
 
 const INITIAL_RECEIVERS = [
-  { dept: '주차관리',   name: '김지수', email: 'jisu.kim@jeju.go.kr',     groups: ['severe', 'warn'], on: true },
-  { dept: '주차관리',   name: '김서연', email: 'seoyeon.kim@jeju.go.kr',  groups: ['caution'],        on: true },
-  { dept: '교통정책과', name: '이준호', email: 'junho.lee@jeju.go.kr',    groups: ['warn'],           on: false },
-  { dept: '교통정책과', name: '최하늘', email: 'haneul.choi@jeju.go.kr',  groups: ['caution'],        on: true },
-  { dept: '교통정책과', name: '장민호', email: 'minho.jang@jeju.go.kr',   groups: ['warn'],           on: false },
-  { dept: '정보화',     name: '오지민', email: 'jimin.oh@jeju.go.kr',     groups: ['caution'],        on: true },
+  { dept: '주차관리',   name: '김지수', email: 'jisu.kim@jeju.go.kr',     region: '제주시 연동',   groups: ['severe', 'warn'], on: true },
+  { dept: '주차관리',   name: '김서연', email: 'seoyeon.kim@jeju.go.kr',  region: '제주시 노형동', groups: ['caution'],        on: true },
+  { dept: '교통정책과', name: '이준호', email: 'junho.lee@jeju.go.kr',    region: '제주시 전체',   groups: ['warn'],           on: false },
+  { dept: '교통정책과', name: '최하늘', email: 'haneul.choi@jeju.go.kr',  region: '전체 지역',     groups: ['caution'],        on: true },
+  { dept: '교통정책과', name: '장민호', email: 'minho.jang@jeju.go.kr',   region: '서귀포시 전체', groups: ['warn'],           on: false },
+  { dept: '정보화',     name: '오지민', email: 'jimin.oh@jeju.go.kr',     region: '전체 지역',     groups: ['caution'],        on: true },
 ];
 
 const GROUP_META = {
