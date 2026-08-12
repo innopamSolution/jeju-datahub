@@ -1192,7 +1192,10 @@ input[type='number']:focus-visible {
 .rpt-card__head { padding: var(--space-24) var(--space-28) var(--space-16); }
 .rpt-card__head .card-head__title { margin: 0; }
 .rpt-list, .rpt-manual { padding: 0; }
-.rt-wrap { padding: 0 var(--space-16) var(--space-20); overflow-x: auto; }
+.rt-wrap { padding: 0 var(--space-16) var(--space-20); overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--line-normal) transparent; }
+.rt-wrap::-webkit-scrollbar { height: 8px; }
+.rt-wrap::-webkit-scrollbar-track { background: transparent; }
+.rt-wrap::-webkit-scrollbar-thumb { background: var(--line-normal); border-radius: var(--radius-full); }
 .rpt-list .rt-wrap, .rpt-manual .rt-wrap { padding-top: var(--space-16); }
 .rt { width: 100%; border-collapse: collapse; }
 .rt th { font-size: var(--label1-size); font-weight: var(--weight-semibold); color: var(--text-neutral); text-align: center; padding: var(--space-12) var(--space-16); background: var(--fill-normal); white-space: nowrap; }
