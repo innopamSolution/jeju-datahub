@@ -15,14 +15,14 @@ const AI_ICON = (
 );
 
 const DATA = [
-  { level: 'severe',  city: '제주시',   region: '연동',   name: '연동 민원 급증',      date: '2026-05-01 14:21', count: 89 },
-  { level: 'warn',    city: '제주시',   region: '노형동', name: '노형동 주간 증가',    date: '2026-05-05 13:05', count: 62 },
-  { level: 'warn',    city: '제주시',   region: '전체',   name: '불법주차 주간 29건',  date: '2026-05-28 11:47', count: 29 },
-  { level: 'caution', city: '제주시',   region: '이도동', name: '이도동 주의 알림',    date: '2026-04-18 09:30', count: 34 },
-  { level: 'severe',  city: '제주시',   region: '노형동', name: '노형 사거리 급증',    date: '2026-03-22 16:10', count: 95 },
-  { level: 'warn',    city: '제주시',   region: '연동',   name: '연동 상권 혼잡',      date: '2026-02-14 11:00', count: 58 },
-  { level: 'caution', city: '제주시',   region: '애월읍', name: '애월 해안 주차 주의', date: '2026-01-09 10:20', count: 31 },
-  { level: 'severe',  city: '서귀포시', region: '성산읍', name: '성산 관광지 급증',    date: '2025-12-28 15:45', count: 91 },
+  { level: 'severe',  city: '제주시',   region: '연동',   name: '연동 민원 45% 증가',   date: '2026-05-01 14:21', count: 89 },
+  { level: 'warn',    city: '제주시',   region: '노형동', name: '노형동 민원 28% 증가', date: '2026-05-05 13:05', count: 62 },
+  { level: 'warn',    city: '제주시',   region: '전체',   name: '제주시 민원 15% 증가', date: '2026-05-28 11:47', count: 29 },
+  { level: 'caution', city: '제주시',   region: '이도동', name: '이도동 민원 12% 증가', date: '2026-04-18 09:30', count: 34 },
+  { level: 'severe',  city: '제주시',   region: '노형동', name: '노형동 민원 52% 증가', date: '2026-03-22 16:10', count: 95 },
+  { level: 'warn',    city: '제주시',   region: '연동',   name: '연동 민원 31% 증가',   date: '2026-02-14 11:00', count: 58 },
+  { level: 'caution', city: '제주시',   region: '애월읍', name: '애월읍 민원 9% 증가',  date: '2026-01-09 10:20', count: 31 },
+  { level: 'severe',  city: '서귀포시', region: '성산읍', name: '성산읍 민원 48% 증가', date: '2025-12-28 15:45', count: 91 },
 ];
 
 const DONGS = {
