@@ -22,7 +22,15 @@ const INITIAL_RECEIVERS = [
   { dept: '교통정책과', name: '최하늘', email: 'haneul.choi@jeju.go.kr',  region: '전체 지역',     groups: ['caution'],        on: true },
   { dept: '교통정책과', name: '장민호', email: 'minho.jang@jeju.go.kr',   region: '서귀포시 전체', groups: ['warn'],           on: false },
   { dept: '정보화',     name: '오지민', email: 'jimin.oh@jeju.go.kr',     region: '전체 지역',     groups: ['caution'],        on: true },
+  { dept: '주차관리',   name: '박도윤', email: 'doyun.park@jeju.go.kr',   region: '제주시 이도동', groups: ['severe'],         on: true },
+  { dept: '안전정책과', name: '정예린', email: 'yerin.jung@jeju.go.kr',   region: '제주시 아라동', groups: ['warn', 'caution'], on: true },
+  { dept: '안전정책과', name: '한지우', email: 'jiwoo.han@jeju.go.kr',    region: '서귀포시 성산읍', groups: ['severe'],       on: false },
+  { dept: '종합민원실', name: '문서준', email: 'seojun.moon@jeju.go.kr',  region: '전체 지역',     groups: ['warn'],           on: true },
+  { dept: '종합민원실', name: '강하은', email: 'haeun.kang@jeju.go.kr',   region: '제주시 삼도동', groups: ['caution'],        on: true },
+  { dept: '정보화',     name: '윤시우', email: 'siwoo.yoon@jeju.go.kr',   region: '서귀포시 중문동', groups: ['warn'],         on: false },
 ];
+
+const PER_PAGE = 10;
 
 const GROUP_META = {
   severe:  { label: '심각', badge: 'badge--severe' },
