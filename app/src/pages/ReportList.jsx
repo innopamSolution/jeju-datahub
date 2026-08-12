@@ -160,7 +160,6 @@ export default function ReportList() {
                   <th>분석 기간</th>
                   <th>생성일</th>
                   <th>생성자</th>
-                  <th>배포 부서</th>
                   <th className="col-center">미리보기</th>
                   <th className="col-center">다운로드</th>
                 </tr>
@@ -173,7 +172,6 @@ export default function ReportList() {
                     <td className="rt-date">{r.period}</td>
                     <td className="rt-date">{r.date}</td>
                     <td>{r.author}</td>
-                    <td>{r.dept}</td>
                     <td className="col-center"><button className="tag" onClick={() => setPreviewReport(r)}>미리보기</button></td>
                     <td className="col-center">
                       <div style={{ display: 'inline-flex', gap: 6 }}>
