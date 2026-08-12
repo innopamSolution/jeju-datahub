@@ -73,6 +73,11 @@ export default function AlertManagement() {
   const toggleSwitch = (i) => setReceivers((rs) => rs.map((r, j) => (j === i ? { ...r, on: !r.on } : r)));
   const removeRow = (i) => setReceivers((rs) => rs.filter((_, j) => j !== i));
 
+  useEffect(() => {
+    const pages = Math.max(1, Math.ceil(receivers.length / PER_PAGE));
+    if (recvPage > pages) setRecvPage(pages);
+  }, [receivers.length, recvPage]);
+
   const openCrit = () => { setCritDraft(crit); setCritOpen(true); };
   const saveCrit = () => { setCrit(critDraft); setCritOpen(false); };
 
