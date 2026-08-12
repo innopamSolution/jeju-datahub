@@ -56,6 +56,7 @@ function Pager({ total, page, setPage }) {
 
 export default function ReportList() {
   const navigate = useNavigate();
+  const [tab, setTab] = useState('auto');
   const [autoPage, setAutoPage] = useState(1);
   const [manualPage, setManualPage] = useState(1);
   const [previewReport, setPreviewReport] = useState(null);
