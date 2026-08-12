@@ -253,6 +253,7 @@ export default function AlertInquiry() {
               </tbody>
             </table>
             {rows.length === 0 && <div className="alert-empty">조건에 해당하는 알림이 없습니다.</div>}
+            <Pager total={rows.length} page={page} setPage={setPage} perPage={PER_PAGE} />
           </div>
         </div>
       </div>
