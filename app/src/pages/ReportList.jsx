@@ -22,23 +22,38 @@ const DL_ICON = (
 );
 
 const AUTO_ROWS = [
-  { name: '2026년 3월 월간 민원 보고서', cycle: '월간', author: '홍길동', dept: '교통정책과', date: '2026.04.01', status: 'done' },
-  { name: '2026년 4월 월간 민원 보고서', cycle: '월간', author: '김지수', dept: '주차관리과', date: '2026.05.01', status: 'done' },
-  { name: '2026년 5월 월간 민원 보고서', cycle: '월간', author: '이수민', dept: '안전정책과', date: '2026.06.01', status: 'done' },
-  { name: '2026년 6월 월간 민원 보고서', cycle: '월간', author: '박서준', dept: '종합민원실', date: '2026.07.01', status: 'done' },
-  { name: '2026년 1/4분기 민원 보고서', cycle: '반기', author: '홍길동', dept: '교통정책과', date: '2026.04.01', status: 'wait' },
-  { name: '2026년 3/4분기 민원 보고서', cycle: '반기', author: '김지수', dept: '주차관리과', date: '2026.10.01', status: 'wait' },
-  { name: '2026년 반기 민원 보고서',    cycle: '반기', author: '이수민', dept: '안전정책과', date: '2026.07.01', status: 'wait' },
-  { name: '2026년 전체 민원 보고서',    cycle: '연간', author: '박서준', dept: '종합민원실', date: '2027.01.01', status: 'wait' },
+  { name: '2026년 6월 월간 민원 보고서',  cycle: '월간', author: '박서준', dept: '종합민원실', date: '2026.07.01', status: 'done' },
+  { name: '2026년 5월 월간 민원 보고서',  cycle: '월간', author: '이수민', dept: '안전정책과', date: '2026.06.01', status: 'done' },
+  { name: '2026년 4월 월간 민원 보고서',  cycle: '월간', author: '김지수', dept: '주차관리과', date: '2026.05.01', status: 'done' },
+  { name: '2026년 3월 월간 민원 보고서',  cycle: '월간', author: '홍길동', dept: '교통정책과', date: '2026.04.01', status: 'done' },
+  { name: '2026년 2월 월간 민원 보고서',  cycle: '월간', author: '박서준', dept: '종합민원실', date: '2026.03.01', status: 'done' },
+  { name: '2026년 1월 월간 민원 보고서',  cycle: '월간', author: '이수민', dept: '안전정책과', date: '2026.02.01', status: 'done' },
+  { name: '2025년 12월 월간 민원 보고서', cycle: '월간', author: '김지수', dept: '주차관리과', date: '2026.01.01', status: 'done' },
+  { name: '2025년 11월 월간 민원 보고서', cycle: '월간', author: '홍길동', dept: '교통정책과', date: '2025.12.01', status: 'done' },
+  { name: '2026년 2/4분기 민원 보고서',   cycle: '분기', author: '홍길동', dept: '교통정책과', date: '2026.07.01', status: 'done' },
+  { name: '2026년 1/4분기 민원 보고서',   cycle: '분기', author: '홍길동', dept: '교통정책과', date: '2026.04.01', status: 'done' },
+  { name: '2025년 4/4분기 민원 보고서',   cycle: '분기', author: '김지수', dept: '주차관리과', date: '2026.01.01', status: 'done' },
+  { name: '2026년 상반기 민원 보고서',    cycle: '반기', author: '이수민', dept: '안전정책과', date: '2026.07.01', status: 'done' },
+  { name: '2025년 하반기 민원 보고서',    cycle: '반기', author: '박서준', dept: '종합민원실', date: '2026.01.01', status: 'done' },
+  { name: '2025년 전체 민원 보고서',      cycle: '연간', author: '박서준', dept: '종합민원실', date: '2026.01.01', status: 'done' },
 ];
 
 const MANUAL_ROWS = [
-  { name: '주차장 확충 제주시 연동 150면',    source: '정책 시뮬레이션', period: '2026.05.28 ~ 2026.06.15', date: '2026.05.28', author: '홍길동', dept: '차량관리과' },
-  { name: '집중 구역 분석 보고서 노형 사거리', source: '집중구역분석',    period: '2026.05.28 ~ 2026.06.15', date: '2026.05.28', author: '김지수', dept: '교통행정과' },
-  { name: '민원 현황 보고서 제주시',          source: '민원현황',        period: '2026.06.22',              date: '2026.06.22', author: '이수민', dept: '종합민원실' },
+  { name: '민원 현황 보고서 제주시',           source: '민원현황',        period: '2026.06.22',              date: '2026.06.22', author: '이수민', dept: '종합민원실' },
+  { name: '주차장 확충 제주시 연동 150면',     source: '정책 시뮬레이션', period: '2026.05.28 ~ 2026.06.15', date: '2026.05.28', author: '홍길동', dept: '차량관리과' },
+  { name: '집중 구역 분석 보고서 노형 사거리',  source: '집중구역분석',    period: '2026.05.28 ~ 2026.06.15', date: '2026.05.28', author: '김지수', dept: '교통행정과' },
+  { name: '생활권 주차 실태 분석 이도2동',     source: '생활권 시뮬레이션', period: '2026.05.02 ~ 2026.05.20', date: '2026.05.21', author: '박서준', dept: '교통정책과' },
+  { name: '투자 우선순위 검토 보고서 상반기',   source: '투자우선순위',    period: '2026.01.01 ~ 2026.06.30', date: '2026.05.14', author: '홍길동', dept: '교통정책과' },
+  { name: '구역 추천 결과 보고서 아라동',      source: '구역추천',        period: '2026.04.21 ~ 2026.05.09', date: '2026.05.10', author: '이수민', dept: '주차관리과' },
+  { name: '민원 현황 보고서 서귀포시',         source: '민원현황',        period: '2026.04.30',              date: '2026.04.30', author: '김지수', dept: '종합민원실' },
+  { name: '정책 효과 비교 보고서 단속 강화',    source: '정책 시뮬레이션', period: '2026.03.15 ~ 2026.04.15', date: '2026.04.17', author: '박서준', dept: '교통행정과' },
+  { name: '집중 구역 분석 보고서 연동 대로변',  source: '집중구역분석',    period: '2026.03.02 ~ 2026.03.31', date: '2026.04.02', author: '홍길동', dept: '교통정책과' },
+  { name: '공영주차장 이용률 분석 보고서',      source: '민원현황',        period: '2026.02.01 ~ 2026.02.28', date: '2026.03.05', author: '이수민', dept: '차량관리과' },
+  { name: '구역 추천 결과 보고서 노형동',      source: '구역추천',        period: '2026.01.12 ~ 2026.01.30', date: '2026.02.02', author: '김지수', dept: '주차관리과' },
+  { name: '민원 현황 보고서 연간 종합',        source: '민원현황',        period: '2025.01.01 ~ 2025.12.31', date: '2026.01.15', author: '박서준', dept: '종합민원실' },
 ];
 
-const PER_PAGE = 5;
+const PER_PAGE = 10;
 
 function Pager({ total, page, setPage }) {
   const pages = Math.ceil(total / PER_PAGE);
