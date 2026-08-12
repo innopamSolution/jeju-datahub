@@ -10,9 +10,9 @@ const DOT = {
 };
 
 const INITIAL_ITEMS = [
-  { level: 'severe', title: '연동 민원 급증 — 최근 1시간 89건', time: '2026.05.31 14:21', unread: true },
-  { level: 'warn', title: '노형동 주차 혼잡도 상승 (경고 단계)', time: '2026.05.31 13:48', unread: true },
-  { level: 'caution', title: '이도2동 불법주차 신고 증가', time: '2026.05.31 11:05', unread: true },
+  { level: 'severe', title: '연동 민원 45% 증가 (심각 단계)', time: '2026.05.31 14:21', unread: true },
+  { level: 'warn', title: '노형동 민원 28% 증가 (경고 단계)', time: '2026.05.31 13:48', unread: true },
+  { level: 'caution', title: '이도2동 민원 12% 증가 (주의 단계)', time: '2026.05.31 11:05', unread: true },
   { level: 'info', title: '2026년 3월 월간 민원 리포트 생성 완료', time: '2026.05.30 09:00', unread: false },
   { level: 'info', title: '공영주차장 운영 관리 지침 업데이트', time: '2026.05.29 16:30', unread: false },
 ];
