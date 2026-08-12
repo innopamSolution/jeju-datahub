@@ -238,7 +238,7 @@ export default function AlertInquiry() {
                 </tr>
               </thead>
               <tbody>
-                {rows.map((r, i) => {
+                {pageRows.map((r, i) => {
                   const m = META[r.level];
                   return (
                     <tr key={i}>
