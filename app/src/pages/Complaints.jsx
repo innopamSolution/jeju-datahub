@@ -474,49 +474,6 @@ export default function Complaints() {
         </div>
       </div>
 
-      {/* ── 상세 필터 패널 ── */}
-      {filterOpen && (
-        <div className="detail-filter">
-          <div className="detail-filter__group">
-            <span className="detail-filter__label">행정구역</span>
-            <DsSelect style={{ minWidth: 160 }}>
-              <option>제주시</option>
-              <option>서귀포시</option>
-              <option>제주 전체</option>
-            </DsSelect>
-          </div>
-          <div className="detail-filter__group">
-            <span className="detail-filter__label">민원유형</span>
-            <DsSelect style={{ minWidth: 160 }}>
-              <option>전체</option>
-              <option>불법주정차</option>
-              <option>주차장 혼잡</option>
-              <option>시설 고장</option>
-              <option>기타</option>
-            </DsSelect>
-          </div>
-          <div className="detail-filter__group">
-            <span className="detail-filter__label">위험 단계</span>
-            <div className="risk-seg">
-              {['전체','심각','주의','보통','양호'].map((v) => (
-                <button
-                  key={v}
-                  type="button"
-                  className={riskSeg === v ? 'is-active' : ''}
-                  onClick={() => setRiskSeg(v)}
-                >{v}</button>
-              ))}
-            </div>
-          </div>
-          <div className="detail-filter__foot">
-            <button className="btn" type="button" style={{ height: 38 }}
-              onClick={() => setRiskSeg('전체')}>초기화</button>
-            <button className="btn btn--apply" type="button" style={{ height: 38 }}
-              onClick={() => setFilterOpen(false)}>필터 적용</button>
-          </div>
-        </div>
-      )}
-
       {/* ── Content ── */}
       <div className="content" style={{ flex: 1, minHeight: 0 }}>
 
