@@ -415,9 +415,8 @@ export default function Dashboard() {
           <div className="card stat">
             <div className="stat__icon stat__icon--red"><Icon name="warning" size={32} /></div>
             <div>
-              <div className="stat__label">위험 단계 발생</div>
+              <div className="stat__label">위험단계알림 건수</div>
               <div className="stat__value">3</div>
-              <div className="stat__delta"><span className="delta-warn">⚠ 경보 1, 경고 2</span> 전일 대비</div>
             </div>
           </div>
         </section>
