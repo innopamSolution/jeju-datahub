@@ -207,7 +207,6 @@ const AI_ICON_DASH = (
 export default function Dashboard() {
   const navigate = useNavigate();
   const [period, setPeriod] = useState('오늘');
-  const [filterOpen, setFilterOpen] = useState(false);
   const [datePopOpen, setDatePopOpen] = useState(false);
   const [customRange, setCustomRange] = useState(null);
   const [dateFrom, setDateFrom] = useState('2025-11-01');
