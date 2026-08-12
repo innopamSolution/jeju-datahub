@@ -1320,6 +1320,7 @@ input[type='number']:focus-visible {
 .crit-row__view { font-family: var(--font-sans); font-size: var(--body1-size); font-weight: var(--weight-bold); color: var(--text-strong); }
 .crit-row { display: flex; align-items: center; gap: var(--space-12); }
 .crit-row__tag { min-width: 52px; justify-content: center; }
+.crit-row__region-label { display: inline-flex; font-size: var(--label2-size); font-weight: var(--weight-semibold); color: var(--text-neutral); }
 .crit-inp { flex: 1; min-width: 0; height: 46px; padding: 0 var(--space-14); border: 1px solid var(--line-normal); border-radius: var(--radius-10); font-family: var(--font-sans); font-size: var(--body1-size); font-weight: var(--weight-semibold); color: var(--text-strong); background: var(--card-bg); }
 .crit-inp:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,102,255,0.14); }
 .crit-row__unit { font-size: var(--body2-size); color: var(--text-neutral); white-space: nowrap; }
