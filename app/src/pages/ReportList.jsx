@@ -90,7 +90,6 @@ export default function ReportList() {
                   <th>생성자</th>
                   <th>배포 부서</th>
                   <th>생성일</th>
-                  <th>상태</th>
                   <th className="col-center">미리보기</th>
                   <th className="col-center">다운로드</th>
                 </tr>
