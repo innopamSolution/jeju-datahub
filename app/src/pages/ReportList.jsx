@@ -173,6 +173,7 @@ export default function ReportList() {
             <Pager total={MANUAL_ROWS.length} page={manualPage} setPage={setManualPage} />
           </div>
         </div>
+        )}
       </div>
 
       {previewReport && (
