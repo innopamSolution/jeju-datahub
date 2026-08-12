@@ -50,8 +50,8 @@ export default function AlertManagement() {
   const [receivers, setReceivers] = useState(INITIAL_RECEIVERS);
   const [addOpen, setAddOpen] = useState(false);
   const [critOpen, setCritOpen] = useState(false);
-  const [crit, setCrit] = useState({ severe: 30, warn: 20, caution: 10 });
-  const [critDraft, setCritDraft] = useState({ severe: 30, warn: 20, caution: 10 });
+  const [crit, setCrit] = useState({ city: '전체', dong: '전체', severe: 30, warn: 20, caution: 10 });
+  const [critDraft, setCritDraft] = useState({ city: '전체', dong: '전체', severe: 30, warn: 20, caution: 10 });
   const [addGroups, setAddGroups] = useState({ severe: true, warn: false, caution: false });
 
   useEffect(() => {
