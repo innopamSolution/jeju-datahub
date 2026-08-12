@@ -318,12 +318,12 @@ export default function Complaints() {
       {
         type: 'table',
         title: '핵심 지표',
-        columns: ['지표', '값', '비고'],
+        columns: ['지표', '값'],
         rows: [
-          ['총 민원 건수', '247건', '▲ +12% 전기 대비'],
-          ['민원 감정 분석', `부정 ${SENTIMENT_OVERALL.neg}%`, `긍정 ${SENTIMENT_OVERALL.pos}% · 보통 ${SENTIMENT_OVERALL.neu}% · ▲${SENTIMENT_OVERALL.deltaPp}%p 전기 대비`],
-          ['단속 집중 지역', '3곳', '변동 없음'],
-          ['수요 부족 지역', '7곳', '▼ -1% 전기 대비'],
+          ['총 민원 건수', '247건'],
+          ['민원 감정 분석', `부정 ${SENTIMENT_OVERALL.neg}%`],
+          ['단속 집중 지역', '3곳'],
+          ['수요 부족 지역', '7곳'],
         ],
       },
       {
