@@ -95,6 +95,7 @@ export default function AlertManagement() {
                     <th>소속</th>
                     <th>이름</th>
                     <th>이메일</th>
+                    <th>지역</th>
                     <th>단계 그룹</th>
                     <th className="col-center">활성화</th>
                     <th className="col-center">삭제</th>
