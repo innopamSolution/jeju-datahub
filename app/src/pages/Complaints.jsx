@@ -444,15 +444,14 @@ export default function Complaints() {
         </div>
 
         <span className="filter-sep" />
-        <button
-          className="btn btn--toggle"
-          type="button"
-          style={{ height: 40 }}
-          aria-pressed={filterOpen}
-          onClick={() => setFilterOpen((o) => !o)}
-        >
-          <Icon name="filter" size={18} /> 상세 필터
-        </button>
+        <span className="filterbar__label">행정구역</span>
+        <DsSelect aria-label="행정구역">
+          <option>전체</option><option>제주시</option><option>서귀포시</option>
+        </DsSelect>
+        <span className="filterbar__label">민원유형</span>
+        <DsSelect aria-label="민원유형">
+          <option>전체</option><option>인도·횡단보도 점유</option><option>안전시설 인근 위반</option><option>장애인전용구역 위반</option><option>기타 불법주정차</option><option>친환경차충전구역 위반</option>
+        </DsSelect>
         <span className="filterbar__right">현재: <strong>{rangeLabel}</strong></span>
         <div className="sim-export" ref={exportRef}>
           <button className="btn" type="button" style={{ height: 40 }}
