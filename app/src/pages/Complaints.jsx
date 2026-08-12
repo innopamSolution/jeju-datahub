@@ -528,7 +528,6 @@ export default function Complaints() {
             <div>
               <div className="stat__label">총 민원 건수</div>
               <div className="stat__value">247</div>
-              <div className="stat__delta"><span className="delta-pos">↗ +12%</span> 전기 대비</div>
             </div>
           </div>
           <div className="card stat">
