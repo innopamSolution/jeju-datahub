@@ -58,6 +58,7 @@ export default function AlertManagement() {
   const [critDraft, setCritDraft] = useState({ severe: 30, warn: 20, caution: 10 });
   const [addCity, setAddCity] = useState('전체');
   const [addDong, setAddDong] = useState('전체');
+  const [recvPage, setRecvPage] = useState(1);
   const [addGroups, setAddGroups] = useState({ severe: true, warn: false, caution: false });
 
   useEffect(() => {
