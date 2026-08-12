@@ -15,7 +15,7 @@ const AI_ICON = (
   </svg>
 );
 
-const REPORT_TYPES = ['주차장 확충', '이면도로 정비', '요금제 적용', '민원현황', '집중구역분석'];
+const REPORT_TYPES = ['민원현황', '집중구역분석'];
 const DEPTS = ['교통정책과', '주차관리', '안전정책과', '종합민원실', '차량관리과', '전체'];
 const CYCLES = ['월간', '1분기', '상반기', '연간'];
 const MONTHS = Array.from({ length: 12 }, (_, i) => `${i + 1}월`);
