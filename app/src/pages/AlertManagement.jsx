@@ -209,28 +209,6 @@ export default function AlertManagement() {
             </div>
             <div className="modal__body">
               <p className="crit-card__sub" style={{ marginTop: 0 }}>민원 증가율이 아래 기준 이상일 때 해당 단계 알림이 발생합니다.</p>
-              <div className="form-field">
-                <label className="form-field__label">적용 지역</label>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <div className="ds-select form-field__select">
-                    <select aria-label="시/도" value={critDraft.city}
-                      onChange={(e) => setCritDraft((d) => ({ ...d, city: e.target.value, dong: '전체' }))}>
-                      <option value="전체">전체</option>
-                      <option value="제주시">제주시</option>
-                      <option value="서귀포시">서귀포시</option>
-                    </select>
-                    <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
-                  </div>
-                  <div className="ds-select form-field__select">
-                    <select aria-label="읍면동" value={critDraft.dong} disabled={critDraft.city === '전체'}
-                      onChange={(e) => setCritDraft((d) => ({ ...d, dong: e.target.value }))}>
-                      <option value="전체">읍면동 전체</option>
-                      {(CRIT_DONGS[critDraft.city] || []).map((d) => <option key={d} value={d}>{d}</option>)}
-                    </select>
-                    <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
-                  </div>
-                </div>
-              </div>
               <div className="crit-list">
                 {CRIT_LEVELS.map((c) => (
                   <div key={c.key} className="crit-row">
