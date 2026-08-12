@@ -522,7 +522,7 @@ export default function Dashboard() {
             <div className="list">
               <div className="list__row"><span className="name">11월 주차민원 분석 리포트</span><span className="time">11:30</span></div>
               <div className="list__row"><span className="name">정책 시뮬레이션 효과 비교</span><span className="time">11:23</span></div>
-              <div className="list__row"><span className="name">4분기 정책 보고서</span><span className="badge badge--wait">대기</span><span className="time">11:20</span></div>
+              <div className="list__row"><span className="name">4분기 정책 보고서</span><span className="time">11:20</span></div>
               <div className="list__row"><span className="name">GIS 집중구역 현황 리포트</span><span className="time">11:20</span></div>
             </div>
           </div>
