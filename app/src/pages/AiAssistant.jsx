@@ -267,27 +267,15 @@ export default function AiAssistant() {
 
             <div className="chat-input">
               <div className="composer">
-                <div className="composer__pill" ref={plusRef}>
-                  <button className="composer__plus" aria-label="추가" aria-haspopup="true" aria-expanded={plusOpen}
-                    onClick={(e) => { e.stopPropagation(); setPlusOpen((o) => !o); }}>
-                    <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
-                  </button>
+                <div className="composer__pill">
                   <input ref={fieldRef} className="composer__field" type="text" placeholder="행정 정보를 검색하거나 민원 분석을 요청하세요." autoComplete="off"
                     value={input} onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); submit(); } }} />
-                  {plusOpen && (
-                    <div className="plus-menu">
-                      <button className="plus-menu__item" type="button" onClick={() => { setPlusOpen(false); fileRef.current?.click(); }}>
-                        <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M16.6 6.4 9 14a2.1 2.1 0 0 0 3 3l7.6-7.6a4 4 0 0 0-5.7-5.7L6.4 11.3a6 6 0 0 0 8.5 8.5l5.7-5.7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg> 파일 추가
-                      </button>
-                    </div>
-                  )}
                 </div>
                 <button className="composer__send" aria-label="전송" onClick={() => submit()}>
                   <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M3.6 20.3 21 12 3.6 3.7 3.6 10.2 14.5 12 3.6 13.8 3.6 20.3Z" fill="currentColor" /></svg>
                 </button>
               </div>
-              <input type="file" ref={fileRef} hidden onChange={onFile} />
             </div>
           </div>
 
