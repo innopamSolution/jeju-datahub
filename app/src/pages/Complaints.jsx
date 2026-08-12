@@ -286,7 +286,6 @@ export default function Complaints() {
   const [regionsExpanded, setRegionsExpanded] = useState(false);
   const [sentiExpanded, setSentiExpanded]     = useState(false);
   const [datePopOpen, setDatePopOpen] = useState(false);
-  const [filterOpen, setFilterOpen]  = useState(false);
   const [rangeLabel, setRangeLabel]  = useState('오늘');
   const [dateFrom, setDateFrom]      = useState('2025-11-01');
   const [dateTo, setDateTo]          = useState('2025-12-01');
