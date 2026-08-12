@@ -543,7 +543,6 @@ export default function Complaints() {
             <div>
               <div className="stat__label">단속 집중 지역</div>
               <div className="stat__value">3</div>
-              <div className="stat__delta">변동 없음</div>
             </div>
           </div>
           <div className="card stat">
