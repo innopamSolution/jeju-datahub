@@ -131,10 +131,11 @@ export default function ReportList() {
             <Pager total={AUTO_ROWS.length} page={autoPage} setPage={setAutoPage} />
           </div>
         </div>
+        )}
 
         {/* 직접 생성 목록 */}
+        {tab === 'manual' && (
         <div className="card rpt-manual">
-          <div className="rpt-card__head"><h2 className="card-head__title">직접 생성 보고서 목록</h2></div>
           <div className="rt-wrap">
             <table className="rt">
               <thead>
