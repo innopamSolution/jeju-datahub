@@ -107,6 +107,7 @@ export default function AlertManagement() {
                       <td>{r.dept}</td>
                       <td><span className="rt-name">{r.name}</span></td>
                       <td className="rt-email">{r.email}</td>
+                      <td>{r.region}</td>
                       <td>
                         <span className="grp-set">
                           {r.groups.map((g) => (
