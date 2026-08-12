@@ -96,7 +96,7 @@ export default function ReportManagement() {
           <div className="rpt-cfg__body">
             <div className="rpt-cfg__fields">
               <div className="field">
-                <label className="field__label">정책 보고서 종류</label>
+                <label className="field__label">보고서 종류</label>
                 <DsSelect value={reportType} onChange={(e) => setReportType(e.target.value)}>
                   {REPORT_TYPES.map((v) => <option key={v} value={v}>{v}</option>)}
                 </DsSelect>
