@@ -35,6 +35,16 @@ const CRIT_LEVELS = [
   { key: 'caution', label: '주의', badge: 'badge--caution' },
 ];
 
+const CRIT_DONGS = {
+  제주시: ['연동', '노형동', '이도동', '아라동', '삼도동', '애월읍'],
+  서귀포시: ['성산읍', '중문동', '효돈동'],
+};
+
+const critRegionLabel = (c) => {
+  if (c.city === '전체') return '전체 지역';
+  return c.dong === '전체' ? `${c.city} 전체` : `${c.city} ${c.dong}`;
+};
+
 export default function AlertManagement() {
   const navigate = useNavigate();
   const [receivers, setReceivers] = useState(INITIAL_RECEIVERS);
