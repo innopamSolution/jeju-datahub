@@ -150,10 +150,7 @@ export default function AiAssistant() {
   const location = useLocation();
   const [messages, setMessages] = useState(INITIAL_MSGS);
   const [input, setInput] = useState(location.state?.prefill ?? '');
-  const [plusOpen, setPlusOpen] = useState(false);
   const scrollRef = useRef(null);
-  const plusRef = useRef(null);
-  const fileRef = useRef(null);
   const fieldRef = useRef(null);
   const timers = useRef([]);
 
