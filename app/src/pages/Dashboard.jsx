@@ -410,7 +410,6 @@ export default function Dashboard() {
             <div>
               <div className="stat__label">불법주차 발생</div>
               <div className="stat__value">183</div>
-              <div className="stat__delta"><span className="delta-pos">↗ +6%</span> 전일 대비</div>
             </div>
           </div>
           <div className="card stat">
