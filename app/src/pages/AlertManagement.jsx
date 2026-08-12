@@ -139,9 +139,11 @@ export default function AlertManagement() {
                       </td>
                       <td className="col-center"><button className="mt-act mt-act--del" onClick={() => removeRow(i)}>삭제</button></td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
+              <Pager total={receivers.length} page={recvPage} setPage={setRecvPage} perPage={PER_PAGE} />
             </div>
           </div>
 
