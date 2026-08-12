@@ -102,7 +102,6 @@ export default function ReportList() {
                     <td>{r.author}</td>
                     <td>{r.dept}</td>
                     <td className="rt-date">{r.date}</td>
-                    <td><span className={`badge badge--${r.status === 'done' ? 'done' : 'neutral'}`}>{r.status === 'done' ? '완료' : '대기'}</span></td>
                     <td className="col-center"><button className="tag" onClick={() => setPreviewReport(r)}>미리보기</button></td>
                     <td className="col-center">
                       <div style={{ display: 'inline-flex', gap: 6 }}>
