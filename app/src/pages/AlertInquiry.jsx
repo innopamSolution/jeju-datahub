@@ -62,6 +62,7 @@ export default function AlertInquiry() {
   const [city, setCity] = useState('all');
   const [dong, setDong] = useState('all');
   const [customRange, setCustomRange] = useState(null);
+  const [page, setPage] = useState(1);
   const [popOpen, setPopOpen] = useState(false);
   const [dateFrom, setDateFrom] = useState('2026-01-01');
   const [dateTo, setDateTo] = useState('2026-05-31');
