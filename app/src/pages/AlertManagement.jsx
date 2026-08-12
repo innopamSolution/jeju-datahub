@@ -181,6 +181,28 @@ export default function AlertManagement() {
                 <input type="email" className="form-inp" placeholder="name@jeju.go.kr" />
               </div>
               <div className="form-field">
+                <label className="form-field__label">지역</label>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <div className="ds-select form-field__select" style={{ flex: 1 }}>
+                    <select aria-label="시/도" value={addCity}
+                      onChange={(e) => { setAddCity(e.target.value); setAddDong('전체'); }}>
+                      <option value="전체">전체</option>
+                      <option value="제주시">제주시</option>
+                      <option value="서귀포시">서귀포시</option>
+                    </select>
+                    <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
+                  </div>
+                  <div className="ds-select form-field__select" style={{ flex: 1 }}>
+                    <select aria-label="읍면동" value={addDong} disabled={addCity === '전체'}
+                      onChange={(e) => setAddDong(e.target.value)}>
+                      <option value="전체">읍면동 전체</option>
+                      {(DONGS[addCity] || []).map((d) => <option key={d} value={d}>{d}</option>)}
+                    </select>
+                    <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
+                  </div>
+                </div>
+              </div>
+              <div className="form-field">
                 <label className="form-field__label">단계 그룹</label>
                 <div className="chip-set">
                   {CRIT_LEVELS.map((c) => (
