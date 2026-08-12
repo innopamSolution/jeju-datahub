@@ -550,7 +550,6 @@ export default function Complaints() {
             <div>
               <div className="stat__label">수요 부족 지역</div>
               <div className="stat__value">7</div>
-              <div className="stat__delta"><span className="delta-neg">↘ -1개</span> 전기 대비</div>
             </div>
           </div>
         </section>
