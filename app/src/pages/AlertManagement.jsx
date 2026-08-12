@@ -117,7 +117,9 @@ export default function AlertManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {receivers.map((r, i) => (
+                  {receivers.slice((recvPage - 1) * PER_PAGE, recvPage * PER_PAGE).map((r, idx) => {
+                    const i = (recvPage - 1) * PER_PAGE + idx;
+                    return (
                     <tr key={i}>
                       <td>{r.dept}</td>
                       <td><span className="rt-name">{r.name}</span></td>
