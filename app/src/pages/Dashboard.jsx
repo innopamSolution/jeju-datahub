@@ -503,14 +503,14 @@ export default function Dashboard() {
         <section className="bottom-row">
           <div className="card panel">
             <div className="card-head">
-              <h2 className="card-head__title"><span className="panel__icon"><Icon name="chart" size={20} /></span>분석</h2>
-              <Link to="/analysis/hotspot" className="card-link">전체 <Icon name="arrow-right" size={16} /></Link>
+              <h2 className="card-head__title"><span className="panel__icon"><Icon name="chart" size={20} /></span>정책 시뮬레이션</h2>
+              <Link to="/analysis/policy-simulation" className="card-link">전체 <Icon name="arrow-right" size={16} /></Link>
             </div>
             <div className="list">
-              <div className="list__row"><span className="name">연동동 정책 시뮬레이션</span><span className="badge badge--done">완료</span></div>
-              <div className="list__row"><span className="name">11월 생활권 집중도 분석</span><span className="badge badge--progress">진행</span></div>
-              <div className="list__row"><span className="name">요일제 적용구역 추천</span><span className="badge badge--pending">처리중</span></div>
-              <div className="list__row"><span className="name">불법주차 집중구역 도출</span><span className="badge badge--done">완료</span></div>
+              <div className="list__row"><span className="name">연동동 주차장 확충 150면</span><span className="badge badge--done">완료</span></div>
+              <div className="list__row"><span className="name">노형동 단속 강화 효과 분석</span><span className="badge badge--progress">진행</span></div>
+              <div className="list__row"><span className="name">이도2동 요금제 조정 효과</span><span className="badge badge--pending">처리중</span></div>
+              <div className="list__row"><span className="name">아라동 이면도로 정비 효과</span><span className="badge badge--done">완료</span></div>
             </div>
           </div>
 
