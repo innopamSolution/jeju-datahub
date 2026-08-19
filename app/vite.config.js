@@ -5,4 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig(({ command }) => ({
   base: command === 'build' ? '/jeju-datahub/' : '/',
   plugins: [react()],
+  server: {
+    port: Number(process.env.PORT) || 5183,
+  },
 }))
