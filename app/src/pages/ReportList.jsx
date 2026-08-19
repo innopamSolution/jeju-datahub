@@ -116,7 +116,6 @@ export default function ReportList() {
                     <td><span className="rt-name">{r.name}</span></td>
                     <td>{r.cycle}</td>
                     <td>{r.author}</td>
-                    <td>{r.dept}</td>
                     <td className="rt-date">{r.date}</td>
                     <td className="col-center"><button className="tag" onClick={() => setPreviewReport(r)}>미리보기</button></td>
                     <td className="col-center">
