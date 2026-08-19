@@ -529,13 +529,25 @@ export default function Complaints() {
               {/* 레이어 패널 */}
               <div className="layer-panel">
                 <div className="layer-panel__title">레이어 표시</div>
-                {LAYER_DEFS.map((d) => (
-                  <div key={d.key} className="layer-row">
+                {LAYER_RADIO_DEFS.map((d) => (
+                  <div key={d.key} className="layer-row" onClick={() => selectRadioLayer(d.key)}>
+                    <span>{d.label}</span>
+                    <button
+                      type="button"
+                      role="radio"
+                      aria-checked={layers[d.key]}
+                      className={`layer-radio${layers[d.key] ? ' layer-radio--on' : ''}`}
+                      aria-label={d.label}
+                    />
+                  </div>
+                ))}
+                <div className="layer-panel__sep" />
+                {LAYER_TOGGLE_DEFS.map((d) => (
+                  <div key={d.key} className="layer-row" onClick={() => toggleLayer(d.key)}>
                     <span>{d.label}</span>
                     <button
                       type="button"
                       className={`toggle${layers[d.key] ? ' toggle--on' : ''}`}
-                      onClick={() => toggleLayer(d.key)}
                       aria-label={d.label}
                     />
                   </div>
