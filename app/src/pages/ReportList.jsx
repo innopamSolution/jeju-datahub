@@ -105,7 +105,6 @@ export default function ReportList() {
                   <th>보고서 명</th>
                   <th>배포 주기</th>
                   <th>생성자</th>
-                  <th>배포 부서</th>
                   <th>생성일</th>
                   <th className="col-center">미리보기</th>
                   <th className="col-center">다운로드</th>
