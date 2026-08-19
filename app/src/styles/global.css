@@ -656,8 +656,12 @@ input[type='number']:focus-visible {
   border-radius: var(--radius-12); box-shadow: var(--shadow-emphasize);
 }
 .layer-panel__title { font-size: var(--caption1-size); color: var(--text-neutral); font-weight: var(--weight-semibold); margin-bottom: var(--space-12); }
-.layer-row { display: flex; align-items: center; justify-content: space-between; padding: var(--space-8) 0; }
+.layer-row { display: flex; align-items: center; justify-content: space-between; padding: var(--space-8) 0; cursor: pointer; }
 .layer-row > span:first-child { font-size: var(--label1-size); color: var(--text-neutral); font-weight: var(--weight-medium); }
+.layer-panel__sep { height: 1px; background: var(--line-alternative); margin: var(--space-8) 0; }
+.layer-radio { width: 20px; height: 20px; border-radius: var(--radius-full); border: 2px solid var(--line-normal); background: #fff; padding: 0; position: relative; cursor: pointer; transition: border-color var(--duration-fast) var(--ease-out); flex-shrink: 0; }
+.layer-radio--on { border-color: var(--primary); }
+.layer-radio--on::after { content: ""; position: absolute; inset: 3px; border-radius: var(--radius-full); background: var(--primary); }
 
 /* toggle switch */
 .toggle {
