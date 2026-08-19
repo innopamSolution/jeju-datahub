@@ -304,6 +304,10 @@ export default function Complaints() {
   const exportRef = useRef(null);
 
   const toggleLayer = (key) => setLayers((prev) => ({ ...prev, [key]: !prev[key] }));
+  const selectRadioLayer = (key) => setLayers((prev) => ({
+    ...prev,
+    ...Object.fromEntries(LAYER_RADIO_DEFS.map((d) => [d.key, d.key === key])),
+  }));
 
   useEffect(() => {
     if (!exportOpen) return;
