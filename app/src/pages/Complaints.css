@@ -89,6 +89,10 @@
 .layer-panel__title { font-size: var(--caption1-size); color: var(--text-neutral); font-weight: var(--weight-semibold); margin-bottom: var(--space-12); }
 .layer-row { display: flex; align-items: center; justify-content: space-between; padding: var(--space-8) 0; cursor: pointer; }
 .layer-row span { font-size: var(--label1-size); color: var(--text-neutral); font-weight: var(--weight-medium); }
+.layer-panel__sep { height: 1px; background: var(--line-alternative); margin: var(--space-8) 0; }
+.layer-radio { width: 20px; height: 20px; border-radius: var(--radius-full); border: 2px solid var(--line-normal); background: #fff; padding: 0; position: relative; cursor: pointer; transition: border-color var(--duration-fast) var(--ease-out); flex-shrink: 0; }
+.layer-radio--on { border-color: var(--primary); }
+.layer-radio--on::after { content: ""; position: absolute; inset: 3px; border-radius: var(--radius-full); background: var(--primary); }
 .toggle { width: 38px; height: 22px; border-radius: var(--radius-full); background: var(--fill-strong); position: relative; cursor: pointer; transition: background var(--duration-fast) var(--ease-out); flex-shrink: 0; }
 .toggle::after { content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: var(--radius-full); background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: transform var(--duration-fast) var(--ease-out); }
 .toggle.is-on { background: var(--primary); }
