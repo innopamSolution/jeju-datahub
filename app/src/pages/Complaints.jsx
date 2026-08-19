@@ -71,13 +71,19 @@ const SENTIMENT_REGIONS = [
   { rank: 15, name: '건입동',  pos: 47, neu: 45, neg: 8,  negCount: 1  },
 ];
 
-const LAYER_DEFS = [
-  { key: 'hotspot',     label: '민원 다발 지역', defaultOn: true  },
-  { key: 'enforce',     label: '단속 집중 지역', defaultOn: false },
-  { key: 'demand',      label: '수요 부족 지역', defaultOn: false },
-  { key: 'parking',     label: '공영주차장',     defaultOn: true  },
-  { key: 'dongBoundary', label: '행정동 경계',    defaultOn: true  },
+/* hotspot·enforce·demand는 겹치면 혼란스러워 셋 중 하나만 노출(라디오) */
+const LAYER_RADIO_DEFS = [
+  { key: 'hotspot', label: '민원 다발 지역', defaultOn: true  },
+  { key: 'enforce', label: '단속 집중 지역', defaultOn: false },
+  { key: 'demand',  label: '수요 부족 지역', defaultOn: false },
 ];
+
+const LAYER_TOGGLE_DEFS = [
+  { key: 'parking',      label: '공영주차장',  defaultOn: true },
+  { key: 'dongBoundary', label: '행정동 경계', defaultOn: true },
+];
+
+const LAYER_DEFS = [...LAYER_RADIO_DEFS, ...LAYER_TOGGLE_DEFS];
 
 const LEGEND_ITEMS = [
   { label: '심각 (40건 이상)', color: 'var(--red-50)'          },
@@ -282,11 +288,11 @@ function GisMap({ layerState }) {
 /* ── 메인 컴포넌트 ── */
 export default function Complaints() {
   const navigate = useNavigate();
-  const [period, setPeriod]         = useState('오늘');
+  const [period, setPeriod]         = useState('어제');
   const [regionsExpanded, setRegionsExpanded] = useState(false);
   const [sentiExpanded, setSentiExpanded]     = useState(false);
   const [datePopOpen, setDatePopOpen] = useState(false);
-  const [rangeLabel, setRangeLabel]  = useState('오늘');
+  const [rangeLabel, setRangeLabel]  = useState('어제');
   const [dateFrom, setDateFrom]      = useState('2025-11-01');
   const [dateTo, setDateTo]          = useState('2025-12-01');
   const [customRange, setCustomRange] = useState(null);
@@ -399,7 +405,7 @@ export default function Complaints() {
       <div className="filterbar">
         <span className="filterbar__label">조회 단위</span>
         <div className="segment">
-          {[['오늘','오늘'],['주간','주간'],['월간','월간']].map(([k, l]) => (
+          {[['어제','어제'],['주간','주간'],['월간','월간']].map(([k, l]) => (
             <button
               key={k}
               type="button"
