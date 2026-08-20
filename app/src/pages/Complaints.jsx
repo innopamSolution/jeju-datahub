@@ -506,16 +506,14 @@ export default function Complaints() {
             <div className="stat__icon stat__icon--orange"><Icon name="warning" size={26} /></div>
             <div>
               <div className="stat__label">단속 집중 지역</div>
-              <div className="stat__value">3<span className="stat__unit">개동</span></div>
-              <div className="stat__delta">심각 단계 읍·면·동 기준</div>
+              <div className="stat__value"><span style={{ fontSize: 18, fontWeight: 700, marginRight: 4 }}>심각</span>3<span className="stat__unit">개동</span></div>
             </div>
           </div>
           <div className="card stat">
             <div className="stat__icon stat__icon--teal"><Icon name="car" size={26} /></div>
             <div>
               <div className="stat__label">수요 부족 지역</div>
-              <div className="stat__value">3<span className="stat__unit">개동</span></div>
-              <div className="stat__delta">심각 단계 읍·면·동 기준</div>
+              <div className="stat__value"><span style={{ fontSize: 18, fontWeight: 700, marginRight: 4 }}>심각</span>3<span className="stat__unit">개동</span></div>
             </div>
           </div>
         </section>
