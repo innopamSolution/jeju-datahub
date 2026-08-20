@@ -1208,6 +1208,8 @@ input[type='number']:focus-visible {
 .rpt-date { height: 40px; padding: 0 var(--space-12); border: 1px solid var(--line-normal); border-radius: var(--radius-8); background: var(--card-bg); font-family: var(--font-sans); font-size: var(--label2-size); color: var(--text-normal); }
 .rpt-date:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,102,255,0.14); }
 .rpt-toolbar__tilde { color: var(--text-assistive); font-size: var(--label2-size); }
+.rt-del { width: 28px; height: 28px; border: none; border-radius: var(--radius-8); background: transparent; color: var(--text-assistive); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out); }
+.rt-del:hover { background: var(--red-99); color: var(--red-50); }
 .rt-wrap { padding: 0 var(--space-16) var(--space-20); overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--line-normal) transparent; }
 .rt-wrap::-webkit-scrollbar { height: 8px; }
 .rt-wrap::-webkit-scrollbar-track { background: transparent; }
