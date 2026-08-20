@@ -125,7 +125,7 @@ function GisMap({ layerState }) {
       { name: '노형동', c: [33.4790, 126.4760], count: 38, level: '경고',    color: COLORS.warn,    illegal: 30, etc: 8  },
       { name: '이도동', c: [33.4995, 126.5320], count: 29, level: '경고',    color: COLORS.warn,    illegal: 22, etc: 7  },
       { name: '아라동', c: [33.4560, 126.5470], count: 21, level: '주의',    color: COLORS.caution, illegal: 16, etc: 5  },
-      { name: '삼도동', c: [33.5120, 126.5210], count: 10, level: '양호',    color: COLORS.good,    illegal: 7,  etc: 3  },
+      { name: '삼도동', c: [33.5120, 126.5210], count: 10, level: '주의',    color: COLORS.caution, illegal: 7,  etc: 3  },
     ];
 
     const parking = SEOGWIPO_PARKING;
@@ -149,9 +149,9 @@ function GisMap({ layerState }) {
 
     /* 팝업 HTML */
     function popupHtml(r) {
-      const badgeMap = { severe: 'badge--severe', warn: 'badge--warn', caution: 'badge--caution', '경고': 'badge--warn', '주의': 'badge--caution', '양호': 'badge--done', '심각': 'badge--severe' };
+      const badgeMap = { severe: 'badge--severe', warn: 'badge--warn', caution: 'badge--caution', '경고': 'badge--warn', '주의': 'badge--caution', '심각': 'badge--severe' };
       const bc = badgeMap[r.level] || 'badge--done';
-      const lvLabel = { severe: '심각', '경고': '경고', '주의': '주의', '양호': '양호' }[r.level] || r.level;
+      const lvLabel = { severe: '심각', '경고': '경고', '주의': '주의' }[r.level] || r.level;
       return `<div style="min-width:168px;font-family:system-ui">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
           <span style="width:10px;height:10px;border-radius:50%;background:${r.color};flex-shrink:0;display:inline-block"></span>
@@ -506,14 +506,16 @@ export default function Complaints() {
             <div className="stat__icon stat__icon--orange"><Icon name="warning" size={26} /></div>
             <div>
               <div className="stat__label">단속 집중 지역</div>
-              <div className="stat__value">3</div>
+              <div className="stat__value">3<span className="stat__unit">개동</span></div>
+              <div className="stat__delta">심각 단계 읍·면·동 기준</div>
             </div>
           </div>
           <div className="card stat">
             <div className="stat__icon stat__icon--teal"><Icon name="car" size={26} /></div>
             <div>
               <div className="stat__label">수요 부족 지역</div>
-              <div className="stat__value">7</div>
+              <div className="stat__value">3<span className="stat__unit">개동</span></div>
+              <div className="stat__delta">심각 단계 읍·면·동 기준</div>
             </div>
           </div>
         </section>
