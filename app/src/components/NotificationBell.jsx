@@ -58,8 +58,7 @@ export default function NotificationBell() {
           <div className="notif-head">
             <span className="notif-head__ic">{BELL_ICON_SVG}</span>
             <span className="notif-head__title">알림</span>
-            <span className="notif-head__hint">전일 기준</span>
-            <span className="notif-head__count">{alertCount}</span>
+            <span className="notif-head__hint">전일 기준 <b>{alertCount}</b>건</span>
             <button className="notif-head__x" type="button" aria-label="닫기" onClick={() => setOpen(false)}>
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
             </button>
