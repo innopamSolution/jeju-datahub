@@ -252,8 +252,8 @@ export default function AlertManagement() {
               </button>
             </div>
             <div className="modal__body">
-              <p className="crit-card__sub" style={{ marginTop: 0 }}>민원 증가율이 아래 기준 이상일 때 해당 단계 알림이 발생합니다.</p>
-              <p className="crit-card__sub" style={{ marginTop: 0 }}>설정된 기준은 다음날부터 반영됩니다.</p>
+              <p className="crit-card__sub" style={{ marginTop: 0 }}><b>민원 증가율</b>이 아래 기준 이상일 때 해당 단계 알림이 발생합니다.</p>
+              <p className="crit-card__sub" style={{ marginTop: 0 }}>설정된 기준은 <b>다음날부터</b> 반영됩니다.</p>
               <div className="crit-list">
                 {CRIT_LEVELS.map((c) => (
                   <div key={c.key} className="crit-row">
