@@ -53,7 +53,7 @@ const TODAY = new Date('2026-05-31T23:59:59');
 const LEVELS = [['all', '전체'], ['severe', '심각'], ['warn', '경고'], ['caution', '주의']];
 const PERIODS = [['yesterday', '어제'], ['week', '최근 1주일'], ['1', '최근 1개월'], ['3', '최근 3개월']];
 
-function fmtDate(s) { return s.replace(/-/g, '.'); }
+function fmtDate(s) { return s.split(' ')[0].replace(/-/g, '.'); }
 
 export default function AlertInquiry() {
   const navigate = useNavigate();
