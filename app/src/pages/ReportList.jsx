@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NotificationBell from '../components/NotificationBell';
 import PageCrumb from '../components/PageCrumb';
 import { exportReportPdf, exportReportDocx } from '../utils/reportExport';
 import ReportPreviewModal from '../components/ReportPreviewModal';
 import Pager from '../components/Pager';
+import DsSelect from '../components/DsSelect';
+import Icon from '../components/Icon';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="24" height="24" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -23,20 +25,20 @@ const DL_ICON = (
 );
 
 const AUTO_ROWS = [
-  { name: '2026년 6월 월간 민원 보고서',  cycle: '월간', author: '박서준', dept: '종합민원실', date: '2026.07.01', status: 'done' },
-  { name: '2026년 5월 월간 민원 보고서',  cycle: '월간', author: '이수민', dept: '안전정책과', date: '2026.06.01', status: 'done' },
-  { name: '2026년 4월 월간 민원 보고서',  cycle: '월간', author: '김지수', dept: '주차관리과', date: '2026.05.01', status: 'done' },
-  { name: '2026년 3월 월간 민원 보고서',  cycle: '월간', author: '홍길동', dept: '교통정책과', date: '2026.04.01', status: 'done' },
-  { name: '2026년 2월 월간 민원 보고서',  cycle: '월간', author: '박서준', dept: '종합민원실', date: '2026.03.01', status: 'done' },
-  { name: '2026년 1월 월간 민원 보고서',  cycle: '월간', author: '이수민', dept: '안전정책과', date: '2026.02.01', status: 'done' },
-  { name: '2025년 12월 월간 민원 보고서', cycle: '월간', author: '김지수', dept: '주차관리과', date: '2026.01.01', status: 'done' },
-  { name: '2025년 11월 월간 민원 보고서', cycle: '월간', author: '홍길동', dept: '교통정책과', date: '2025.12.01', status: 'done' },
-  { name: '2026년 2/4분기 민원 보고서',   cycle: '분기', author: '홍길동', dept: '교통정책과', date: '2026.07.01', status: 'done' },
-  { name: '2026년 1/4분기 민원 보고서',   cycle: '분기', author: '홍길동', dept: '교통정책과', date: '2026.04.01', status: 'done' },
-  { name: '2025년 4/4분기 민원 보고서',   cycle: '분기', author: '김지수', dept: '주차관리과', date: '2026.01.01', status: 'done' },
-  { name: '2026년 상반기 민원 보고서',    cycle: '반기', author: '이수민', dept: '안전정책과', date: '2026.07.01', status: 'done' },
-  { name: '2025년 하반기 민원 보고서',    cycle: '반기', author: '박서준', dept: '종합민원실', date: '2026.01.01', status: 'done' },
-  { name: '2025년 전체 민원 보고서',      cycle: '연간', author: '박서준', dept: '종합민원실', date: '2026.01.01', status: 'done' },
+  { name: '2026년 6월 월간 민원 보고서',  cycle: '월간', author: '박서준', date: '2026.07.01', status: 'done' },
+  { name: '2026년 5월 월간 민원 보고서',  cycle: '월간', author: '이수민', date: '2026.06.01', status: 'done' },
+  { name: '2026년 4월 월간 민원 보고서',  cycle: '월간', author: '김지수', date: '2026.05.01', status: 'done' },
+  { name: '2026년 3월 월간 민원 보고서',  cycle: '월간', author: '홍길동', date: '2026.04.01', status: 'done' },
+  { name: '2026년 2월 월간 민원 보고서',  cycle: '월간', author: '박서준', date: '2026.03.01', status: 'done' },
+  { name: '2026년 1월 월간 민원 보고서',  cycle: '월간', author: '이수민', date: '2026.02.01', status: 'done' },
+  { name: '2025년 12월 월간 민원 보고서', cycle: '월간', author: '김지수', date: '2026.01.01', status: 'done' },
+  { name: '2025년 11월 월간 민원 보고서', cycle: '월간', author: '홍길동', date: '2025.12.01', status: 'done' },
+  { name: '2026년 2/4분기 민원 보고서',   cycle: '분기', author: '홍길동', date: '2026.07.01', status: 'done' },
+  { name: '2026년 1/4분기 민원 보고서',   cycle: '분기', author: '홍길동', date: '2026.04.01', status: 'done' },
+  { name: '2025년 4/4분기 민원 보고서',   cycle: '분기', author: '김지수', date: '2026.01.01', status: 'done' },
+  { name: '2026년 상반기 민원 보고서',    cycle: '반기', author: '이수민', date: '2026.07.01', status: 'done' },
+  { name: '2025년 하반기 민원 보고서',    cycle: '반기', author: '박서준', date: '2026.01.01', status: 'done' },
+  { name: '2025년 전체 민원 보고서',      cycle: '연간', author: '박서준', date: '2026.01.01', status: 'done' },
 ];
 
 const MANUAL_ROWS = [
@@ -54,6 +56,10 @@ const MANUAL_ROWS = [
   { name: '민원 현황 보고서 연간 종합',        source: '민원현황',        period: '2025.01.01 ~ 2025.12.31', date: '2026.01.15', author: '박서준' },
 ];
 
+const MANUAL_SOURCES = [...new Set(MANUAL_ROWS.map((r) => r.source))];
+
+const toDate = (s) => new Date(s.replace(/\./g, '-') + 'T00:00:00');
+
 const PER_PAGE = 10;
 
 export default function ReportList() {
@@ -63,8 +69,31 @@ export default function ReportList() {
   const [manualPage, setManualPage] = useState(1);
   const [previewReport, setPreviewReport] = useState(null);
 
+  /* 직접 생성 보고서 — 보고서명 검색 · 출처 · 생성일 필터 */
+  const [manualRows, setManualRows] = useState(MANUAL_ROWS);
+  const [mQuery, setMQuery] = useState('');
+  const [mSource, setMSource] = useState('all');
+  const [mFrom, setMFrom] = useState('');
+  const [mTo, setMTo] = useState('');
+
+  const filteredManual = useMemo(() => manualRows.filter((r) => {
+    if (mQuery.trim() && !r.name.includes(mQuery.trim())) return false;
+    if (mSource !== 'all' && r.source !== mSource) return false;
+    const d = toDate(r.date);
+    if (mFrom && d < new Date(mFrom + 'T00:00:00')) return false;
+    if (mTo && d > new Date(mTo + 'T23:59:59')) return false;
+    return true;
+  }), [manualRows, mQuery, mSource, mFrom, mTo]);
+
+  useEffect(() => { setManualPage(1); }, [mQuery, mSource, mFrom, mTo]);
+
+  useEffect(() => {
+    const pages = Math.max(1, Math.ceil(filteredManual.length / PER_PAGE));
+    if (manualPage > pages) setManualPage(pages);
+  }, [filteredManual.length, manualPage]);
+
   const autoSlice = AUTO_ROWS.slice((autoPage - 1) * PER_PAGE, autoPage * PER_PAGE);
-  const manualSlice = MANUAL_ROWS.slice((manualPage - 1) * PER_PAGE, manualPage * PER_PAGE);
+  const manualSlice = filteredManual.slice((manualPage - 1) * PER_PAGE, manualPage * PER_PAGE);
 
   return (
     <>
@@ -136,6 +165,26 @@ export default function ReportList() {
         {/* 직접 생성 목록 */}
         {tab === 'manual' && (
         <div className="card rpt-manual">
+          <div className="rpt-toolbar">
+            <div className="rpt-search">
+              <Icon name="search" size={16} />
+              <input
+                type="text"
+                placeholder="보고서명 검색"
+                value={mQuery}
+                onChange={(e) => setMQuery(e.target.value)}
+              />
+            </div>
+            <span className="filterbar__label">출처</span>
+            <DsSelect value={mSource} onChange={(e) => setMSource(e.target.value)}>
+              <option value="all">전체</option>
+              {MANUAL_SOURCES.map((v) => <option key={v} value={v}>{v}</option>)}
+            </DsSelect>
+            <span className="filterbar__label">생성일</span>
+            <input type="date" className="rpt-date" value={mFrom} onChange={(e) => setMFrom(e.target.value)} aria-label="생성일 시작" />
+            <span className="rpt-toolbar__tilde">~</span>
+            <input type="date" className="rpt-date" value={mTo} onChange={(e) => setMTo(e.target.value)} aria-label="생성일 종료" />
+          </div>
           <div className="rt-wrap">
             <table className="rt">
               <thead>
@@ -147,9 +196,13 @@ export default function ReportList() {
                   <th>생성자</th>
                   <th className="col-center">미리보기</th>
                   <th className="col-center">다운로드</th>
+                  <th className="col-center">삭제</th>
                 </tr>
               </thead>
               <tbody>
+                {manualSlice.length === 0 && (
+                  <tr><td colSpan={8} style={{ textAlign: 'center', color: 'var(--text-alternative)', padding: 24 }}>조건에 맞는 보고서가 없습니다.</td></tr>
+                )}
                 {manualSlice.map((r, i) => (
                   <tr key={i}>
                     <td><span className="rt-name">{r.name}</span></td>
@@ -164,11 +217,12 @@ export default function ReportList() {
                         <button className="tag tag--file" onClick={() => exportReportDocx(r)}>{DL_ICON}<span>DOCX</span></button>
                       </div>
                     </td>
+                    <td className="col-center"><button className="mt-act mt-act--del" onClick={() => setManualRows((rows) => rows.filter((x) => x !== r))}>삭제</button></td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <Pager total={MANUAL_ROWS.length} page={manualPage} setPage={setManualPage} />
+            <Pager total={filteredManual.length} page={manualPage} setPage={setManualPage} />
           </div>
         </div>
         )}
