@@ -481,10 +481,10 @@ export default function Dashboard() {
               <Link to="/analysis/policy-simulation" className="card-link">전체 <Icon name="arrow-right" size={16} /></Link>
             </div>
             <div className="list">
-              <div className="list__row"><span className="name">연동동 주차장 확충 150면</span></div>
-              <div className="list__row"><span className="name">노형동 단속 강화 효과 분석</span></div>
-              <div className="list__row"><span className="name">이도2동 요금제 조정 효과</span></div>
-              <div className="list__row"><span className="name">아라동 이면도로 정비 효과</span></div>
+              <div className="list__row list__row--link" onClick={() => navigate('/analysis/policy-simulation')}><span className="name">연동동 주차장 확충 150면</span></div>
+              <div className="list__row list__row--link" onClick={() => navigate('/analysis/policy-simulation')}><span className="name">노형동 단속 강화 효과 분석</span></div>
+              <div className="list__row list__row--link" onClick={() => navigate('/analysis/policy-simulation')}><span className="name">이도2동 요금제 조정 효과</span></div>
+              <div className="list__row list__row--link" onClick={() => navigate('/analysis/policy-simulation')}><span className="name">아라동 이면도로 정비 효과</span></div>
             </div>
           </div>
 
