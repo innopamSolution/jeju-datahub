@@ -9,12 +9,11 @@ const DOT = {
   info: 'var(--cool-neutral-50, #8A8F99)',
 };
 
-const INITIAL_ITEMS = [
-  { level: 'severe', title: '연동 민원 45% 증가 (심각 단계)', time: '2026.05.31 14:21', unread: true },
-  { level: 'warn', title: '노형동 민원 28% 증가 (경고 단계)', time: '2026.05.31 13:48', unread: true },
-  { level: 'caution', title: '이도2동 민원 12% 증가 (주의 단계)', time: '2026.05.31 11:05', unread: true },
-  { level: 'info', title: '2026년 3월 월간 민원 리포트 생성 완료', time: '2026.05.30 09:00', unread: false },
-  { level: 'info', title: '공영주차장 운영 관리 지침 업데이트', time: '2026.05.29 16:30', unread: false },
+/* 알림은 실시간이 아니라 전날 발생분을 당일에 배치로 보여준다 */
+const ITEMS = [
+  { level: 'severe', title: '연동 민원 45% 증가 (심각 단계)', date: '2026.05.31' },
+  { level: 'warn', title: '노형동 민원 28% 증가 (경고 단계)', date: '2026.05.31' },
+  { level: 'caution', title: '이도2동 민원 12% 증가 (주의 단계)', date: '2026.05.31' },
 ];
 
 const BELL_ICON_SVG = (
@@ -25,12 +24,11 @@ const BELL_ICON_SVG = (
 );
 
 export default function NotificationBell() {
-  const [items, setItems] = useState(INITIAL_ITEMS);
   const [open, setOpen] = useState(false);
   const rootRef = useRef(null);
   const navigate = useNavigate();
 
-  const unreadCount = items.filter((i) => i.unread).length;
+  const alertCount = ITEMS.length;
 
   useEffect(() => {
     if (!open) return;
@@ -41,8 +39,6 @@ export default function NotificationBell() {
     return () => { document.removeEventListener('click', onDocClick); document.removeEventListener('keydown', onKey); };
   }, [open]);
 
-  const markRead = (idx) => setItems((prev) => prev.map((it, i) => (i === idx ? { ...it, unread: false } : it)));
-  const markAllRead = () => setItems((prev) => prev.map((it) => ({ ...it, unread: false })));
   const viewAll = () => { setOpen(false); navigate('/alerts/inquiry'); };
 
   return (
@@ -54,7 +50,7 @@ export default function NotificationBell() {
         onClick={(e) => { e.stopPropagation(); setOpen((o) => !o); }}
       >
         <Icon name="bell" size={22} />
-        {unreadCount > 0 && <span className="bell__badge">{unreadCount}</span>}
+        {alertCount > 0 && <span className="bell__badge">{alertCount}</span>}
       </button>
 
       {open && (
@@ -62,29 +58,24 @@ export default function NotificationBell() {
           <div className="notif-head">
             <span className="notif-head__ic">{BELL_ICON_SVG}</span>
             <span className="notif-head__title">알림</span>
-            <span className="notif-head__count">{unreadCount}</span>
+            <span className="notif-head__hint">전일 기준</span>
+            <span className="notif-head__count">{alertCount}</span>
             <button className="notif-head__x" type="button" aria-label="닫기" onClick={() => setOpen(false)}>
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
             </button>
           </div>
 
           <div className="notif-list">
-            {items.map((it, i) => (
-              <button
-                key={i}
-                className={`notif-row${it.unread ? '' : ' notif-row--read'}`}
-                type="button"
-                onClick={() => markRead(i)}
-              >
+            {ITEMS.map((it, i) => (
+              <div key={i} className="notif-row">
                 <span className="notif-row__dot" style={{ background: DOT[it.level] }} />
                 <span className="notif-row__body"><span className="notif-row__title">{it.title}</span></span>
-                <span className="notif-row__time">{it.time.split(' ')[0]}</span>
-              </button>
+                <span className="notif-row__time">{it.date}</span>
+              </div>
             ))}
           </div>
 
           <div className="notif-foot">
-            <button className="notif-foot__btn" type="button" onClick={markAllRead}>모두 읽음</button>
             <button className="notif-foot__btn notif-foot__btn--primary" type="button" onClick={viewAll}>전체보기</button>
           </div>
         </div>
