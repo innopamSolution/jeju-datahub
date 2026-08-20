@@ -86,10 +86,9 @@ const LAYER_TOGGLE_DEFS = [
 const LAYER_DEFS = [...LAYER_RADIO_DEFS, ...LAYER_TOGGLE_DEFS];
 
 const LEGEND_ITEMS = [
-  { label: '심각 (40건 이상)', color: 'var(--red-50)'          },
-  { label: '경고 (20~39건)',   color: 'var(--orange-50)'       },
-  { label: '주의 (10~19건)',   color: 'var(--blue-50)'         },
-  { label: '양호 (10건 미만)', color: 'var(--cool-neutral-80)' },
+  { label: '심각 (40건 이상)', color: 'var(--red-50)'    },
+  { label: '경고 (20~39건)',   color: 'var(--orange-50)' },
+  { label: '주의 (10~19건)',   color: 'var(--blue-50)'   },
 ];
 
 /* 민원 감정 3분할 바 (긍정/보통/부정) */
