@@ -30,9 +30,6 @@ const RANKING = [
   { rank: 8,  name: '한림해수욕장 근처',      dotColor: 'var(--orange-50)', score: '65점', sub: '불법주차 12 · 기타 6' },
   { rank: 9,  name: '서귀포 올레시장 인근',   dotColor: 'var(--blue-50)',   score: '60점', sub: '불법주차 9 · 기타 6' },
   { rank: 10, name: '이중섭 거리 주변',       dotColor: 'var(--blue-50)',   score: '55점', sub: '불법주차 7 · 기타 6' },
-  { rank: 11, name: '한라산 국립공원 입구',   dotColor: 'var(--green-50)',  score: '35점', sub: '불법주차 8 · 기타 3' },
-  { rank: 12, name: '삼성혈 인근',            dotColor: 'var(--green-50)',  score: '32점', sub: '불법주차 6 · 기타 3' },
-  { rank: 13, name: '용담 해안도로 주변',     dotColor: 'var(--green-50)',  score: '28점', sub: '불법주차 4 · 기타 3' },
 ];
 
 const CLUSTERS = [
@@ -44,8 +41,8 @@ const CLUSTERS = [
   { name: '아라동 주변',     c: [33.4560, 126.5470], rank: 6, region: '아라동', badge: 'caution', complaints: 30, enforce: 20 },
 ];
 
-const BADGE_COLOR = { severe: 'var(--red-50)', warn: 'var(--orange-50)', caution: 'var(--blue-50)', good: 'var(--green-50)' };
-const BADGE_TEXT  = { severe: '심각', warn: '경고', caution: '주의', good: '양호' };
+const BADGE_COLOR = { severe: 'var(--red-50)', warn: 'var(--orange-50)', caution: 'var(--blue-50)' };
+const BADGE_TEXT  = { severe: '심각', warn: '경고', caution: '주의' };
 
 function makePinHtml(rank, fillColor, name) {
   const pin = `<svg class="cmk__flag" width="44" height="56" viewBox="0 0 44 56" fill="none">
@@ -168,7 +165,7 @@ export default function HotspotAnalysis() {
 
           {/* 왼쪽 설정 패널 */}
           <div className="card sim-panel sim-panel--left">
-            <h2 className="sim-panel__title">집중 구역 분석 설정</h2>
+            <h2 className="sim-panel__title">불법 주차 집중 구역 분석 설정</h2>
 
 
             <div className="field">
@@ -264,7 +261,6 @@ export default function HotspotAnalysis() {
               <div className="row"><span className="dot" style={{ background: 'var(--red-50)' }} />심각 (80점 이상)</div>
               <div className="row"><span className="dot" style={{ background: 'var(--orange-50)' }} />경고 (60~79점)</div>
               <div className="row"><span className="dot" style={{ background: 'var(--blue-50)' }} />주의 (40~59점)</div>
-              <div className="row"><span className="dot" style={{ background: 'var(--green-50)' }} />양호 (40점 미만)</div>
             </div>
           </div>
 
