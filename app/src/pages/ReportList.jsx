@@ -184,6 +184,12 @@ export default function ReportList() {
             <input type="date" className="rpt-date" value={mFrom} onChange={(e) => setMFrom(e.target.value)} aria-label="생성일 시작" />
             <span className="rpt-toolbar__tilde">~</span>
             <input type="date" className="rpt-date" value={mTo} onChange={(e) => setMTo(e.target.value)} aria-label="생성일 종료" />
+            <button
+              className="btn"
+              type="button"
+              style={{ height: 40 }}
+              onClick={() => { setMQuery(''); setMSource('all'); setMFrom(''); setMTo(''); }}
+            >초기화</button>
           </div>
           <div className="rt-wrap">
             <table className="rt">
