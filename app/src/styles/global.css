@@ -611,7 +611,7 @@ input[type='number']:focus-visible {
 
 /* stat-row 4-column variant */
 .stat-row--4 { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: var(--space-20); }
-.stat-row--4 .stat { padding: 16px; gap: 10px; }
+.stat-row--4 .stat { padding: 16px; gap: var(--space-16); }
 .stat-row--4 .stat__delta { font-size: 12px; }
 .stat-row--4 .stat__icon { width: 56px; height: 56px; border-radius: var(--radius-14); }
 .stat-row--4 .stat__value { font-size: var(--title1-size); line-height: var(--title1-line); letter-spacing: var(--title1-tracking); }
