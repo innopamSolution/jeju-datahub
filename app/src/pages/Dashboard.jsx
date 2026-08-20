@@ -206,7 +206,7 @@ const AI_ICON_DASH = (
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const [period, setPeriod] = useState('오늘');
+  const [period, setPeriod] = useState('어제');
   const [datePopOpen, setDatePopOpen] = useState(false);
   const [customRange, setCustomRange] = useState(null);
   const [dateFrom, setDateFrom] = useState('2025-11-01');
@@ -307,7 +307,7 @@ export default function Dashboard() {
       <div className="filterbar">
         <span className="filterbar__label">조회 단위</span>
         <div className="segment">
-          {['오늘', '주간', '월간'].map((k) => (
+          {['어제', '주간', '월간'].map((k) => (
             <button key={k} type="button" className={`segment__btn ${!customRange && period === k ? 'segment__btn--active' : ''}`} onClick={() => { setPeriod(k); setCustomRange(null); }}>{k}</button>
           ))}
         </div>
@@ -399,7 +399,7 @@ export default function Dashboard() {
           <div className="card trend">
             <div className="card-head">
               <div>
-                <h2 className="card-head__title">민원 발생 추이 <span className="card-head__note">(오늘 · 전체 유형)</span></h2>
+                <h2 className="card-head__title">민원 발생 추이 <span className="card-head__note">(어제 · 전체 유형)</span></h2>
                 <p className="card-head__sub">기간별 민원 건수 및 유형별 분포</p>
               </div>
             </div>
@@ -440,7 +440,7 @@ export default function Dashboard() {
           <div className="region-head">
             <div>
               <h2 className="section-title">읍·면·동 민원 순위</h2>
-              <p className="section-sub">오늘 민원 건수 · 순위 · 전기 대비 변화 비교</p>
+              <p className="section-sub">어제 민원 건수 · 순위 · 전기 대비 변화 비교</p>
             </div>
             <Link to="/complaints" className="card-link">GIS 보기 <Icon name="chevron-right" size={16} /></Link>
           </div>
@@ -477,7 +477,7 @@ export default function Dashboard() {
         <section className="bottom-row">
           <div className="card panel">
             <div className="card-head">
-              <h2 className="card-head__title"><span className="panel__icon"><Icon name="chart" size={20} /></span>정책 시뮬레이션</h2>
+              <h2 className="card-head__title"><span className="panel__icon"><Icon name="chart" size={20} /></span>정책 효과 시뮬레이션</h2>
               <Link to="/analysis/policy-simulation" className="card-link">전체 <Icon name="arrow-right" size={16} /></Link>
             </div>
             <div className="list">
