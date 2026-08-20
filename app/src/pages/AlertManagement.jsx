@@ -180,6 +180,7 @@ export default function AlertManagement() {
               </button>
             </div>
             <div className="modal__body">
+              <p className="crit-card__sub" style={{ marginTop: 0 }}>이메일 알림에 대한 수신자 설정입니다.</p>
               <div className="form-field">
                 <label className="form-field__label">소속</label>
                 <div className="ds-select form-field__select">
