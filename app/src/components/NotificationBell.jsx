@@ -78,7 +78,7 @@ export default function NotificationBell() {
               >
                 <span className="notif-row__dot" style={{ background: DOT[it.level] }} />
                 <span className="notif-row__body"><span className="notif-row__title">{it.title}</span></span>
-                <span className="notif-row__time">{it.time}</span>
+                <span className="notif-row__time">{it.time.split(' ')[0]}</span>
               </button>
             ))}
           </div>
