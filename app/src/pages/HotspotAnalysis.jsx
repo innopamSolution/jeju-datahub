@@ -28,8 +28,11 @@ const RANKING = [
   { rank: 6,  name: '동문시장 주변',          dotColor: 'var(--orange-50)', score: '70점', sub: '불법주차 14 · 기타 4' },
   { rank: 7,  name: '동문시장 주변',          dotColor: 'var(--orange-50)', score: '68점', sub: '불법주차 14 · 기타 4' },
   { rank: 8,  name: '한림해수욕장 근처',      dotColor: 'var(--orange-50)', score: '65점', sub: '불법주차 12 · 기타 6' },
-  { rank: 9,  name: '서귀포 올레시장 인근',   dotColor: 'var(--blue-50)',   score: '60점', sub: '불법주차 9 · 기타 6' },
+  { rank: 9,  name: '서귀포 올레시장 인근',   dotColor: 'var(--orange-50)', score: '60점', sub: '불법주차 9 · 기타 6' },
   { rank: 10, name: '이중섭 거리 주변',       dotColor: 'var(--blue-50)',   score: '55점', sub: '불법주차 7 · 기타 6' },
+  { rank: 11, name: '한라산 국립공원 입구',   dotColor: 'var(--blue-50)',   score: '52점', sub: '불법주차 8 · 기타 3' },
+  { rank: 12, name: '삼성혈 인근',            dotColor: 'var(--blue-50)',   score: '47점', sub: '불법주차 6 · 기타 3' },
+  { rank: 13, name: '용담 해안도로 주변',     dotColor: 'var(--blue-50)',   score: '43점', sub: '불법주차 4 · 기타 3' },
 ];
 
 const CLUSTERS = [
