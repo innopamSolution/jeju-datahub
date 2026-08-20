@@ -85,11 +85,11 @@ const LAYER_TOGGLE_DEFS = [
 
 const LAYER_DEFS = [...LAYER_RADIO_DEFS, ...LAYER_TOGGLE_DEFS];
 
-/* 전기 대비 민원 증가율 기준 — 위험단계 알림 기준(심각 30%↑/경고 20%↑/주의 10%↑)과 동일 */
+/* 민원 건수 상위 백분위 기준 단계 구분 */
 const LEGEND_ITEMS = [
-  { label: '심각 (30% 이상 증가)', color: 'var(--red-50)'    },
-  { label: '경고 (20~29% 증가)',   color: 'var(--orange-50)' },
-  { label: '주의 (10~19% 증가)',   color: 'var(--blue-50)'   },
+  { label: '심각 (상위 10%)',    color: 'var(--red-50)'    },
+  { label: '경고 (상위 10~25%)', color: 'var(--orange-50)' },
+  { label: '주의 (상위 25~50%)', color: 'var(--blue-50)'   },
 ];
 
 /* 민원 감정 3분할 바 (긍정/보통/부정) */
