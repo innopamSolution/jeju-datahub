@@ -16,24 +16,24 @@ const AI_ICON = (
 );
 
 const REPORT_TYPES = ['민원현황', '집중구역분석'];
-const DEPTS = ['교통정책과', '주차관리', '안전정책과', '종합민원실', '차량관리과', '전체'];
-const CYCLES = ['월간', '1분기', '상반기', '연간'];
+const REGIONS = ['전체', '제주시', '서귀포시'];
+const CYCLES = ['월간', '분기', '반기', '연간'];
 const MONTHS = Array.from({ length: 12 }, (_, i) => `${i + 1}월`);
 const DAYS = Array.from({ length: 28 }, (_, i) => `${i + 1}일`);
 
 const CONFIG_ROWS = [
-  { author: '홍길동', dept: '교통정책과', cycle: '월간',   month: '월',  day: '1일', lastRun: '2026.05.01 14:21' },
-  { author: '김지수', dept: '주차관리',   cycle: '1분기',  month: '4월', day: '1일', lastRun: '2026.04.01 14:21' },
-  { author: '고민호', dept: '주차관리',   cycle: '상반기', month: '7월', day: '1일', lastRun: '2026.07.01 14:21' },
-  { author: '김경미', dept: '전체',      cycle: '연간',   month: '1월', day: '1일', lastRun: '2026.07.31 14:21' },
+  { author: '홍길동', region: '제주시',      cycle: '월간', month: '월',  day: '1일', lastRun: '2026.05.01 14:21' },
+  { author: '김지수', region: '전체', cycle: '분기', month: '4월', day: '1일', lastRun: '2026.04.01 14:21' },
+  { author: '고민호', region: '서귀포시',    cycle: '반기', month: '7월', day: '1일', lastRun: '2026.07.01 14:21' },
+  { author: '김경미', region: '전체', cycle: '연간', month: '1월', day: '1일', lastRun: '2026.07.31 14:21' },
 ];
 
 export default function ReportManagement() {
   const navigate = useNavigate();
   const [rows, setRows] = useState(CONFIG_ROWS);
   const [reportType, setReportType] = useState(REPORT_TYPES[0]);
-  const [dept, setDept] = useState(DEPTS[0]);
-  const [cycle, setCycle] = useState('1분기');
+  const [region, setRegion] = useState(REGIONS[0]);
+  const [cycle, setCycle] = useState('분기');
   const [month, setMonth] = useState('4월');
   const [day, setDay] = useState('1일');
 
@@ -102,9 +102,9 @@ export default function ReportManagement() {
                 </DsSelect>
               </div>
               <div className="field">
-                <label className="field__label">배포 부서</label>
-                <DsSelect value={dept} onChange={(e) => setDept(e.target.value)}>
-                  {DEPTS.map((v) => <option key={v} value={v}>{v}</option>)}
+                <label className="field__label">행정구역</label>
+                <DsSelect value={region} onChange={(e) => setRegion(e.target.value)}>
+                  {REGIONS.map((v) => <option key={v} value={v}>{v}</option>)}
                 </DsSelect>
               </div>
               <div className="field">
@@ -132,7 +132,7 @@ export default function ReportManagement() {
                 className="btn-gen"
                 type="button"
                 onClick={() => setRows((r) => [
-                  { author: CURRENT_USER.name, dept, cycle, month: cycle === '연간' ? month : (cycle === '1분기' ? '4월' : cycle === '상반기' ? '7월' : '월'), day, lastRun: '방금 생성' },
+                  { author: CURRENT_USER.name, region, cycle, month: cycle === '연간' ? month : (cycle === '분기' ? '4월' : cycle === '반기' ? '7월' : '월'), day, lastRun: '방금 생성' },
                   ...r,
                 ])}
               >
@@ -150,7 +150,7 @@ export default function ReportManagement() {
               <thead>
                 <tr>
                   <th>생성자</th>
-                  <th>배포 부서</th>
+                  <th>행정구역</th>
                   <th>배포 주기</th>
                   <th>배포 일자</th>
                   <th>최근 생성 일시</th>
@@ -166,8 +166,8 @@ export default function ReportManagement() {
                       <tr key={i}>
                         <td><span className="rt-name">{r.author}</span></td>
                         <td>
-                          <DsSelect value={draft.dept} onChange={(e) => setDraft((d) => ({ ...d, dept: e.target.value }))}>
-                            {DEPTS.map((v) => <option key={v} value={v}>{v}</option>)}
+                          <DsSelect value={draft.region} onChange={(e) => setDraft((d) => ({ ...d, region: e.target.value }))}>
+                            {REGIONS.map((v) => <option key={v} value={v}>{v}</option>)}
                           </DsSelect>
                         </td>
                         <td>
@@ -196,12 +196,16 @@ export default function ReportManagement() {
                   return (
                     <tr key={i}>
                       <td>{r.author}</td>
-                      <td>{r.dept}</td>
+                      <td>{r.region}</td>
                       <td>{r.cycle}</td>
                       <td>{r.month && r.cycle === '연간' ? `${r.month} ` : ''}{r.day}</td>
                       <td className="rt-date">{r.lastRun}</td>
                       <td className="col-center"><button className="mt-act" onClick={() => startEdit(i)}>수정</button></td>
-                      <td className="col-center"><button className="mt-act mt-act--del" onClick={() => removeRow(i)}>삭제</button></td>
+                      <td className="col-center">
+                        <button className="rt-del" type="button" aria-label="삭제" onClick={() => removeRow(i)}>
+                          <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                        </button>
+                      </td>
                     </tr>
                   );
                 })}
