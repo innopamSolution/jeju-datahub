@@ -8,7 +8,7 @@ import DsSelect from '../components/DsSelect';
 import './Dashboard.css';
 
 const HOTSPOTS = [
-  { rank: 1, accent: 'var(--rank-1)', name: '연동 대로변', meta: '연동동 · 반경 200m', badge: 'severe', label: '심각' },
+  { rank: 1, accent: 'var(--rank-1)', name: '연동 대로변', meta: '연동 · 반경 200m', badge: 'severe', label: '심각' },
   { rank: 2, accent: 'var(--rank-3)', name: '노형사거리 인근', meta: '노형동 · 반경 150m', badge: 'warn', label: '경고' },
   { rank: 3, accent: 'var(--rank-3)', name: '이도2동 상업지구', meta: '이도동 · 반경 180m', badge: 'warn', label: '경고' },
   { rank: 4, accent: 'var(--rank-4)', name: '아라동 주변', meta: '아라동 · 반경 120m', badge: 'caution', label: '주의' },
@@ -380,10 +380,10 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="card stat">
-            <div className="stat__icon stat__icon--green"><Icon name="location" size={32} /></div>
+            <div className="stat__icon stat__icon--green"><Icon name="car" size={32} /></div>
             <div>
-              <div className="stat__label">불법주차 발생</div>
-              <div className="stat__value">183</div>
+              <div className="stat__label">불법주정차 단속 건수</div>
+              <div className="stat__value">96</div>
             </div>
           </div>
           <div className="card stat">
@@ -481,7 +481,7 @@ export default function Dashboard() {
               <Link to="/analysis/policy-simulation" className="card-link">전체 <Icon name="arrow-right" size={16} /></Link>
             </div>
             <div className="list">
-              <div className="list__row list__row--link" onClick={() => navigate('/analysis/policy-simulation')}><span className="name">연동동 주차장 확충 150면</span></div>
+              <div className="list__row list__row--link" onClick={() => navigate('/analysis/policy-simulation')}><span className="name">연동 주차장 확충 150면</span></div>
               <div className="list__row list__row--link" onClick={() => navigate('/analysis/policy-simulation')}><span className="name">노형동 단속 강화 효과 분석</span></div>
               <div className="list__row list__row--link" onClick={() => navigate('/analysis/policy-simulation')}><span className="name">이도2동 요금제 조정 효과</span></div>
               <div className="list__row list__row--link" onClick={() => navigate('/analysis/policy-simulation')}><span className="name">아라동 이면도로 정비 효과</span></div>
