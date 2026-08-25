@@ -33,28 +33,28 @@ const AI_ICON = (
 /* ── 지역 데이터 (HTML 민원현황.html 기준) ── */
 /* 주요 유형은 대시보드 민원 유형 분포와 동일한 기준(1위 유형) */
 const REGIONS = [
-  { rank: 1,  name: '연동동',   dotColor: 'var(--red-50)',    count: 52, delta: '▲13%', deltaClass: 't-up',   topType: '인도·횡단보도 점유', topPct: 42 },
+  { rank: 1,  name: '연동',   dotColor: 'var(--red-50)',    count: 52, delta: '▲13%', deltaClass: 't-up',   topType: '인도·횡단보도 점유', topPct: 42 },
   { rank: 2,  name: '노형동',   dotColor: 'var(--orange-50)', count: 38, delta: '▲6%',  deltaClass: 't-up',   topType: '인도·횡단보도 점유', topPct: 42 },
   { rank: 3,  name: '이도동',   dotColor: 'var(--orange-50)', count: 29, delta: '▼3%',  deltaClass: 't-down', topType: '인도·횡단보도 점유', topPct: 41 },
   { rank: 4,  name: '아라동',   dotColor: 'var(--blue-50)',   count: 21, delta: '▼6%',  deltaClass: 't-down', topType: '인도·횡단보도 점유', topPct: 43 },
-  { rank: 5,  name: '삼도동',   dotColor: 'var(--green-50)',  count: 10, delta: '—',    deltaClass: 't-flat', topType: '인도·횡단보도 점유', topPct: 44 },
-  { rank: 6,  name: '이도2동',  dotColor: 'var(--green-50)',  count: 9,  delta: '▲2%',  deltaClass: 't-up',   topType: '인도·횡단보도 점유', topPct: 43 },
-  { rank: 7,  name: '화북동',   dotColor: 'var(--green-50)',  count: 8,  delta: '▼1%',  deltaClass: 't-down', topType: '안전시설 인근 위반', topPct: 24 },
-  { rank: 8,  name: '삼양동',   dotColor: 'var(--green-50)',  count: 7,  delta: '—',    deltaClass: 't-flat', topType: '인도·횡단보도 점유', topPct: 41 },
-  { rank: 9,  name: '봉개동',   dotColor: 'var(--green-50)',  count: 6,  delta: '▲4%',  deltaClass: 't-up',   topType: '장애인전용구역 위반', topPct: 19 },
-  { rank: 10, name: '오라동',   dotColor: 'var(--green-50)',  count: 5,  delta: '▼2%',  deltaClass: 't-down', topType: '인도·횡단보도 점유', topPct: 40 },
-  { rank: 11, name: '외도동',   dotColor: 'var(--green-50)',  count: 4,  delta: '—',    deltaClass: 't-flat', topType: '기타 불법주정차', topPct: 11 },
-  { rank: 12, name: '이호동',   dotColor: 'var(--green-50)',  count: 4,  delta: '▲1%',  deltaClass: 't-up',   topType: '인도·횡단보도 점유', topPct: 43 },
-  { rank: 13, name: '도두동',   dotColor: 'var(--green-50)',  count: 3,  delta: '—',    deltaClass: 't-flat', topType: '안전시설 인근 위반', topPct: 23 },
-  { rank: 14, name: '용담동',   dotColor: 'var(--green-50)',  count: 2,  delta: '▼1%',  deltaClass: 't-down', topType: '인도·횡단보도 점유', topPct: 42 },
-  { rank: 15, name: '건입동',   dotColor: 'var(--green-50)',  count: 2,  delta: '—',    deltaClass: 't-flat', topType: '친환경차충전구역 위반', topPct: 6 },
+  { rank: 5,  name: '삼도동',   dotColor: 'var(--blue-50)',  count: 10, delta: '—',    deltaClass: 't-flat', topType: '인도·횡단보도 점유', topPct: 44 },
+  { rank: 6,  name: '이도2동',  dotColor: 'var(--blue-50)',  count: 9,  delta: '▲2%',  deltaClass: 't-up',   topType: '인도·횡단보도 점유', topPct: 43 },
+  { rank: 7,  name: '화북동',   dotColor: 'var(--blue-50)',  count: 8,  delta: '▼1%',  deltaClass: 't-down', topType: '안전시설 인근 위반', topPct: 24 },
+  { rank: 8,  name: '삼양동',   dotColor: null,                count: 7,  delta: '—',    deltaClass: 't-flat', topType: '인도·횡단보도 점유', topPct: 41 },
+  { rank: 9,  name: '봉개동',   dotColor: null,                count: 6,  delta: '▲4%',  deltaClass: 't-up',   topType: '장애인전용구역 위반', topPct: 19 },
+  { rank: 10, name: '오라동',   dotColor: null,                count: 5,  delta: '▼2%',  deltaClass: 't-down', topType: '인도·횡단보도 점유', topPct: 40 },
+  { rank: 11, name: '외도동',   dotColor: null,                count: 4,  delta: '—',    deltaClass: 't-flat', topType: '기타 불법주정차', topPct: 11 },
+  { rank: 12, name: '이호동',   dotColor: null,                count: 4,  delta: '▲1%',  deltaClass: 't-up',   topType: '인도·횡단보도 점유', topPct: 43 },
+  { rank: 13, name: '도두동',   dotColor: null,                count: 3,  delta: '—',    deltaClass: 't-flat', topType: '안전시설 인근 위반', topPct: 23 },
+  { rank: 14, name: '용담동',   dotColor: null,                count: 2,  delta: '▼1%',  deltaClass: 't-down', topType: '인도·횡단보도 점유', topPct: 42 },
+  { rank: 15, name: '건입동',   dotColor: null,                count: 2,  delta: '—',    deltaClass: 't-flat', topType: '친환경차충전구역 위반', topPct: 6 },
 ];
 
 /* ── 민원 감정 분석 (Figma 250727 수정본 신규) ── */
 const SENTIMENT_OVERALL = { pos: 12, neu: 26, neg: 62, deltaPp: 5 };
 
 const SENTIMENT_REGIONS = [
-  { rank: 1,  name: '연동동',  pos: 6,  neu: 16, neg: 78, negCount: 41 },
+  { rank: 1,  name: '연동',  pos: 6,  neu: 16, neg: 78, negCount: 41 },
   { rank: 2,  name: '이도동',  pos: 8,  neu: 21, neg: 71, negCount: 21 },
   { rank: 3,  name: '노형동',  pos: 9,  neu: 25, neg: 66, negCount: 25 },
   { rank: 4,  name: '아라동',  pos: 14, neu: 28, neg: 58, negCount: 12 },
@@ -96,9 +96,9 @@ const LEGEND_ITEMS = [
 function SentiBar({ pos, neu, neg, width = 120, height = 6 }) {
   return (
     <div style={{ display: 'flex', width, height, borderRadius: height / 2, overflow: 'hidden', flexShrink: 0 }}>
-      <div style={{ width: `${pos}%`, background: 'var(--green-50)' }} />
-      <div style={{ width: `${neu}%`, background: 'var(--cool-neutral-80)' }} />
       <div style={{ width: `${neg}%`, background: 'var(--red-50)' }} />
+      <div style={{ width: `${neu}%`, background: 'var(--cool-neutral-80)' }} />
+      <div style={{ width: `${pos}%`, background: 'var(--green-50)' }} />
     </div>
   );
 }
@@ -498,7 +498,7 @@ export default function Complaints() {
             <div className="stat__icon stat__icon--violet">{FROWN_ICON}</div>
             <div>
               <div className="stat__label">민원 감정 분석</div>
-              <div className="stat__value"><span style={{ fontSize: 18, fontWeight: 700, marginRight: 4 }}>부정</span>{SENTIMENT_OVERALL.neg}%</div>
+              <div className="stat__value"><span style={{ fontSize: 16, fontWeight: 700, marginRight: 8 }}>부정</span>{SENTIMENT_OVERALL.neg}%</div>
               <SentiBar pos={SENTIMENT_OVERALL.pos} neu={SENTIMENT_OVERALL.neu} neg={SENTIMENT_OVERALL.neg} width={140} height={5} />
             </div>
           </div>
@@ -506,14 +506,14 @@ export default function Complaints() {
             <div className="stat__icon stat__icon--orange"><Icon name="warning" size={26} /></div>
             <div>
               <div className="stat__label">단속 집중 지역</div>
-              <div className="stat__value"><span style={{ fontSize: 18, fontWeight: 700, marginRight: 4 }}>심각</span>3<span className="stat__unit">개동</span></div>
+              <div className="stat__value"><span style={{ fontSize: 16, fontWeight: 700, marginRight: 8 }}>심각</span>3<span className="stat__unit">개동</span></div>
             </div>
           </div>
           <div className="card stat">
             <div className="stat__icon stat__icon--teal"><Icon name="car" size={26} /></div>
             <div>
               <div className="stat__label">수요 부족 지역</div>
-              <div className="stat__value"><span style={{ fontSize: 18, fontWeight: 700, marginRight: 4 }}>심각</span>3<span className="stat__unit">개동</span></div>
+              <div className="stat__value"><span style={{ fontSize: 16, fontWeight: 700, marginRight: 8 }}>심각</span>3<span className="stat__unit">개동</span></div>
             </div>
           </div>
         </section>
@@ -585,7 +585,7 @@ export default function Complaints() {
                     <div className="rl__main">
                       <div className="rl__top">
                         <span className="rl__name">
-                          <span className="dot" style={{ background: r.dotColor }} />
+                          {r.dotColor && <span className="dot" style={{ background: r.dotColor }} />}
                           {r.name}
                         </span>
                         <span className="rl__val">
