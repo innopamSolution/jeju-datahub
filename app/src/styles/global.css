@@ -661,6 +661,20 @@ input[type='number']:focus-visible {
 .layer-row { display: flex; align-items: center; justify-content: space-between; padding: var(--space-8) 0; cursor: pointer; }
 .layer-row > span:first-child { font-size: var(--label1-size); color: var(--text-neutral); font-weight: var(--weight-medium); }
 .layer-panel__sep { height: 1px; background: var(--line-alternative); margin: var(--space-8) 0; }
+.map-type {
+  position: absolute; top: var(--space-16); right: 60px; z-index: 1000;
+  display: inline-flex; padding: var(--space-4); gap: var(--space-4);
+  background: var(--card-bg); border-radius: var(--radius-10);
+  box-shadow: var(--shadow-normal);
+}
+.map-type button {
+  height: 32px; padding: 0 var(--space-12); border: none; border-radius: var(--radius-8);
+  background: transparent; font-family: var(--font-body); font-size: var(--label2-size);
+  font-weight: var(--weight-semibold); color: var(--text-neutral); cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+.map-type button:hover { background: var(--fill-alternative); }
+.map-type button.is-active { background: var(--primary); color: #fff; }
 .layer-radio { width: 20px; height: 20px; border-radius: var(--radius-full); border: 2px solid var(--line-normal); background: #fff; padding: 0; position: relative; cursor: pointer; transition: border-color var(--duration-fast) var(--ease-out); flex-shrink: 0; }
 .layer-radio--on { border-color: var(--primary); }
 .layer-radio--on::after { content: ""; position: absolute; inset: 3px; border-radius: var(--radius-full); background: var(--primary); }
@@ -705,8 +719,8 @@ input[type='number']:focus-visible {
 .rl__val { text-align: right; white-space: nowrap; flex-shrink: 0; }
 .rl__cnt { font-size: var(--headline1-size); font-weight: var(--weight-bold); color: var(--text-strong); }
 .rl__delta { font-size: var(--label2-size); font-weight: var(--weight-bold); margin-left: var(--space-6); }
-.t-up { color: var(--green-40); }
-.t-down { color: var(--red-40); }
+.t-up { color: var(--red-40); }
+.t-down { color: var(--green-40); }
 .t-flat { color: var(--text-neutral); }
 
 /* hotspot list (hot__) */
