@@ -662,7 +662,7 @@ input[type='number']:focus-visible {
 .layer-row > span:first-child { font-size: var(--label1-size); color: var(--text-neutral); font-weight: var(--weight-medium); }
 .layer-panel__sep { height: 1px; background: var(--line-alternative); margin: var(--space-8) 0; }
 .map-type {
-  position: absolute; top: var(--space-16); right: 60px; z-index: 1000;
+  position: absolute; top: var(--space-16); left: 50%; transform: translateX(-50%); z-index: 1000;
   display: inline-flex; padding: var(--space-4); gap: var(--space-4);
   background: var(--card-bg); border-radius: var(--radius-10);
   box-shadow: var(--shadow-normal);
