@@ -164,7 +164,8 @@ export default function AlertInquiry() {
           ))}
         </div>
         <div className="date-pick" ref={pickRef}>
-          <button className={`btn${customRange ? ' btn--apply' : ''}`} type="button" style={{ height: 40 }} aria-haspopup="true" aria-expanded={popOpen}
+          <button className={`segment__btn${customRange ? ' segment__btn--active' : ''}`} type="button"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }} aria-haspopup="true" aria-expanded={popOpen}
             onClick={(e) => { e.stopPropagation(); setPopOpen((o) => !o); }}>
             <Icon name="calendar" size={18} /> 기간 선택
           </button>

@@ -441,9 +441,9 @@ export default function Complaints() {
         {/* 기간 선택 팝오버 */}
         <div className="date-pick" ref={datePickRef}>
           <button
-            className={`btn${customRange ? ' btn--apply' : ''}`}
+            className={`segment__btn${customRange ? ' segment__btn--active' : ''}`}
             type="button"
-            style={{ height: 40 }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
             onClick={(e) => { e.stopPropagation(); setDatePopOpen((o) => !o); }}
             aria-haspopup="true"
             aria-expanded={datePopOpen}

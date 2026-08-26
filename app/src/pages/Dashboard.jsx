@@ -332,7 +332,8 @@ export default function Dashboard() {
 
         {/* 기간 선택 버튼 + 팝오버 */}
         <div className="date-pick" ref={datePickRef}>
-          <button className={`btn${customRange ? ' btn--apply' : ''}`} type="button" style={{ height: 40 }} aria-haspopup="true" aria-expanded={datePopOpen}
+          <button className={`segment__btn${customRange ? ' segment__btn--active' : ''}`} type="button"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }} aria-haspopup="true" aria-expanded={datePopOpen}
             onClick={(e) => { e.stopPropagation(); setDatePopOpen((o) => !o); }}>
             <Icon name="calendar" size={18} /> {customRange ? `${customRange.from} ~ ${customRange.to}` : '기간 선택'}
           </button>
