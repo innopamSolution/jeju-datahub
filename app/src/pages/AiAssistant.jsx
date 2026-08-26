@@ -158,8 +158,15 @@ export default function AiAssistant() {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages]);
 
+  const autoSubmittedRef = useRef(false);
   useEffect(() => {
-    if (location.state?.focus || location.state?.prefill) {
+    if (location.state?.submit) {
+      if (!autoSubmittedRef.current) {
+        autoSubmittedRef.current = true;
+        submit(location.state.submit);
+      }
+      window.history.replaceState({}, '');
+    } else if (location.state?.focus || location.state?.prefill) {
       fieldRef.current?.focus();
       window.history.replaceState({}, '');
     }
