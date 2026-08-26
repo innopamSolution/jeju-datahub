@@ -1498,7 +1498,7 @@ input[type='number']:focus-visible {
 }
 .scroll-wrap:hover .scroll-wrap__thumb { background: var(--line-strong); }
 
-.recent { display: flex; flex-direction: column; gap: var(--space-10); max-height: 356px; overflow-y: auto; scrollbar-width: none; }
+.recent { display: flex; flex-direction: column; gap: var(--space-10); max-height: 616px; overflow-y: auto; scrollbar-width: none; }
 .recent::-webkit-scrollbar { display: none; }
 .recent__row { text-align: left; border: none; background: var(--fill-normal); border-radius: var(--radius-12); padding: var(--space-16); cursor: pointer; transition: background var(--duration-fast) var(--ease-out); }
 .recent__row:hover { background: var(--fill-strong); }
