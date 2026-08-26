@@ -72,8 +72,8 @@
 }
 .region__name { font-family: var(--font-sans); font-size: var(--heading2-size); font-weight: var(--weight-bold); color: var(--text-strong); letter-spacing: -0.01em; }
 .region__trend { font-size: var(--label2-size); font-weight: var(--weight-bold); display: inline-flex; align-items: center; gap: 2px; }
-.t-up { color: var(--green-40); }
-.t-down { color: var(--red-40); }
+.t-up { color: var(--red-40); }
+.t-down { color: var(--green-40); }
 .t-flat { color: var(--text-neutral); }
 .region__value { font-family: var(--font-sans); font-weight: var(--weight-bold); color: var(--text-strong); display: flex; align-items: baseline; gap: 2px; }
 .region__value b { font-size: var(--title1-size); line-height: 1; letter-spacing: var(--title1-tracking); }
@@ -139,6 +139,21 @@
   padding: 0 var(--space-16);
   font-size: var(--body2-size); color: var(--text-neutral);
 }
+.ai-input--live { gap: var(--space-8); padding-right: var(--space-8); }
+.ai-input--live input {
+  flex: 1; min-width: 0; border: none; outline: none; background: none;
+  font-family: var(--font-body); font-size: var(--body2-size); color: var(--text-normal);
+}
+.ai-input--live input::placeholder { color: var(--text-assistive); }
+.ai-input--live:focus-within { border-color: var(--primary); background: var(--card-bg); box-shadow: 0 0 0 3px rgba(0,102,255,0.14); }
+.ai-input__send {
+  width: 32px; height: 32px; flex-shrink: 0;
+  border: none; border-radius: var(--radius-full);
+  background: var(--primary); color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+.ai-input__send:hover { background: var(--blue-45); }
 .ai-suggest { margin-top: var(--space-12); display: flex; flex-direction: column; gap: 2px; }
 .ai-suggest button {
   display: flex; align-items: center; gap: var(--space-8);
