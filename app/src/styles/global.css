@@ -675,6 +675,9 @@ input[type='number']:focus-visible {
 }
 .map-type button:hover { background: var(--fill-alternative); }
 .map-type button.is-active { background: var(--primary); color: #fff; }
+/* 왼쪽 패널이 있는 화면에서는 패널 옆에 상단 정렬로 배치 */
+*:has(> .layer-panel) > .map-type { top: 20px; left: 242px; }
+*:has(> .sim-panel--left) > .map-type { top: var(--space-24); left: 420px; }
 .layer-radio { width: 20px; height: 20px; border-radius: var(--radius-full); border: 2px solid var(--line-normal); background: #fff; padding: 0; position: relative; cursor: pointer; transition: border-color var(--duration-fast) var(--ease-out); flex-shrink: 0; }
 .layer-radio--on { border-color: var(--primary); }
 .layer-radio--on::after { content: ""; position: absolute; inset: 3px; border-radius: var(--radius-full); background: var(--primary); }
