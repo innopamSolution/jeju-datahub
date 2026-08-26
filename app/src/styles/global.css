@@ -668,13 +668,13 @@ input[type='number']:focus-visible {
   box-shadow: var(--shadow-normal);
 }
 .map-type button {
-  height: 32px; padding: 0 var(--space-12); border: none; border-radius: var(--radius-8);
-  background: transparent; font-family: var(--font-body); font-size: var(--label2-size);
-  font-weight: var(--weight-semibold); color: var(--text-neutral); cursor: pointer;
+  height: 28px; padding: 0 var(--space-8); border: none; border-radius: var(--radius-8);
+  background: transparent; font-family: var(--font-body); font-size: var(--caption1-size);
+  font-weight: var(--weight-semibold); color: var(--text-assistive); cursor: pointer;
   transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
 }
 .map-type button:hover { background: var(--fill-alternative); }
-.map-type button.is-active { background: var(--primary); color: #fff; }
+.map-type button.is-active { background: var(--fill-strong); color: var(--text-strong); }
 /* 왼쪽 패널이 있는 화면에서는 패널 옆에 상단 정렬로 배치 */
 *:has(> .layer-panel) > .map-type { top: 20px; left: 242px; }
 *:has(> .sim-panel--left) > .map-type { top: var(--space-24); left: 420px; }
