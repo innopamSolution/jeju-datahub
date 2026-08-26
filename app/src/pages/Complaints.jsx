@@ -104,10 +104,11 @@ function SentiBar({ pos, neu, neg, width = 120, height = 6 }) {
 }
 
 /* ── Leaflet 지도 컴포넌트 ── */
-function GisMap({ layerState }) {
+function GisMap({ layerState, baseMap }) {
   const ref = useRef(null);
   const mapRef = useRef(null);
   const layerGroupsRef = useRef({});
+  const baseLayersRef = useRef({});
 
   useEffect(() => {
     if (!ref.current) return;
@@ -133,9 +134,15 @@ function GisMap({ layerState }) {
     const map = L.map(ref.current, { zoomControl: false, attributionControl: true })
       .setView([33.486, 126.512], 13);
     L.control.zoom({ position: 'topright' }).addTo(map);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19, attribution: '&copy; OpenStreetMap',
-    }).addTo(map);
+    baseLayersRef.current = {
+      normal: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19, attribution: '&copy; OpenStreetMap',
+      }),
+      satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19, attribution: 'Tiles &copy; Esri',
+      }),
+    };
+    baseLayersRef.current.normal.addTo(map);
 
     /* 육각형 폴리곤 좌표 */
     function hexPoly(c, rx, ry) {
@@ -270,6 +277,17 @@ function GisMap({ layerState }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /* 일반지도 ↔ 항공지도 전환 */
+  useEffect(() => {
+    const map = mapRef.current;
+    const bases = baseLayersRef.current;
+    if (!map || !bases.normal) return;
+    const show = baseMap === 'satellite' ? bases.satellite : bases.normal;
+    const hide = baseMap === 'satellite' ? bases.normal : bases.satellite;
+    if (map.hasLayer(hide)) map.removeLayer(hide);
+    if (!map.hasLayer(show)) { show.addTo(map); show.bringToBack(); }
+  }, [baseMap]);
+
   /* 레이어 토글 */
   useEffect(() => {
     const map = mapRef.current;
@@ -299,6 +317,7 @@ export default function Complaints() {
   const [layers, setLayers]          = useState(() =>
     Object.fromEntries(LAYER_DEFS.map((d) => [d.key, d.defaultOn]))
   );
+  const [baseMap, setBaseMap]        = useState('normal');
   const datePickRef = useRef(null);
   const [exportOpen, setExportOpen] = useState(false);
   const exportRef = useRef(null);
@@ -456,10 +475,6 @@ export default function Complaints() {
         <DsSelect aria-label="행정구역">
           <option>전체</option><option>제주시</option><option>서귀포시</option>
         </DsSelect>
-        <span className="filterbar__label">민원유형</span>
-        <DsSelect aria-label="민원유형">
-          <option>전체</option><option>인도·횡단보도 점유</option><option>안전시설 인근 위반</option><option>장애인전용구역 위반</option><option>기타 불법주정차</option><option>친환경차충전구역 위반</option>
-        </DsSelect>
         <span className="filterbar__right">현재: <strong>{rangeLabel}</strong></span>
         <div className="sim-export" ref={exportRef}>
           <button className="btn" type="button" style={{ height: 40 }}
@@ -524,7 +539,21 @@ export default function Complaints() {
           {/* 지도 카드 */}
           <div className="card map-card">
             <div className="map-body">
-              <GisMap layerState={layers} />
+              <GisMap layerState={layers} baseMap={baseMap} />
+
+              {/* 일반지도 / 항공지도 전환 */}
+              <div className="map-type">
+                <button
+                  type="button"
+                  className={baseMap === 'normal' ? 'is-active' : ''}
+                  onClick={() => setBaseMap('normal')}
+                >일반지도</button>
+                <button
+                  type="button"
+                  className={baseMap === 'satellite' ? 'is-active' : ''}
+                  onClick={() => setBaseMap('satellite')}
+                >항공지도</button>
+              </div>
 
               {/* 레이어 패널 */}
               <div className="layer-panel">

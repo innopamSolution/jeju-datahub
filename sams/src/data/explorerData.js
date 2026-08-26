@@ -86,10 +86,10 @@ export function derivedIdsOf(id) {
 // Collection metadata shown in the results-panel header when one is selected.
 export const COLLECTIONS = {
   'K-Seongsu Project': {
-    desc: '성수동 일대 디지털트윈 구축 콜렉션. 실측 포인트클라우드·3D 모델·드론 영상·현장 문서를 시기별로 통합 관리합니다.',
+    desc: '성수동 일대 디지털트윈 구축 컬렉션. 실측 포인트클라우드·3D 모델·드론 영상·현장 문서를 시기별로 통합 관리합니다.',
   },
   'hanil-drone-2024': {
-    desc: '한일엔지니어링 드론 촬영 콜렉션. 2024-2025년 정기 드론 취득 영상·이미지를 모았습니다.',
+    desc: '한일엔지니어링 드론 촬영 컬렉션. 2024-2025년 정기 드론 취득 영상·이미지를 모았습니다.',
   },
 };
 

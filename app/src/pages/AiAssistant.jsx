@@ -87,13 +87,6 @@ const REPORTS = [
   { name: '2026년 1월 민원 요약', time: '2026.02.01 12:25' },
 ];
 
-const FAQ = [
-  '5월달 민원현황 요약해줘',
-  '최근 3개월간 화재·과열 이벤트가 많았던 공영주차장에서 주차 민원도 함께 늘었는지 분석해줘',
-  '불법주차 단속 관련 행정 절차는?',
-  '공유주차제 도입 요건 알려줘',
-];
-
 /* 민원 요약 리포트 (UI-PAR-005_AI어시스턴트_보고서 / ReportPreview_Overlay 설계 반영) */
 const SUMMARY_REPORT = {
   title: '2026년 5월 주차민원 분석 리포트',
@@ -191,6 +184,12 @@ export default function AiAssistant() {
     if (!v) return;
     setMessages((m) => [...m, { role: 'user', text: v, id: ++msgId }]);
     setInput('');
+
+    /* 대시보드 '최근 질문' 목록용 저장 (최근 3건, 중복 제거) */
+    try {
+      const prev = JSON.parse(localStorage.getItem('aiRecentQuestions') || '[]');
+      localStorage.setItem('aiRecentQuestions', JSON.stringify([v, ...prev.filter((q) => q !== v)].slice(0, 3)));
+    } catch { /* 저장 실패는 무시 */ }
 
     if (v.includes('민원현황') || v.includes('민원 현황')) {
       respond({ kind: 'summary' });
@@ -315,18 +314,6 @@ export default function AiAssistant() {
                       <div className="report__time">{r.time}</div>
                     </div>
                     <span className="report__dl">{REPORT_DL}</span>
-                  </button>
-                ))}
-              </ScrollList>
-            </div>
-
-            <div className="card ai-card">
-              <h2 className="ai-card__title">자주 하는 질문</h2>
-              <ScrollList className="faq">
-                {FAQ.map((q, i) => (
-                  <button key={i} className="faq__row" onClick={() => submit(q)}>
-                    <span className="faq__ic">{AV}</span>
-                    <span className="faq__text">{q}</span>
                   </button>
                 ))}
               </ScrollList>

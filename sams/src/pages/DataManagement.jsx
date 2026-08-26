@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import maplibregl from 'maplibre-gl';
 import Icon from '../components/Icon';
-import { CATS, CAT_MAP, ITEMS, PROJECTS, COLLECTIONS, MEMBERSHIP, PROJECT_LOC, itemCollections, DERIVATIONS, originIdsOf, derivedIdsOf } from '../data/explorerData';
+import { CATS, CAT_MAP, ITEMS, PROJECTS, COLLECTIONS, MEMBERSHIP, PROJECT_LOC, itemCollections, DERIVATIONS, originIdsOf, derivedIdsOf, footprintRing } from '../data/explorerData';
+import { buildMiniStyle } from '../lib/mapStyles';
+import { thumbHtml, startTurntablesIn, wireGallery } from '../lib/popupHelpers';
 
 // 데이터 관리: 컬렉션(생성·수정·삭제)과 데이터 아이템(등록·컬렉션 연결·삭제)
 // 관리. Explorer가 읽는 동일한 라이브 모듈 데이터(ITEMS / PROJECTS /
@@ -53,7 +56,7 @@ function makeCollDraft(name) {
 
 function makeItemDraft(id) {
   if (!id) {
-    return { orig: null, title: '', desc: '', cat: 'image', fileName: null, fileSize: null, colls: Object.fromEntries(collNames().map((n) => [n, false])) };
+    return { orig: null, title: '', desc: '', cat: 'image', fileName: null, fileSize: null, lng: null, lat: null, colls: Object.fromEntries(collNames().map((n) => [n, false])) };
   }
   const it = ITEMS.find((i) => i.id === id);
   return {
@@ -63,6 +66,8 @@ function makeItemDraft(id) {
     cat: it.cat,
     fileName: null,
     fileSize: null,
+    lng: it.lng,
+    lat: it.lat,
     colls: Object.fromEntries(collNames().map((n) => [n, itemCollections(it).includes(n)])),
   };
 }
@@ -74,8 +79,8 @@ function fmtSize(bytes) {
   return Math.max(1, Math.round(bytes / 1024)) + 'KB';
 }
 
-export default function DataManagement({ onNavigate, initialCollection }) {
-  const initial = initialCollection && initialCollection !== '전체 프로젝트' ? initialCollection : collNames()[0] || null;
+export default function DataManagement({ onNavigate, focus = null }) {
+  const initial = collNames()[0] || null;
   const [tab, setTab] = useState('collections');
   const [selected, setSelected] = useState(initial);
   const [draft, setDraft] = useState(() => makeCollDraft(initial));
@@ -260,6 +265,8 @@ export default function DataManagement({ onNavigate, initialCollection }) {
       const it = ITEMS.find((i) => i.id === itemDraft.orig);
       it.title = title;
       it.desc = itemDraft.desc;
+      it.lng = itemDraft.lng;
+      it.lat = itemDraft.lat;
       setItemDraft(makeItemDraft(it.id));
       setItemEditMode(true);
       showToast('저장되었습니다');
@@ -279,6 +286,98 @@ export default function DataManagement({ onNavigate, initialCollection }) {
     bump();
     showToast('아이템이 삭제되었습니다');
   };
+
+  // ── 썸네일 & 미니맵 (아이템 편집기) ──────────────────────
+  const thumbElRef = useRef(null);
+  const miniElRef = useRef(null);
+  const miniMapRef = useRef(null);
+  const [miniReady, setMiniReady] = useState(false);
+  const [locPick, setLocPick] = useState(false);
+  const locPickRef = useRef(false);
+  locPickRef.current = locPick;
+
+  const editingItem = itemDraft.orig != null ? ITEMS.find((i) => i.id === itemDraft.orig) : null;
+  const showItemEditor = tab === 'items' && editingItem;
+
+  // 지도 팝업과 같은 썸네일을 그대로 쓴다 — 유형별 미리보기가 이미 다 들어있다.
+  useEffect(() => {
+    const el = thumbElRef.current;
+    if (!el || !editingItem) return undefined;
+    el.innerHTML = thumbHtml(editingItem, CAT_MAP, true, 150);
+    wireGallery(el, editingItem);
+    const stop = startTurntablesIn(el);
+    return () => { stop(); el.innerHTML = ''; };
+  }, [showItemEditor, itemDraft.orig]);
+
+  // 미니맵 — 편집기가 떠 있는 동안만 살려 둔다.
+  useEffect(() => {
+    if (!showItemEditor) {
+      if (miniMapRef.current) { miniMapRef.current.remove(); miniMapRef.current = null; setMiniReady(false); }
+      return undefined;
+    }
+    if (miniMapRef.current || !miniElRef.current) return undefined;
+    const map = new maplibregl.Map({
+      container: miniElRef.current,
+      style: buildMiniStyle(),
+      center: [PROJECT_LOC.lng, PROJECT_LOC.lat],
+      zoom: 15,
+      attributionControl: { compact: true },
+    });
+    miniMapRef.current = map;
+    map.on('error', () => {});
+    map.on('load', () => {
+      map.addSource('mini-fp', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+      map.addLayer({ id: 'mini-fp-fill', type: 'fill', source: 'mini-fp', paint: { 'fill-color': ['get', 'color'], 'fill-opacity': 0.12 } });
+      map.addLayer({ id: 'mini-fp-line', type: 'line', source: 'mini-fp', paint: { 'line-color': ['get', 'color'], 'line-width': 1.5, 'line-dasharray': [2, 2] } });
+      map.addSource('mini-pt', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+      map.addLayer({ id: 'mini-pt', type: 'circle', source: 'mini-pt', paint: { 'circle-color': ['get', 'color'], 'circle-radius': 8, 'circle-stroke-width': 2.5, 'circle-stroke-color': '#fff' } });
+      setMiniReady(true);
+    });
+    // 위치 지정 모드에서만 클릭이 좌표를 바꾼다.
+    map.on('click', (e) => {
+      if (!locPickRef.current) return;
+      setItemDraft((d) => ({ ...d, lng: +e.lngLat.lng.toFixed(6), lat: +e.lngLat.lat.toFixed(6) }));
+      setLocPick(false);
+    });
+    return undefined;
+  }, [showItemEditor, itemDraft.orig]);
+
+  useEffect(() => () => { if (miniMapRef.current) { miniMapRef.current.remove(); miniMapRef.current = null; } }, []);
+
+  // 좌표/유형이 바뀌면 마커와 커버리지 영역을 다시 그린다.
+  useEffect(() => {
+    const map = miniMapRef.current;
+    if (!map || !miniReady || !editingItem) return;
+    const color = CAT_MAP[itemDraft.cat]?.color || '#1677ff';
+    const has = itemDraft.lat != null && itemDraft.lng != null;
+    const pt = has ? [{ type: 'Feature', geometry: { type: 'Point', coordinates: [itemDraft.lng, itemDraft.lat] }, properties: { color } }] : [];
+    const ring = has ? footprintRing({ ...editingItem, lng: itemDraft.lng, lat: itemDraft.lat }) : null;
+    const fp = ring ? [{ type: 'Feature', geometry: { type: 'Polygon', coordinates: [ring] }, properties: { color } }] : [];
+    try {
+      map.getSource('mini-pt').setData({ type: 'FeatureCollection', features: pt });
+      map.getSource('mini-fp').setData({ type: 'FeatureCollection', features: fp });
+    } catch { /* noop */ }
+    map.easeTo({ center: has ? [itemDraft.lng, itemDraft.lat] : [PROJECT_LOC.lng, PROJECT_LOC.lat], zoom: has ? 17 : 14.5, duration: 500 });
+  }, [miniReady, itemDraft.orig, itemDraft.lng, itemDraft.lat, itemDraft.cat]);
+
+  useEffect(() => {
+    const map = miniMapRef.current;
+    if (map) map.getCanvas().style.cursor = locPick ? 'crosshair' : '';
+  }, [locPick, miniReady]);
+
+  useEffect(() => { setLocPick(false); }, [itemDraft.orig]);
+
+  // 탐색 화면 드로어의 "데이터관리"로 건너온 요청 — 아이템 탭으로 옮기고
+  // 그 아이템의 편집기를 연다.
+  const focusAtRef = useRef(0);
+  useEffect(() => {
+    if (!focus || !focus.focusItem || focus.at === focusAtRef.current) return;
+    focusAtRef.current = focus.at;
+    if (!ITEMS.some((i) => i.id === focus.focusItem)) return;
+    setTab('items');
+    pickItem(focus.focusItem);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focus]);
 
   // ── 공용 스타일 ─────────────────────────────────────────
   const label = { fontSize: 11, fontWeight: 700, color: 'var(--ant-text-secondary)', marginBottom: 8 };
@@ -468,12 +567,12 @@ export default function DataManagement({ onNavigate, initialCollection }) {
                       return (
                         <div style={{ background: 'var(--ant-bg)', border: '1px solid var(--ant-border)', borderRadius: 12, padding: 8 }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                            <span style={{ flex: 1, fontSize: 11, fontWeight: 700, color: 'var(--ant-text-secondary)' }}>추가할 아이템을 선택하세요 · 후보 {candidates.length}건</span>
+                            <span style={{ flex: 1, fontSize: 11, fontWeight: 700, color: 'var(--ant-text-secondary)' }}>이 컬렉션에 담을 아이템을 선택하세요</span>
                             <button onClick={() => { setCollAdd(false); setCollItemQuery(''); }} style={{ height: 24, padding: '0 8px', border: 'none', background: 'transparent', color: 'var(--ant-text-tertiary)', fontSize: 12, fontFamily: 'inherit', cursor: 'pointer' }}>닫기</button>
                           </div>
                           <input autoFocus value={collItemQuery} onChange={(e) => setCollItemQuery(e.target.value)} placeholder="제목 · 공간 · 유형 검색"
                             style={{ ...field, height: 32, padding: '0 12px', marginBottom: 8 }} />
-                          <div style={{ maxHeight: 240, overflowY: 'auto' }}>
+                          <div style={{ maxHeight: 320, overflowY: 'auto' }}>
                             {shown.map((it) => {
                               const c = CAT_MAP[it.cat];
                               return (
@@ -487,11 +586,14 @@ export default function DataManagement({ onNavigate, initialCollection }) {
                                     <div style={{ fontSize: 12.5, fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{it.title}</div>
                                     <div style={{ fontSize: 11, color: 'var(--ant-text-tertiary)' }}>{c.label} · {it.date} · {it.size}</div>
                                   </div>
-                                  <span style={{ flex: 'none', fontSize: 11, fontWeight: 600, color: 'var(--ant-primary)' }}>추가</span>
                                 </div>
                               );
                             })}
-                            {matched.length === 0 && <div style={{ padding: '12px 8px', fontSize: 12, color: 'var(--ant-text-tertiary)' }}>검색 결과가 없습니다.</div>}
+                            {matched.length === 0 && (
+                              <div style={{ padding: '12px 8px', fontSize: 12, color: 'var(--ant-text-tertiary)' }}>
+                                {candidates.length === 0 ? '모든 아이템이 이미 이 컬렉션에 담겨 있습니다.' : '검색 결과가 없습니다.'}
+                              </div>
+                            )}
                           </div>
                           {matched.length > 50 && (
                             <div style={{ padding: '8px 8px 0', fontSize: 11, color: 'var(--ant-text-tertiary)', borderTop: '1px solid var(--ant-border-secondary)' }}>
@@ -506,7 +608,7 @@ export default function DataManagement({ onNavigate, initialCollection }) {
               })()}
 
               <div style={{ display: 'flex', gap: 8, marginTop: 24 }}>
-                {draft.orig != null && <button onClick={deleteColl} style={dangerBtn}>컬렉션 삭제</button>}
+                {draft.orig != null && <button onClick={deleteColl} style={dangerBtn}>삭제</button>}
                 <button onClick={() => pick(selected || collNames()[0])} style={{ ...ghostBtn, marginLeft: 'auto' }}>취소</button>
                 <button onClick={saveColl} style={primaryBtn}>{draft.orig == null ? '생성' : '저장'}</button>
               </div>
@@ -548,19 +650,60 @@ export default function DataManagement({ onNavigate, initialCollection }) {
                 </>
               )}
 
-              {itemDraft.orig != null && (() => {
-                const it = ITEMS.find((i) => i.id === itemDraft.orig);
-                if (!it) return null;
-                const c = CAT_MAP[it.cat];
+              {editingItem && (() => {
+                const c = CAT_MAP[editingItem.cat];
+                const hasThumb = editingItem.cat !== 'document';
+                const canDeep = !!(editingItem.meshUrl || editingItem.pointCloudUrl);
                 return (
-                  <div style={{ marginTop: 20, padding: '12px 16px', borderRadius: 12, background: 'var(--ant-bg)', border: '1px solid var(--ant-border-secondary)', display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div style={{ width: 32, height: 32, flex: 'none', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', background: c.color }}>
-                      <Icon name={c.icon} size={16} />
+                  <>
+                    <div style={{ ...label, marginTop: 20 }}>미리보기</div>
+                    <div style={{ borderRadius: 12, border: '1px solid var(--ant-border-secondary)', background: 'var(--ant-bg)', overflow: 'hidden' }}>
+                      {hasThumb && <div ref={thumbElRef} style={{ lineHeight: 0 }} />}
+                      <div style={{ padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12, borderTop: hasThumb ? '1px solid var(--ant-border-secondary)' : 'none' }}>
+                        <div style={{ width: 28, height: 28, flex: 'none', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', background: c.color }}>
+                          <Icon name={c.icon} size={14} />
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0, fontSize: 12, color: 'var(--ant-text-secondary)' }}>
+                          {c.label} · {editingItem.date} · {editingItem.size}{editingItem.extra ? ` · ${editingItem.extra}` : ''} · {editingItem.status === 'published' ? 'Published' : 'Draft'}
+                        </div>
+                        {canDeep && (
+                          <button onClick={() => onNavigate('explorer', { focusItem: editingItem.id, render3D: true })}
+                            style={{ flex: 'none', height: 28, padding: '0 12px', borderRadius: 14, border: '1px solid var(--ant-border)', background: 'var(--ant-bg)', color: 'var(--ant-text-secondary)', fontSize: 11.5, fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                            지도에서 자세히 보기
+                          </button>
+                        )}
+                      </div>
                     </div>
-                    <div style={{ flex: 1, minWidth: 0, fontSize: 12, color: 'var(--ant-text-secondary)' }}>
-                      {c.label} · {it.date} · {it.size}{it.extra ? ` · ${it.extra}` : ''} · {it.status === 'published' ? 'Published' : 'Draft'}
+
+                    <div style={{ ...label, marginTop: 20 }}>
+                      위치 {itemDraft.lat == null && <span style={{ fontWeight: 500, color: 'var(--ant-warning)' }}>· 없음 — 지도에 표시되지 않습니다</span>}
                     </div>
-                  </div>
+                    <div style={{ borderRadius: 12, border: '1px solid var(--ant-border-secondary)', background: 'var(--ant-bg)', overflow: 'hidden' }}>
+                      <div style={{ position: 'relative' }}>
+                        <div ref={miniElRef} style={{ height: 200 }} />
+                        {locPick && (
+                          <div style={{ position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)', zIndex: 5, pointerEvents: 'none', background: 'rgba(15,20,28,0.85)', color: '#fff', fontSize: 11.5, fontWeight: 600, padding: '5px 12px', borderRadius: 20 }}>
+                            지도를 클릭해 위치를 지정하세요
+                          </div>
+                        )}
+                      </div>
+                      <div style={{ padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 8, borderTop: '1px solid var(--ant-border-secondary)' }}>
+                        <span style={{ flex: 1, minWidth: 0, fontSize: 12, color: 'var(--ant-text-secondary)', fontVariantNumeric: 'tabular-nums' }}>
+                          {itemDraft.lat != null ? `${itemDraft.lat.toFixed(6)}, ${itemDraft.lng.toFixed(6)}` : '좌표 없음'}
+                        </span>
+                        {itemDraft.lat != null && (
+                          <button onClick={() => setItemDraft({ ...itemDraft, lng: null, lat: null })}
+                            style={{ flex: 'none', height: 28, padding: '0 12px', borderRadius: 14, border: '1px solid var(--ant-border)', background: 'var(--ant-bg)', color: 'var(--ant-text-secondary)', fontSize: 11.5, fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer' }}>
+                            위치 지우기
+                          </button>
+                        )}
+                        <button onClick={() => setLocPick(!locPick)}
+                          style={{ flex: 'none', height: 28, padding: '0 12px', borderRadius: 14, border: `1px solid ${locPick ? 'var(--ant-primary)' : 'var(--ant-border)'}`, background: locPick ? 'var(--ant-primary)' : 'var(--ant-bg)', color: locPick ? '#fff' : 'var(--ant-primary)', fontSize: 11.5, fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer' }}>
+                          {locPick ? '지정 취소' : itemDraft.lat != null ? '위치 변경' : '위치 지정'}
+                        </button>
+                      </div>
+                    </div>
+                  </>
                 );
               })()}
 
@@ -674,7 +817,7 @@ export default function DataManagement({ onNavigate, initialCollection }) {
 
               {itemEditMode && (
                 <div style={{ display: 'flex', gap: 8, marginTop: 24 }}>
-                  <button onClick={deleteItem} style={dangerBtn}>아이템 삭제</button>
+                  <button onClick={deleteItem} style={dangerBtn}>삭제</button>
                   <button onClick={() => pickItem(itemSel || ITEMS[0]?.id || null)} style={{ ...ghostBtn, marginLeft: 'auto' }}>취소</button>
                   <button onClick={saveItem} style={primaryBtn}>저장</button>
                 </div>

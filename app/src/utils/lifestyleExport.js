@@ -12,8 +12,6 @@ const GRADE = {
   'var(--red-50)':          { label: '심각', color: '#e5322a' },
   'var(--orange-50)':       { label: '경고', color: '#d4780a' },
   'var(--blue-50)':         { label: '주의', color: '#0066ff' },
-  'var(--green-50)':        { label: '양호', color: '#0da34e' },
-  'var(--cool-neutral-80)': { label: '양호', color: '#9a9ca3' },
 };
 
 function saveBlob(blob, filename) {

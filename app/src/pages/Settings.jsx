@@ -113,7 +113,8 @@ const HISTORY = [
   { at: '2026-05-02 15:07', who: '김주차 (관리자)', item: '등급 구간',          change: '심각 기준 85 → 80점 하향' },
 ];
 
-const TABS = ['사용자 정보', '메뉴 권한 관리', '분석 지표 가중치 설정'];
+/* '사용자 정보' 탭은 임시 제외 — 추후 재추가 가능 */
+const TABS = ['메뉴 권한 관리', '분석 지표 가중치 설정'];
 
 function RoleChip({ role }) {
   const r = ROLES[role];
@@ -128,17 +129,6 @@ function RoleChip({ role }) {
 export default function Settings() {
   const navigate = useNavigate();
   const [tab, setTab] = useState(0);
-
-  /* 사용자 정보 */
-  const [query, setQuery] = useState('');
-  const [roleFilter, setRoleFilter] = useState('all');
-  const filteredUsers = useMemo(() => USERS.filter((u) => {
-    if (roleFilter !== 'all' && u.role !== roleFilter) return false;
-    const q = query.trim();
-    if (!q) return true;
-    return u.name.includes(q) || u.email.includes(q) || u.dept.includes(q);
-  }), [query, roleFilter]);
-  const roleCounts = useMemo(() => USERS.reduce((acc, u) => ({ ...acc, [u.role]: (acc[u.role] ?? 0) + 1 }), {}), []);
 
   /* 메뉴 권한 관리 — 체크 변경은 draft에만 반영, 저장 시 확정. 메뉴 전환 시 미저장 변경 폐기 */
   const [selMenu, setSelMenu] = useState(MENUS[0].name);
@@ -177,7 +167,7 @@ export default function Settings() {
       <header className="topbar">
         <div>
           <h1 className="page-title">설정</h1>
-          <p className="page-sub">사용자 정보 · 메뉴 권한 · 분석 지표 가중치 관리</p>
+          <p className="page-sub">메뉴 권한 · 분석 지표 가중치 관리</p>
         </div>
         <div className="topbar__actions">
           <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}>{AI_ICON} AI 대화 시작하기</button>
@@ -196,72 +186,8 @@ export default function Settings() {
             ))}
           </div>
 
-          {/* ---------- 탭 1: 사용자 정보 ---------- */}
+          {/* ---------- 탭 1: 메뉴 권한 관리 ---------- */}
           {tab === 0 && (
-            <>
-              <div className="st-roles">
-                {Object.entries(ROLES).map(([key, r]) => (
-                  <div key={key} className="st-role">
-                    <div className="st-role__top">
-                      <RoleChip role={key} />
-                      <span className="st-role__count">
-                        <span className="st-role__num">{roleCounts[key] ?? 0}</span>
-                        <span className="st-role__unit">명</span>
-                      </span>
-                    </div>
-                    <div className="st-role__desc">{r.desc}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="st-toolbar">
-                <div className="st-search">
-                  <Icon name="search" size={16} />
-                  <input
-                    type="text"
-                    placeholder="이름 · 이메일 · 소속 검색"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                  />
-                </div>
-                <DsSelect value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}>
-                  <option value="all">전체 권한 그룹</option>
-                  {Object.entries(ROLES).map(([key, r]) => <option key={key} value={key}>{r.label}</option>)}
-                </DsSelect>
-              </div>
-
-              <div className="st-table-wrap">
-                <table className="st-table">
-                  <thead>
-                    <tr>
-                      <th style={{ width: 140 }}>소속</th>
-                      <th style={{ width: 90 }}>이름</th>
-                      <th>이메일</th>
-                      <th style={{ width: 140 }}>권한 그룹</th>
-                      <th style={{ width: 150 }}>최근 접속</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredUsers.map((u) => (
-                      <tr key={u.email}>
-                        <td>{u.dept}</td>
-                        <td className="st-td-name">{u.name}</td>
-                        <td className="st-td-dim">{u.email}</td>
-                        <td><RoleChip role={u.role} /></td>
-                        <td className="st-td-dim">{u.last}</td>
-                      </tr>
-                    ))}
-                    {filteredUsers.length === 0 && (
-                      <tr><td colSpan={5} style={{ textAlign: 'center', color: 'var(--text-alternative)', padding: 24 }}>검색 결과가 없습니다.</td></tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </>
-          )}
-
-          {/* ---------- 탭 2: 메뉴 권한 관리 ---------- */}
-          {tab === 1 && (
             <>
               <p className="st-hint">왼쪽 목록에서 메뉴를 선택하면 오른쪽에서 해당 메뉴의 사용 권한 그룹을 지정할 수 있습니다.</p>
               <div className="st-perm">
@@ -309,7 +235,7 @@ export default function Settings() {
           )}
 
           {/* ---------- 탭 3: 분석 지표 가중치 설정 ---------- */}
-          {tab === 2 && (
+          {tab === 1 && (
             <>
               <p className="st-hint">
                 분석 모델별 종합점수 산출에 사용되는 지표와 가중치를 지역 여건에 맞게 조정할 수 있습니다. 변경 내역은 이력으로 기록되며 이전 설정으로 되돌릴 수 있습니다.

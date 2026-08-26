@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import Icon from '../components/Icon';
 import {
-  CATS, CAT_MAP, ITEMS, PROJECTS, EPSGS, PROJECT_LOC, structLngLat, footprintRing, COLLECTIONS, SEED_COMMENTS, itemCollections, MEMBERSHIP, originIdsOf, derivedIdsOf,
+  CATS, CAT_MAP, ITEMS, PROJECTS, EPSGS, PROJECT_LOC, structLngLat, footprintRing, COLLECTIONS, SEED_COMMENTS, itemCollections, originIdsOf, derivedIdsOf,
 } from '../data/explorerData';
 import { buildMainStyle, buildCompareStyle, addAssetLayers } from '../lib/mapStyles';
 import { add3DLayer, addRealPointCloudLayer, addRealMeshLayer } from '../lib/three3d';
@@ -118,7 +118,7 @@ function cmpPtsLabel(node) {
   return node.pc ? node.pc.pts : node.item.extra;
 }
 
-export default function Explorer({ onNavigate = () => {} }) {
+export default function Explorer({ onNavigate = () => {}, focus = null }) {
   const [state, setState] = useState(initialState);
   const stateRef = useRef(state);
   stateRef.current = state;
@@ -131,18 +131,6 @@ export default function Explorer({ onNavigate = () => {} }) {
   // seeded with the sample threads from explorerData.
   const [comments, setComments] = useState(() => ({ ...SEED_COMMENTS }));
   const [commentDraft, setCommentDraft] = useState('');
-  // 담긴 COLLECTION 섹션의 + (연결할 콜렉션 목록) 펼침 상태
-  const [collAddOpen, setCollAddOpen] = useState(false);
-
-  const linkCollTo = (id, cn) => {
-    MEMBERSHIP[id] = [...(MEMBERSHIP[id] || []), cn];
-    setCollAddOpen(false);
-    patch({});
-  };
-  const unlinkCollFrom = (id, cn) => {
-    MEMBERSHIP[id] = (MEMBERSHIP[id] || []).filter((n) => n !== cn);
-    patch({});
-  };
 
 
   const [panoViewer, setPanoViewer] = useState(null);
@@ -209,6 +197,8 @@ export default function Explorer({ onNavigate = () => {} }) {
   const prev3DRef = useRef(null);
   // Drawer to restore when a 3D render launched from the drawer is closed.
   const drawerReturnRef = useRef(null);
+  // 연관된 데이터에서 지금 미리보기 중인 아이템 (드로어는 그대로 둔다)
+  const previewIdRef = useRef(null);
   const cmpMapARef = useRef(null);
   const cmpMapBRef = useRef(null);
   const cmpLockRef = useRef(false);
@@ -378,8 +368,16 @@ export default function Explorer({ onNavigate = () => {} }) {
   // footprint threshold so the real coverage area is visible, keep the item
   // centered in the space left of the floating drawer, and for scan data
   // (mesh / point cloud) render the actual 3D on the map right away.
+  // 미리보기 중이던 연관 아이템의 강조와 카드를 걷어낸다.
+  const clearRelatedPreview = () => {
+    if (!previewIdRef.current) return;
+    previewIdRef.current = null;
+    if (detailPopupRef.current) { detailPopupRef.current.remove(); detailPopupRef.current = null; }
+    if (hoverPopupRef.current) { hoverPopupRef.current.remove(); hoverPopupRef.current = null; }
+  };
+
   const openDrawer = (it) => {
-    setCollAddOpen(false);
+    clearRelatedPreview();
     patch({ drawerId: it.id });
     const map = mapRef.current;
     if (!map || it.lat == null) return;
@@ -399,7 +397,7 @@ export default function Explorer({ onNavigate = () => {} }) {
   };
 
   const closeDrawer = () => {
-    setCollAddOpen(false);
+    clearRelatedPreview();
     drawerReturnRef.current = null;
     patch({ drawerId: null });
     const map = mapRef.current;
@@ -419,13 +417,15 @@ export default function Explorer({ onNavigate = () => {} }) {
     await render3DAt(lngLat, it.title, CAT_MAP[it.cat].color, 4600, 10.4);
   };
 
-  const openDetail = (it, anchoredToProject) => {
+  const openDetail = (it, anchoredToProject, { keepDrawer } = {}) => {
     const map = mapRef.current;
     if (!it || !map) return;
     popupReopenRef.current = null;
     // A preview popup and a (possibly different item's) detail drawer open at
     // the same time reads confusingly — close the drawer when a popup opens.
-    if (stateRef.current.drawerId) closeDrawer();
+    // 드로어 안 "연관된 데이터"에서 띄우는 미리보기는 드로어를 유지한다 —
+    // 보고 있던 자료의 맥락 위에 곁들여 보는 것이라 서로 헷갈리지 않는다.
+    if (!keepDrawer && stateRef.current.drawerId) closeDrawer();
     if (hoverPopupRef.current) { hoverPopupRef.current.remove(); hoverPopupRef.current = null; }
     if (detailPopupRef.current) detailPopupRef.current.remove();
     if (stateRef.current.activeId) setFS(stateRef.current.activeId, 'active', false);
@@ -536,6 +536,24 @@ export default function Explorer({ onNavigate = () => {} }) {
     patch({ hoveredId: null, docHover: null });
     if (hoverPopupRef.current) { hoverPopupRef.current.remove(); hoverPopupRef.current = null; }
   };
+  // 드로어의 연관된 데이터 — 누르면 드로어를 그대로 둔 채 지도만 그 아이템으로
+  // 옮기고 미리보기 카드를 띄운다. 상세로 넘어가는 건 행 오른쪽 › 버튼이 맡는다.
+  const previewRelated = (it) => {
+    const map = mapRef.current;
+    if (!map) return;
+    previewIdRef.current = it.id;
+    if (it.lat != null) {
+      map.flyTo({ center: markerLngLat(it), zoom: Math.max(map.getZoom(), 17), duration: 650 });
+      openDetail(it, false, { keepDrawer: true });
+    } else if (it.projectLat != null) {
+      map.flyTo({ center: [it.projectLng, it.projectLat], zoom: Math.max(map.getZoom(), 16.4), duration: 650 });
+      openDetail(it, true, { keepDrawer: true });
+    } else {
+      previewIdRef.current = null;
+      showToast('위치 정보가 없는 자료입니다');
+    }
+  };
+
   const onItemClick = (it) => {
     const map = mapRef.current;
     if (it.lat != null) {
@@ -770,6 +788,23 @@ export default function Explorer({ onNavigate = () => {} }) {
 
   useEffect(() => () => { clearTimeout(toastTimerRef.current); destroyCompareMaps(); }, []);
 
+  // 관리 페이지에서 "지도에서 자세히 보기"로 건너온 요청 — 해당 아이템의 드로어를
+  // 열고 지도를 맞춘 뒤, 3D 실데이터까지 요청됐으면 바로 렌더링한다.
+  const focusAtRef = useRef(0);
+  useEffect(() => {
+    if (!focus || !focus.focusItem || focus.at === focusAtRef.current) return;
+    focusAtRef.current = focus.at;
+    const it = itemById(focus.focusItem);
+    if (!it) return;
+    openDrawer(it);
+    if (focus.render3D && (it.meshUrl || it.pointCloudUrl)) {
+      closeDrawer();
+      drawerReturnRef.current = it.id;
+      show3DOnMap(it);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focus]);
+
   // The management page can rename or delete the collection currently used as
   // the filter — fall back to 전체 프로젝트 when the selection no longer exists.
   useEffect(() => {
@@ -854,6 +889,12 @@ export default function Explorer({ onNavigate = () => {} }) {
         <nav style={{ display: 'flex', alignItems: 'center', gap: 4, height: '100%', flex: 'none' }}>
           <div style={{ display: 'flex', alignItems: 'center', padding: '8px 16px', borderRadius: 8, fontSize: 14, fontWeight: 600, color: 'var(--ant-text-heading)', background: '#ECEEFC' }}>데이터 탐색</div>
           <div onClick={() => onNavigate('manage')} style={{ display: 'flex', alignItems: 'center', padding: '8px 16px', borderRadius: 8, fontSize: 14, fontWeight: 600, color: 'var(--ant-text-secondary)', cursor: 'pointer' }}>데이터 관리</div>
+          {!!focus && (
+            <button onClick={() => onNavigate('manage')} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, height: 30, padding: '0 12px', marginLeft: 4, borderRadius: 15, border: '1px solid var(--ant-primary)', background: 'rgba(22,119,255,0.07)', color: 'var(--ant-primary)', fontSize: 12.5, fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              <span style={{ display: 'flex', transform: 'rotate(90deg)' }}><Icon name="IconDownOutlined" size={10} /></span>
+              데이터 관리로 돌아가기
+            </button>
+          )}
         </nav>
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 16 }}>
           <button
@@ -899,7 +940,7 @@ export default function Explorer({ onNavigate = () => {} }) {
               </div>
               {s.advOpen && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ flex: 'none', fontSize: 11, fontWeight: 700, color: 'var(--ant-text-secondary)' }}>Collection</span>
+                  <span style={{ flex: 'none', fontSize: 11, fontWeight: 700, color: 'var(--ant-text-secondary)' }}>컬렉션</span>
                   <div style={{ position: 'relative', flex: 1, minWidth: 0 }}>
                     <select value={s.project} onChange={(e) => selectProject(e.target.value)} style={{ width: '100%', height: 28, border: '1px solid var(--ant-border)', borderRadius: 20, padding: '0 32px 0 12px', fontSize: 12, fontWeight: 500, fontFamily: 'inherit', color: 'var(--ant-text)', background: 'var(--ant-bg)', appearance: 'none', cursor: 'pointer', outline: 'none' }}>
                       {PROJECTS.map((p) => <option key={p} value={p}>{p === '전체 프로젝트' ? '전체' : p}</option>)}
@@ -1084,7 +1125,7 @@ export default function Explorer({ onNavigate = () => {} }) {
                           <span style={{ display: 'flex', flex: 'none' }} dangerouslySetInnerHTML={{ __html: DL_SVG }} />
                           다운로드
                         </button>
-                        <button onClick={() => onNavigate('manage', dit.project)} style={{ flex: 1, minWidth: 0, display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, height: 64, padding: '0 8px', borderRadius: 12, border: 'none', background: '#F3F4FD', color: 'var(--ant-primary)', fontSize: 11.5, fontWeight: 400, fontFamily: 'inherit', cursor: 'pointer', whiteSpace: 'nowrap', transition: 'background .15s' }} onMouseEnter={(e) => { e.currentTarget.style.background = '#E2E6FA'; }} onMouseLeave={(e) => { e.currentTarget.style.background = '#F3F4FD'; }}>
+                        <button onClick={() => onNavigate('manage', { focusItem: dit.id })} style={{ flex: 1, minWidth: 0, display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, height: 64, padding: '0 8px', borderRadius: 12, border: 'none', background: '#F3F4FD', color: 'var(--ant-primary)', fontSize: 11.5, fontWeight: 400, fontFamily: 'inherit', cursor: 'pointer', whiteSpace: 'nowrap', transition: 'background .15s' }} onMouseEnter={(e) => { e.currentTarget.style.background = '#E2E6FA'; }} onMouseLeave={(e) => { e.currentTarget.style.background = '#F3F4FD'; }}>
                           <span style={{ display: 'flex', transform: 'rotate(-90deg)' }}><Icon name="IconDownOutlined" size={13} /></span>
                           데이터관리
                         </button>
@@ -1107,37 +1148,17 @@ export default function Explorer({ onNavigate = () => {} }) {
                         </table>
                       </div>
 
-                      <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--ant-text-secondary)', margin: '20px 0 8px' }}>담긴 COLLECTION</div>
+                      <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--ant-text-secondary)', margin: '20px 0 8px' }}>담긴 컬렉션</div>
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
                         {itemCollections(dit).map((cn) => {
                           const on = s.project === cn;
                           return (
-                            <span key={cn} style={{ display: 'inline-flex', alignItems: 'stretch', height: 28, borderRadius: 14, overflow: 'hidden', border: `1px solid ${on ? 'var(--ant-primary)' : 'var(--ant-border)'}`, background: on ? 'var(--ant-primary)' : 'var(--ant-bg)' }}>
-                              <span onClick={() => selectProject(on ? '전체 프로젝트' : cn)} title={COLLECTIONS[cn]?.desc || cn}
-                                style={{ display: 'flex', alignItems: 'center', padding: '0 4px 0 12px', fontSize: 12, fontWeight: 600, color: on ? '#fff' : 'var(--ant-text)', cursor: 'pointer' }}>
-                                {cn}
-                              </span>
-                              <span onClick={() => unlinkCollFrom(dit.id, cn)} title="콜렉션에서 제외"
-                                style={{ display: 'flex', alignItems: 'center', padding: '0 8px 0 4px', color: on ? 'rgba(255,255,255,0.75)' : 'var(--ant-text-tertiary)', cursor: 'pointer' }}>
-                                <Icon name="IconCloseOutlined" size={10} />
-                              </span>
-                            </span>
+                            <button key={cn} onClick={() => selectProject(on ? '전체 프로젝트' : cn)} title={COLLECTIONS[cn]?.desc || cn}
+                              style={{ height: 28, padding: '0 12px', borderRadius: 14, border: `1px solid ${on ? 'var(--ant-primary)' : 'var(--ant-border)'}`, background: on ? 'var(--ant-primary)' : 'var(--ant-bg)', color: on ? '#fff' : 'var(--ant-text)', fontSize: 12, fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer' }}>
+                              {cn}
+                            </button>
                           );
                         })}
-                        {(() => {
-                          const avail = PROJECTS.filter((p) => p !== '전체 프로젝트' && !itemCollections(dit).includes(p));
-                          if (avail.length === 0) return null;
-                          if (!collAddOpen) {
-                            return (
-                              <button onClick={() => setCollAddOpen(true)} title="콜렉션에 추가" style={{ width: 28, height: 28, borderRadius: 14, border: '1px dashed var(--ant-border)', background: 'var(--ant-bg)', color: 'var(--ant-text-secondary)', fontSize: 14, fontFamily: 'inherit', cursor: 'pointer', lineHeight: 1 }}>+</button>
-                            );
-                          }
-                          return avail.map((cn) => (
-                            <button key={cn} onClick={() => linkCollTo(dit.id, cn)} style={{ height: 28, padding: '0 12px', borderRadius: 14, border: '1px dashed var(--ant-primary)', background: 'rgba(22,119,255,0.04)', color: 'var(--ant-primary)', fontSize: 12, fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer' }}>
-                              + {cn}
-                            </button>
-                          ));
-                        })()}
                       </div>
 
                       {related.length > 0 && (
@@ -1148,9 +1169,9 @@ export default function Explorer({ onNavigate = () => {} }) {
                               const rc = CAT_MAP[r.cat];
                               const kind = relKind(r.id);
                               return (
-                                <div key={r.id} onClick={() => openDrawer(r)} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 8px', borderRadius: 8, cursor: 'pointer' }}
+                                <div key={r.id} onClick={() => previewRelated(r)} title="지도에서 미리보기" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 8px', borderRadius: 8, cursor: 'pointer', background: previewIdRef.current === r.id ? 'var(--ant-fill-quaternary)' : 'transparent' }}
                                   onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--ant-fill-quaternary)'; }}
-                                  onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}>
+                                  onMouseLeave={(e) => { e.currentTarget.style.background = previewIdRef.current === r.id ? 'var(--ant-fill-quaternary)' : 'transparent'; }}>
                                   <div style={{ width: 24, height: 24, flex: 'none', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', background: rc.color }}>
                                     <Icon name={rc.icon} size={12} />
                                   </div>

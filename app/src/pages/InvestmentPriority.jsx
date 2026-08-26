@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
 import PageCrumb from '../components/PageCrumb';
+import MapTypeToggle from '../components/MapTypeToggle';
 import { exportSectionsPdf, exportSectionsDocx, hBarChartHtml } from '../utils/pageExport';
 
 const AI_ICON = (
@@ -246,6 +247,7 @@ export default function InvestmentPriority() {
 
             <div className="map-body">
               <div ref={mapRef} style={{ position: 'absolute', inset: 0, zIndex: 0 }} />
+            <MapTypeToggle getMap={() => mapInst.current} />
 
               <div className="map-legend">
                 <div className="map-legend__title">투자 우선순위</div>

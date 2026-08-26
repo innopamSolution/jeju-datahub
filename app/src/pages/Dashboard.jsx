@@ -74,6 +74,13 @@ const REGIONS = [
   },
 ];
 
+/* 최근 질문이 없을 때 보여줄 기본 추천 질문 */
+const DEFAULT_AI_QUESTIONS = [
+  '불법주정차 단속 관련 조례 검색해줘',
+  '지난 달 민원 요약해줘',
+  '지난 주 주차 민원이 가장 많이 발생된 지역',
+];
+
 const SERIES_COLOR_VAR = {
   illegal: '--series-illegal',
   double: '--series-double',
@@ -295,6 +302,12 @@ export default function Dashboard() {
     const v = aiQuery.trim();
     if (v) navigate('/ai-assistant', { state: { submit: v } });
   };
+  /* AI 어시스턴트에서 제출한 최근 질문 (없으면 기본 추천 질문) */
+  const recentQuestions = (() => {
+    try { return JSON.parse(localStorage.getItem('aiRecentQuestions') || '[]'); }
+    catch { return []; }
+  })();
+  const aiSuggests = recentQuestions.length > 0 ? recentQuestions.slice(0, 3) : DEFAULT_AI_QUESTIONS;
 
   return (
     <>
@@ -347,10 +360,6 @@ export default function Dashboard() {
         <span className="filterbar__label">행정구역</span>
         <DsSelect aria-label="행정구역">
           <option>전체</option><option>제주시</option><option>서귀포시</option>
-        </DsSelect>
-        <span className="filterbar__label">민원유형</span>
-        <DsSelect aria-label="민원유형">
-          <option>전체</option><option>인도·횡단보도 점유</option><option>안전시설 인근 위반</option><option>장애인전용구역 위반</option><option>기타 불법주정차</option><option>친환경차충전구역 위반</option>
         </DsSelect>
         <span className="filterbar__right">현재: <strong>{customRange ? `${customRange.from} ~ ${customRange.to}` : period}</strong></span>
         <div className="sim-export" ref={exportRef}>
@@ -526,9 +535,9 @@ export default function Dashboard() {
               )}
             </div>
             <div className="ai-suggest">
-              <button type="button" onClick={() => goToAiInput('불법주차 관련 조례 검색')}><Icon className="chev" name="chevron-right" size={16} />불법주차 관련 조례 검색</button>
-              <button type="button" onClick={() => goToAiInput('이번 달 민원 현황 요약')}><Icon className="chev" name="chevron-right" size={16} />이번 달 민원 현황 요약</button>
-              <button type="button" onClick={() => goToAiInput('공영주차장 운영 관련 지침')}><Icon className="chev" name="chevron-right" size={16} />공영주차장 운영 관련 지침</button>
+              {aiSuggests.map((q) => (
+                <button key={q} type="button" onClick={() => goToAiInput(q)}><Icon className="chev" name="chevron-right" size={16} />{q}</button>
+              ))}
             </div>
           </div>
         </section>

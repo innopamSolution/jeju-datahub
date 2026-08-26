@@ -9,14 +9,14 @@ export const REGIONS = [
 ];
 
 export const HOTSPOTS = [
-  { rank: 1, name: '연동 대로변',      meta: '연동동 · 반경 200m',  level: '심각' },
+  { rank: 1, name: '연동 대로변',      meta: '연동 · 반경 200m',  level: '심각' },
   { rank: 2, name: '노형사거리 인근',   meta: '노형동 · 반경 150m',  level: '경고' },
   { rank: 3, name: '이도2동 상업지구',  meta: '이도동 · 반경 180m',  level: '경고' },
   { rank: 4, name: '아라동 주변',       meta: '아라동 · 반경 120m',  level: '주의' },
   { rank: 5, name: '삼도1동 골목',      meta: '삼도동 · 반경 100m',  level: '주의' },
 ];
 
-export const RISK_SUMMARY = { 심각: 1, 경고: 2, 주의: 2, 양호: 0 };
+export const RISK_SUMMARY = { 심각: 1, 경고: 2, 주의: 2 };
 
 export const TOTAL_COMPLAINTS = 247;
 

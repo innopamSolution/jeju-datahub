@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { buildReportContent } from '../data/reportContent';
 import { exportReportPdf, exportReportDocx } from '../utils/reportExport';
 
-const LEVEL_COLOR = { 심각: '#e5322a', 경고: '#d4780a', 주의: '#0066ff', 양호: '#0da34e' };
+const LEVEL_COLOR = { 심각: '#e5322a', 경고: '#d4780a', 주의: '#0066ff' };
 const META_LABEL = { cycle: '배포 주기', period: '분석 기간', date: '생성일', author: '생성자', status: '상태' };
 const STATUS_LABEL = { done: '완료', wait: '대기' };
 

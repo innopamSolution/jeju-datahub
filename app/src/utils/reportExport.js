@@ -17,7 +17,7 @@ function saveBlob(blob, filename) {
   URL.revokeObjectURL(url);
 }
 
-const LEVEL_COLOR = { 심각: '#e5322a', 경고: '#d4780a', 주의: '#0066ff', 양호: '#0da34e' };
+const LEVEL_COLOR = { 심각: '#e5322a', 경고: '#d4780a', 주의: '#0066ff' };
 
 function reportHtml(report, content) {
   const { total, regions, hotspots, risk, overallAnalysis } = content;

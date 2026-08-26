@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
 import PageCrumb from '../components/PageCrumb';
+import MapTypeToggle from '../components/MapTypeToggle';
 import DateRangeField from '../components/DateRangeField';
 import RegionSelect from '../components/RegionSelect';
 import { exportLifestylePdf, exportLifestyleDocx } from '../utils/lifestyleExport';
@@ -303,6 +304,7 @@ export default function LifestyleSimulation() {
       <div className="content content--analysis">
         <section className="sim-stage">
           <div ref={mapRef} style={{ position: 'absolute', inset: 0, zIndex: 0 }} />
+            <MapTypeToggle getMap={() => mapInst.current} />
 
           {/* 왼쪽 설정 패널 */}
           <div className="card sim-panel sim-panel--left">
