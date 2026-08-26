@@ -290,6 +290,11 @@ export default function Dashboard() {
   };
 
   const goToAiInput = (prefill) => navigate('/ai-assistant', { state: prefill ? { prefill } : { focus: true } });
+  const [aiQuery, setAiQuery] = useState('');
+  const submitAiQuery = () => {
+    const v = aiQuery.trim();
+    if (v) navigate('/ai-assistant', { state: { submit: v } });
+  };
 
   return (
     <>
@@ -506,7 +511,20 @@ export default function Dashboard() {
               <h2 className="card-head__title"><span className="panel__icon panel__icon--violet"><Icon name="sparkle" size={20} /></span>AI 어시스턴트</h2>
               <Link to="/ai-assistant" state={{ focus: true }} className="card-link">대화 열기 <Icon name="arrow-right" size={16} /></Link>
             </div>
-            <div className="ai-input" onClick={() => goToAiInput()} style={{ cursor: 'pointer' }}>오늘 민원 현황을 요약해줘...</div>
+            <div className="ai-input ai-input--live">
+              <input
+                type="text"
+                placeholder="이번달 민원 현황을 요약해줘..."
+                value={aiQuery}
+                onChange={(e) => setAiQuery(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); submitAiQuery(); } }}
+              />
+              {aiQuery.trim() !== '' && (
+                <button className="ai-input__send" type="button" aria-label="질문 보내기" onClick={submitAiQuery}>
+                  <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M3.6 20.3 21 12 3.6 3.7 3.6 10.2 14.5 12 3.6 13.8 3.6 20.3Z" fill="currentColor" /></svg>
+                </button>
+              )}
+            </div>
             <div className="ai-suggest">
               <button type="button" onClick={() => goToAiInput('불법주차 관련 조례 검색')}><Icon className="chev" name="chevron-right" size={16} />불법주차 관련 조례 검색</button>
               <button type="button" onClick={() => goToAiInput('이번 달 민원 현황 요약')}><Icon className="chev" name="chevron-right" size={16} />이번 달 민원 현황 요약</button>
