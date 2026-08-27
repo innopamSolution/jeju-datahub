@@ -54,8 +54,8 @@ export default function AlertManagement() {
   const [receivers, setReceivers] = useState(INITIAL_RECEIVERS);
   const [addOpen, setAddOpen] = useState(false);
   const [critOpen, setCritOpen] = useState(false);
-  const [crit, setCrit] = useState({ severe: 30, warn: 20, caution: 10 });
-  const [critDraft, setCritDraft] = useState({ severe: 30, warn: 20, caution: 10 });
+  const [crit, setCrit] = useState({ severe: 30, warn: 20, caution: 10, minCount: 10 });
+  const [critDraft, setCritDraft] = useState({ severe: 30, warn: 20, caution: 10, minCount: 10 });
   const [addCity, setAddCity] = useState('전체');
   const [addDong, setAddDong] = useState('전체');
   const [recvPage, setRecvPage] = useState(1);
@@ -163,6 +163,10 @@ export default function AlertManagement() {
                   <span className="crit-row__view">{crit[c.key]}% 이상</span>
                 </div>
               ))}
+              <div className="crit-row">
+                <span className="badge badge--neutral crit-row__tag">최소 건수</span>
+                <span className="crit-row__view">{crit.minCount}건 이상</span>
+              </div>
             </div>
           </div>
         </section>
@@ -263,7 +267,14 @@ export default function AlertManagement() {
                     <span className="crit-row__unit">% 이상</span>
                   </div>
                 ))}
+                <div className="crit-row">
+                  <span className="badge badge--neutral crit-row__tag">최소 건수</span>
+                  <input type="number" className="crit-inp" value={critDraft.minCount}
+                    onChange={(e) => setCritDraft((d) => ({ ...d, minCount: e.target.value }))} />
+                  <span className="crit-row__unit">건 이상</span>
+                </div>
               </div>
+              <p className="crit-card__sub" style={{ marginTop: 16, marginBottom: 0 }}>민원 건수가 최소 건수 미만이면 증가율 기준을 충족해도 알림이 발생하지 않습니다.</p>
             </div>
             <div className="modal__foot modal__foot--split">
               <button className="btn" type="button" style={{ height: 44 }} onClick={() => setCritOpen(false)}>취소</button>
