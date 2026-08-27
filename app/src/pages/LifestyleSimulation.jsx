@@ -160,11 +160,12 @@ const MODE_CONFIG = {
   },
 };
 
+/* 목록에는 심각·경고 등급(상위 25%)만 노출 */
 function buildRanking(mode) {
   const cfg = MODE_CONFIG[mode];
   return LOCATIONS.map((name, i) => ({
     rank: i + 1, name, dot: LOC_DOTS[i], cnt: cfg.ranking[i].cnt, sub: cfg.ranking[i].sub,
-  }));
+  })).filter((r) => r.dot === 'var(--red-50)' || r.dot === 'var(--orange-50)');
 }
 
 function resolveColor(cssVar) {
