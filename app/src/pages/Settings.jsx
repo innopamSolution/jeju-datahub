@@ -93,14 +93,6 @@ const WEIGHT_MODELS = [
       { key: 'accident',  label: '사고이력',   sub: '재난상황시스템 화재 · 출동',    value: 20 },
     ],
   },
-  {
-    key: 'lifestyle', label: '생활권 시뮬레이션',
-    metrics: [
-      { key: 'complaint',  label: '민원 건수', sub: '생활권 단위 민원 집계',  value: 40 },
-      { key: 'supply',     label: '주차 수급', sub: '수요-공급 갭 분석',      value: 40 },
-      { key: 'congestion', label: '혼잡도',    sub: '도로 혼잡 · 점유율',     value: 20 },
-    ],
-  },
 ];
 
 const DEFAULT_WEIGHTS = Object.fromEntries(WEIGHT_MODELS.map((m) => [
