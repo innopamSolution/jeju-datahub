@@ -18,12 +18,12 @@ const AI_ICON = (
 );
 
 const SCENARIOS = [
-  { name: '주차장 확충 · 연동 150면', reduction: '-23%', improvement: '+18%', cost: '고', costLevel: 'high', recommend: true },
-  { name: '이면도로 정비 · 일방통행', reduction: '-15%', improvement: '+12%', cost: '중', costLevel: 'mid', recommend: false },
-  { name: '요금제 10%', reduction: '-12%', improvement: '+9%', cost: '저', costLevel: 'low', recommend: false },
-  { name: '주차장 확충 · 노형 80면', reduction: '-18%', improvement: '+14%', cost: '중', costLevel: 'mid', recommend: false },
-  { name: '거주자 우선주차 · 연동', reduction: '-10%', improvement: '+7%', cost: '저', costLevel: 'low', recommend: false },
-  { name: '요금제 20%', reduction: '-16%', improvement: '+11%', cost: '저', costLevel: 'low', recommend: false },
+  { name: '주차장 확충 · 연동 150면', at: '2026.11.28 14:02', reduction: '-23%', improvement: '+18%', cost: '고', costLevel: 'high', recommend: true },
+  { name: '이면도로 정비 · 일방통행', at: '2026.11.27 16:40', reduction: '-15%', improvement: '+12%', cost: '중', costLevel: 'mid', recommend: false },
+  { name: '요금제 10%', at: '2026.11.27 10:15', reduction: '-12%', improvement: '+9%', cost: '저', costLevel: 'low', recommend: false },
+  { name: '주차장 확충 · 노형 80면', at: '2026.11.25 13:22', reduction: '-18%', improvement: '+14%', cost: '중', costLevel: 'mid', recommend: false },
+  { name: '거주자 우선주차 · 연동', at: '2026.11.24 09:48', reduction: '-10%', improvement: '+7%', cost: '저', costLevel: 'low', recommend: false },
+  { name: '요금제 20%', at: '2026.11.21 15:31', reduction: '-16%', improvement: '+11%', cost: '저', costLevel: 'low', recommend: false },
 ];
 
 const COST_BADGE = {
@@ -371,7 +371,10 @@ export default function PolicySimulation() {
                         onChange={() => toggleScenario(i)}
                         style={{ width: 16, height: 16, accentColor: 'var(--cool-neutral-17)', cursor: 'pointer', verticalAlign: 'middle' }} />
                     </TD>
-                    <TD><span style={{ fontWeight: 600, color: 'var(--text-strong)' }}>{s.name}</span></TD>
+                    <TD>
+                      <span style={{ fontWeight: 600, color: 'var(--text-strong)' }}>{s.name}</span>
+                      <div style={{ fontSize: 'var(--caption1-size)', color: 'var(--text-alternative)', marginTop: 4 }}>{s.at}</div>
+                    </TD>
                     <TD center><span style={{ fontWeight: 700, color: 'var(--primary)' }}>{s.reduction}</span></TD>
                     <TD center><span style={{ fontWeight: 700, color: '#16a34a' }}>{s.improvement}</span></TD>
                     <TD center>
