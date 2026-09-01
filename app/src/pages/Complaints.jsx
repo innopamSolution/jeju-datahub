@@ -230,21 +230,76 @@ function GisMap({ layerState, baseMap }) {
         .addTo(parkingGroup);
     });
 
-    /* ── 단속 집중 레이어 ── */
-    const enforceLayer = L.layerGroup();
-    [regions[0], regions[1], regions[2]].forEach((r) => {
-      L.circle(r.c, { radius: 520, color: COLORS.severe, weight: 1.5, dashArray: '5,5', fillColor: COLORS.severe, fillOpacity: 0.08 })
-        .bindPopup(`<b>${r.name} 단속 집중구역</b>`)
-        .addTo(enforceLayer);
-    });
+    /* ── 읍면동 단위 레이어 공통 빌더 (민원 다발 레이어와 동일한 육각형 + 라벨 표현) ── */
+    function buildRegionLayer(list, valueLabel, popupFn) {
+      const boundary = L.layerGroup();
+      const markers = L.layerGroup();
+      list.forEach((r) => {
+        L.polygon(hexPoly(r.c, 0.013, 0.010), {
+          color: r.color, weight: 2, opacity: 0.7,
+          fillColor: r.color, fillOpacity: 0.12,
+        }).bindPopup(popupFn(r)).addTo(boundary);
 
-    /* ── 수요 부족 레이어 ── */
-    const demandLayer = L.layerGroup();
-    [regions[3], regions[4]].forEach((r) => {
-      L.circle(r.c, { radius: 480, color: COLORS.caution, weight: 1.5, dashArray: '5,5', fillColor: COLORS.caution, fillOpacity: 0.08 })
-        .bindPopup(`<b>${r.name} 수요 부족구역</b>`)
-        .addTo(demandLayer);
-    });
+        const icon = L.divIcon({
+          className: '',
+          iconSize: [18, 18], iconAnchor: [9, 9],
+          html: `<div style="position:relative;display:inline-flex;align-items:center">
+            <div style="width:18px;height:18px;border-radius:50%;background:${r.color};border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.3);flex-shrink:0"></div>
+            <div style="position:absolute;left:24px;top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;background:#fff;border-radius:999px;box-shadow:0 1px 4px rgba(23,23,25,0.1);font-size:13px;font-weight:700;color:#171717;white-space:nowrap">
+              ${r.name}<span style="color:#70737c;font-weight:600">${valueLabel(r)}</span>
+            </div>
+          </div>`,
+        });
+        L.marker(r.c, { icon }).bindPopup(popupFn(r)).addTo(markers);
+      });
+      return [boundary, markers];
+    }
+
+    function levelBadgeHtml(level) {
+      const badgeMap = { severe: 'badge--severe', '경고': 'badge--warn', '주의': 'badge--caution' };
+      const lvLabel = { severe: '심각', '경고': '경고', '주의': '주의' }[level] || level;
+      return `<span class="badge ${badgeMap[level] || 'badge--done'}" style="margin-left:auto">${lvLabel}</span>`;
+    }
+    const popRow = (label, value, top) =>
+      `<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:14px;color:#70737c;${top ? 'border-top:1px solid rgba(112,115,124,0.08)' : ''}">${label}<b style="color:#171717">${value}</b></div>`;
+
+    /* ── 단속 집중 레이어 (읍면동 기준) ── */
+    const enforceRegions = [
+      { name: '연동',   c: regions[0].c, enforce: 32, complaints: 52, level: 'severe', color: COLORS.severe },
+      { name: '노형동', c: regions[1].c, enforce: 30, complaints: 38, level: '경고',   color: COLORS.warn },
+      { name: '이도동', c: regions[2].c, enforce: 28, complaints: 29, level: '경고',   color: COLORS.warn },
+    ];
+    const enforceLayers = buildRegionLayer(
+      enforceRegions,
+      (r) => `${r.enforce}건`,
+      (r) => `<div style="min-width:168px;font-family:system-ui">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="width:10px;height:10px;border-radius:50%;background:${r.color};flex-shrink:0;display:inline-block"></span>
+          <b style="font-size:15px;color:#171717">${r.name}</b>${levelBadgeHtml(r.level)}
+        </div>
+        ${popRow('단속 건수', `${r.enforce}건`)}
+        ${popRow('민원 건수', `${r.complaints}건`, true)}
+      </div>`,
+    );
+
+    /* ── 수요 부족 레이어 (읍면동 기준) ── */
+    const demandRegions = [
+      { name: '아라동', c: regions[3].c, rate: 72, demand: 58, supply: 16, level: 'severe', color: COLORS.severe },
+      { name: '삼도동', c: regions[4].c, rate: 45, demand: 31, supply: 17, level: '경고',   color: COLORS.warn },
+    ];
+    const demandLayers = buildRegionLayer(
+      demandRegions,
+      (r) => `부족률 ${r.rate}%`,
+      (r) => `<div style="min-width:168px;font-family:system-ui">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="width:10px;height:10px;border-radius:50%;background:${r.color};flex-shrink:0;display:inline-block"></span>
+          <b style="font-size:15px;color:#171717">${r.name}</b>${levelBadgeHtml(r.level)}
+        </div>
+        ${popRow('부족률', `${r.rate}%`)}
+        ${popRow('주차 수요', `${r.demand}대`, true)}
+        ${popRow('공급 면수', `${r.supply}면`, true)}
+      </div>`,
+    );
 
     /* ── 행정동 경계 레이어 (신규) ── */
     const dongBoundaryLayer = L.layerGroup();
@@ -258,8 +313,8 @@ function GisMap({ layerState, baseMap }) {
     layerGroupsRef.current = {
       hotspot: [boundaryLayer, regionGroup],
       parking: [parkingGroup],
-      enforce: [enforceLayer],
-      demand:  [demandLayer],
+      enforce: enforceLayers,
+      demand:  demandLayers,
       dongBoundary: [dongBoundaryLayer],
     };
     mapRef.current = map;
