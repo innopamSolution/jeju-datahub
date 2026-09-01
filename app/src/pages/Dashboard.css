@@ -127,7 +127,7 @@
 .list__row--link:hover { background: var(--fill-alternative); }
 .list__row--link:hover .name { color: var(--text-strong); }
 .list__row .name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.list__row .time { font-size: var(--caption1-size); color: var(--text-assistive); white-space: nowrap; }
+.list__row .time { font-size: var(--caption1-size); color: var(--text-alternative); white-space: nowrap; }
 
 /* AI assistant card */
 .ai-input {
