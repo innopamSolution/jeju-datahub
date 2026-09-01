@@ -228,8 +228,7 @@ export default function ZoneRecommendation() {
           {showResult && (
             <div className="sim-result">
               <div className="sim-result__top">
-                <button className="sim-result__x" aria-label="뒤로가기"><Icon name="chevron-left" size={22} /></button>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 'auto' }}>
                   <div className="sim-export" ref={exportRef}>
                     <button className="btn" type="button" style={{ height: 36, padding: '0 var(--space-12)', fontSize: 'var(--label2-size)' }}
                       aria-haspopup="menu" aria-expanded={exportOpen}
