@@ -161,12 +161,17 @@ export default function PolicySimulation() {
   const [feeRate, setFeeRate] = useState('1');
   const [exportOpen, setExportOpen] = useState(false);
   const exportRef = useRef(null);
-  /* 시나리오 비교 — 내보낼 시나리오 선택 (기본 전체 선택) */
+  /* 시나리오 비교 — 행 삭제 가능, 내보낼 시나리오 선택(기본 전체 선택). 선택은 인덱스 대신 id로 추적 */
+  const [scenarios, setScenarios] = useState(() => SCENARIOS.map((sc, i) => ({ ...sc, id: i })));
   const [selectedScenarios, setSelectedScenarios] = useState(() => SCENARIOS.map((_, i) => i));
-  const allSelected = selectedScenarios.length === SCENARIOS.length;
-  const toggleScenario = (i) => setSelectedScenarios((sel) =>
-    sel.includes(i) ? sel.filter((x) => x !== i) : [...sel, i].sort((a, b) => a - b));
-  const toggleAllScenarios = () => setSelectedScenarios(allSelected ? [] : SCENARIOS.map((_, i) => i));
+  const allSelected = scenarios.length > 0 && selectedScenarios.length === scenarios.length;
+  const toggleScenario = (id) => setSelectedScenarios((sel) =>
+    sel.includes(id) ? sel.filter((x) => x !== id) : [...sel, id]);
+  const toggleAllScenarios = () => setSelectedScenarios(allSelected ? [] : scenarios.map((sc) => sc.id));
+  const removeScenario = (id) => {
+    setScenarios((rows) => rows.filter((sc) => sc.id !== id));
+    setSelectedScenarios((sel) => sel.filter((x) => x !== id));
+  };
 
   useEffect(() => {
     if (!exportOpen) return;
@@ -208,8 +213,8 @@ export default function PolicySimulation() {
           type: 'table',
           title: '시나리오 비교',
           columns: ['순번', '시나리오', '민원 감소', '혼잡 개선', '비용 수준', '추천'],
-          rows: SCENARIOS
-            .filter((_, i) => selectedScenarios.includes(i))
+          rows: scenarios
+            .filter((sc) => selectedScenarios.includes(sc.id))
             .map((sc, i) => [i + 1, sc.name, sc.reduction, sc.improvement, sc.cost, sc.recommend ? '추천' : '—']),
         },
       ],
@@ -361,14 +366,15 @@ export default function PolicySimulation() {
                   <TH center>혼잡 개선</TH>
                   <TH center>비용 수준</TH>
                   <TH center>추천</TH>
+                  <TH center>삭제</TH>
                 </tr>
               </thead>
               <tbody>
-                {SCENARIOS.map((s, i) => (
-                  <tr key={i}>
+                {scenarios.map((s) => (
+                  <tr key={s.id}>
                     <TD center>
-                      <input type="checkbox" aria-label={`${s.name} 선택`} checked={selectedScenarios.includes(i)}
-                        onChange={() => toggleScenario(i)}
+                      <input type="checkbox" aria-label={`${s.name} 선택`} checked={selectedScenarios.includes(s.id)}
+                        onChange={() => toggleScenario(s.id)}
                         style={{ width: 16, height: 16, accentColor: 'var(--cool-neutral-17)', cursor: 'pointer', verticalAlign: 'middle' }} />
                     </TD>
                     <TD>
@@ -383,8 +389,14 @@ export default function PolicySimulation() {
                     <TD center>
                       {s.recommend && <span className="badge" style={{ background: 'var(--blue-95)', color: 'var(--primary)', fontWeight: 700 }}>추천</span>}
                     </TD>
+                    <TD center>
+                      <button type="button" className="mt-act mt-act--del" onClick={() => removeScenario(s.id)}>삭제</button>
+                    </TD>
                   </tr>
                 ))}
+                {scenarios.length === 0 && (
+                  <tr><td colSpan={7} style={{ textAlign: 'center', color: 'var(--text-alternative)', padding: 24, fontSize: 14 }}>비교할 시나리오가 없습니다. 시뮬레이션을 실행해 시나리오를 추가하세요.</td></tr>
+                )}
               </tbody>
             </table>
           </div>
