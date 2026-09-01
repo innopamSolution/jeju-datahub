@@ -1041,7 +1041,8 @@ input[type='number']:focus-visible {
 /* 오른쪽 결과 패널 */
 .sim-result {
   position: absolute; z-index: 1000;
-  top: var(--space-24); right: var(--space-24); bottom: var(--space-24);
+  top: var(--space-24); right: var(--space-24);
+  max-height: calc(100% - var(--space-48));
   width: 360px;
   background: var(--card-bg);
   border-radius: var(--radius-20);
