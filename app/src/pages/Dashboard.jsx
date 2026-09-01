@@ -432,7 +432,7 @@ export default function Dashboard() {
             <div className="card-head">
               <div>
                 <h2 className="card-head__title">불법주차 집중구역 순위</h2>
-                <p className="card-head__sub">AI 클러스터링 자동 분석 결과</p>
+                <p className="card-head__sub">AI 클러스터링 자동 분석 결과 · 최근 1개월 기준</p>
               </div>
               <Link to="/analysis/hotspot" className="card-link">GIS 보기 <Icon name="chevron-right" size={16} /></Link>
             </div>
