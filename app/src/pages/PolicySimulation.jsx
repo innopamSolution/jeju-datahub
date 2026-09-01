@@ -390,7 +390,17 @@ export default function PolicySimulation() {
                       {s.recommend && <span className="badge" style={{ background: 'var(--blue-95)', color: 'var(--primary)', fontWeight: 700 }}>추천</span>}
                     </TD>
                     <TD center>
-                      <button type="button" className="mt-act mt-act--del" onClick={() => removeScenario(s.id)}>삭제</button>
+                      <button
+                        type="button"
+                        aria-label={`${s.name} 삭제`}
+                        title="삭제"
+                        onClick={() => removeScenario(s.id)}
+                        style={{ width: 32, height: 32, border: 'none', borderRadius: 'var(--radius-full)', background: 'none', color: 'var(--text-neutral)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--fill-normal)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'none'; }}
+                      >
+                        <Icon name="close" size={16} />
+                      </button>
                     </TD>
                   </tr>
                 ))}
