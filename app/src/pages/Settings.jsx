@@ -129,10 +129,11 @@ export default function Settings() {
     setDraft(perms[name]);
     setPermSaved(false);
   };
-  /* 권한 잠금 규칙: 시스템·서비스 관리자는 모든 메뉴에서 항상 권한 보유(해제 불가).
-     일반 사용자는 일반 메뉴에서만 토글 가능하고, 관리 메뉴에는 부여 불가 → 관리 메뉴는 전부 고정 */
+  /* 권한 잠금 규칙: 시스템 관리자는 모든 메뉴에서 항상 권한 보유(해제 불가).
+     서비스 관리자는 메뉴에서 제외할 수도 있으므로 어디서나 토글 가능.
+     일반 사용자는 일반 메뉴에서만 토글 가능하고, 관리 메뉴에는 부여 불가 */
   const isManageMenu = MENUS.find((m) => m.name === selMenu)?.type === '관리';
-  const isLockedPerm = (role) => role !== 'user' || isManageMenu;
+  const isLockedPerm = (role) => role === 'system' || (role === 'user' && isManageMenu);
   const togglePerm = (role) => {
     if (isLockedPerm(role)) return;
     setPermSaved(false);
@@ -211,7 +212,7 @@ export default function Settings() {
                       const on = draft[key];
                       const locked = isLockedPerm(key);
                       const lockNote = locked
-                        ? (key === 'user' ? '일반 사용자에게는 관리 메뉴 권한을 부여할 수 없습니다' : '관리자 권한은 항상 유지됩니다')
+                        ? (key === 'user' ? '일반 사용자에게는 관리 메뉴 권한을 부여할 수 없습니다' : '시스템 관리자 권한은 항상 유지됩니다')
                         : undefined;
                       return (
                         <button
@@ -231,15 +232,11 @@ export default function Settings() {
                       );
                     })}
                   </div>
-                  {isManageMenu ? (
-                    <p className="st-assign__sub" style={{ margin: 0 }}>관리 메뉴의 권한은 고정되어 있어 변경할 수 없습니다.</p>
-                  ) : (
-                    <div className="st-savewrap">
-                      {permSaved && <span className="st-saved">저장되었습니다</span>}
-                      {permDirty && !permSaved && <span className="st-dirty">저장되지 않은 변경사항이 있습니다</span>}
-                      <button type="button" className="btn-save" disabled={!permDirty} onClick={savePerms}>권한 저장</button>
-                    </div>
-                  )}
+                  <div className="st-savewrap">
+                    {permSaved && <span className="st-saved">저장되었습니다</span>}
+                    {permDirty && !permSaved && <span className="st-dirty">저장되지 않은 변경사항이 있습니다</span>}
+                    <button type="button" className="btn-save" disabled={!permDirty} onClick={savePerms}>권한 저장</button>
+                  </div>
                 </div>
               </div>
             </>
