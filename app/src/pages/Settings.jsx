@@ -133,7 +133,12 @@ export default function Settings() {
     setDraft(perms[name]);
     setPermSaved(false);
   };
+  /* 관리 메뉴 잠금 규칙: 시스템 관리자는 항상 권한 보유(해제 불가),
+     일반 사용자에게는 관리 메뉴 권한을 부여할 수 없음(체크 불가) */
+  const isManageMenu = MENUS.find((m) => m.name === selMenu)?.type === '관리';
+  const isLockedPerm = (role) => isManageMenu && (role === 'system' || role === 'user');
   const togglePerm = (role) => {
+    if (isLockedPerm(role)) return;
     setPermSaved(false);
     setDraft((d) => ({ ...d, [role]: !d[role] }));
   };
@@ -208,10 +213,24 @@ export default function Settings() {
                   <div className="st-opts">
                     {Object.entries(ROLES).map(([key, r]) => {
                       const on = draft[key];
+                      const locked = isLockedPerm(key);
+                      const lockNote = locked
+                        ? (key === 'system' ? '관리 메뉴는 시스템 관리자 권한이 항상 유지됩니다' : '일반 사용자에게는 관리 메뉴 권한을 부여할 수 없습니다')
+                        : undefined;
                       return (
-                        <button key={key} type="button" className={`st-opt${on ? ' st-opt--on' : ''}`} onClick={() => togglePerm(key)}>
+                        <button
+                          key={key}
+                          type="button"
+                          className={`st-opt${on ? ' st-opt--on' : ''}`}
+                          disabled={locked}
+                          title={lockNote}
+                          aria-disabled={locked}
+                          style={locked ? { opacity: 0.5, cursor: 'not-allowed' } : undefined}
+                          onClick={() => togglePerm(key)}
+                        >
                           <span className={`st-chk${on ? ' st-chk--on' : ''}`}>{CHECK}</span>
                           {r.label}
+                          {locked && <span style={{ marginLeft: 'auto', fontSize: 'var(--caption1-size)', color: 'var(--text-alternative)', fontWeight: 600 }}>{key === 'system' ? '항상 허용' : '부여 불가'}</span>}
                         </button>
                       );
                     })}
