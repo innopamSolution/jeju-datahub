@@ -54,16 +54,12 @@ const MENUS = [
   { name: '분석 지표 가중치 설정', type: '관리' },
 ];
 
-/* 관리자 전용(시스템 관리자만) 메뉴 */
-const SYSTEM_ONLY = ['사용자 정보 관리', '메뉴 권한 관리', '분석 지표 가중치 설정'];
-
+/* 관리 메뉴는 시스템·서비스 관리자 고정 권한, 일반 사용자 불가 */
 const DEFAULT_PERMS = Object.fromEntries(MENUS.map((m) => [
   m.name,
   m.type === '메뉴'
     ? { system: true, service: true, user: true }
-    : (SYSTEM_ONLY.includes(m.name)
-        ? { system: true, service: false, user: false }
-        : { system: true, service: true, user: false }),
+    : { system: true, service: true, user: false },
 ]));
 
 /* ---------- 분석 지표 가중치 ---------- */
@@ -133,10 +129,10 @@ export default function Settings() {
     setDraft(perms[name]);
     setPermSaved(false);
   };
-  /* 관리 메뉴 잠금 규칙: 시스템 관리자는 항상 권한 보유(해제 불가),
-     일반 사용자에게는 관리 메뉴 권한을 부여할 수 없음(체크 불가) */
+  /* 관리 메뉴 잠금 규칙: 시스템·서비스 관리자는 항상 권한 보유(해제 불가),
+     일반 사용자에게는 관리 메뉴 권한을 부여할 수 없음(체크 불가) → 관리 메뉴는 전부 고정 */
   const isManageMenu = MENUS.find((m) => m.name === selMenu)?.type === '관리';
-  const isLockedPerm = (role) => isManageMenu && (role === 'system' || role === 'user');
+  const isLockedPerm = () => isManageMenu;
   const togglePerm = (role) => {
     if (isLockedPerm(role)) return;
     setPermSaved(false);
@@ -215,7 +211,7 @@ export default function Settings() {
                       const on = draft[key];
                       const locked = isLockedPerm(key);
                       const lockNote = locked
-                        ? (key === 'system' ? '관리 메뉴는 시스템 관리자 권한이 항상 유지됩니다' : '일반 사용자에게는 관리 메뉴 권한을 부여할 수 없습니다')
+                        ? (key === 'user' ? '일반 사용자에게는 관리 메뉴 권한을 부여할 수 없습니다' : '관리 메뉴는 관리자 권한이 항상 유지됩니다')
                         : undefined;
                       return (
                         <button
@@ -230,16 +226,20 @@ export default function Settings() {
                         >
                           <span className={`st-chk${on ? ' st-chk--on' : ''}`}>{CHECK}</span>
                           {r.label}
-                          {locked && <span style={{ marginLeft: 'auto', fontSize: 'var(--caption1-size)', color: 'var(--text-alternative)', fontWeight: 600 }}>{key === 'system' ? '항상 허용' : '부여 불가'}</span>}
+                          {locked && <span style={{ marginLeft: 'auto', fontSize: 'var(--caption1-size)', color: 'var(--text-alternative)', fontWeight: 600 }}>{key === 'user' ? '부여 불가' : '항상 허용'}</span>}
                         </button>
                       );
                     })}
                   </div>
-                  <div className="st-savewrap">
-                    {permSaved && <span className="st-saved">저장되었습니다</span>}
-                    {permDirty && !permSaved && <span className="st-dirty">저장되지 않은 변경사항이 있습니다</span>}
-                    <button type="button" className="btn-save" disabled={!permDirty} onClick={savePerms}>권한 저장</button>
-                  </div>
+                  {isManageMenu ? (
+                    <p className="st-assign__sub" style={{ margin: 0 }}>관리 메뉴의 권한은 고정되어 있어 변경할 수 없습니다.</p>
+                  ) : (
+                    <div className="st-savewrap">
+                      {permSaved && <span className="st-saved">저장되었습니다</span>}
+                      {permDirty && !permSaved && <span className="st-dirty">저장되지 않은 변경사항이 있습니다</span>}
+                      <button type="button" className="btn-save" disabled={!permDirty} onClick={savePerms}>권한 저장</button>
+                    </div>
+                  )}
                 </div>
               </div>
             </>
