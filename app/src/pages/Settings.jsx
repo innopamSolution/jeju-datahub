@@ -129,10 +129,10 @@ export default function Settings() {
     setDraft(perms[name]);
     setPermSaved(false);
   };
-  /* 관리 메뉴 잠금 규칙: 시스템·서비스 관리자는 항상 권한 보유(해제 불가),
-     일반 사용자에게는 관리 메뉴 권한을 부여할 수 없음(체크 불가) → 관리 메뉴는 전부 고정 */
+  /* 권한 잠금 규칙: 시스템·서비스 관리자는 모든 메뉴에서 항상 권한 보유(해제 불가).
+     일반 사용자는 일반 메뉴에서만 토글 가능하고, 관리 메뉴에는 부여 불가 → 관리 메뉴는 전부 고정 */
   const isManageMenu = MENUS.find((m) => m.name === selMenu)?.type === '관리';
-  const isLockedPerm = () => isManageMenu;
+  const isLockedPerm = (role) => role !== 'user' || isManageMenu;
   const togglePerm = (role) => {
     if (isLockedPerm(role)) return;
     setPermSaved(false);
@@ -211,7 +211,7 @@ export default function Settings() {
                       const on = draft[key];
                       const locked = isLockedPerm(key);
                       const lockNote = locked
-                        ? (key === 'user' ? '일반 사용자에게는 관리 메뉴 권한을 부여할 수 없습니다' : '관리 메뉴는 관리자 권한이 항상 유지됩니다')
+                        ? (key === 'user' ? '일반 사용자에게는 관리 메뉴 권한을 부여할 수 없습니다' : '관리자 권한은 항상 유지됩니다')
                         : undefined;
                       return (
                         <button
