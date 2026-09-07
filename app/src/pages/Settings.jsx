@@ -134,10 +134,16 @@ export default function Settings() {
      일반 사용자는 일반 메뉴에서만 토글 가능하고, 관리 메뉴에는 부여 불가 */
   const isManageMenu = MENUS.find((m) => m.name === selMenu)?.type === '관리';
   const isLockedPerm = (role) => role === 'system' || (role === 'user' && isManageMenu);
+  /* 권한 위계: 일반 사용자 권한은 서비스 관리자 권한을 전제로 한다.
+     서비스 관리자 해제 시 일반 사용자도 함께 해제, 일반 사용자 체크 시 서비스 관리자 자동 체크 */
   const togglePerm = (role) => {
     if (isLockedPerm(role)) return;
     setPermSaved(false);
-    setDraft((d) => ({ ...d, [role]: !d[role] }));
+    setDraft((d) => {
+      if (role === 'service' && d.service) return { ...d, service: false, user: false };
+      if (role === 'user' && !d.user) return { ...d, service: true, user: true };
+      return { ...d, [role]: !d[role] };
+    });
   };
   const savePerms = () => {
     setPerms((p) => ({ ...p, [selMenu]: draft }));
