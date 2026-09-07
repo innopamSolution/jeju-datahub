@@ -170,6 +170,11 @@ export default function AiAssistant() {
 
   const [reportPreview, setReportPreview] = useState(null);
 
+  const newChat = () => {
+    setMessages([{ role: 'ai', text: INITIAL_MSGS[0].text, id: ++msgId }]);
+    setInput('');
+  };
+
   const respond = (aiMsg) => {
     const typingId = ++msgId;
     setMessages((m) => [...m, { role: 'ai', typing: true, id: typingId }]);
@@ -288,7 +293,18 @@ export default function AiAssistant() {
           {/* 사이드 패널 */}
           <div className="ai-side">
             <div className="card ai-card">
-              <h2 className="ai-card__title">최근 대화</h2>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+                <h2 className="ai-card__title">최근 대화</h2>
+                <button
+                  type="button"
+                  className="btn"
+                  style={{ height: 32, padding: '0 var(--space-12)', fontSize: 'var(--label2-size)', gap: 4 }}
+                  onClick={newChat}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                  새 대화
+                </button>
+              </div>
               <ScrollList className="recent">
                 {RECENT.map((r, i) => (
                   <button
