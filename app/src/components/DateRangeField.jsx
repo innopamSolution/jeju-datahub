@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import Icon from './Icon';
 
+/* 월 피커에서 이동 가능한 최소 연도 (데이터 수집 시작 연도) */
+const MIN_YEAR = 2025;
+
 /* 기간 선택 필드.
    - type="month": 커스텀 월 피커(연도 ‹ › 이동 + 12개월 그리드)로 YYYY-MM 선택
    - type="date"(기본): 네이티브 날짜 피커, 박스 어디를 눌러도 달력이 열림 */
