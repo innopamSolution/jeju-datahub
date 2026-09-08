@@ -70,7 +70,9 @@ export default function DateRangeField({ defaultFrom, defaultTo, type = 'date' }
       {isMonth && open && (
         <div className="month-pop" role="dialog" aria-label={open === 'from' ? '시작월 선택' : '종료월 선택'}>
           <div className="month-pop__head">
-            <button type="button" className="month-pop__nav" aria-label="이전 연도" onClick={() => setViewYear((y) => y - 1)}>
+            <button type="button" className="month-pop__nav" aria-label="이전 연도"
+              disabled={viewYear <= MIN_YEAR}
+              onClick={() => setViewYear((y) => Math.max(MIN_YEAR, y - 1))}>
               <Icon name="chevron-left" size={16} />
             </button>
             <span className="month-pop__year">{viewYear}년</span>
