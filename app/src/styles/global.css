@@ -1010,6 +1010,47 @@ input[type='number']:focus-visible {
 }
 /* 호버·선택(포커스) 시 테두리 강조 없음 — 기본 테두리 그대로 유지 */
 .field__date-input:focus-visible { outline: none; }
+
+/* 커스텀 월 피커 (연도 이동 + 12개월 그리드) */
+.month-pop {
+  position: absolute;
+  top: calc(100% + var(--space-8));
+  left: 0;
+  z-index: 50;
+  width: 232px;
+  background: var(--card-bg);
+  border: 1px solid var(--line-normal);
+  border-radius: var(--radius-12);
+  box-shadow: var(--shadow-overlay);
+  padding: var(--space-12);
+  animation: datePopIn var(--duration-fast) var(--ease-out);
+}
+.month-pop__head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: var(--space-8);
+}
+.month-pop__year { font-family: var(--font-sans); font-size: var(--label1-size); font-weight: var(--weight-bold); color: var(--text-strong); }
+.month-pop__nav {
+  width: 28px; height: 28px;
+  border: none; border-radius: var(--radius-8);
+  background: none; color: var(--text-neutral);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+.month-pop__nav:hover { background: var(--fill-normal); }
+.month-pop__nav:disabled { opacity: 0.3; cursor: not-allowed; background: none; }
+.month-pop__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
+.month-pop__cell {
+  height: 36px;
+  border: none; border-radius: var(--radius-8);
+  background: none;
+  font-family: var(--font-body); font-size: var(--label2-size); font-weight: var(--weight-semibold);
+  color: var(--text-normal); cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+.month-pop__cell:hover { background: var(--fill-normal); }
+.month-pop__cell.is-active { background: var(--primary); color: #fff; }
 .field__date .ic { color: var(--text-neutral); }
 .field__tilde { color: var(--text-neutral); font-weight: var(--weight-semibold); }
 
