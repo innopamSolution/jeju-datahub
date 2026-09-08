@@ -412,7 +412,7 @@ export default function LifestyleSimulation() {
                 ))}
               </div>
               {period === '직접설정' && (
-                <DateRangeField defaultFrom="2026-01-01" defaultTo="2026-05-31" />
+                <DateRangeField type="month" defaultFrom="2026-01" defaultTo="2026-05" />
               )}
             </div>
 
