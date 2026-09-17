@@ -49,6 +49,32 @@ const DONGS = {
   서귀포시: ['성산읍', '중문동', '효돈동'],
 };
 
+/* 부서별 사용자 목록 — 부서 선택 시 해당 사용자만 노출되고, 사용자 선택 시 이메일이 자동 입력된다 */
+const DEPT_USERS = {
+  '주차관리':   [
+    { name: '김지수', email: 'jisu.kim@jeju.go.kr' },
+    { name: '김서연', email: 'seoyeon.kim@jeju.go.kr' },
+    { name: '박도윤', email: 'doyun.park@jeju.go.kr' },
+  ],
+  '교통정책과': [
+    { name: '이준호', email: 'junho.lee@jeju.go.kr' },
+    { name: '최하늘', email: 'haneul.choi@jeju.go.kr' },
+    { name: '장민호', email: 'minho.jang@jeju.go.kr' },
+  ],
+  '안전정책과': [
+    { name: '정예린', email: 'yerin.jung@jeju.go.kr' },
+    { name: '한지우', email: 'jiwoo.han@jeju.go.kr' },
+  ],
+  '종합민원실': [
+    { name: '문서준', email: 'seojun.moon@jeju.go.kr' },
+    { name: '강하은', email: 'haeun.kang@jeju.go.kr' },
+  ],
+  '정보화':     [
+    { name: '오지민', email: 'jimin.oh@jeju.go.kr' },
+    { name: '윤시우', email: 'siwoo.yoon@jeju.go.kr' },
+  ],
+};
+
 export default function AlertManagement() {
   const navigate = useNavigate();
   const [receivers, setReceivers] = useState(INITIAL_RECEIVERS);
@@ -60,6 +86,37 @@ export default function AlertManagement() {
   const [addDong, setAddDong] = useState('전체');
   const [recvPage, setRecvPage] = useState(1);
   const [addGroups, setAddGroups] = useState({ severe: true, warn: false, caution: false });
+  const [addDept, setAddDept] = useState('주차관리');
+  const [addUser, setAddUser] = useState('');
+  const addEmail = DEPT_USERS[addDept]?.find((u) => u.name === addUser)?.email ?? '';
+
+  /* 알림 단계는 누적 구조: 아래 단계(주의)를 켜면 윗 단계(경고·심각)가 자동 선택되고,
+     윗 단계를 끄면 그 아래 단계도 함께 해제된다 (항상 심각부터 연속 선택 유지) */
+  const toggleAddGroup = (key) => {
+    const order = CRIT_LEVELS.map((c) => c.key); // [심각, 경고, 주의]
+    const idx = order.indexOf(key);
+    setAddGroups((g) => {
+      const next = { ...g };
+      if (!g[key]) order.forEach((k, i) => { if (i <= idx) next[k] = true; });
+      else order.forEach((k, i) => { if (i >= idx) next[k] = false; });
+      return next;
+    });
+  };
+
+  const resetAddForm = () => {
+    setAddDept('주차관리'); setAddUser('');
+    setAddCity('전체'); setAddDong('전체');
+    setAddGroups({ severe: true, warn: false, caution: false });
+  };
+
+  const submitAdd = () => {
+    if (!addUser) return;
+    const groups = CRIT_LEVELS.map((c) => c.key).filter((k) => addGroups[k]);
+    const region = addCity === '전체' ? '전체 지역' : `${addCity} ${addDong === '전체' ? '전체' : addDong}`;
+    setReceivers((rs) => [...rs, { dept: addDept, name: addUser, email: addEmail, region, groups, on: true }]);
+    setAddOpen(false);
+    resetAddForm();
+  };
 
   useEffect(() => {
     const open = addOpen || critOpen;
@@ -111,7 +168,7 @@ export default function AlertManagement() {
                     <th>이름</th>
                     <th>이메일</th>
                     <th>지역</th>
-                    <th>단계 그룹</th>
+                    <th>알림 단계</th>
                     <th className="col-center">활성화</th>
                     <th className="col-center">삭제</th>
                   </tr>
@@ -188,21 +245,28 @@ export default function AlertManagement() {
               <div className="form-field">
                 <label className="form-field__label">소속</label>
                 <div className="ds-select form-field__select">
-                  <select aria-label="소속">
-                    <option>주차관리</option>
-                    <option>교통정책과</option>
-                    <option>정보화</option>
+                  <select aria-label="소속" value={addDept}
+                    onChange={(e) => { setAddDept(e.target.value); setAddUser(''); }}>
+                    {Object.keys(DEPT_USERS).map((d) => <option key={d} value={d}>{d}</option>)}
                   </select>
                   <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
                 </div>
               </div>
               <div className="form-field">
-                <label className="form-field__label">이름</label>
-                <input type="text" className="form-inp" placeholder="이름 입력" />
+                <label className="form-field__label">사용자</label>
+                <div className="ds-select form-field__select">
+                  <select aria-label="사용자" value={addUser} onChange={(e) => setAddUser(e.target.value)}>
+                    <option value="">사용자 선택</option>
+                    {(DEPT_USERS[addDept] ?? []).map((u) => <option key={u.name} value={u.name}>{u.name}</option>)}
+                  </select>
+                  <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
+                </div>
               </div>
               <div className="form-field">
                 <label className="form-field__label">이메일</label>
-                <input type="email" className="form-inp" placeholder="name@jeju.go.kr" />
+                <input type="email" className="form-inp" value={addEmail} readOnly
+                  placeholder="사용자를 선택하면 자동 입력됩니다"
+                  style={{ color: addEmail ? undefined : 'var(--text-assistive)', background: 'var(--fill-normal)' }} />
               </div>
               <div className="form-field">
                 <label className="form-field__label">지역</label>
@@ -227,18 +291,21 @@ export default function AlertManagement() {
                 </div>
               </div>
               <div className="form-field">
-                <label className="form-field__label">단계 그룹</label>
+                <label className="form-field__label">알림 단계</label>
                 <div className="chip-set">
                   {CRIT_LEVELS.map((c) => (
                     <button key={c.key} className={`fchip${addGroups[c.key] ? ' is-active' : ''}`} type="button"
-                      onClick={() => setAddGroups((g) => ({ ...g, [c.key]: !g[c.key] }))}>{c.label}</button>
+                      onClick={() => toggleAddGroup(c.key)}>{c.label}</button>
                   ))}
                 </div>
+                <p className="crit-card__sub" style={{ margin: '8px 0 0' }}>아래 단계를 선택하면 그 위 단계까지 함께 알림을 받습니다.</p>
               </div>
             </div>
             <div className="modal__foot modal__foot--split">
               <button className="btn" type="button" style={{ height: 44 }} onClick={() => setAddOpen(false)}>취소</button>
-              <button className="btn-save" type="button" onClick={() => setAddOpen(false)}>추가</button>
+              <button className="btn-save" type="button" disabled={!addUser}
+                style={!addUser ? { opacity: 0.4, cursor: 'not-allowed' } : undefined}
+                onClick={submitAdd}>추가</button>
             </div>
           </div>
         </div>
