@@ -298,7 +298,6 @@ export default function AlertManagement() {
                       onClick={() => toggleAddGroup(c.key)}>{c.label}</button>
                   ))}
                 </div>
-                <p className="crit-card__sub" style={{ margin: '8px 0 0' }}>아래 단계를 선택하면 그 위 단계까지 함께 알림을 받습니다.</p>
               </div>
             </div>
             <div className="modal__foot modal__foot--split">
