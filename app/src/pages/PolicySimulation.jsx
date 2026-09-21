@@ -227,7 +227,7 @@ export default function PolicySimulation() {
         <div>
           <PageCrumb group="분석·시뮬레이션" page="정책 효과 시뮬레이션" />
           <h1 className="page-title">정책효과시뮬레이션</h1>
-          <p className="page-sub">정책 변수 입력 → 효과 예측 → 시나리오 비교</p>
+          <p className="page-sub">가정값에 기반한 시뮬레이션 결과이며 실제 정책 효과를 보장하지 않습니다.</p>
         </div>
         <div className="topbar__actions">
           <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}>{AI_ICON} AI 대화 시작하기</button>
@@ -240,7 +240,10 @@ export default function PolicySimulation() {
 
           {/* 정책 변수 설정 */}
           <div className="card" style={{ padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>정책 변수 설정</h2>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
+              <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>정책 변수 설정</h2>
+              <span style={{ fontSize: 'var(--caption1-size)', color: 'var(--text-alternative)' }}>정책 변수 입력 → 효과 예측 → 시나리오 비교</span>
+            </div>
 
             <div>
               <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>정책 유형</div>
