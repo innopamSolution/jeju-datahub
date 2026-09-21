@@ -160,7 +160,11 @@ export default function PolicySimulation() {
   const [roadMethod, setRoadMethod] = useState('commercial');
   const [roadLength, setRoadLength] = useState(600);
   const [expandType, setExpandType] = useState('vacant');
-  const [feeRate, setFeeRate] = useState('1');
+  const [feeMethod, setFeeMethod] = useState('raise');   // 요금 인상 | 무료→유료 전환
+  const [feeZone, setFeeZone] = useState('all');          // 적용 급지 (전체 지역 선택 시에만 노출)
+  const [feeRatePct, setFeeRatePct] = useState('10');     // 인상률
+  const [simCity, setSimCity] = useState('제주시');
+  const [simDong, setSimDong] = useState('연동');
   const [exportOpen, setExportOpen] = useState(false);
   const exportRef = useRef(null);
   /* 시나리오 비교 — 행 삭제 가능, 내보낼 시나리오 선택(기본 전체 선택). 선택은 인덱스 대신 id로 추적 */
@@ -259,14 +263,19 @@ export default function PolicySimulation() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               <div>
                 <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>대상 지역</div>
-                <DsSelect style={{ width: '100%' }}>
-                  <option>제주시</option><option>서귀포시</option>
+                <DsSelect style={{ width: '100%' }} value={simCity}
+                  onChange={(e) => { setSimCity(e.target.value); setSimDong('전체'); }}>
+                  <option>제주 전체</option><option>제주시</option><option>서귀포시</option>
                 </DsSelect>
               </div>
               <div>
                 <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>&nbsp;</div>
-                <DsSelect style={{ width: '100%' }}>
-                  <option>연동</option><option>노형동</option><option>이도동</option>
+                <DsSelect style={{ width: '100%' }} value={simDong} disabled={simCity === '제주 전체'}
+                  onChange={(e) => setSimDong(e.target.value)}>
+                  <option>전체</option>
+                  {(simCity === '서귀포시' ? ['동홍동', '중문동', '성산읍'] : ['연동', '노형동', '이도동', '아라동', '삼도동']).map((d) => (
+                    <option key={d}>{d}</option>
+                  ))}
                 </DsSelect>
               </div>
             </div>
@@ -323,14 +332,37 @@ export default function PolicySimulation() {
               </>
             )}
             {policyType === 'fee' && (
-              <div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>요금 급지</div>
-                <div className="segment">
-                  {[['1', '1급지'], ['2', '2급지'], ['3', '3급지'], ['4', '4급지']].map(([k, l]) => (
-                    <button key={k} type="button" className={`segment__btn ${feeRate === k ? 'segment__btn--active' : ''}`} onClick={() => setFeeRate(k)}>{l}</button>
-                  ))}
+              <>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>적용 방식</div>
+                  <div className="segment">
+                    {[['raise', '요금 인상'], ['convert', '무료 → 유료 전환']].map(([k, l]) => (
+                      <button key={k} type="button" className={`segment__btn ${feeMethod === k ? 'segment__btn--active' : ''}`} onClick={() => setFeeMethod(k)}>{l}</button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+                {/* 적용 급지 — 특정 읍면동이 아닌 전체 지역(제주 전체 또는 시 전체)일 때만 선택 */}
+                {(simCity === '제주 전체' || simDong === '전체') && (
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>적용 급지</div>
+                    <div className="segment">
+                      {[['all', '전체'], ['z1', '1급지 (동)'], ['z2', '2급지 (읍·면)']].map(([k, l]) => (
+                        <button key={k} type="button" className={`segment__btn ${feeZone === k ? 'segment__btn--active' : ''}`} onClick={() => setFeeZone(k)}>{l}</button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {feeMethod === 'raise' && (
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>인상률</div>
+                    <div className="segment">
+                      {[['10', '+10%'], ['20', '+20%'], ['30', '+30%']].map(([k, l]) => (
+                        <button key={k} type="button" className={`segment__btn ${feeRatePct === k ? 'segment__btn--active' : ''}`} onClick={() => setFeeRatePct(k)}>{l}</button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
 
             <button className="btn-run" type="button">▷ 시뮬레이션 실행</button>
