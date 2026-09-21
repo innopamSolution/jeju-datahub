@@ -37,6 +37,10 @@ const RANKING = [
   { rank: 13, name: '용담 해안도로 주변',     region: '용담동',   c: [33.5162, 126.5118], dotColor: 'var(--blue-50)',   score: '43점', sub: '불법주차 4 · 기타 3' },
 ];
 
+/* 화면에는 상위 6개 구역만 노출 (목록·지도 마커·내보내기 공통) */
+const TOP_N = 6;
+const VISIBLE_RANKING = RANKING.slice(0, TOP_N);
+
 const DOT_BADGE = { 'var(--red-50)': 'severe', 'var(--orange-50)': 'warn', 'var(--blue-50)': 'caution' };
 const BADGE_TEXT = { severe: '심각', warn: '경고', caution: '주의' };
 
@@ -102,7 +106,7 @@ export default function HotspotAnalysis() {
     map.attributionControl.setPosition('bottomleft');
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, opacity: 0.92, attribution: '© OpenStreetMap' }).addTo(map);
 
-    RANKING.forEach((r) => {
+    VISIBLE_RANKING.forEach((r) => {
       const badge = DOT_BADGE[r.dotColor] ?? 'caution';
       const fill = resolveColor(r.dotColor);
       const icon = L.divIcon({
@@ -205,11 +209,11 @@ export default function HotspotAnalysis() {
                   {exportOpen && (
                     <div className="sim-export__menu" role="menu">
                       <button type="button" role="menuitem" className="sim-export__item"
-                        onClick={() => { setExportOpen(false); exportHotspotPdf(RANKING); }}>
+                        onClick={() => { setExportOpen(false); exportHotspotPdf(VISIBLE_RANKING); }}>
                         PDF 파일 (.pdf)
                       </button>
                       <button type="button" role="menuitem" className="sim-export__item"
-                        onClick={() => { setExportOpen(false); exportHotspotDocx(RANKING); }}>
+                        onClick={() => { setExportOpen(false); exportHotspotDocx(VISIBLE_RANKING); }}>
                         Word 파일 (.docx)
                       </button>
                     </div>
@@ -224,7 +228,7 @@ export default function HotspotAnalysis() {
                   <h3 className="sim-sec__title">불법 주차 집중 구역 순위</h3>
                   <p className="sim-sec__sub">종합점수 기준 : 민원 건수 60% / 단속 40%</p>
                   <div className="rl">
-                    {RANKING.map((r, i) => (
+                    {VISIBLE_RANKING.map((r, i) => (
                       <div
                         key={r.rank}
                         className={`rl__row${activeRank === r.rank ? ' is-active' : ''}`}
