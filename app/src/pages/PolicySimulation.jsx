@@ -158,6 +158,7 @@ export default function PolicySimulation() {
   const [policyType, setPolicyType] = useState('parking');
   const [period, setPeriod] = useState('3');
   const [roadType, setRoadType] = useState('one-way');
+  const [expandType, setExpandType] = useState('vacant');
   const [feeRate, setFeeRate] = useState('1');
   const [exportOpen, setExportOpen] = useState(false);
   const exportRef = useRef(null);
@@ -279,12 +280,22 @@ export default function PolicySimulation() {
             </div>
 
             {policyType === 'parking' && (
-              <div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>주차면 증설 수</div>
-                <DsSelect style={{ width: '100%' }}>
-                  <option>50면</option><option>80면</option><option>100면</option><option>150면</option><option>200면</option>
-                </DsSelect>
-              </div>
+              <>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>확충 방식</div>
+                  <div className="segment">
+                    {[['vacant', '공한지 조성'], ['multi', '복층화'], ['new', '신규 조성']].map(([k, l]) => (
+                      <button key={k} type="button" className={`segment__btn ${expandType === k ? 'segment__btn--active' : ''}`} onClick={() => setExpandType(k)}>{l}</button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>주차면 증설 수</div>
+                  <DsSelect style={{ width: '100%' }}>
+                    <option>50면</option><option>80면</option><option>100면</option><option>150면</option><option>200면</option>
+                  </DsSelect>
+                </div>
+              </>
             )}
             {policyType === 'road' && (
               <div>
