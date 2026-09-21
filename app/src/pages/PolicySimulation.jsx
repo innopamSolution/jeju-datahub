@@ -157,7 +157,8 @@ export default function PolicySimulation() {
   const navigate = useNavigate();
   const [policyType, setPolicyType] = useState('parking');
   const [period, setPeriod] = useState('3');
-  const [roadType, setRoadType] = useState('one-way');
+  const [roadMethod, setRoadMethod] = useState('commercial');
+  const [roadLength, setRoadLength] = useState(600);
   const [expandType, setExpandType] = useState('vacant');
   const [feeRate, setFeeRate] = useState('1');
   const [exportOpen, setExportOpen] = useState(false);
@@ -298,14 +299,28 @@ export default function PolicySimulation() {
               </>
             )}
             {policyType === 'road' && (
-              <div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>정비 유형</div>
-                <div className="segment" style={{ flexWrap: 'wrap', width: '100%' }}>
-                  {[['one-way', '일방통행 전환'], ['parking-zone', '주차구역 정비'], ['expand', '주차허용구역 확대'], ['resident', '거주자 우선주차 도입']].map(([k, l]) => (
-                    <button key={k} type="button" className={`segment__btn ${roadType === k ? 'segment__btn--active' : ''}`} onClick={() => setRoadType(k)}>{l}</button>
-                  ))}
+              <>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>정비 방식</div>
+                  <div className="segment" style={{ flexWrap: 'wrap', width: '100%' }}>
+                    {[['commercial', '상업지역형 (주차환경개선지구)'], ['residential', '주거지역형 (주민참여형)']].map(([k, l]) => (
+                      <button key={k} type="button" className={`segment__btn ${roadMethod === k ? 'segment__btn--active' : ''}`} onClick={() => setRoadMethod(k)}>{l}</button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>정비 구간 연장</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <input
+                      type="number" className="form-inp" min="0" step="100"
+                      style={{ width: 120, textAlign: 'right' }}
+                      value={roadLength}
+                      onChange={(e) => setRoadLength(Math.max(0, Number(e.target.value) || 0))}
+                    />
+                    <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-neutral)' }}>m</span>
+                  </div>
+                </div>
+              </>
             )}
             {policyType === 'fee' && (
               <div>
