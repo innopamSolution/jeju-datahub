@@ -17,13 +17,14 @@ const AI_ICON = (
   </svg>
 );
 
+/* 시나리오명 표기: 정책 유형 · 지역 · 방식 · 규모 · 예측 기간(공통, 항상 마지막) */
 const SCENARIOS = [
-  { name: '주차장 확충 · 연동 150면', at: '2026.11.28 14:02', reduction: '-23%', improvement: '+18%', cost: '고', costLevel: 'high', recommend: true },
-  { name: '이면도로 정비 · 일방통행', at: '2026.11.27 16:40', reduction: '-15%', improvement: '+12%', cost: '중', costLevel: 'mid', recommend: false },
-  { name: '요금제 10%', at: '2026.11.27 10:15', reduction: '-12%', improvement: '+9%', cost: '저', costLevel: 'low', recommend: false },
-  { name: '주차장 확충 · 노형 80면', at: '2026.11.25 13:22', reduction: '-18%', improvement: '+14%', cost: '중', costLevel: 'mid', recommend: false },
-  { name: '거주자 우선주차 · 연동', at: '2026.11.24 09:48', reduction: '-10%', improvement: '+7%', cost: '저', costLevel: 'low', recommend: false },
-  { name: '요금제 20%', at: '2026.11.21 15:31', reduction: '-16%', improvement: '+11%', cost: '저', costLevel: 'low', recommend: false },
+  { name: '주차장 확충 · 제주시 연동 · 공한지 조성 · 150면 · 3개월', at: '2026.11.28 14:02', reduction: '-23%', improvement: '+18%', cost: '고', costLevel: 'high', recommend: true },
+  { name: '이면도로 정비 · 제주시 연동 · 일방통행 · 600m · 3개월', at: '2026.11.27 16:40', reduction: '-15%', improvement: '+12%', cost: '중', costLevel: 'mid', recommend: false },
+  { name: '요금제 적용 · 제주시 연동 · 요금 인상 · +10% · 3개월', at: '2026.11.27 10:15', reduction: '-12%', improvement: '+9%', cost: '저', costLevel: 'low', recommend: false },
+  { name: '주차장 확충 · 제주시 노형동 · 복층화 · 80면 · 6개월', at: '2026.11.25 13:22', reduction: '-18%', improvement: '+14%', cost: '중', costLevel: 'mid', recommend: false },
+  { name: '거주자 우선주차 · 제주시 연동 · 3개월', at: '2026.11.24 09:48', reduction: '-10%', improvement: '+7%', cost: '저', costLevel: 'low', recommend: false },
+  { name: '요금제 적용 · 제주 전체 1급지 · 요금 인상 · +20% · 6개월', at: '2026.11.21 15:31', reduction: '-16%', improvement: '+11%', cost: '저', costLevel: 'low', recommend: false },
 ];
 
 const COST_BADGE = {
@@ -66,7 +67,7 @@ function rgba(color, a) {
 
 // Apache Superset의 시계열 라인 차트(Time-series Line Chart)와 동일한
 // 오픈소스 렌더링 엔진(Apache ECharts)을 사용해 정책 전/후 추이를 시각화
-function EffectChart() {
+function EffectChart({ reduction = -23 }) {
   const hostRef = useRef(null);
   const chartRef = useRef(null);
 
@@ -80,7 +81,8 @@ function EffectChart() {
 
     const months = ['1월', '2월', '3월', '4월', '5월', '6월'];
     const before = [52, 49, 55, 58, 48, 52];
-    const after = [52, 50, 47, 43, 41, 40];
+    /* 선택 시나리오의 감소율을 향해 점진 수렴하는 정책 후 추이 */
+    const after = before.map((v, i) => Math.round(v * (1 + (reduction / 100) * (i / (before.length - 1)))));
 
     const fontBody = getComputedStyle(document.documentElement).getPropertyValue('--font-body').trim();
     const cAxis = resolveColor('--text-assistive', probe);
@@ -148,7 +150,7 @@ function EffectChart() {
       chart.dispose();
       probe.remove();
     };
-  }, []);
+  }, [reduction]);
 
   return <div ref={hostRef} className="effect-chart" style={{ width: '100%', height: '100%', minHeight: 180 }} />;
 }
@@ -178,6 +180,16 @@ export default function PolicySimulation() {
     setScenarios((rows) => rows.filter((sc) => sc.id !== id));
     setSelectedScenarios((sel) => sel.filter((x) => x !== id));
   };
+
+  /* 목록에서 선택한 시나리오 — 상단 효과 예측에 반영 */
+  const [activeId, setActiveId] = useState(0);
+  const active = scenarios.find((sc) => sc.id === activeId) ?? scenarios[0] ?? null;
+  const redPct = active ? parseInt(active.reduction, 10) : 0;
+  const impPct = active ? parseInt(active.improvement, 10) : 0;
+  const BASE_MONTHLY = 52;
+  const BASE_CONGESTION = 0.78;
+  const afterMonthly = Math.round(BASE_MONTHLY * (1 + redPct / 100));
+  const afterCongestion = (BASE_CONGESTION * (1 - impPct / 100)).toFixed(2);
 
   useEffect(() => {
     if (!exportOpen) return;
@@ -210,8 +222,9 @@ export default function PolicySimulation() {
           title: '효과 예측 요약',
           columns: ['지표', '예측', '상세'],
           rows: [
-            ['민원 감소 예측', '-23%', '52건 → 40건 월평균'],
-            ['혼잡도 개선', '+18%', '혼잡 지수 0.78 → 0.64'],
+            ['선택 시나리오', active ? active.name : '—', ''],
+            ['민원 감소 예측', active ? active.reduction : '—', `${BASE_MONTHLY}건 → ${afterMonthly}건 월평균`],
+            ['혼잡도 개선', active ? active.improvement : '—', `혼잡 지수 ${BASE_CONGESTION} → ${afterCongestion}`],
           ],
         },
         ...(effectImage ? [{ type: 'chart', title: '정책 전·후 민원 추이', image: effectImage }] : []),
@@ -233,7 +246,7 @@ export default function PolicySimulation() {
         <div>
           <PageCrumb group="분석·시뮬레이션" page="정책 효과 시뮬레이션" />
           <h1 className="page-title">정책효과시뮬레이션</h1>
-          <p className="page-sub">가정값에 기반한 시뮬레이션 결과이며 실제 정책 효과를 보장하지 않습니다.</p>
+          <p className="page-sub" style={{ color: 'var(--orange-39)' }}>※ 참고: 가정값에 기반한 시뮬레이션 결과이며 실제 정책 효과를 보장하지 않습니다.</p>
         </div>
         <div className="topbar__actions">
           <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}>{AI_ICON} AI 대화 시작하기</button>
@@ -370,18 +383,21 @@ export default function PolicySimulation() {
 
           {/* 효과 예측 */}
           <div className="card" style={{ padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>효과 예측</h2>
-            <div style={{ flex: 1, minHeight: 0 }}><EffectChart /></div>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
+              <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>효과 예측</h2>
+              {active && <span style={{ fontSize: 'var(--caption1-size)', color: 'var(--text-alternative)' }}>{active.name}</span>}
+            </div>
+            <div style={{ flex: 1, minHeight: 0 }}><EffectChart reduction={redPct} /></div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div style={{ padding: '16px 20px', borderRadius: 12, background: 'var(--blue-99)', border: '1px solid var(--blue-90)' }}>
                 <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 6 }}>민원 감소 예측</div>
-                <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--primary)' }}>-23%</div>
-                <div style={{ fontSize: 12, color: 'var(--text-neutral)', marginTop: 4 }}>52건 → 40건 월평균</div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--primary)' }}>{active ? active.reduction : '—'}</div>
+                <div style={{ fontSize: 12, color: 'var(--text-neutral)', marginTop: 4 }}>{BASE_MONTHLY}건 → {afterMonthly}건 월평균</div>
               </div>
               <div style={{ padding: '16px 20px', borderRadius: 12, background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
                 <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 6 }}>혼잡도 개선</div>
-                <div style={{ fontSize: 28, fontWeight: 800, color: '#16a34a' }}>+18%</div>
-                <div style={{ fontSize: 12, color: 'var(--text-neutral)', marginTop: 4 }}>혼잡 지수 0.78 → 0.64</div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: '#16a34a' }}>{active ? active.improvement : '—'}</div>
+                <div style={{ fontSize: 12, color: 'var(--text-neutral)', marginTop: 4 }}>혼잡 지수 {BASE_CONGESTION} → {afterCongestion}</div>
               </div>
             </div>
           </div>
@@ -432,9 +448,12 @@ export default function PolicySimulation() {
               </thead>
               <tbody>
                 {scenarios.map((s) => (
-                  <tr key={s.id}>
+                  <tr key={s.id}
+                    onClick={() => setActiveId(s.id)}
+                    style={{ cursor: 'pointer', background: active && active.id === s.id ? 'var(--blue-99)' : 'transparent' }}>
                     <TD center>
                       <input type="checkbox" aria-label={`${s.name} 선택`} checked={selectedScenarios.includes(s.id)}
+                        onClick={(e) => e.stopPropagation()}
                         onChange={() => toggleScenario(s.id)}
                         style={{ width: 16, height: 16, accentColor: 'var(--cool-neutral-17)', cursor: 'pointer', verticalAlign: 'middle' }} />
                     </TD>
@@ -455,7 +474,7 @@ export default function PolicySimulation() {
                         type="button"
                         aria-label={`${s.name} 삭제`}
                         title="삭제"
-                        onClick={() => removeScenario(s.id)}
+                        onClick={(e) => { e.stopPropagation(); removeScenario(s.id); }}
                         style={{ width: 32, height: 32, border: 'none', borderRadius: 'var(--radius-full)', background: 'none', color: 'var(--text-neutral)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
                         onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--fill-normal)'; }}
                         onMouseLeave={(e) => { e.currentTarget.style.background = 'none'; }}
