@@ -22,23 +22,17 @@ const AI_ICON = (
 
 /* 순위 목록과 지도 마커가 같은 데이터를 공유한다 — 행 선택 시 해당 좌표로 지도 확대·이동 */
 const RANKING = [
-  { rank: 1,  name: '연동 대로변',           region: '연동',     c: [33.4866, 126.4900], dotColor: 'var(--red-50)',    score: '90점', sub: '민원 건수 51건 · 단속 32건' },
-  { rank: 2,  name: '제주도청 인근',          region: '연동',     c: [33.4890, 126.4985], dotColor: 'var(--red-50)',    score: '87점', sub: '민원 건수 48건 · 단속 30건' },
-  { rank: 3,  name: '신광초등학교 주변',      region: '연동',     c: [33.4930, 126.4815], dotColor: 'var(--red-50)',    score: '85점', sub: '민원 건수 45건 · 단속 28건' },
-  { rank: 4,  name: '제주공항 인근',          region: '용담동',   c: [33.5070, 126.4930], dotColor: 'var(--orange-50)', score: '75점', sub: '불법주차 16 · 기타 5' },
-  { rank: 5,  name: '동문시장 주변',          region: '일도동',   c: [33.5128, 126.5273], dotColor: 'var(--orange-50)', score: '72점', sub: '불법주차 14 · 기타 4' },
-  { rank: 6,  name: '동문시장 주변',          region: '일도동',   c: [33.5140, 126.5296], dotColor: 'var(--orange-50)', score: '70점', sub: '불법주차 14 · 기타 4' },
-  { rank: 7,  name: '동문시장 주변',          region: '일도동',   c: [33.5112, 126.5252], dotColor: 'var(--orange-50)', score: '68점', sub: '불법주차 14 · 기타 4' },
-  { rank: 8,  name: '한림해수욕장 근처',      region: '한림읍',   c: [33.4140, 126.2692], dotColor: 'var(--orange-50)', score: '65점', sub: '불법주차 12 · 기타 6' },
-  { rank: 9,  name: '서귀포 올레시장 인근',   region: '서귀포시', c: [33.2500, 126.5630], dotColor: 'var(--orange-50)', score: '60점', sub: '불법주차 9 · 기타 6' },
-  { rank: 10, name: '이중섭 거리 주변',       region: '서귀포시', c: [33.2465, 126.5655], dotColor: 'var(--blue-50)',   score: '55점', sub: '불법주차 7 · 기타 6' },
-  { rank: 11, name: '한라산 국립공원 입구',   region: '오등동',   c: [33.4335, 126.5490], dotColor: 'var(--blue-50)',   score: '52점', sub: '불법주차 8 · 기타 3' },
-  { rank: 12, name: '삼성혈 인근',            region: '이도동',   c: [33.5052, 126.5295], dotColor: 'var(--blue-50)',   score: '47점', sub: '불법주차 6 · 기타 3' },
-  { rank: 13, name: '용담 해안도로 주변',     region: '용담동',   c: [33.5162, 126.5118], dotColor: 'var(--blue-50)',   score: '43점', sub: '불법주차 4 · 기타 3' },
+  { rank: 1, name: '연동 대로변',         region: '연동',     c: [33.4866, 126.4900], dotColor: 'var(--red-50)',    score: '90점', sub: '민원 건수 51건 · 단속 32건' },
+  { rank: 2, name: '제주도청 인근',        region: '연동',     c: [33.4890, 126.4985], dotColor: 'var(--red-50)',    score: '87점', sub: '민원 건수 48건 · 단속 30건' },
+  { rank: 3, name: '신광초등학교 주변',    region: '연동',     c: [33.4930, 126.4815], dotColor: 'var(--red-50)',    score: '85점', sub: '민원 건수 45건 · 단속 28건' },
+  { rank: 4, name: '제주공항 인근',        region: '용담동',   c: [33.5070, 126.4930], dotColor: 'var(--orange-50)', score: '75점', sub: '불법주차 16 · 기타 5' },
+  { rank: 5, name: '동문시장 주변',        region: '일도동',   c: [33.5128, 126.5273], dotColor: 'var(--orange-50)', score: '72점', sub: '불법주차 14 · 기타 4' },
+  { rank: 6, name: '이중섭 거리 주변',     region: '서귀포시', c: [33.2465, 126.5655], dotColor: 'var(--blue-50)',   score: '55점', sub: '불법주차 7 · 기타 6' },
+  { rank: 7, name: '한라산 국립공원 입구', region: '오등동',   c: [33.4335, 126.5490], dotColor: 'var(--blue-50)',   score: '52점', sub: '불법주차 8 · 기타 3' },
 ];
 
-/* 화면에는 상위 6개 구역만 노출 (목록·지도 마커·내보내기 공통) */
-const TOP_N = 6;
+/* 화면에는 상위 7개 구역만 노출: 심각 3 · 경고 2 · 주의 2 (목록·지도 마커·내보내기 공통) */
+const TOP_N = 7;
 const VISIBLE_RANKING = RANKING.slice(0, TOP_N);
 
 const DOT_BADGE = { 'var(--red-50)': 'severe', 'var(--orange-50)': 'warn', 'var(--blue-50)': 'caution' };
