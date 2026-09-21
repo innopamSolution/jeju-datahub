@@ -20,33 +20,25 @@ const AI_ICON = (
   </svg>
 );
 
+/* 순위 목록과 지도 마커가 같은 데이터를 공유한다 — 행 선택 시 해당 좌표로 지도 확대·이동 */
 const RANKING = [
-  { rank: 1,  name: '연동 대로변',           dotColor: 'var(--red-50)',    score: '90점', sub: '민원 건수 51건 · 단속 32건' },
-  { rank: 2,  name: '제주도청 인근',          dotColor: 'var(--red-50)',    score: '87점', sub: '민원 건수 48건 · 단속 30건' },
-  { rank: 3,  name: '신광초등학교 주변',      dotColor: 'var(--red-50)',    score: '85점', sub: '민원 건수 45건 · 단속 28건' },
-  { rank: 4,  name: '제주공항 인근',          dotColor: 'var(--orange-50)', score: '75점', sub: '불법주차 16 · 기타 5' },
-  { rank: 5,  name: '동문시장 주변',          dotColor: 'var(--orange-50)', score: '72점', sub: '불법주차 14 · 기타 4' },
-  { rank: 6,  name: '동문시장 주변',          dotColor: 'var(--orange-50)', score: '70점', sub: '불법주차 14 · 기타 4' },
-  { rank: 7,  name: '동문시장 주변',          dotColor: 'var(--orange-50)', score: '68점', sub: '불법주차 14 · 기타 4' },
-  { rank: 8,  name: '한림해수욕장 근처',      dotColor: 'var(--orange-50)', score: '65점', sub: '불법주차 12 · 기타 6' },
-  { rank: 9,  name: '서귀포 올레시장 인근',   dotColor: 'var(--orange-50)', score: '60점', sub: '불법주차 9 · 기타 6' },
-  { rank: 10, name: '이중섭 거리 주변',       dotColor: 'var(--blue-50)',   score: '55점', sub: '불법주차 7 · 기타 6' },
-  { rank: 11, name: '한라산 국립공원 입구',   dotColor: 'var(--blue-50)',   score: '52점', sub: '불법주차 8 · 기타 3' },
-  { rank: 12, name: '삼성혈 인근',            dotColor: 'var(--blue-50)',   score: '47점', sub: '불법주차 6 · 기타 3' },
-  { rank: 13, name: '용담 해안도로 주변',     dotColor: 'var(--blue-50)',   score: '43점', sub: '불법주차 4 · 기타 3' },
+  { rank: 1,  name: '연동 대로변',           region: '연동',     c: [33.4866, 126.4900], dotColor: 'var(--red-50)',    score: '90점', sub: '민원 건수 51건 · 단속 32건' },
+  { rank: 2,  name: '제주도청 인근',          region: '연동',     c: [33.4890, 126.4985], dotColor: 'var(--red-50)',    score: '87점', sub: '민원 건수 48건 · 단속 30건' },
+  { rank: 3,  name: '신광초등학교 주변',      region: '연동',     c: [33.4930, 126.4815], dotColor: 'var(--red-50)',    score: '85점', sub: '민원 건수 45건 · 단속 28건' },
+  { rank: 4,  name: '제주공항 인근',          region: '용담동',   c: [33.5070, 126.4930], dotColor: 'var(--orange-50)', score: '75점', sub: '불법주차 16 · 기타 5' },
+  { rank: 5,  name: '동문시장 주변',          region: '일도동',   c: [33.5128, 126.5273], dotColor: 'var(--orange-50)', score: '72점', sub: '불법주차 14 · 기타 4' },
+  { rank: 6,  name: '동문시장 주변',          region: '일도동',   c: [33.5140, 126.5296], dotColor: 'var(--orange-50)', score: '70점', sub: '불법주차 14 · 기타 4' },
+  { rank: 7,  name: '동문시장 주변',          region: '일도동',   c: [33.5112, 126.5252], dotColor: 'var(--orange-50)', score: '68점', sub: '불법주차 14 · 기타 4' },
+  { rank: 8,  name: '한림해수욕장 근처',      region: '한림읍',   c: [33.4140, 126.2692], dotColor: 'var(--orange-50)', score: '65점', sub: '불법주차 12 · 기타 6' },
+  { rank: 9,  name: '서귀포 올레시장 인근',   region: '서귀포시', c: [33.2500, 126.5630], dotColor: 'var(--orange-50)', score: '60점', sub: '불법주차 9 · 기타 6' },
+  { rank: 10, name: '이중섭 거리 주변',       region: '서귀포시', c: [33.2465, 126.5655], dotColor: 'var(--blue-50)',   score: '55점', sub: '불법주차 7 · 기타 6' },
+  { rank: 11, name: '한라산 국립공원 입구',   region: '오등동',   c: [33.4335, 126.5490], dotColor: 'var(--blue-50)',   score: '52점', sub: '불법주차 8 · 기타 3' },
+  { rank: 12, name: '삼성혈 인근',            region: '이도동',   c: [33.5052, 126.5295], dotColor: 'var(--blue-50)',   score: '47점', sub: '불법주차 6 · 기타 3' },
+  { rank: 13, name: '용담 해안도로 주변',     region: '용담동',   c: [33.5162, 126.5118], dotColor: 'var(--blue-50)',   score: '43점', sub: '불법주차 4 · 기타 3' },
 ];
 
-const CLUSTERS = [
-  { name: '노형사거리',      c: [33.4790, 126.4760], rank: 1, region: '노형동', badge: 'severe',  complaints: 51, enforce: 32 },
-  { name: '연동대로변',      c: [33.4866, 126.4900], rank: 2, region: '연동',   badge: 'severe',  complaints: 48, enforce: 30 },
-  { name: '이도2동 상업지구', c: [33.4995, 126.5320], rank: 3, region: '이도동', badge: 'warn',    complaints: 45, enforce: 28 },
-  { name: '제주공항 인근',   c: [33.5070, 126.4930], rank: 4, region: '용담동', badge: 'warn',    complaints: 38, enforce: 24 },
-  { name: '동문시장 주변',   c: [33.5130, 126.5270], rank: 5, region: '일도동', badge: 'warn',    complaints: 34, enforce: 22 },
-  { name: '아라동 주변',     c: [33.4560, 126.5470], rank: 6, region: '아라동', badge: 'caution', complaints: 30, enforce: 20 },
-];
-
-const BADGE_COLOR = { severe: 'var(--red-50)', warn: 'var(--orange-50)', caution: 'var(--blue-50)' };
-const BADGE_TEXT  = { severe: '심각', warn: '경고', caution: '주의' };
+const DOT_BADGE = { 'var(--red-50)': 'severe', 'var(--orange-50)': 'warn', 'var(--blue-50)': 'caution' };
+const BADGE_TEXT = { severe: '심각', warn: '경고', caution: '주의' };
 
 function makePinHtml(rank, fillColor, name) {
   const pin = `<svg class="cmk__flag" width="44" height="56" viewBox="0 0 44 56" fill="none">
@@ -110,29 +102,29 @@ export default function HotspotAnalysis() {
     map.attributionControl.setPosition('bottomleft');
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, opacity: 0.92, attribution: '© OpenStreetMap' }).addTo(map);
 
-    CLUSTERS.forEach(cl => {
-      const fill = resolveColor(BADGE_COLOR[cl.badge]);
+    RANKING.forEach((r) => {
+      const badge = DOT_BADGE[r.dotColor] ?? 'caution';
+      const fill = resolveColor(r.dotColor);
       const icon = L.divIcon({
         className: 'cmk',
         iconSize: [44, 56],
         iconAnchor: [22, 54],
-        html: makePinHtml(cl.rank, fill, cl.name),
+        html: makePinHtml(r.rank, fill, r.name),
       });
-      const badgeLabel = BADGE_TEXT[cl.badge];
       const popup = `<div class="gp">
         <div class="gp__h">
-          <span class="badge badge--${cl.badge}">${badgeLabel}</span>
-          <span class="gp__loc">${cl.region}</span>
+          <span class="badge badge--${badge}">${BADGE_TEXT[badge]}</span>
+          <span class="gp__loc">${r.region}</span>
         </div>
-        <div class="gp__big">${cl.name}</div>
-        <div class="gp__bd"><span>민원건수 <b>${cl.complaints}건</b></span><span>단속 <b>${cl.enforce}건</b></span></div>
+        <div class="gp__big">${r.name}</div>
+        <div class="gp__bd"><span>종합점수 <b>${r.score}</b></span><span>${r.sub}</span></div>
       </div>`;
-      const m = L.marker(cl.c, { icon, riseOnHover: true })
+      const m = L.marker(r.c, { icon, riseOnHover: true })
         .bindPopup(popup, { closeButton: false, offset: [0, -48] })
         .addTo(map);
-      m.on('click', () => setActiveRow(cl.rank));
-      m.on('popupopen', () => setActiveRow(cl.rank));
-      markerMap.current[cl.rank] = m;
+      m.on('click', () => setActiveRow(r.rank));
+      m.on('popupopen', () => setActiveRow(r.rank));
+      markerMap.current[r.rank] = m;
     });
 
     setTimeout(() => map.invalidateSize(), 250);
@@ -140,12 +132,13 @@ export default function HotspotAnalysis() {
     mapInst.current = map;
   }, []);
 
+  /* 목록 행 선택 → 지도를 해당 위치로 확대(줌 15)·중심 이동 후 팝업 표시 */
   const handleRowClick = (rank) => {
     setActiveRow(rank);
     const m = markerMap.current[rank];
     if (m && mapInst.current) {
-      mapInst.current.panTo(m.getLatLng(), { animate: true, duration: 0.5 });
-      m.openPopup();
+      mapInst.current.flyTo(m.getLatLng(), 15, { duration: 0.8 });
+      mapInst.current.once('moveend', () => m.openPopup());
     }
   };
 
