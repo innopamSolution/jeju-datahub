@@ -72,6 +72,43 @@ const SENTIMENT_REGIONS = [
 ];
 
 /* hotspot·enforce·demand는 겹치면 혼란스러워 셋 중 하나만 노출(라디오) */
+/* 레이어별 우측 순위 카드 데이터 — 지도 레이어 선택과 연동 */
+const ENFORCE_REGIONS = [
+  { rank: 1,  name: '연동동',  dotColor: 'var(--red-50)',    value: '32건', delta: '▲5%', deltaClass: 't-up',   sub: '민원 52건 대비' },
+  { rank: 2,  name: '노형동',  dotColor: 'var(--orange-50)', value: '30건', delta: '▲3%', deltaClass: 't-up',   sub: '민원 38건 대비' },
+  { rank: 3,  name: '이도동',  dotColor: 'var(--orange-50)', value: '28건', delta: '▼2%', deltaClass: 't-down', sub: '민원 29건 대비' },
+  { rank: 4,  name: '아라동',  dotColor: 'var(--blue-50)',   value: '20건', delta: '▲4%', deltaClass: 't-up',   sub: '민원 21건 대비' },
+  { rank: 5,  name: '일도동',  dotColor: 'var(--blue-50)',   value: '18건', delta: '—',   deltaClass: 't-flat', sub: '민원 17건 대비' },
+  { rank: 6,  name: '삼도동',  dotColor: 'var(--green-50)',  value: '15건', delta: '▼1%', deltaClass: 't-down', sub: '민원 10건 대비' },
+  { rank: 7,  name: '화북동',  dotColor: 'var(--green-50)',  value: '12건', delta: '▲2%', deltaClass: 't-up',   sub: '민원 8건 대비' },
+  { rank: 8,  name: '용담동',  dotColor: 'var(--green-50)',  value: '10건', delta: '—',   deltaClass: 't-flat', sub: '민원 2건 대비' },
+  { rank: 9,  name: '이도2동', dotColor: 'var(--green-50)',  value: '9건',  delta: '▲1%', deltaClass: 't-up',   sub: '민원 9건 대비' },
+  { rank: 10, name: '외도동',  dotColor: 'var(--green-50)',  value: '7건',  delta: '▼1%', deltaClass: 't-down', sub: '민원 4건 대비' },
+];
+
+const DEMAND_REGIONS = [
+  { rank: 1,  name: '아라동',  dotColor: 'var(--red-50)',    value: '부족률 72%', delta: '▲4%p', deltaClass: 't-up',   sub: '수요 58대 · 공급 16면' },
+  { rank: 2,  name: '삼도동',  dotColor: 'var(--orange-50)', value: '부족률 45%', delta: '▲2%p', deltaClass: 't-up',   sub: '수요 31대 · 공급 17면' },
+  { rank: 3,  name: '연동동',  dotColor: 'var(--orange-50)', value: '부족률 41%', delta: '▼1%p', deltaClass: 't-down', sub: '수요 46대 · 공급 27면' },
+  { rank: 4,  name: '화북동',  dotColor: 'var(--blue-50)',   value: '부족률 33%', delta: '—',    deltaClass: 't-flat', sub: '수요 27대 · 공급 18면' },
+  { rank: 5,  name: '노형동',  dotColor: 'var(--blue-50)',   value: '부족률 28%', delta: '▲1%p', deltaClass: 't-up',   sub: '수요 39대 · 공급 28면' },
+  { rank: 6,  name: '이도동',  dotColor: 'var(--green-50)',  value: '부족률 24%', delta: '▼2%p', deltaClass: 't-down', sub: '수요 33대 · 공급 25면' },
+  { rank: 7,  name: '외도동',  dotColor: 'var(--green-50)',  value: '부족률 21%', delta: '—',    deltaClass: 't-flat', sub: '수요 19대 · 공급 15면' },
+  { rank: 8,  name: '봉개동',  dotColor: 'var(--green-50)',  value: '부족률 18%', delta: '▼1%p', deltaClass: 't-down', sub: '수요 17대 · 공급 14면' },
+  { rank: 9,  name: '오라동',  dotColor: 'var(--green-50)',  value: '부족률 15%', delta: '—',    deltaClass: 't-flat', sub: '수요 13대 · 공급 11면' },
+  { rank: 10, name: '용담동',  dotColor: 'var(--green-50)',  value: '부족률 12%', delta: '▲1%p', deltaClass: 't-up',   sub: '수요 12대 · 공급 11면' },
+];
+
+/* 지도 레이어(라디오)와 우측 첫 번째 순위 카드 연동 구성 */
+const RANK_MODES = {
+  hotspot: {
+    title: '읍·면·동 민원 순위', sub: '읍·면·동 기준 집계',
+    rows: REGIONS.map((r) => ({ rank: r.rank, name: r.name, dotColor: r.dotColor, value: `${r.count}건`, delta: r.delta, deltaClass: r.deltaClass, sub: `${r.topType} ${r.topPct}%` })),
+  },
+  enforce: { title: '읍·면·동 단속 순위',   sub: '읍·면·동 기준 단속 실적', rows: ENFORCE_REGIONS },
+  demand:  { title: '읍·면·동 수요부족 순위', sub: '읍·면·동 기준 수요·공급 격차', rows: DEMAND_REGIONS },
+};
+
 const LAYER_RADIO_DEFS = [
   { key: 'hotspot', label: '민원 다발 지역', defaultOn: true  },
   { key: 'enforce', label: '단속 집중 지역', defaultOn: false },
@@ -378,10 +415,17 @@ export default function Complaints() {
   const exportRef = useRef(null);
 
   const toggleLayer = (key) => setLayers((prev) => ({ ...prev, [key]: !prev[key] }));
-  const selectRadioLayer = (key) => setLayers((prev) => ({
+  /* 현재 선택된 라디오 레이어에 맞는 순위 카드 구성 */
+  const activeRadio = LAYER_RADIO_DEFS.find((d) => layers[d.key])?.key ?? 'hotspot';
+  const rankMode = RANK_MODES[activeRadio];
+
+  const selectRadioLayer = (key) => {
+    setRegionsExpanded(false);
+    setLayers((prev) => ({
     ...prev,
     ...Object.fromEntries(LAYER_RADIO_DEFS.map((d) => [d.key, d.key === key])),
   }));
+  };
 
   useEffect(() => {
     if (!exportOpen) return;
@@ -654,16 +698,16 @@ export default function Complaints() {
           {/* 사이드 컬럼 */}
           <div className="side-col">
 
-            {/* 지역별 민원 현황 */}
+            {/* 레이어 연동 순위 카드 — 민원 다발/단속 집중/수요 부족 선택에 따라 전환 */}
             <div className="card hotspots">
               <div className="card-head">
                 <div>
-                  <h2 className="card-head__title">지역별 민원 현황</h2>
-                  <p className="card-head__sub">읍·면·동 기준 집계</p>
+                  <h2 className="card-head__title">{rankMode.title}</h2>
+                  <p className="card-head__sub">{rankMode.sub}</p>
                 </div>
               </div>
               <div className="rl">
-                {(regionsExpanded ? REGIONS : REGIONS.slice(0, 5)).map((r) => (
+                {(regionsExpanded ? rankMode.rows : rankMode.rows.slice(0, 5)).map((r) => (
                   <div key={r.rank} className="rl__row">
                     <span className="rl__rank">{r.rank}</span>
                     <div className="rl__main">
@@ -673,18 +717,18 @@ export default function Complaints() {
                           {r.name}
                         </span>
                         <span className="rl__val">
-                          <span className="rl__cnt">{r.count}건</span>
+                          <span className="rl__cnt">{r.value}</span>
                           <span className={`rl__delta ${r.deltaClass}`}>{r.delta}</span>
                         </span>
                       </div>
-                      <span className="rl__sub">{r.topType} {r.topPct}%</span>
+                      <span className="rl__sub">{r.sub}</span>
                     </div>
                   </div>
                 ))}
               </div>
-              {REGIONS.length > 5 && (
+              {rankMode.rows.length > 5 && (
                 <button className="card-link" type="button" style={{ width: '100%', justifyContent: 'center', color: 'var(--text-alternative)' }} onClick={() => setRegionsExpanded((v) => !v)}>
-                  {regionsExpanded ? '접기' : `더보기 (${REGIONS.length - 5})`} <Icon name="chevron-down" size={16} style={{ color: 'var(--text-alternative)', ...(regionsExpanded ? { transform: 'rotate(180deg)' } : null) }} />
+                  {regionsExpanded ? '접기' : `더보기 (${rankMode.rows.length - 5})`} <Icon name="chevron-down" size={16} style={{ color: 'var(--text-alternative)', ...(regionsExpanded ? { transform: 'rotate(180deg)' } : null) }} />
                 </button>
               )}
             </div>
