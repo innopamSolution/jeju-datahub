@@ -459,15 +459,15 @@ export default function Complaints() {
       {
         type: 'chart',
         title: '지역별 민원 건수',
-        html: hBarChartHtml(REGIONS.map((r) => ({
-          label: r.name, value: r.count, valueLabel: `${r.count}건`, color: r.dotColor,
+        html: hBarChartHtml(RANK_MODES.hotspot.rows.map((r) => ({
+          label: r.name, value: parseInt(r.value, 10), valueLabel: r.value, color: r.dotColor,
         }))),
       },
       {
         type: 'table',
         title: '읍·면·동 민원 순위',
         columns: ['순위', '지역', '민원 건수', '전기 대비', '주요 유형'],
-        rows: REGIONS.map((r) => [r.rank, r.name, `${r.count}건`, r.delta, `${r.topType} ${r.topPct}%`]),
+        rows: RANK_MODES.hotspot.rows.map((r) => [r.rank, r.name, r.value, r.delta, r.sub]),
       },
       {
         type: 'table',
