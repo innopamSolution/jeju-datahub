@@ -171,7 +171,7 @@ function GisMap({ layerState, baseMap }) {
       { name: '삼도동', c: [33.5120, 126.5210], count: 10, level: '주의',    color: COLORS.caution, illegal: 7,  etc: 3  },
     ];
 
-    const parking = SEOGWIPO_PARKING;
+    const parking = [...JEJU_PARKING, ...SEOGWIPO_PARKING];
 
     const map = L.map(ref.current, { zoomControl: false, attributionControl: true })
       .setView([33.486, 126.512], 13);
