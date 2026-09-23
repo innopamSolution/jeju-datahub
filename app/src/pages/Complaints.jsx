@@ -9,6 +9,7 @@ import Icon from '../components/Icon';
 import DsSelect from '../components/DsSelect';
 import NotificationBell from '../components/NotificationBell';
 import { SEOGWIPO_PARKING } from '../data/seogwipoParking';
+import { JEJU_PARKING } from '../data/jejuParking';
 import { exportSectionsPdf, exportSectionsDocx, hBarChartHtml, stackBarChartHtml } from '../utils/pageExport';
 
 const FROWN_ICON = (
