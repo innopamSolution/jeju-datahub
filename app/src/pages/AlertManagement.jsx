@@ -165,7 +165,7 @@ export default function AlertManagement() {
           <div className="card recv-card">
             <div className="recv-card__head">
               <h2 className="card-head__title">수신자 관리</h2>
-              <button className="btn-edit" type="button" onClick={() => setAddOpen(true)}>＋ 수신자 추가</button>
+              <button className="btn-edit" type="button" onClick={() => { resetAddForm(); setAddOpen(true); }}>＋ 수신자 추가</button>
             </div>
             <div className="rt-wrap">
               <table className="rt">
