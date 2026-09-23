@@ -110,6 +110,7 @@ export default function AlertManagement() {
   };
 
   const resetAddForm = () => {
+    setAddFromList(false);
     setAddDept('주차관리'); setAddUser('');
     setAddCity('전체'); setAddDong('전체');
     setAddGroups({ severe: true, warn: false, caution: false });
