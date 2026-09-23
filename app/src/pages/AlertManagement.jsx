@@ -248,33 +248,50 @@ export default function AlertManagement() {
               </button>
             </div>
             <div className="modal__body">
-              <p className="crit-card__sub" style={{ marginTop: 0, marginBottom: 16 }}>시스템 알림에 대한 수신자 설정입니다.</p>
-              <div className="form-field">
-                <label className="form-field__label">소속</label>
-                <div className="ds-select form-field__select">
-                  <select aria-label="소속" value={addDept}
-                    onChange={(e) => { setAddDept(e.target.value); setAddUser(''); }}>
-                    {Object.keys(DEPT_USERS).map((d) => <option key={d} value={d}>{d}</option>)}
-                  </select>
-                  <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
-                </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+                <p className="crit-card__sub" style={{ margin: 0 }}>시스템 알림에 대한 수신자 설정입니다.</p>
+                <button className="btn" type="button" style={{ height: 32, padding: '0 12px', fontSize: 13 }}
+                  onClick={() => { setAddFromList((v) => !v); setAddUser(''); }}>
+                  {addFromList ? '내 정보로 입력' : '사용자 목록 불러오기'}
+                </button>
               </div>
-              <div className="form-field">
-                <label className="form-field__label">사용자</label>
-                <div className="ds-select form-field__select">
-                  <select aria-label="사용자" value={addUser} onChange={(e) => setAddUser(e.target.value)}>
-                    <option value="">사용자 선택</option>
-                    {(DEPT_USERS[addDept] ?? []).map((u) => <option key={u.name} value={u.name}>{u.name}</option>)}
-                  </select>
-                  <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
-                </div>
-              </div>
-              <div className="form-field">
-                <label className="form-field__label">이메일</label>
-                <input type="email" className="form-inp" value={addEmail} readOnly
-                  placeholder="사용자를 선택하면 자동 입력됩니다"
-                  style={{ color: addEmail ? undefined : 'var(--text-assistive)', background: 'var(--fill-normal)' }} />
-              </div>
+              {addFromList ? (
+                <>
+                  <div className="form-field">
+                    <label className="form-field__label">소속</label>
+                    <div className="ds-select form-field__select">
+                      <select aria-label="소속" value={addDept}
+                        onChange={(e) => { setAddDept(e.target.value); setAddUser(''); }}>
+                        {Object.keys(DEPT_USERS).map((d) => <option key={d} value={d}>{d}</option>)}
+                      </select>
+                      <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
+                    </div>
+                  </div>
+                  <div className="form-field">
+                    <label className="form-field__label">사용자</label>
+                    <div className="ds-select form-field__select">
+                      <select aria-label="사용자" value={addUser} onChange={(e) => setAddUser(e.target.value)}>
+                        <option value="">사용자 선택</option>
+                        {(DEPT_USERS[addDept] ?? []).map((u) => <option key={u.name} value={u.name}>{u.name}</option>)}
+                      </select>
+                      <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="form-field">
+                    <label className="form-field__label">사용자명</label>
+                    <input type="text" className="form-inp" value={CURRENT_USER.name} readOnly
+                      style={{ background: 'var(--fill-normal)' }} />
+                  </div>
+                  <div className="form-field">
+                    <label className="form-field__label">부서</label>
+                    <input type="text" className="form-inp" value={CURRENT_USER.dept} readOnly
+                      style={{ background: 'var(--fill-normal)' }} />
+                  </div>
+                </>
+              )}
               <div className="form-field">
                 <label className="form-field__label">지역</label>
                 <div style={{ display: 'flex', gap: 8 }}>
