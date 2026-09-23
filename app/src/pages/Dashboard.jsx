@@ -455,7 +455,7 @@ export default function Dashboard() {
           <div className="region-head">
             <div>
               <h2 className="section-title">읍·면·동 민원 순위</h2>
-              <p className="section-sub">민원 건수 · 전기 대비 변화 비교</p>
+              <p className="section-sub">민원 건수 · 전기 대비 변화 비교 · 민원 유형별 분포</p>
             </div>
             <Link to="/complaints" className="card-link">자세히 보기 <Icon name="chevron-right" size={16} /></Link>
           </div>
