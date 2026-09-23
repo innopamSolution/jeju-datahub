@@ -87,9 +87,14 @@ export default function AlertManagement() {
   const [addDong, setAddDong] = useState('전체');
   const [recvPage, setRecvPage] = useState(1);
   const [addGroups, setAddGroups] = useState({ severe: true, warn: false, caution: false });
+  /* 기본 정보는 로그인 사용자가 디폴트, 상단 버튼으로 사용자 목록에서 불러올 수 있다 */
+  const [addFromList, setAddFromList] = useState(false);
   const [addDept, setAddDept] = useState('주차관리');
   const [addUser, setAddUser] = useState('');
-  const addEmail = DEPT_USERS[addDept]?.find((u) => u.name === addUser)?.email ?? '';
+  const listEmail = DEPT_USERS[addDept]?.find((u) => u.name === addUser)?.email ?? '';
+  const addName = addFromList ? addUser : CURRENT_USER.name;
+  const addDeptFinal = addFromList ? addDept : CURRENT_USER.dept;
+  const addEmail = addFromList ? listEmail : CURRENT_USER.email;
 
   /* 알림 단계는 누적 구조: 아래 단계(주의)를 켜면 윗 단계(경고·심각)가 자동 선택되고,
      윗 단계를 끄면 그 아래 단계도 함께 해제된다 (항상 심각부터 연속 선택 유지) */
