@@ -117,10 +117,10 @@ export default function AlertManagement() {
   };
 
   const submitAdd = () => {
-    if (!addUser) return;
+    if (addFromList && !addUser) return;
     const groups = CRIT_LEVELS.map((c) => c.key).filter((k) => addGroups[k]);
     const region = addCity === '전체' ? '전체 지역' : `${addCity} ${addDong === '전체' ? '전체' : addDong}`;
-    setReceivers((rs) => [...rs, { dept: addDept, name: addUser, email: addEmail, region, groups, on: true }]);
+    setReceivers((rs) => [...rs, { dept: addDeptFinal, name: addName, email: addEmail, region, groups, on: true }]);
     setAddOpen(false);
     resetAddForm();
   };
