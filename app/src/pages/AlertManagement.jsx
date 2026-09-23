@@ -326,8 +326,8 @@ export default function AlertManagement() {
             </div>
             <div className="modal__foot modal__foot--split">
               <button className="btn" type="button" style={{ height: 44 }} onClick={() => setAddOpen(false)}>취소</button>
-              <button className="btn-save" type="button" disabled={!addUser}
-                style={!addUser ? { opacity: 0.4, cursor: 'not-allowed' } : undefined}
+              <button className="btn-save" type="button" disabled={addFromList && !addUser}
+                style={addFromList && !addUser ? { opacity: 0.4, cursor: 'not-allowed' } : undefined}
                 onClick={submitAdd}>추가</button>
             </div>
           </div>
