@@ -434,7 +434,7 @@ export default function Dashboard() {
                 <h2 className="card-head__title">불법주차 집중구역 순위</h2>
                 <p className="card-head__sub">최근 1개월 기준</p>
               </div>
-              <Link to="/analysis/hotspot" className="card-link">GIS 보기 <Icon name="chevron-right" size={16} /></Link>
+              <Link to="/analysis/hotspot" className="card-link">자세히 보기 <Icon name="chevron-right" size={16} /></Link>
             </div>
             <div className="hot-list">
               {HOTSPOTS.map((h) => (
@@ -457,7 +457,7 @@ export default function Dashboard() {
               <h2 className="section-title">읍·면·동 민원 순위</h2>
               <p className="section-sub">어제 민원 건수 · 순위 · 전기 대비 변화 비교</p>
             </div>
-            <Link to="/complaints" className="card-link">GIS 보기 <Icon name="chevron-right" size={16} /></Link>
+            <Link to="/complaints" className="card-link">자세히 보기 <Icon name="chevron-right" size={16} /></Link>
           </div>
           <div className="region-row">
             {REGIONS.map((r) => (
