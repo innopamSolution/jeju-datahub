@@ -74,7 +74,7 @@ const SENTIMENT_REGIONS = [
 /* hotspot·enforce·demand는 겹치면 혼란스러워 셋 중 하나만 노출(라디오) */
 /* 레이어별 우측 순위 카드 데이터 — 지도 레이어 선택과 연동 */
 const ENFORCE_REGIONS = [
-  { rank: 1,  name: '연동동',  dotColor: 'var(--red-50)',    value: '32건', delta: '▲5%', deltaClass: 't-up',   sub: '민원 52건 대비' },
+  { rank: 1,  name: '연동',  dotColor: 'var(--red-50)',    value: '32건', delta: '▲5%', deltaClass: 't-up',   sub: '민원 52건 대비' },
   { rank: 2,  name: '노형동',  dotColor: 'var(--orange-50)', value: '30건', delta: '▲3%', deltaClass: 't-up',   sub: '민원 38건 대비' },
   { rank: 3,  name: '이도동',  dotColor: 'var(--orange-50)', value: '28건', delta: '▼2%', deltaClass: 't-down', sub: '민원 29건 대비' },
   { rank: 4,  name: '아라동',  dotColor: 'var(--blue-50)',   value: '20건', delta: '▲4%', deltaClass: 't-up',   sub: '민원 21건 대비' },
@@ -89,7 +89,7 @@ const ENFORCE_REGIONS = [
 const DEMAND_REGIONS = [
   { rank: 1,  name: '아라동',  dotColor: 'var(--red-50)',    value: '부족률 72%', delta: '▲4%p', deltaClass: 't-up',   sub: '수요 58대 · 공급 16면' },
   { rank: 2,  name: '삼도동',  dotColor: 'var(--orange-50)', value: '부족률 45%', delta: '▲2%p', deltaClass: 't-up',   sub: '수요 31대 · 공급 17면' },
-  { rank: 3,  name: '연동동',  dotColor: 'var(--orange-50)', value: '부족률 41%', delta: '▼1%p', deltaClass: 't-down', sub: '수요 46대 · 공급 27면' },
+  { rank: 3,  name: '연동',  dotColor: 'var(--orange-50)', value: '부족률 41%', delta: '▼1%p', deltaClass: 't-down', sub: '수요 46대 · 공급 27면' },
   { rank: 4,  name: '화북동',  dotColor: 'var(--blue-50)',   value: '부족률 33%', delta: '—',    deltaClass: 't-flat', sub: '수요 27대 · 공급 18면' },
   { rank: 5,  name: '노형동',  dotColor: 'var(--blue-50)',   value: '부족률 28%', delta: '▲1%p', deltaClass: 't-up',   sub: '수요 39대 · 공급 28면' },
   { rank: 6,  name: '이도동',  dotColor: 'var(--green-50)',  value: '부족률 24%', delta: '▼2%p', deltaClass: 't-down', sub: '수요 33대 · 공급 25면' },
