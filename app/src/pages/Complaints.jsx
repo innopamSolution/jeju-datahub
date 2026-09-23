@@ -465,9 +465,21 @@ export default function Complaints() {
       },
       {
         type: 'table',
-        title: '지역별 민원 현황',
+        title: '읍·면·동 민원 순위',
         columns: ['순위', '지역', '민원 건수', '전기 대비', '주요 유형'],
         rows: REGIONS.map((r) => [r.rank, r.name, `${r.count}건`, r.delta, `${r.topType} ${r.topPct}%`]),
+      },
+      {
+        type: 'table',
+        title: '읍·면·동 단속 순위',
+        columns: ['순위', '지역', '단속 건수', '전기 대비', '세부 내역'],
+        rows: RANK_MODES.enforce.rows.map((r) => [r.rank, r.name, r.value, r.delta, r.sub]),
+      },
+      {
+        type: 'table',
+        title: '읍·면·동 수요부족 순위',
+        columns: ['순위', '지역', '부족률', '전기 대비', '세부 내역'],
+        rows: RANK_MODES.demand.rows.map((r) => [r.rank, r.name, r.value, r.delta, r.sub]),
       },
       {
         type: 'chart',
