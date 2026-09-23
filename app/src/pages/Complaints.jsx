@@ -105,7 +105,7 @@ const RANK_MODES = {
     title: '읍·면·동 민원 순위', sub: '민원 건수 집계',
     rows: REGIONS.map((r) => ({ rank: r.rank, name: r.name, dotColor: r.dotColor, value: `${r.count}건`, delta: r.delta, deltaClass: r.deltaClass, sub: `${r.topType} ${r.topPct}%` })),
   },
-  enforce: { title: '읍·면·동 단속 순위',   sub: '단속 건수 집계', rows: ENFORCE_REGIONS },
+  enforce: { title: '읍·면·동 단속 순위',   sub: '불법주차 단속 건수 집계', rows: ENFORCE_REGIONS },
   demand:  { title: '읍·면·동 수요부족 순위', sub: '주차 수요·공급 부족률 기준', rows: DEMAND_REGIONS },
 };
 
