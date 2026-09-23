@@ -102,11 +102,11 @@ const DEMAND_REGIONS = [
 /* 지도 레이어(라디오)와 우측 첫 번째 순위 카드 연동 구성 */
 const RANK_MODES = {
   hotspot: {
-    title: '읍·면·동 민원 순위', sub: '읍·면·동 기준 집계',
+    title: '읍·면·동 민원 순위', sub: '민원 건수 집계',
     rows: REGIONS.map((r) => ({ rank: r.rank, name: r.name, dotColor: r.dotColor, value: `${r.count}건`, delta: r.delta, deltaClass: r.deltaClass, sub: `${r.topType} ${r.topPct}%` })),
   },
-  enforce: { title: '읍·면·동 단속 순위',   sub: '읍·면·동 기준 단속 실적', rows: ENFORCE_REGIONS },
-  demand:  { title: '읍·면·동 수요부족 순위', sub: '읍·면·동 기준 수요·공급 격차', rows: DEMAND_REGIONS },
+  enforce: { title: '읍·면·동 단속 순위',   sub: '단속 건수 집계', rows: ENFORCE_REGIONS },
+  demand:  { title: '읍·면·동 수요부족 순위', sub: '주차 수요·공급 부족률 기준', rows: DEMAND_REGIONS },
 };
 
 const LAYER_RADIO_DEFS = [
