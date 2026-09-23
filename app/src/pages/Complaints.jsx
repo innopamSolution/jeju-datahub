@@ -266,6 +266,7 @@ function GisMap({ layerState, baseMap }) {
           <b style="font-size:15px;color:#171717">${p.name}</b>
           <div style="margin-top:8px;font-size:13px;color:#70737c">주소: <b style="color:#171717">${p.addr}</b></div>
           <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;color:#70737c;border-top:1px solid rgba(112,115,124,0.08);margin-top:6px">행정동<b style="color:#171717">${p.dong}</b></div>
+          ${p.type ? `<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;color:#70737c;border-top:1px solid rgba(112,115,124,0.08)">주차장 유형<b style="color:#171717">${p.type}</b></div>` : ''}
           <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;color:#70737c;border-top:1px solid rgba(112,115,124,0.08)">주차 면수<b style="color:#171717">${p.spaces}면</b></div>
           <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;color:#70737c;border-top:1px solid rgba(112,115,124,0.08)">요금<b style="color:${feeBadge}">${p.fee}</b></div>
         </div>`)
