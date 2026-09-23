@@ -99,14 +99,24 @@ const DEMAND_REGIONS = [
   { rank: 10, name: '용담동',  dotColor: 'var(--green-50)',  value: '부족률 12%', delta: '▲1%p', deltaClass: 't-up',   sub: '수요 12대 · 공급 11면' },
 ];
 
-/* 지도 레이어(라디오)와 우측 첫 번째 순위 카드 연동 구성 */
+const LEGEND_ITEMS = [
+  { label: '심각 (상위 10%)',    color: 'var(--red-50)'    },
+  { label: '경고 (상위 10~25%)', color: 'var(--orange-50)' },
+  { label: '주의 (상위 25~50%)', color: 'var(--blue-50)'   },
+];
+
+/* 지도 레이어(라디오)와 우측 첫 번째 순위 카드 연동 구성.
+   범례에 있는 등급(심각·경고·주의)만 목록에 노출 — 범례 밖 등급은 제외 */
+const LEGEND_COLORS = LEGEND_ITEMS.map((i) => i.color);
+const inLegend = (rows) => rows.filter((r) => LEGEND_COLORS.includes(r.dotColor));
+
 const RANK_MODES = {
   hotspot: {
     title: '읍·면·동 민원 순위', sub: '민원 건수 집계',
-    rows: REGIONS.map((r) => ({ rank: r.rank, name: r.name, dotColor: r.dotColor, value: `${r.count}건`, delta: r.delta, deltaClass: r.deltaClass, sub: `${r.topType} ${r.topPct}%` })),
+    rows: inLegend(REGIONS.map((r) => ({ rank: r.rank, name: r.name, dotColor: r.dotColor, value: `${r.count}건`, delta: r.delta, deltaClass: r.deltaClass, sub: `${r.topType} ${r.topPct}%` }))),
   },
-  enforce: { title: '읍·면·동 단속 순위',   sub: '불법주차 단속 건수 집계', rows: ENFORCE_REGIONS },
-  demand:  { title: '읍·면·동 수요부족 순위', sub: '주차 수요·공급 부족률 기준', rows: DEMAND_REGIONS },
+  enforce: { title: '읍·면·동 단속 순위',   sub: '불법주차 단속 건수 집계', rows: inLegend(ENFORCE_REGIONS) },
+  demand:  { title: '읍·면·동 수요부족 순위', sub: '주차 수요·공급 부족률 기준', rows: inLegend(DEMAND_REGIONS) },
 };
 
 const LAYER_RADIO_DEFS = [
@@ -123,12 +133,6 @@ const LAYER_TOGGLE_DEFS = [
 const LAYER_DEFS = [...LAYER_RADIO_DEFS, ...LAYER_TOGGLE_DEFS];
 
 /* 민원 건수 상위 백분위 기준 단계 구분 */
-const LEGEND_ITEMS = [
-  { label: '심각 (상위 10%)',    color: 'var(--red-50)'    },
-  { label: '경고 (상위 10~25%)', color: 'var(--orange-50)' },
-  { label: '주의 (상위 25~50%)', color: 'var(--blue-50)'   },
-];
-
 /* 민원 감정 3분할 바 (긍정/보통/부정) */
 function SentiBar({ pos, neu, neg, width = 120, height = 6 }) {
   return (
