@@ -451,11 +451,11 @@ export default function Dashboard() {
           <div className="card trend">
             <div className="card-head">
               <div>
-                <h2 className="card-head__title">민원 발생 추이 <span className="card-head__note">(어제 · 전체 유형)</span></h2>
+                <h2 className="card-head__title">민원 발생 추이 <span className="card-head__note">({period === '주간' ? '주간 · 일별' : period === '월간' ? '월간 · 주별' : '어제 · 시간대별'} · 전체 유형)</span></h2>
                 <p className="card-head__sub">기간별 민원 건수 및 유형별 분포</p>
               </div>
             </div>
-            <TrendChart />
+            <TrendChart period={period} />
             <div className="legend">
               <span className="legend__item"><span className="dot" style={{ background: 'var(--series-illegal)' }} />인도·횡단보도 점유</span>
               <span className="legend__item"><span className="dot" style={{ background: 'var(--series-double)' }} />안전시설 인근 위반</span>
