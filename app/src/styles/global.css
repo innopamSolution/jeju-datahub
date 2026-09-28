@@ -372,6 +372,48 @@ a { color: inherit; text-decoration: none; }
 
 .topbar__actions { display: flex; align-items: center; gap: var(--space-12); flex-shrink: 0; }
 
+/* 데이터 기준일 안내 (헤더 서브 문구의 ⓘ 호버 팝오버) */
+.freshness { display: inline-flex; align-items: center; gap: 4px; }
+.freshness__ic {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--text-assistive);
+  cursor: help;
+}
+.freshness__ic:hover, .freshness__ic:focus-visible { color: var(--text-neutral); }
+.freshness__pop {
+  position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+  z-index: 60;
+  display: none;
+  flex-direction: column; gap: 8px;
+  min-width: 320px;
+  padding: 16px;
+  background: var(--background-normal);
+  border: 1px solid var(--line-alternative);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(23, 23, 25, 0.12);
+}
+.freshness__ic:hover .freshness__pop, .freshness__ic:focus-visible .freshness__pop { display: flex; }
+.freshness__pop-title {
+  font-size: var(--label1-size);
+  font-weight: var(--weight-bold);
+  color: var(--text-strong);
+}
+.freshness__table { border-collapse: collapse; width: 100%; }
+.freshness__table th {
+  padding: 4px 8px;
+  font-size: 12px; font-weight: var(--weight-medium);
+  color: var(--text-assistive);
+  text-align: left; white-space: nowrap;
+  border-bottom: 1px solid var(--line-alternative);
+}
+.freshness__table td {
+  padding: 4px 8px;
+  font-size: 13px; color: var(--text-neutral);
+  white-space: nowrap;
+}
+.freshness__table td:first-child { color: var(--text-strong); }
+
 .btn {
   display: inline-flex;
   align-items: center;
