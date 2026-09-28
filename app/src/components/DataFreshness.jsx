@@ -14,7 +14,11 @@ export default function DataFreshness() {
     <p className="page-sub freshness">
       최근 갱신 2025.12.01 · 14:32
       <span className="freshness__ic" tabIndex={0} aria-label="데이터 기준일 안내">
-        <Icon name="info" size={14} />
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+          <circle cx="12" cy="8" r="1.3" fill="currentColor" />
+          <path d="M12 11.5v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
         <span className="freshness__pop" role="tooltip">
           <span className="freshness__pop-title">데이터 기준일</span>
           <table className="freshness__table">
