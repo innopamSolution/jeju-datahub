@@ -114,7 +114,7 @@ function rgba(color, a) {
   });
 }
 
-function TrendChart() {
+function TrendChart({ period = '어제' }) {
   const hostRef = useRef(null);
   const chartRef = useRef(null);
 
