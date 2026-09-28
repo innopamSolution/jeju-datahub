@@ -5,6 +5,7 @@ import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
 import { exportSectionsPdf, exportSectionsDocx, hBarChartHtml, toPngDataUrl } from '../utils/pageExport';
 import DsSelect from '../components/DsSelect';
+import DataFreshness from '../components/DataFreshness';
 import './Dashboard.css';
 
 const HOTSPOTS = [
