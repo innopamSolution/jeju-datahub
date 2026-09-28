@@ -217,7 +217,7 @@ function TrendChart() {
         axisLabel: { color: cAxis, fontSize: 12, fontFamily: fontBody, margin: 12 },
       },
       yAxis: {
-        type: 'value', min: 0, max: 60, interval: 15,
+        type: 'value', min: 0, max: pd.yMax, interval: pd.yInterval,
         axisLine: { show: false }, axisTick: { show: false },
         splitLine: { lineStyle: { color: cGrid, type: 'solid' } },
         axisLabel: { color: cAxis, fontSize: 12, fontFamily: fontBody },
