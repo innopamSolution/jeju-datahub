@@ -388,10 +388,10 @@ a { color: inherit; text-decoration: none; }
   flex-direction: column; gap: 8px;
   min-width: 320px;
   padding: 16px;
-  background: var(--background-normal);
-  border: 1px solid var(--line-alternative);
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(23, 23, 25, 0.12);
+  background: var(--card-bg);
+  border: 1px solid var(--line-normal);
+  border-radius: var(--radius-12);
+  box-shadow: var(--shadow-overlay);
 }
 .freshness__ic:hover .freshness__pop, .freshness__ic:focus .freshness__pop { display: flex; }
 .freshness__pop-title {
