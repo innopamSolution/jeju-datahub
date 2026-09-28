@@ -351,7 +351,7 @@ export default function Dashboard() {
       <header className="topbar">
         <div>
           <h1 className="page-title">대시보드</h1>
-          <p className="page-sub">최종 업데이트 2025.12.01 · 14:32 · 자동 갱신</p>
+          <DataFreshness />
         </div>
         <div className="topbar__actions">
           <button className="btn btn--ai" type="button" onClick={() => goToAiInput()}>{AI_ICON_DASH} AI 대화 시작하기</button>
