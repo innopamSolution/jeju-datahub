@@ -233,7 +233,7 @@ function TrendChart({ period = '어제' }) {
       chart.dispose();
       probe.remove();
     };
-  }, []);
+  }, [period]);
 
   return <div className="trend__chart" ref={hostRef} style={{ height: 300 }} />;
 }
