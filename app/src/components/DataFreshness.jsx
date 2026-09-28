@@ -1,5 +1,3 @@
-import Icon from './Icon';
-
 /* 데이터별 기준일·갱신 주기 (데이터 연동 전 목업 값) */
 const SOURCES = [
   { name: '민원 (안전신문고 신고)', date: '2025.12.01 14:32', cycle: '실시간' },
