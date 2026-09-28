@@ -126,19 +126,56 @@ function TrendChart() {
     probe.style.cssText = 'position:absolute;left:-9999px;top:-9999px';
     document.body.appendChild(probe);
 
-    const labels = ['00', '02', '04', '06', '08', '10', '12', '14', '16', '18', '20', '22'].map((h) => `${h}시`);
     const fontBody = cssVar('--font-body');
     const cAxis = resolveColor('--text-assistive', probe);
     const cGrid = resolveColor('--line-alternative', probe);
 
     // 안전신문고 불법주정차 신고현황('25.1월~'26.5월) 유형별 비중을 기준으로 재구성
     // 인도·횡단보도(41.9%) > 안전시설 인근(24.0%) > 장애인전용구역(18.5%) > 기타 불법주정차(9.6%) > 친환경차충전구역(6.0%)
+    // 조회 단위별 추이: 어제=시간대별, 주간=일별(최근 7일), 월간=주별(일별은 항목이 많아 주 단위로 집계)
+    const PERIOD_DATA = {
+      어제: {
+        labels: ['00', '02', '04', '06', '08', '10', '12', '14', '16', '18', '20', '22'].map((h) => `${h}시`),
+        yMax: 60, yInterval: 15,
+        rows: [
+          [13, 11, 9, 10, 15, 24, 30, 37, 42, 44, 40, 35],
+          [8, 6, 5, 6, 9, 13, 17, 21, 24, 25, 23, 20],
+          [6, 5, 4, 4, 7, 10, 13, 16, 19, 19, 18, 16],
+          [3, 3, 2, 2, 3, 5, 7, 8, 10, 10, 9, 9],
+          [2, 2, 1, 1, 2, 3, 4, 5, 6, 6, 6, 6],
+        ],
+      },
+      주간: {
+        labels: ['11.25', '11.26', '11.27', '11.28', '11.29', '11.30', '12.01'],
+        yMax: 120, yInterval: 30,
+        rows: [
+          [92, 98, 104, 110, 76, 68, 101],
+          [53, 56, 60, 63, 44, 39, 58],
+          [41, 43, 46, 49, 34, 30, 45],
+          [21, 22, 24, 25, 17, 16, 23],
+          [13, 14, 15, 16, 11, 10, 14],
+        ],
+      },
+      월간: {
+        labels: ['11월 1주', '11월 2주', '11월 3주', '11월 4주', '12월 1주'],
+        yMax: 800, yInterval: 200,
+        rows: [
+          [590, 634, 668, 702, 649],
+          [338, 363, 383, 402, 372],
+          [261, 280, 295, 310, 287],
+          [135, 145, 153, 161, 149],
+          [84, 91, 96, 100, 93],
+        ],
+      },
+    };
+    const pd = PERIOD_DATA[period] ?? PERIOD_DATA.어제;
+    const labels = pd.labels;
     const defs = [
-      { name: '인도·횡단보도 점유', color: resolveColor('--series-illegal', probe), area: true, data: [13, 11, 9, 10, 15, 24, 30, 37, 42, 44, 40, 35] },
-      { name: '안전시설 인근 위반', color: resolveColor('--series-double', probe), area: false, data: [8, 6, 5, 6, 9, 13, 17, 21, 24, 25, 23, 20] },
-      { name: '장애인전용구역 위반', color: resolveColor('--series-facility', probe), area: false, data: [6, 5, 4, 4, 7, 10, 13, 16, 19, 19, 18, 16] },
-      { name: '기타 불법주정차', color: resolveColor('--series-etc', probe), area: false, data: [3, 3, 2, 2, 3, 5, 7, 8, 10, 10, 9, 9] },
-      { name: '친환경차충전구역 위반', color: resolveColor('--series-ev', probe), area: false, data: [2, 2, 1, 1, 2, 3, 4, 5, 6, 6, 6, 6] },
+      { name: '인도·횡단보도 점유', color: resolveColor('--series-illegal', probe), area: true, data: pd.rows[0] },
+      { name: '안전시설 인근 위반', color: resolveColor('--series-double', probe), area: false, data: pd.rows[1] },
+      { name: '장애인전용구역 위반', color: resolveColor('--series-facility', probe), area: false, data: pd.rows[2] },
+      { name: '기타 불법주정차', color: resolveColor('--series-etc', probe), area: false, data: pd.rows[3] },
+      { name: '친환경차충전구역 위반', color: resolveColor('--series-ev', probe), area: false, data: pd.rows[4] },
     ];
 
     const series = defs.map((d) => {
