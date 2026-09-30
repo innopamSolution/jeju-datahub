@@ -147,7 +147,7 @@ function SentiBar({ pos, neu, neg, width = 120, height = 6 }) {
 }
 
 /* ── Leaflet 지도 컴포넌트 ── */
-function GisMap({ layerState, baseMap }) {
+function GisMap({ layerState, baseMap, focusRef }) {
   const ref = useRef(null);
   const mapRef = useRef(null);
   const layerGroupsRef = useRef({});
