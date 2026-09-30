@@ -503,7 +503,7 @@ export default function Dashboard() {
               <div className="card region" key={r.num}>
                 <div className="region__top">
                   <span className="region__id">
-                    <span className="region__num" style={{ background: r.accent }}>{r.num}</span>
+                    <span className="region__num">{r.num}</span>
                     <span className="region__name">{r.name}</span>
                   </span>
                   <span className={`region__trend t-${r.trend}`}>{r.trendLabel}</span>
