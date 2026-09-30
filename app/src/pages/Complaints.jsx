@@ -234,7 +234,8 @@ function GisMap({ layerState, baseMap, focusRef }) {
           </div>
         </div>`,
       });
-      L.marker(r.c, { icon }).bindPopup(popupHtml(r)).addTo(regionGroup);
+      const m = L.marker(r.c, { icon }).bindPopup(popupHtml(r)).addTo(regionGroup);
+      rankMarkers.hotspot[r.name] = m;
     });
 
     /* ── 공영주차장 클러스터 (서귀포시 공영주차장 현황, 서귀포시 교통행정과) ──
