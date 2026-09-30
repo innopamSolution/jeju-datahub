@@ -1317,6 +1317,12 @@ input[type='number']:focus-visible {
 .rt-wrap::-webkit-scrollbar-thumb { background: var(--line-normal); border-radius: var(--radius-full); }
 .rpt-list .rt-wrap, .rpt-manual .rt-wrap { padding-top: var(--space-16); }
 .rt { width: 100%; border-collapse: collapse; }
+/* 다른 페이지에서 연결돼 들어온 보고서 행 강조 (잠시 깜빡인 뒤 사라짐) */
+.rt-row--hl td { animation: rtRowHl 2.4s var(--ease-out); }
+@keyframes rtRowHl {
+  0%, 60% { background: rgba(49, 130, 246, 0.10); }
+  100% { background: transparent; }
+}
 .rt th { font-size: var(--label1-size); font-weight: var(--weight-semibold); color: var(--text-neutral); text-align: center; padding: var(--space-12) var(--space-16); background: var(--fill-normal); white-space: nowrap; }
 .rt th:first-child { border-radius: var(--radius-8) 0 0 var(--radius-8); }
 .rt th:last-child { border-radius: 0 var(--radius-8) var(--radius-8) 0; }
