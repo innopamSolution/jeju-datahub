@@ -329,6 +329,7 @@ function GisMap({ layerState, baseMap, focusRef }) {
         ${popRow('단속 건수', `${r.enforce}건`)}
         ${popRow('민원 건수', `${r.complaints}건`, true)}
       </div>`,
+      'enforce',
     );
 
     /* ── 수요 부족 레이어 (읍면동 기준) ── */
@@ -348,6 +349,7 @@ function GisMap({ layerState, baseMap, focusRef }) {
         ${popRow('주차 수요', `${r.demand}대`, true)}
         ${popRow('공급 면수', `${r.supply}면`, true)}
       </div>`,
+      'demand',
     );
 
     /* ── 행정동 경계 레이어 (신규) ── */
@@ -367,6 +369,13 @@ function GisMap({ layerState, baseMap, focusRef }) {
       dongBoundary: [dongBoundaryLayer],
     };
     mapRef.current = map;
+    /* 부모(순위 카드)에서 호출: 해당 레이어의 지역 마커로 이동 후 팝업 */
+    if (focusRef) focusRef.current = (layerKey, name) => {
+      const m = rankMarkers[layerKey] && rankMarkers[layerKey][name];
+      if (!m) return;
+      map.flyTo(m.getLatLng(), Math.max(map.getZoom(), 13.5), { duration: 0.8 });
+      map.once('moveend', () => m.openPopup());
+    };
 
     /* 초기 레이어 적용 */
     Object.entries(layerState).forEach(([key, on]) => {
@@ -423,6 +432,7 @@ export default function Complaints() {
   );
   const [baseMap, setBaseMap]        = useState('normal');
   const datePickRef = useRef(null);
+  const mapFocusRef = useRef(null);
   const [exportOpen, setExportOpen] = useState(false);
   const exportRef = useRef(null);
 
@@ -662,7 +672,7 @@ export default function Complaints() {
           {/* 지도 카드 */}
           <div className="card map-card">
             <div className="map-body">
-              <GisMap layerState={layers} baseMap={baseMap} />
+              <GisMap layerState={layers} baseMap={baseMap} focusRef={mapFocusRef} />
 
               {/* 일반지도 / 항공지도 전환 */}
               <div className="map-type">
@@ -732,7 +742,7 @@ export default function Complaints() {
               </div>
               <div className="rl">
                 {(regionsExpanded ? rankMode.rows : rankMode.rows.slice(0, 5)).map((r) => (
-                  <div key={r.rank} className="rl__row">
+                  <div key={r.rank} className="rl__row" style={{ cursor: 'pointer' }} onClick={() => mapFocusRef.current && mapFocusRef.current(activeRadio, r.name)}>
                     <span className="rl__rank">{r.rank}</span>
                     <div className="rl__main">
                       <div className="rl__top">
@@ -767,7 +777,7 @@ export default function Complaints() {
               </div>
               <div className="rl">
                 {(sentiExpanded ? SENTIMENT_REGIONS : SENTIMENT_REGIONS.slice(0, 5)).map((s) => (
-                  <div key={s.rank} className="rl__row">
+                  <div key={s.rank} className="rl__row" style={{ cursor: 'pointer' }} onClick={() => mapFocusRef.current && mapFocusRef.current('hotspot', s.name)}>
                     <span className="rl__rank">{s.rank}</span>
                     <div className="rl__main">
                       <div className="rl__top">
