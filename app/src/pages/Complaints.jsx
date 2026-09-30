@@ -164,6 +164,9 @@ function GisMap({ layerState, baseMap, focusRef }) {
       park:    '#a855f7',
     };
 
+    /* 순위 목록-지도 연동용: 레이어별 지역명 → 마커 */
+    const rankMarkers = { hotspot: {}, enforce: {}, demand: {} };
+
     const regions = [
       { name: '연동',   c: [33.4866, 126.4900], count: 52, level: 'severe',  color: COLORS.severe,  illegal: 41, etc: 11 },
       { name: '노형동', c: [33.4790, 126.4760], count: 38, level: '경고',    color: COLORS.warn,    illegal: 30, etc: 8  },
