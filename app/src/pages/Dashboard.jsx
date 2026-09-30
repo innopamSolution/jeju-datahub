@@ -371,7 +371,6 @@ export default function Dashboard() {
             <div>
               <div className="stat__label">공영주차장 현황</div>
               <div className="stat__value">1,573<span className="stat__unit">개소</span></div>
-              <div className="stat__delta">총 주차면 34,669면</div>
             </div>
           </div>
           <div className="card stat">
