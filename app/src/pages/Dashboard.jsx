@@ -553,8 +553,8 @@ export default function Dashboard() {
             <div className="card-head">
               <h2 className="card-head__title"><span className="panel__icon panel__icon--violet"><Icon name="sparkle" size={20} /></span>AI 어시스턴트</h2>
             </div>
-            <div className="ai-input">
-              <input type="text" placeholder="이번달 민원 현황을 요약해줘..." readOnly onClick={() => goToAiInput('')} />
+            <div className="ai-input ai-input--live">
+              <input type="text" placeholder="이번달 민원 현황을 요약해줘..." onFocus={() => goToAiInput('')} />
             </div>
             <div className="ai-suggest">
               {DEFAULT_AI_QUESTIONS.map((q) => (
