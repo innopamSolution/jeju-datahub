@@ -533,7 +533,7 @@ export default function Dashboard() {
         <section className="bottom-row bottom-row--empty-demo">
           <div className="card panel">
             <div className="card-head">
-              <h2 className="card-head__title"><span className="panel__icon"><Icon name="chart" size={20} /></span>정책 효과 시뮬레이션 <span className="card-head__note">(빈 상태 미리보기)</span></h2>
+              <h2 className="card-head__title"><span className="panel__icon"><Icon name="chart" size={20} /></span>정책 효과 시뮬레이션</h2>
             </div>
             <div className="panel-empty panel-empty--compact">
               <p>아직 실행한 시뮬레이션이 없습니다</p>
@@ -542,7 +542,7 @@ export default function Dashboard() {
 
           <div className="card panel">
             <div className="card-head">
-              <h2 className="card-head__title"><span className="panel__icon panel__icon--green"><Icon name="document" size={20} /></span>보고서 <span className="card-head__note">(빈 상태 미리보기)</span></h2>
+              <h2 className="card-head__title"><span className="panel__icon panel__icon--green"><Icon name="document" size={20} /></span>보고서</h2>
             </div>
             <div className="panel-empty panel-empty--compact">
               <p>아직 생성된 보고서가 없습니다</p>
@@ -551,7 +551,7 @@ export default function Dashboard() {
 
           <div className="card panel">
             <div className="card-head">
-              <h2 className="card-head__title"><span className="panel__icon panel__icon--violet"><Icon name="sparkle" size={20} /></span>AI 어시스턴트 <span className="card-head__note">(빈 상태 미리보기)</span></h2>
+              <h2 className="card-head__title"><span className="panel__icon panel__icon--violet"><Icon name="sparkle" size={20} /></span>AI 어시스턴트</h2>
             </div>
             <div className="panel-empty panel-empty--compact">
               <p>아직 최근 대화가 없습니다</p>
