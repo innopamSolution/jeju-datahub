@@ -67,8 +67,8 @@
 .region__id { display: flex; align-items: center; gap: var(--space-10); }
 .region__num {
   width: 26px; height: 26px; border-radius: var(--radius-full);
-  background: var(--cool-neutral-22);
-  color: #fff; font-size: var(--label2-size); font-weight: var(--weight-bold);
+  background: var(--fill-strong);
+  color: var(--text-neutral); font-size: var(--label2-size); font-weight: var(--weight-bold);
   display: flex; align-items: center; justify-content: center;
 }
 .region__name { font-family: var(--font-sans); font-size: var(--heading2-size); font-weight: var(--weight-bold); color: var(--text-strong); letter-spacing: -0.01em; }
