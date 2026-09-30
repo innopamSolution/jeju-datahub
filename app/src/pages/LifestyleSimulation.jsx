@@ -366,6 +366,21 @@ export default function LifestyleSimulation() {
     if (mapInst.current && mapInst.current._renderGrid) mapInst.current._renderGrid(meters, modeRef.current);
   };
 
+  /* 순위 목록 클릭 → 지도에서 해당 핫스팟 위치로 이동 후 팝업 표시 */
+  const handleRowClick = (r) => {
+    const map = mapInst.current;
+    const pos = map && map._hotPos && map._hotPos[r.name];
+    if (!pos) return;
+    map.flyTo(pos, Math.max(map.getZoom(), 14.5), { duration: 0.8 });
+    map.once('moveend', () => {
+      L.popup({ closeButton: false, offset: [0, -4] })
+        .setLatLng(pos)
+        .setContent('<div class="gp"><div class="gp__h"><span class="gp__loc">' + r.name + '</span></div>' +
+          '<div class="gp__row">' + r.sub + '<b class="gp__big">' + r.cnt + '</b></div></div>')
+        .openOn(map);
+    });
+  };
+
   const applyMode = (key) => {
     modeRef.current = key;
     setAnalysisType(key);
