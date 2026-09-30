@@ -376,7 +376,7 @@ export default function LifestyleSimulation() {
       L.popup({ closeButton: false, offset: [0, -4] })
         .setLatLng(pos)
         .setContent('<div class="gp"><div class="gp__h"><span class="gp__loc">' + r.name + '</span></div>' +
-          '<div class="gp__row">' + r.sub + '<b class="gp__big">' + r.cnt + '</b></div></div>')
+          '<div class="gp__big">' + r.cnt + '</div></div>')
         .openOn(map);
     });
   };
