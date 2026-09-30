@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as echarts from 'echarts';
 import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
-import { exportSectionsPdf, exportSectionsDocx, hBarChartHtml, toPngDataUrl } from '../utils/pageExport';
 import DsSelect from '../components/DsSelect';
 import DataFreshness from '../components/DataFreshness';
 import './Dashboard.css';
@@ -282,56 +281,6 @@ export default function Dashboard() {
     return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
   }, [datePopOpen]);
 
-  const exportData = async () => {
-    /* 화면의 민원 발생 추이 차트(ECharts svg 렌더러)를 이미지로 캡처해 리포트에 포함 */
-    let trendImage = null;
-    const svg = document.querySelector('.trend__chart svg');
-    if (svg) {
-      try {
-        const xml = new XMLSerializer().serializeToString(svg);
-        trendImage = await toPngDataUrl(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(xml)}`);
-      } catch { /* 차트 캡처 실패 시 표만 내보냄 */ }
-    }
-
-    return {
-      fileBase: '대시보드_현황',
-      title: '대시보드 현황',
-      subtitle: `조회 단위: ${customRange ? `${customRange.from} ~ ${customRange.to}` : period}`,
-      sections: [
-        {
-          type: 'table',
-          title: '핵심 지표',
-          columns: ['지표', '값'],
-          rows: [
-            ['총 민원 건수', '247건'],
-            ['불법주정차 단속 건수', '96건'],
-            ['위험단계알림 건수', '3건'],
-          ],
-        },
-        ...(trendImage ? [{ type: 'chart', title: '민원 발생 추이 (기간별 유형 분포)', image: trendImage }] : []),
-        {
-          type: 'table',
-          title: '불법주차 집중구역 순위',
-          columns: ['순위', '구역', '위치', '위험도'],
-          rows: HOTSPOTS.map((h) => [h.rank, h.name, h.meta, h.label]),
-        },
-        {
-          type: 'chart',
-          title: '읍·면·동 민원 건수',
-          html: hBarChartHtml(REGIONS.map((r) => ({ label: r.name, value: r.value, valueLabel: `${r.value}건` }))),
-        },
-        {
-          type: 'table',
-          title: '읍·면·동 민원 순위',
-          columns: ['순위', '지역', '민원 건수', '전일 대비', '주요 유형'],
-          rows: REGIONS.map((r) => [
-            r.num, r.name, `${r.value}건`, r.delta ? r.delta.label : '—',
-            `${r.breakdown[0].label} ${r.breakdown[0].pct}%`,
-          ]),
-        },
-      ],
-    };
-  };
 
   const applyDateRange = () => {
     if (dateFrom && dateTo) setCustomRange({ from: dateFrom, to: dateTo });
