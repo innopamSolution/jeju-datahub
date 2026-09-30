@@ -172,7 +172,7 @@ export default function ReportList() {
               </thead>
               <tbody>
                 {autoSlice.map((r, i) => (
-                  <tr key={i}>
+                  <tr key={i} ref={r.name === highlight ? hlRef : undefined} className={r.name === highlight ? 'rt-row--hl' : undefined}>
                     <td><span className="rt-name">{r.name}</span></td>
                     <td>{r.cycle}</td>
                     <td>{r.author}</td>
