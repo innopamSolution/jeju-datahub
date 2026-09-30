@@ -162,7 +162,10 @@
   padding: 0 var(--space-16);
   font-size: var(--body2-size); color: var(--text-neutral);
 }
-.ai-input--live { gap: var(--space-8); padding-right: var(--space-8); }
+.ai-input--live {
+  gap: var(--space-8); padding-right: var(--space-8);
+  background: var(--card-bg); border-color: var(--line-normal);
+}
 .ai-input--live input {
   flex: 1; min-width: 0; border: none; outline: none; background: none;
   font-family: var(--font-body); font-size: var(--body2-size); color: var(--text-normal);
