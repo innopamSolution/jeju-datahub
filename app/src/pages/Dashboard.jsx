@@ -548,10 +548,16 @@ export default function Dashboard() {
               <Link to="/reports" className="card-link">전체 <Icon name="arrow-right" size={16} /></Link>
             </div>
             <div className="list">
-              <div className="list__row list__row--link" onClick={() => navigate('/reports')}><span className="name">11월 주차민원 분석 리포트</span><span className="time">2026.11.28 11:30</span></div>
-              <div className="list__row list__row--link" onClick={() => navigate('/reports')}><span className="name">정책 시뮬레이션 효과 비교</span><span className="time">2026.11.27 11:23</span></div>
-              <div className="list__row list__row--link" onClick={() => navigate('/reports')}><span className="name">4분기 정책 보고서</span><span className="time">2026.11.25 11:20</span></div>
-              <div className="list__row list__row--link" onClick={() => navigate('/reports')}><span className="name">GIS 집중구역 현황 리포트</span><span className="time">2026.11.24 11:20</span></div>
+              {[
+                ['11월 주차민원 분석 리포트', '2026.11.28 11:30'],
+                ['정책 시뮬레이션 효과 비교', '2026.11.27 11:23'],
+                ['4분기 정책 보고서', '2026.11.25 11:20'],
+                ['GIS 집중구역 현황 리포트', '2026.11.24 11:20'],
+              ].map(([name, time]) => (
+                <div key={name} className="list__row list__row--link" onClick={() => navigate('/reports', { state: { highlight: name } })}>
+                  <span className="name">{name}</span><span className="time">{time}</span>
+                </div>
+              ))}
             </div>
           </div>
 
