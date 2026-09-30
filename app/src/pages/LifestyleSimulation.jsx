@@ -298,6 +298,11 @@ export default function LifestyleSimulation() {
       ];
       const rnd = mulberry32(20260622 + cellM);
 
+      /* 목록-지도 연동용: 핫스팟 이름 → 지도 좌표 (목록 클릭 시 flyTo 대상) */
+      map._hotPos = Object.fromEntries(
+        hot.map((h) => [h.name, [sw[0] + h.fy * spanLat, sw[1] + h.fx * spanLng]])
+      );
+
       /* 1차: 분석 대상 격자 값 수집 */
       const cells = [];
       for (let r = 0; r < rows; r++) {
