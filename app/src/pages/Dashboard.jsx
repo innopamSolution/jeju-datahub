@@ -556,11 +556,6 @@ export default function Dashboard() {
             <div className="ai-input ai-input--live">
               <input type="text" placeholder="이번달 민원 현황을 요약해줘..." onFocus={() => goToAiInput('')} />
             </div>
-            <div className="ai-suggest">
-              {DEFAULT_AI_QUESTIONS.map((q) => (
-                <button key={q} type="button" onClick={() => goToAiInput(q)}><Icon className="chev" name="chevron-right" size={16} />{q}</button>
-              ))}
-            </div>
           </div>
         </section>
       </div>
