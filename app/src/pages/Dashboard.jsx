@@ -369,8 +369,9 @@ export default function Dashboard() {
           <div className="card stat">
             <div className="stat__icon stat__icon--green"><Icon name="car" size={32} /></div>
             <div>
-              <div className="stat__label">불법주정차 단속 건수</div>
-              <div className="stat__value">96</div>
+              <div className="stat__label">공영주차장 현황</div>
+              <div className="stat__value">1,573<span className="stat__unit">개소</span></div>
+              <div className="stat__delta">총 주차면 34,669면</div>
             </div>
           </div>
           <div className="card stat">
