@@ -279,7 +279,7 @@ function GisMap({ layerState, baseMap, focusRef }) {
     });
 
     /* ── 읍면동 단위 레이어 공통 빌더 (민원 다발 레이어와 동일한 육각형 + 라벨 표현) ── */
-    function buildRegionLayer(list, valueLabel, popupFn) {
+    function buildRegionLayer(list, valueLabel, popupFn, collectKey) {
       const boundary = L.layerGroup();
       const markers = L.layerGroup();
       list.forEach((r) => {
