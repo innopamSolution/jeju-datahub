@@ -243,7 +243,7 @@ export default function ReportList() {
                   <tr><td colSpan={8} style={{ textAlign: 'center', color: 'var(--text-alternative)', padding: 24 }}>조건에 맞는 보고서가 없습니다.</td></tr>
                 )}
                 {manualSlice.map((r, i) => (
-                  <tr key={i}>
+                  <tr key={i} ref={r.name === highlight ? hlRef : undefined} className={r.name === highlight ? 'rt-row--hl' : undefined}>
                     <td><span className="rt-name">{r.name}</span></td>
                     <td>{r.source}</td>
                     <td className="rt-date">{r.period}</td>
