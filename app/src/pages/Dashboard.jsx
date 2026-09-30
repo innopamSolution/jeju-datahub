@@ -416,25 +416,6 @@ export default function Dashboard() {
           <option>전체</option><option>제주시</option><option>서귀포시</option>
         </DsSelect>
         <span className="filterbar__right">현재: <strong>{customRange ? `${customRange.from} ~ ${customRange.to}` : period}</strong></span>
-        <div className="sim-export" ref={exportRef}>
-          <button className="btn" type="button" style={{ height: 40 }}
-            aria-haspopup="menu" aria-expanded={exportOpen}
-            onClick={(e) => { e.stopPropagation(); setExportOpen((o) => !o); }}>
-            <Icon name="download" size={18} /> 내보내기
-          </button>
-          {exportOpen && (
-            <div className="sim-export__menu" role="menu">
-              <button type="button" role="menuitem" className="sim-export__item"
-                onClick={async () => { setExportOpen(false); exportSectionsPdf(await exportData()); }}>
-                PDF 파일 (.pdf)
-              </button>
-              <button type="button" role="menuitem" className="sim-export__item"
-                onClick={async () => { setExportOpen(false); exportSectionsDocx(await exportData()); }}>
-                Word 파일 (.docx)
-              </button>
-            </div>
-          )}
-        </div>
       </div>
 
 
