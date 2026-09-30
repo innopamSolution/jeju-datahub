@@ -8,6 +8,20 @@ import DsSelect from '../components/DsSelect';
 import DataFreshness from '../components/DataFreshness';
 import './Dashboard.css';
 
+/* 하단 패널 최근 목록 — 비어 있으면 빈 상태(안내 문구 + 시작 버튼)가 표시된다 */
+const RECENT_SIMULATIONS = [
+  '연동 주차장 확충 150면',
+  '노형동 단속 강화 효과 분석',
+  '이도2동 요금제 조정 효과',
+  '아라동 이면도로 정비 효과',
+];
+const RECENT_REPORTS = [
+  ['11월 주차민원 분석 리포트', '2026.11.28 11:30'],
+  ['정책 시뮬레이션 효과 비교', '2026.11.27 11:23'],
+  ['4분기 정책 보고서', '2026.11.25 11:20'],
+  ['GIS 집중구역 현황 리포트', '2026.11.24 11:20'],
+];
+
 const HOTSPOTS = [
   { rank: 1, accent: 'var(--rank-1)', name: '연동 대로변', meta: '연동 · 반경 200m', badge: 'severe', label: '심각' },
   { rank: 2, accent: 'var(--rank-3)', name: '노형사거리 인근', meta: '노형동 · 반경 150m', badge: 'warn', label: '경고' },
