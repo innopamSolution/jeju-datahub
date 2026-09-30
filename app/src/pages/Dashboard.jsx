@@ -282,15 +282,6 @@ export default function Dashboard() {
     return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
   }, [datePopOpen]);
 
-  useEffect(() => {
-    if (!exportOpen) return;
-    const onDoc = (e) => { if (exportRef.current && !exportRef.current.contains(e.target)) setExportOpen(false); };
-    const onKey = (e) => { if (e.key === 'Escape') setExportOpen(false); };
-    document.addEventListener('click', onDoc);
-    document.addEventListener('keydown', onKey);
-    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
-  }, [exportOpen]);
-
   const exportData = async () => {
     /* 화면의 민원 발생 추이 차트(ECharts svg 렌더러)를 이미지로 캡처해 리포트에 포함 */
     let trendImage = null;
