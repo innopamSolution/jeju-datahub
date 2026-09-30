@@ -9,11 +9,12 @@ import DataFreshness from '../components/DataFreshness';
 import './Dashboard.css';
 
 const HOTSPOTS = [
-  { rank: 1, accent: 'var(--rank-1)', name: '연동 대로변', meta: '연동 · 반경 200m', badge: 'severe', label: '심각' },
-  { rank: 2, accent: 'var(--rank-3)', name: '노형사거리 인근', meta: '노형동 · 반경 150m', badge: 'warn', label: '경고' },
-  { rank: 3, accent: 'var(--rank-3)', name: '이도2동 상업지구', meta: '이도동 · 반경 180m', badge: 'warn', label: '경고' },
-  { rank: 4, accent: 'var(--rank-4)', name: '아라동 주변', meta: '아라동 · 반경 120m', badge: 'caution', label: '주의' },
-  { rank: 5, accent: 'var(--rank-5)', name: '삼도1동 골목', meta: '삼도동 · 반경 100m', badge: 'caution', label: '주의' },
+  /* 순위 배지 색은 단계(심각/경고/주의)와 연동 — 집중 구역 분석·범례와 동일한 팔레트 */
+  { rank: 1, accent: 'var(--red-50)', name: '연동 대로변', meta: '연동 · 반경 200m', badge: 'severe', label: '심각' },
+  { rank: 2, accent: 'var(--orange-50)', name: '노형사거리 인근', meta: '노형동 · 반경 150m', badge: 'warn', label: '경고' },
+  { rank: 3, accent: 'var(--orange-50)', name: '이도2동 상업지구', meta: '이도동 · 반경 180m', badge: 'warn', label: '경고' },
+  { rank: 4, accent: 'var(--blue-50)', name: '아라동 주변', meta: '아라동 · 반경 120m', badge: 'caution', label: '주의' },
+  { rank: 5, accent: 'var(--blue-50)', name: '삼도1동 골목', meta: '삼도동 · 반경 100m', badge: 'caution', label: '주의' },
 ];
 
 // 안전신문고 불법주정차 신고현황('25.1월~'26.5월) 유형 비중(41.9/24.0/18.5/9.6/6.0%)을 각 지역 총 건수에 배분
