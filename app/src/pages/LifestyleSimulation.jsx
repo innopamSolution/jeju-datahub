@@ -505,7 +505,7 @@ export default function LifestyleSimulation() {
                   <p className="sim-sec__sub">{modeCfg.sectionSub}</p>
                   <div className="rl">
                     {buildRanking(analysisType).map((r, i) => (
-                      <div key={i} className="rl__row rl__row--link" onClick={() => handleRowClick(r)}>
+                      <div key={i} className="rl__row" style={{ cursor: 'pointer' }} onClick={() => handleRowClick(r)}>
                         <span className="rl__rank">{r.rank}</span>
                         <div className="rl__main">
                           <div className="rl__top">
