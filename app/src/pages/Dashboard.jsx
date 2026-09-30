@@ -528,6 +528,29 @@ export default function Dashboard() {
             </div>
           </div>
         </section>
+
+        {/* 개발 확인용: 최근 목록이 비었을 때의 빈 상태 디자인 미리보기 (데이터 연동 후 제거) */}
+        <section className="bottom-row bottom-row--empty-demo">
+          <div className="card panel">
+            <div className="card-head">
+              <h2 className="card-head__title"><span className="panel__icon"><Icon name="chart" size={20} /></span>정책 효과 시뮬레이션 <span className="card-head__note">(빈 상태 미리보기)</span></h2>
+            </div>
+            <div className="panel-empty">
+              <p>아직 실행한 시뮬레이션이 없습니다</p>
+              <button type="button" className="panel-empty__btn" onClick={() => navigate('/analysis/policy-simulation')}>시뮬레이션 시작</button>
+            </div>
+          </div>
+
+          <div className="card panel">
+            <div className="card-head">
+              <h2 className="card-head__title"><span className="panel__icon panel__icon--green"><Icon name="document" size={20} /></span>보고서 <span className="card-head__note">(빈 상태 미리보기)</span></h2>
+            </div>
+            <div className="panel-empty">
+              <p>아직 생성된 보고서가 없습니다</p>
+              <button type="button" className="panel-empty__btn" onClick={() => navigate('/reports')}>보고서 목록 보기</button>
+            </div>
+          </div>
+        </section>
       </div>
     </>
   );
