@@ -534,12 +534,18 @@ export default function Dashboard() {
               <h2 className="card-head__title"><span className="panel__icon"><Icon name="chart" size={20} /></span>정책 효과 시뮬레이션</h2>
               <Link to="/analysis/policy-simulation" className="card-link">전체 <Icon name="arrow-right" size={16} /></Link>
             </div>
-            <div className="list">
-              <div className="list__row list__row--link" onClick={() => navigate('/analysis/policy-simulation')}><span className="name">연동 주차장 확충 150면</span></div>
-              <div className="list__row list__row--link" onClick={() => navigate('/analysis/policy-simulation')}><span className="name">노형동 단속 강화 효과 분석</span></div>
-              <div className="list__row list__row--link" onClick={() => navigate('/analysis/policy-simulation')}><span className="name">이도2동 요금제 조정 효과</span></div>
-              <div className="list__row list__row--link" onClick={() => navigate('/analysis/policy-simulation')}><span className="name">아라동 이면도로 정비 효과</span></div>
-            </div>
+            {RECENT_SIMULATIONS.length === 0 ? (
+              <div className="panel-empty">
+                <p>아직 실행한 시뮬레이션이 없습니다</p>
+                <button type="button" className="panel-empty__btn" onClick={() => navigate('/analysis/policy-simulation')}>시뮬레이션 시작</button>
+              </div>
+            ) : (
+              <div className="list">
+                {RECENT_SIMULATIONS.map((name) => (
+                  <div key={name} className="list__row list__row--link" onClick={() => navigate('/analysis/policy-simulation')}><span className="name">{name}</span></div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="card panel">
