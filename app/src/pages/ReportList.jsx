@@ -69,10 +69,36 @@ const PER_PAGE = 10;
 
 export default function ReportList() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [tab, setTab] = useState('auto');
   const [autoPage, setAutoPage] = useState(1);
   const [manualPage, setManualPage] = useState(1);
   const [previewReport, setPreviewReport] = useState(null);
+  const [highlight, setHighlight] = useState(null);
+  const hlRef = useRef(null);
+
+  /* 다른 페이지(대시보드 보고서 카드 등)에서 특정 보고서로 연결:
+     navigate('/reports', { state: { highlight: 보고서명 } }) → 해당 탭·페이지로 이동 후 행 강조 */
+  useEffect(() => {
+    const name = location.state?.highlight;
+    if (!name) return;
+    const autoIdx = AUTO_ROWS.findIndex((r) => r.name === name);
+    const manualIdx = MANUAL_ROWS.findIndex((r) => r.name === name);
+    if (autoIdx >= 0) {
+      setTab('auto');
+      setAutoPage(Math.floor(autoIdx / PER_PAGE) + 1);
+    } else if (manualIdx >= 0) {
+      setTab('manual');
+      setManualPage(Math.floor(manualIdx / PER_PAGE) + 1);
+    } else return;
+    setHighlight(name);
+    const t = setTimeout(() => setHighlight(null), 2400);
+    return () => clearTimeout(t);
+  }, [location.state]);
+
+  useEffect(() => {
+    if (highlight && hlRef.current) hlRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }, [highlight, tab, autoPage, manualPage]);
 
   /* 직접 생성 보고서 — 보고서명 검색 · 출처 · 생성일 필터 */
   const [manualRows, setManualRows] = useState(MANUAL_ROWS);
