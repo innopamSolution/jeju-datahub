@@ -298,7 +298,8 @@ function GisMap({ layerState, baseMap, focusRef }) {
             </div>
           </div>`,
         });
-        L.marker(r.c, { icon }).bindPopup(popupFn(r)).addTo(markers);
+        const m = L.marker(r.c, { icon }).bindPopup(popupFn(r)).addTo(markers);
+        if (collectKey) rankMarkers[collectKey][r.name] = m;
       });
       return [boundary, markers];
     }
