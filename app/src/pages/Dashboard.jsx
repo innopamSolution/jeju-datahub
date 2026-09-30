@@ -272,7 +272,6 @@ export default function Dashboard() {
   const [dateFrom, setDateFrom] = useState('2025-11-01');
   const [dateTo, setDateTo] = useState('2025-12-01');
   const datePickRef = useRef(null);
-  const exportRef = useRef(null);
 
   useEffect(() => {
     if (!datePopOpen) return;
