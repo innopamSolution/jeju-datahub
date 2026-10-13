@@ -212,6 +212,9 @@ export default function PolicySimulation() {
     }
 
     const policyLabel = { parking: '주차장 확충', road: '이면도로 정비', fee: '요금제 적용' }[policyType];
+    const selected = scenarios.filter((sc) => selectedScenarios.includes(sc.id));
+    /* 차트 라벨용 축약: '정책 · 지역'까지만 */
+    const shortName = (name) => name.split(' · ').slice(0, 2).join(' · ');
     return {
       fileBase: '정책효과_시뮬레이션',
       title: '정책효과 시뮬레이션',
