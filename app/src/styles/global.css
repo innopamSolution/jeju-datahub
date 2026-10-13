@@ -383,7 +383,7 @@ a { color: inherit; text-decoration: none; }
 .freshness__ic:hover, .freshness__ic:focus { color: var(--text-neutral); }
 .freshness__pop {
   position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
-  z-index: 60;
+  z-index: 9999; /* 지도·모달 등 모든 요소 위에 표시 */
   display: none;
   flex-direction: column; gap: 8px;
   min-width: 320px;
