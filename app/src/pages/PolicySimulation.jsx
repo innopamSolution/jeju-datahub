@@ -5,7 +5,7 @@ import NotificationBell from '../components/NotificationBell';
 import PageCrumb from '../components/PageCrumb';
 import DsSelect from '../components/DsSelect';
 import Icon from '../components/Icon';
-import { exportSectionsPdf, exportSectionsDocx, toPngDataUrl, hBarChartHtml } from '../utils/pageExport';
+import { exportSectionsPdf, exportSectionsDocx, hBarChartHtml } from '../utils/pageExport';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="24" height="24" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -201,16 +201,6 @@ export default function PolicySimulation() {
   }, [exportOpen]);
 
   const exportData = async () => {
-    /* 효과 예측 차트(ECharts svg)를 이미지로 캡처해 리포트에 포함 */
-    let effectImage = null;
-    const svg = document.querySelector('.effect-chart svg');
-    if (svg) {
-      try {
-        const xml = new XMLSerializer().serializeToString(svg);
-        effectImage = await toPngDataUrl(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(xml)}`);
-      } catch { /* 차트 캡처 실패 시 표만 내보냄 */ }
-    }
-
     const policyLabel = { parking: '주차장 확충', road: '이면도로 정비', fee: '요금제 적용' }[policyType];
     const selected = scenarios.filter((sc) => selectedScenarios.includes(sc.id));
     /* 차트 라벨용 축약: '정책 · 지역'까지만 */
@@ -220,17 +210,6 @@ export default function PolicySimulation() {
       title: '정책효과 시뮬레이션',
       subtitle: `정책 유형: ${policyLabel} · 예측 기간: ${period}개월`,
       sections: [
-        {
-          type: 'table',
-          title: '효과 예측 요약',
-          columns: ['지표', '예측', '상세'],
-          rows: [
-            ['선택 시나리오', active ? active.name : '—', ''],
-            ['민원 감소 예측', active ? active.reduction : '—', `${BASE_MONTHLY}건 → ${afterMonthly}건 월평균`],
-            ['혼잡도 개선', active ? active.improvement : '—', `혼잡 지수 ${BASE_CONGESTION} → ${afterCongestion}`],
-          ],
-        },
-        ...(effectImage ? [{ type: 'chart', title: '정책 전·후 민원 추이', image: effectImage }] : []),
         {
           type: 'table',
           title: '시나리오 비교',
