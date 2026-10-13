@@ -11,16 +11,16 @@ const SOURCES = [
    ⓘ 호버 시 데이터별 기준일 팝오버를 띄운다 (데이터마다 갱신 주기가 다름) */
 export default function DataFreshness() {
   return (
-    <p className="page-sub freshness">
+    <div className="page-sub freshness">
       최근 갱신 2025.12.01 · 14:32
-      <span className="freshness__ic" tabIndex={0} aria-label="데이터 기준일 안내">
+      <div className="freshness__ic" tabIndex={0} aria-label="데이터 기준일 안내">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true">
           <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
           <circle cx="12" cy="8" r="1.3" fill="currentColor" />
           <path d="M12 11.5v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
         </svg>
-        <span className="freshness__pop" role="tooltip">
-          <span className="freshness__pop-title">데이터 기준일</span>
+        <div className="freshness__pop" role="tooltip">
+          <div className="freshness__pop-title">데이터 기준일</div>
           <table className="freshness__table">
             <thead>
               <tr><th>데이터</th><th>기준일</th><th>갱신 주기</th></tr>
@@ -35,8 +35,8 @@ export default function DataFreshness() {
               ))}
             </tbody>
           </table>
-        </span>
-      </span>
-    </p>
+        </div>
+      </div>
+    </div>
   );
 }
