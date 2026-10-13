@@ -382,9 +382,25 @@ export default function PolicySimulation() {
 
           {/* 효과 예측 */}
           <div className="card" style={{ padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
               <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>효과 예측</h2>
               {active && <span style={{ fontSize: 'var(--caption1-size)', color: 'var(--text-alternative)' }}>{active.name}</span>}
+              {/* 분석 근거 안내 — 호버 시 참고 사항 팝오버 */}
+              <div className="freshness__ic" tabIndex={0} aria-label="분석 근거 안내" style={{ marginLeft: 'auto' }}>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+                  <circle cx="12" cy="8" r="1.3" fill="currentColor" />
+                  <path d="M12 11.5v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+                <div className="freshness__pop freshness__pop--right" role="tooltip">
+                  <div className="freshness__pop-title">분석 근거</div>
+                  <ul className="basis-list">
+                    <li>가정값에 기반한 시뮬레이션 결과이며 실제 정책 효과를 보장하지 않습니다.</li>
+                    <li>혼잡 지수는 주차 혼잡(정상 이용 + 불법주차 ÷ 공급 면수)이며 도로 통행량이 아닙니다.</li>
+                    <li>점유율 실측값이 없어 설정값 0.85를 사용했습니다. 이 값이 결과를 크게 좌우합니다.</li>
+                  </ul>
+                </div>
+              </div>
             </div>
             <div style={{ flex: 1, minHeight: 0 }}><EffectChart reduction={redPct} /></div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
