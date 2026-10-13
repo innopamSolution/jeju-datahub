@@ -165,7 +165,7 @@ function buildRanking(mode) {
   const cfg = MODE_CONFIG[mode];
   return LOCATIONS.map((name, i) => ({
     rank: i + 1, name, dot: LOC_DOTS[i], cnt: cfg.ranking[i].cnt, sub: cfg.ranking[i].sub,
-  })).filter((r) => r.dot === 'var(--red-50)' || r.dot === 'var(--orange-50)');
+  })).filter((r) => ['var(--red-50)', 'var(--orange-50)', 'var(--blue-50)'].includes(r.dot));
 }
 
 function resolveColor(cssVar) {
