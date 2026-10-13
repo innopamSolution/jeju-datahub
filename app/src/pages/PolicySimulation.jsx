@@ -232,9 +232,26 @@ export default function PolicySimulation() {
           type: 'table',
           title: '시나리오 비교',
           columns: ['순번', '시나리오', '민원 감소', '혼잡 개선', '비용 수준', '추천'],
-          rows: scenarios
-            .filter((sc) => selectedScenarios.includes(sc.id))
-            .map((sc, i) => [i + 1, sc.name, sc.reduction, sc.improvement, sc.cost, sc.recommend ? '추천' : '—']),
+          rows: selected.map((sc, i) => [i + 1, sc.name, sc.reduction, sc.improvement, sc.cost, sc.recommend ? '추천' : '—']),
+        },
+        /* 선택된 모든 시나리오를 지표별 막대 차트로 비교 (추천 시나리오는 주황색) */
+        {
+          type: 'chart',
+          title: '시나리오별 민원 감소율 비교',
+          html: hBarChartHtml(selected.map((sc) => ({
+            label: shortName(sc.name), value: Math.abs(parseInt(sc.reduction, 10)),
+            valueLabel: `${sc.reduction}${sc.recommend ? ' (추천)' : ''}`,
+            color: sc.recommend ? '#f97316' : '#0066ff',
+          }))),
+        },
+        {
+          type: 'chart',
+          title: '시나리오별 혼잡도 개선 비교',
+          html: hBarChartHtml(selected.map((sc) => ({
+            label: shortName(sc.name), value: Math.abs(parseInt(sc.improvement, 10)),
+            valueLabel: `${sc.improvement}${sc.recommend ? ' (추천)' : ''}`,
+            color: sc.recommend ? '#f97316' : '#0066ff',
+          }))),
         },
       ],
     };
