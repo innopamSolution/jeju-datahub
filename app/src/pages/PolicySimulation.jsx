@@ -184,6 +184,14 @@ export default function PolicySimulation() {
   /* 목록에서 선택한 시나리오 — 상단 효과 예측에 반영 */
   const [activeId, setActiveId] = useState(0);
   const active = scenarios.find((sc) => sc.id === activeId) ?? scenarios[0] ?? null;
+
+  /* 시나리오 비교 필터 — 시나리오명 첫 구간(정책 유형)별 분류 */
+  const [scFilter, setScFilter] = useState('all');
+  const scType = (sc) => sc.name.split(' · ')[0];
+  const scCategories = [...new Set(scenarios.map(scType))].map((key) => ({
+    key, count: scenarios.filter((sc) => scType(sc) === key).length,
+  }));
+  const visibleScenarios = scFilter === 'all' ? scenarios : scenarios.filter((sc) => scType(sc) === scFilter);
   const redPct = active ? parseInt(active.reduction, 10) : 0;
   const impPct = active ? parseInt(active.improvement, 10) : 0;
   const BASE_MONTHLY = 52;
