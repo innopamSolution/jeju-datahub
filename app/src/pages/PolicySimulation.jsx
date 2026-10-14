@@ -480,7 +480,7 @@ export default function PolicySimulation() {
                 </tr>
               </thead>
               <tbody>
-                {scenarios.map((s) => (
+                {visibleScenarios.map((s) => (
                   <tr key={s.id}
                     onClick={() => setActiveId(s.id)}
                     style={{ cursor: 'pointer', background: active && active.id === s.id ? 'var(--blue-99)' : 'transparent' }}>
