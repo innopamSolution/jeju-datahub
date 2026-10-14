@@ -157,7 +157,6 @@ function EffectChart({ reduction = -23 }) {
 export default function PolicySimulation() {
   const navigate = useNavigate();
   const [policyType, setPolicyType] = useState('parking');
-  const [period, setPeriod] = useState('3');
   const [roadMethod, setRoadMethod] = useState('commercial');
   const [roadLength, setRoadLength] = useState(600);
   const [expandType, setExpandType] = useState('vacant');
@@ -215,7 +214,7 @@ export default function PolicySimulation() {
     return {
       fileBase: '정책효과_시뮬레이션',
       title: '정책효과 시뮬레이션',
-      subtitle: `정책 유형: ${policyLabel} · 예측 기간: ${period}개월`,
+      subtitle: `정책 유형: ${policyLabel}`,
       sections: [
         {
           type: 'table',
