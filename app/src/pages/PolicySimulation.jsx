@@ -299,15 +299,6 @@ export default function PolicySimulation() {
               </div>
             </div>
 
-            <div>
-              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 8 }}>예측 기간</div>
-              <div className="segment">
-                {[['3', '3개월'], ['6', '6개월'], ['12', '12개월'], ['24', '24개월']].map(([k, l]) => (
-                  <button key={k} type="button" className={`segment__btn ${period === k ? 'segment__btn--active' : ''}`} onClick={() => setPeriod(k)}>{l}</button>
-                ))}
-              </div>
-            </div>
-
             {policyType === 'parking' && (
               <>
                 <div>
