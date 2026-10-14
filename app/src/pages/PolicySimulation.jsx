@@ -517,7 +517,7 @@ export default function PolicySimulation() {
                     </TD>
                   </tr>
                 ))}
-                {scenarios.length === 0 && (
+                {visibleScenarios.length === 0 && (
                   <tr><td colSpan={7} style={{ textAlign: 'center', color: 'var(--text-alternative)', padding: 24, fontSize: 14 }}>비교할 시나리오가 없습니다. 시뮬레이션을 실행해 시나리오를 추가하세요.</td></tr>
                 )}
               </tbody>
