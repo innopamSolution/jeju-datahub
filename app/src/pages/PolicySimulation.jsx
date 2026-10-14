@@ -421,7 +421,17 @@ export default function PolicySimulation() {
         {/* 시나리오 비교 — 남은 화면 높이를 채움 */}
         <div className="card" style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
           <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--line-alternative)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
-            <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>시나리오 비교</h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+              <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>시나리오 비교</h2>
+              {/* 정책 유형별 필터: 시나리오명 첫 구간 기준, 괄호는 건수 */}
+              <div className="chip-set" style={{ gap: 8 }}>
+                {[['all', `전체 (${scenarios.length})`], ...scCategories.map((c) => [c.key, `${c.key} (${c.count})`])].map(([key, label]) => (
+                  <button key={key} type="button" className={`fchip${scFilter === key ? ' is-active' : ''}`}
+                    style={{ height: 32, fontSize: 'var(--label2-size)' }}
+                    onClick={() => setScFilter(key)}>{label}</button>
+                ))}
+              </div>
+            </div>
             <div className="sim-export" ref={exportRef}>
               <button className="btn" type="button"
                 style={{ height: 36, padding: '0 var(--space-12)', fontSize: 'var(--label2-size)', opacity: selectedScenarios.length === 0 ? 0.4 : 1 }}
