@@ -175,8 +175,9 @@ export default function InvestmentPriority() {
     const mk = markerMap.current[rank];
     if (!mk || !mapInst.current) return;
     setActiveRow(rank);
-    mapInst.current.panTo(mk.getLatLng(), { animate: true, duration: 0.5 });
-    mk.openPopup();
+    /* 목록 클릭 시 해당 지점으로 확대 이동 후 팝업 표시 */
+    mapInst.current.flyTo(mk.getLatLng(), Math.max(mapInst.current.getZoom(), 15), { duration: 0.8 });
+    mapInst.current.once('moveend', () => mk.openPopup());
   };
 
   return (
