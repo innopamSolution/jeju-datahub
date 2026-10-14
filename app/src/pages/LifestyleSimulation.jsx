@@ -490,10 +490,27 @@ export default function LifestyleSimulation() {
                 <div className="sim-sec">
                   <div className="sim-sec__head">
                     <div>
-                      <h3 className="sim-sec__title">분석 결과 요약</h3>
-                      <p className="sim-sec__sub">격자 기반 분석(등급은 조회 조건 내 상대 순위입니다.)</p>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <h3 className="sim-sec__title" style={{ margin: 0 }}>분석 결과 요약</h3>
+                        <span className="size-chip">{sizeChip}</span>
+                      </div>
+                      <p className="sim-sec__sub">격자 기반 분석</p>
                     </div>
-                    <span className="size-chip">{sizeChip}</span>
+                    {/* 등급 산정 기준 참고 */}
+                    <div className="freshness__ic" tabIndex={0} aria-label="등급 산정 기준 안내">
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+                        <circle cx="12" cy="8" r="1.3" fill="currentColor" />
+                        <path d="M12 11.5v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
+                      <div className="freshness__pop freshness__pop--right" role="tooltip">
+                        <div className="freshness__pop-title">등급 산정 기준</div>
+                        <ul className="basis-list">
+                          <li>민원 건수·주차 수급 등급은 조회 조건(기간·지역·격자 크기) 내 상대 순위(백분위)입니다.</li>
+                          <li>혼잡도 등급은 혼잡 지수 1.0(100점)을 기준으로 한 절대 등급입니다.</li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                   <div className="sum">
                     {modeCfg.summary.map(s => (
