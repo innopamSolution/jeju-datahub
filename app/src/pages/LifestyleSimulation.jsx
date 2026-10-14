@@ -494,7 +494,6 @@ export default function LifestyleSimulation() {
                         <h3 className="sim-sec__title" style={{ margin: 0 }}>분석 결과 요약</h3>
                         <span className="size-chip">{sizeChip}</span>
                       </div>
-                      <p className="sim-sec__sub">격자 기반 분석</p>
                     </div>
                     {/* 등급 산정 기준 참고 */}
                     <div className="freshness__ic" tabIndex={0} aria-label="등급 산정 기준 안내">
