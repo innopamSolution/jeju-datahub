@@ -63,7 +63,7 @@ const MODE_CONFIG = {
       return `<div class="gp__big">${val}건<span>/3개월</span></div><div class="gp__bd"><span>불법주차 <b>${il}</b></span><span>기타 <b>${et}</b></span></div>`;
     },
     sectionTitle: '민원 집중 구역',
-    sectionSub: '격자 기반 민원 집중 구역 (심각, 경고)',
+    sectionSub: '격자 기반 민원 집중 구역 (심각, 경고, 주의)',
     summary: [
       { label: '총 분석 격자', val: '156개', total: true },
       { label: '심각', dot: 'var(--red-50)',          val: '16개' },
@@ -99,7 +99,7 @@ const MODE_CONFIG = {
       return `<div class="gp__big">부족률 ${val}%</div><div class="gp__bd"><span>수요 <b>${demand}대</b></span><span>공급 <b>${supply}면</b></span></div>`;
     },
     sectionTitle: '주차 수급 부족 구역',
-    sectionSub: '격자 기반 수요·공급 격차 (심각, 경고)',
+    sectionSub: '격자 기반 수요·공급 격차 (심각, 경고, 주의)',
     summary: [
       { label: '총 분석 격자', val: '156개', total: true },
       { label: '심각', dot: 'var(--red-50)',          val: '16개' },
@@ -132,7 +132,7 @@ const MODE_CONFIG = {
     transform: (v) => Math.round(40 + v * 1.1),
     popup: (val) => `<div class="gp__big">혼잡 지수 ${val}점</div><div class="gp__bd"><span>피크시간 통행 <b>${Math.min(99, Math.round(40 + val * 0.4))}%</b></span></div>`,
     sectionTitle: '혼잡 집중 구역',
-    sectionSub: '격자 기반 혼잡도 분석 (심각, 경고)',
+    sectionSub: '격자 기반 혼잡도 분석 (심각, 경고, 주의)',
     summary: [
       { label: '총 분석 격자', val: '156개', total: true },
       { label: '심각', dot: 'var(--red-50)',          val: '16개' },
