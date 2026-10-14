@@ -506,7 +506,28 @@ export default function LifestyleSimulation() {
                 </div>
 
                 <div className="sim-sec">
-                  <h3 className="sim-sec__title">{modeCfg.sectionTitle}</h3>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <h3 className="sim-sec__title" style={{ margin: 0 }}>{modeCfg.sectionTitle}</h3>
+                    {analysisType === 'congestion' && (
+                      /* 혼잡 점수 산정 참고 — 호버 시 안내 팝오버 */
+                      <div className="freshness__ic" tabIndex={0} aria-label="혼잡 점수 안내" style={{ marginLeft: 'auto' }}>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+                          <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+                          <circle cx="12" cy="8" r="1.3" fill="currentColor" />
+                          <path d="M12 11.5v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                        </svg>
+                        <div className="freshness__pop freshness__pop--right" role="tooltip">
+                          <div className="freshness__pop-title">혼잡 점수 안내</div>
+                          <ul className="basis-list">
+                            <li>혼잡 점수는 공영주차 공급 대비 추정 주차 수요(혼잡 지수)를 100배 한 값입니다(지수 × 100) — 100점 초과는 수요가 면수를 넘는 곳입니다.</li>
+                            <li>점유율 실측값이 없어 설정값(0.85)을 사용하므로 격자 간 상대 비교에만 쓰십시오.</li>
+                            <li>등급은 선택 지역 내 순위이며 절대적인 혼잡 수준이 아닙니다.</li>
+                            <li>※ 도로 통행량 기반 혼잡도는 원천 데이터가 없어 제공하지 않습니다.</li>
+                          </ul>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   <p className="sim-sec__sub">{modeCfg.sectionSub}</p>
                   <div className="rl">
                     {buildRanking(analysisType).map((r, i) => (
