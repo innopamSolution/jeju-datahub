@@ -128,7 +128,8 @@ const MODE_CONFIG = {
   },
   congestion: {
     unit: '점',
-    transform: (v) => Math.min(99, Math.round(v * 1.15)),
+    /* 혼잡 지수 점수화: 100점 = 지수 1.0(공급 초과). 100점 초과가 나올 수 있다 */
+    transform: (v) => Math.round(40 + v * 1.1),
     popup: (val) => `<div class="gp__big">혼잡 지수 ${val}점</div><div class="gp__bd"><span>피크시간 통행 <b>${Math.min(99, Math.round(40 + val * 0.4))}%</b></span></div>`,
     sectionTitle: '혼잡 집중 구역',
     sectionSub: '격자 기반 혼잡도 분석 (심각, 경고)',
@@ -325,7 +326,11 @@ export default function LifestyleSimulation() {
       /* 백분위 컷 계산 (내림차순 분포에서 상위 p% 경계값) */
       const sorted = cells.map((x) => x.val).sort((a, b) => b - a);
       const cutAt = (p) => sorted[Math.min(sorted.length - 1, Math.max(0, Math.ceil(sorted.length * p) - 1))];
-      const cuts = { t10: cutAt(0.10), t25: cutAt(0.25), t50: cutAt(0.50), t75: cutAt(0.75) };
+      /* 혼잡도는 절대 기준(혼잡 지수 1.0 = 100점) 고정 경계, 그 외는 백분위 컷.
+         심각 ≥1.0(공급 초과) / 경고 0.9~ / 주의 0.75~ / 보통 0.6~ / 낮음 <0.6 */
+      const cuts = mode === 'congestion'
+        ? { t10: 100, t25: 90, t50: 75, t75: 60 }
+        : { t10: cutAt(0.10), t25: cutAt(0.25), t50: cutAt(0.50), t75: cutAt(0.75) };
       if (setCutsRef.current) setCutsRef.current(cuts);
 
       /* 2차: 등급 배정 후 렌더 (보통·낮음은 옅게) */
