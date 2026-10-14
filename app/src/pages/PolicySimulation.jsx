@@ -23,7 +23,6 @@ const SCENARIOS = [
   { name: '이면도로 정비 · 제주시 연동 · 일방통행 · 600m · 3개월', at: '2026.11.27 16:40', reduction: '-15%', improvement: '+12%', cost: '중', costLevel: 'mid', recommend: false },
   { name: '요금제 적용 · 제주시 연동 · 요금 인상 · +10% · 3개월', at: '2026.11.27 10:15', reduction: '-12%', improvement: '+9%', cost: '저', costLevel: 'low', recommend: false },
   { name: '주차장 확충 · 제주시 노형동 · 복층화 · 80면 · 6개월', at: '2026.11.25 13:22', reduction: '-18%', improvement: '+14%', cost: '중', costLevel: 'mid', recommend: false },
-  { name: '거주자 우선주차 · 제주시 연동 · 3개월', at: '2026.11.24 09:48', reduction: '-10%', improvement: '+7%', cost: '저', costLevel: 'low', recommend: false },
   { name: '요금제 적용 · 제주 전체 1급지 · 요금 인상 · +20% · 6개월', at: '2026.11.21 15:31', reduction: '-16%', improvement: '+11%', cost: '저', costLevel: 'low', recommend: false },
 ];
 
@@ -432,10 +431,9 @@ export default function PolicySimulation() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
               <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>시나리오 비교</h2>
               {/* 정책 유형별 필터: 시나리오명 첫 구간 기준, 괄호는 건수 */}
-              <div className="chip-set" style={{ gap: 8 }}>
+              <div className="sc-filter">
                 {[['all', `전체 (${scenarios.length})`], ...scCategories.map((c) => [c.key, `${c.key} (${c.count})`])].map(([key, label]) => (
-                  <button key={key} type="button" className={`fchip${scFilter === key ? ' is-active' : ''}`}
-                    style={{ height: 32, fontSize: 'var(--label2-size)' }}
+                  <button key={key} type="button" className={`sc-filter__chip${scFilter === key ? ' is-active' : ''}`}
                     onClick={() => setScFilter(key)}>{label}</button>
                 ))}
               </div>
