@@ -87,6 +87,7 @@ export default function AlertManagement() {
   const [addDong, setAddDong] = useState('전체');
   const [recvPage, setRecvPage] = useState(1);
   const [addGroups, setAddGroups] = useState({ severe: true, warn: false, caution: false });
+  const [addRegions, setAddRegions] = useState([]);
   /* 기본 정보는 로그인 사용자가 디폴트, 상단 버튼으로 사용자 목록에서 불러올 수 있다 */
   const [addFromList, setAddFromList] = useState(false);
   const [addDept, setAddDept] = useState('주차관리');
