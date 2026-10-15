@@ -308,7 +308,10 @@ export default function AlertManagement() {
                 </>
               )}
               <div className="form-field">
-                <label className="form-field__label">지역</label>
+                <label className="form-field__label">
+                  지역
+                  <span style={{ marginLeft: 8, fontSize: 12, fontWeight: 400, color: 'var(--text-assistive)' }}>지역을 선택하고 ＋ 버튼 클릭</span>
+                </label>
                 <div style={{ display: 'flex', gap: 8 }}>
                   <div className="ds-select form-field__select" style={{ flex: 1 }}>
                     <select aria-label="시/도" value={addCity}
