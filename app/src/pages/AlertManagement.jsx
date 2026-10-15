@@ -327,7 +327,23 @@ export default function AlertManagement() {
                     </select>
                     <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
                   </div>
+                  <button type="button" className="btn" aria-label="지역 추가" title="지역 추가"
+                    style={{ height: 44, width: 44, padding: 0, flexShrink: 0, fontSize: 20, fontWeight: 600 }}
+                    onClick={addRegionToList}>＋</button>
                 </div>
+                {addRegions.length > 0 && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
+                    {addRegions.map((r) => (
+                      <span key={r} className="badge" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: 'var(--blue-95)', color: 'var(--primary)', paddingRight: 4 }}>
+                        {r}
+                        <button type="button" aria-label={`${r} 삭제`} onClick={() => removeRegion(r)}
+                          style={{ border: 'none', background: 'none', color: 'inherit', cursor: 'pointer', display: 'inline-flex', padding: 0 }}>
+                          <svg viewBox="0 0 24 24" width="12" height="12" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" /></svg>
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
               <div className="form-field">
                 <label className="form-field__label">알림 단계</label>
