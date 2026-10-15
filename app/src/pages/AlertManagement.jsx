@@ -113,13 +113,27 @@ export default function AlertManagement() {
     setAddFromList(false);
     setAddDept('주차관리'); setAddUser('');
     setAddCity('전체'); setAddDong('전체');
+    setAddRegions([]);
     setAddGroups({ severe: true, warn: false, caution: false });
   };
+
+  /* 지역은 + 버튼으로 여러 개 추가할 수 있다. '전체 지역'을 추가하면 개별 지역은 의미가 없으므로 단독 유지 */
+  const currentRegionLabel = () =>
+    addCity === '전체' ? '전체 지역' : `${addCity} ${addDong === '전체' ? '전체' : addDong}`;
+  const addRegionToList = () => {
+    const label = currentRegionLabel();
+    setAddRegions((rs) => {
+      if (label === '전체 지역') return ['전체 지역'];
+      const base = rs.filter((r) => r !== '전체 지역');
+      return base.includes(label) ? base : [...base, label];
+    });
+  };
+  const removeRegion = (label) => setAddRegions((rs) => rs.filter((r) => r !== label));
 
   const submitAdd = () => {
     if (addFromList && !addUser) return;
     const groups = CRIT_LEVELS.map((c) => c.key).filter((k) => addGroups[k]);
-    const region = addCity === '전체' ? '전체 지역' : `${addCity} ${addDong === '전체' ? '전체' : addDong}`;
+    const region = (addRegions.length ? addRegions : [currentRegionLabel()]).join(', ');
     setReceivers((rs) => [...rs, { dept: addDeptFinal, name: addName, email: addEmail, region, groups, on: true }]);
     setAddOpen(false);
     resetAddForm();
