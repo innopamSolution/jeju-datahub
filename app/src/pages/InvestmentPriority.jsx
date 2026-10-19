@@ -299,7 +299,7 @@ export default function InvestmentPriority() {
                     >
                       <span className="prio-row__rank">{lot.rank}</span>
                       <div className="prio-row__body">
-                        <div className="prio-row__name">{lot.name}</div>
+                        <div className="prio-row__name"><span className="dot" style={{ background: t.cssVar }} />{lot.name}</div>
                         <div className="prio-row__meta">종합점수 {lot.score}</div>
                       </div>
                       <span className={`badge ${t.badge}`}>{t.label}</span>
