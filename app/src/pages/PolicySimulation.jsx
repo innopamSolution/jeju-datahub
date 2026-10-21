@@ -520,6 +520,13 @@ export default function PolicySimulation() {
           </div>
         </div>
       </div>
+
+      <ConfirmDialog
+        open={!!delTarget}
+        message="저장된 시나리오를 삭제하시겠습니까?"
+        onCancel={() => setDelTarget(null)}
+        onConfirm={confirmDelete}
+      />
     </>
   );
 }
