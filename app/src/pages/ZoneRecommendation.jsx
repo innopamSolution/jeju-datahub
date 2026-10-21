@@ -49,6 +49,53 @@ const CLUSTERS = [
 const BADGE_COLOR = { severe: 'var(--red-50)', warn: 'var(--orange-50)', caution: 'var(--blue-50)' };
 const BADGE_TEXT  = { severe: '매우높음', warn: '높음', caution: '보통' };
 
+/* ── 요금제 적용: 후보 = 선택 지역의 무료 공영주차장 중 20면 이상.
+   순위 = 조회 기간 배정 민원 많은 순(동률 시 면수 순). 증가율은 참고 지표('—'는 직전 기간 10건 미만) ── */
+const FEE_CANDIDATES_RAW = [
+  { name: '연동공영주차장',     c: [33.4866, 126.4900], spaces: 95,  cnt: 46, rate: '+18%' },
+  { name: '노형공영주차장',     c: [33.4790, 126.4760], spaces: 120, cnt: 41, rate: '+12%' },
+  { name: '이도공영주차장',     c: [33.4995, 126.5320], spaces: 140, cnt: 33, rate: '—' },
+  { name: '삼도1동공영주차장',  c: [33.5120, 126.5180], spaces: 80,  cnt: 29, rate: '+9%' },
+  { name: '아라동공영주차장',   c: [33.4560, 126.5470], spaces: 64,  cnt: 24, rate: '—' },
+  { name: '화북공영주차장',     c: [33.5170, 126.5700], spaces: 52,  cnt: 19, rate: '+6%' },
+  { name: '일도2동공영주차장',  c: [33.5100, 126.5350], spaces: 44,  cnt: 15, rate: '—' },
+  { name: '외도공영주차장',     c: [33.4940, 126.4310], spaces: 38,  cnt: 12, rate: '+4%' },
+  { name: '도두공영주차장',     c: [33.5080, 126.4660], spaces: 30,  cnt: 9,  rate: '—' },
+  { name: '삼양공영주차장',     c: [33.5230, 126.5850], spaces: 24,  cnt: 7,  rate: '—' },
+];
+/* 전환 검토 우선순위 등급: 상위 25% 높음(빨강) / ~50% 중간(주황) / 나머지 낮음(파랑) */
+const FEE_CANDIDATES = [...FEE_CANDIDATES_RAW]
+  .sort((a, b) => b.cnt - a.cnt || b.spaces - a.spaces)
+  .map((x, i, arr) => {
+    const q = (i + 1) / arr.length;
+    const grade = q <= 0.25 ? 'high' : q <= 0.5 ? 'mid' : 'low';
+    return { ...x, rank: i + 1, grade };
+  });
+const FEE_GRADE = {
+  high: { label: '높음', color: 'var(--red-50)' },
+  mid:  { label: '중간', color: 'var(--orange-50)' },
+  low:  { label: '낮음', color: 'var(--blue-50)' },
+};
+/* 범례 구간: 등급 경계의 실제 배정 민원 값 */
+const FEE_CUTS = (() => {
+  const highMin = Math.min(...FEE_CANDIDATES.filter((x) => x.grade === 'high').map((x) => x.cnt));
+  const midMin  = Math.min(...FEE_CANDIDATES.filter((x) => x.grade === 'mid').map((x) => x.cnt));
+  return { highMin, midMin };
+})();
+/* 후보 아님 예시(지도 참고 표시용): 유료이거나 20면 미만 */
+const FEE_NON_CANDIDATES = [
+  { name: '동문시장 공영주차장', c: [33.5130, 126.5270], reason: '유료 주차장' },
+  { name: '용담 소형 공영주차장', c: [33.5110, 126.5050], reason: '20면 미만 (14면)' },
+];
+const FEE_NOTES = [
+  '후보는 선택 지역의 무료 공영주차장 중 면수 20면 이상인 곳입니다.',
+  '주차 민원 1건을 배정 범위(300m) 안에서 가장 가까운 후보 주차장 1곳에만 배정합니다(같은 읍면동 안에서만).',
+  '순위는 조회 기간 전체의 배정 민원이 많은 순이며, 같으면 면수가 많은 순입니다.',
+  '민원 증가율은 직전 같은 기간과 비교한 참고 지표이며 순위에는 쓰지 않습니다.',
+  "증가율 '—'는 직전 93일(약 3개월) 배정 민원이 10건 미만이어서 계산하지 않은 것입니다 — 분모가 작으면 몇 건 늘어난 것이 수백 %로 보입니다.",
+  '배정 범위(300m)를 바꾸면 순위가 달라집니다.',
+];
+
 const MODE_TITLES = {
   '요금제 적용':   '요금제 적용 추천 구역 순위',
   '공유주차제 적용': '공유주차제 적용 추천 구역 순위',
