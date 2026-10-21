@@ -1606,7 +1606,16 @@ input[type='number']:focus-visible {
 
 .recent { display: flex; flex-direction: column; gap: var(--space-10); max-height: 616px; overflow-y: auto; scrollbar-width: none; }
 .recent::-webkit-scrollbar { display: none; }
-.recent__row { text-align: left; border: none; background: var(--fill-normal); border-radius: var(--radius-12); padding: var(--space-16); cursor: pointer; transition: background var(--duration-fast) var(--ease-out); }
+.recent__row { text-align: left; border: none; background: var(--fill-normal); border-radius: var(--radius-12); padding: var(--space-16); cursor: pointer; transition: background var(--duration-fast) var(--ease-out); display: flex; align-items: flex-start; gap: var(--space-8); }
+.recent__main { flex: 1; min-width: 0; }
+.recent__x {
+  flex-shrink: 0;
+  width: 24px; height: 24px; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: none; border-radius: var(--radius-full);
+  background: none; color: var(--text-assistive); cursor: pointer;
+}
+.recent__x:hover { background: var(--fill-strong); color: var(--red-50); }
 .recent__row:hover { background: var(--fill-strong); }
 .recent__name { font-size: var(--body2-size); font-weight: var(--weight-semibold); color: var(--text-strong); letter-spacing: -0.01em; }
 .recent__time { font-size: var(--caption1-size); color: var(--text-neutral); margin-top: 4px; }
