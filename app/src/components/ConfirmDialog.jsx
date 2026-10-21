@@ -22,7 +22,7 @@ export default function ConfirmDialog({ open, message, confirmLabel = '삭제', 
         <div className="modal__foot modal__foot--split" style={{ paddingTop: 0 }}>
           <button className="btn" type="button" style={{ height: 44 }} onClick={onCancel}>취소</button>
           <button className="btn" type="button"
-            style={{ height: 44, color: 'var(--red-50)', borderColor: 'var(--red-50)' }}
+            style={{ height: 44, color: 'var(--red-50)', borderColor: 'var(--red-90)' }}
             onClick={onConfirm}>{confirmLabel}</button>
         </div>
       </div>
