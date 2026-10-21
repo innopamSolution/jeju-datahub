@@ -501,7 +501,7 @@ export default function PolicySimulation() {
                         type="button"
                         aria-label={`${s.name} 삭제`}
                         title="삭제"
-                        onClick={(e) => { e.stopPropagation(); removeScenario(s.id); }}
+                        onClick={(e) => { e.stopPropagation(); setDelTarget(s); }}
                         style={{ width: 32, height: 32, border: 'none', borderRadius: 'var(--radius-full)', background: 'none', color: 'var(--text-neutral)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
                         onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--fill-normal)'; }}
                         onMouseLeave={(e) => { e.currentTarget.style.background = 'none'; }}
