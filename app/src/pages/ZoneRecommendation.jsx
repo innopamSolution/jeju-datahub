@@ -145,7 +145,26 @@ export default function ZoneRecommendation() {
   }, [exportOpen]);
 
   const GRADE_LABEL = { 'var(--red-50)': '매우높음', 'var(--orange-50)': '높음', 'var(--blue-50)': '보통' };
-  const exportData = () => ({
+  const exportData = () => (mode === '요금제 적용' ? {
+    fileBase: '요금제적용_추천',
+    title: MODE_TITLES[mode],
+    subtitle: '무료 공영주차장(20면 이상) · 배정 민원 많은 순, 동률 시 면수 순 · 배정 범위 300m',
+    sections: [
+      {
+        type: 'chart',
+        title: '후보 주차장별 배정 민원 건수',
+        html: hBarChartHtml(FEE_CANDIDATES.map((r) => ({
+          label: r.name, value: r.cnt, valueLabel: `${r.cnt}건`, color: FEE_GRADE[r.grade].color,
+        }))),
+      },
+      {
+        type: 'table',
+        title: '요금제 적용 추천 순위',
+        columns: ['순위', '주차장', '면수', '배정 민원', '증가율(참고)', '전환 검토'],
+        rows: FEE_CANDIDATES.map((r) => [r.rank, r.name, `${r.spaces}면`, `${r.cnt}건`, r.rate, FEE_GRADE[r.grade].label]),
+      },
+    ],
+  } : {
     fileBase: '구역추천_순위',
     title: MODE_TITLES[mode],
     subtitle: '종합점수 기준 : 민원 건수 40% / 증가율 30% / 단속 건수 20% / 공급부족 10%',
@@ -178,38 +197,81 @@ export default function ZoneRecommendation() {
     }
   }
 
+  const markerLayer = useRef(null);
+
   useEffect(() => {
     if (mapInst.current) return;
     const map = L.map(mapRef.current, { zoomControl: false, attributionControl: true, zoomSnap: 0.5 }).setView([33.486, 126.512], 13);
     L.control.zoom({ position: 'topright' }).addTo(map);
     map.attributionControl.setPosition('bottomleft');
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, opacity: 0.92, attribution: '© OpenStreetMap' }).addTo(map);
-
-    CLUSTERS.forEach(cl => {
-      const fill = resolveColor(BADGE_COLOR[cl.badge]);
-      const icon = L.divIcon({
-        className: 'cmk',
-        iconSize: [44, 56],
-        iconAnchor: [22, 54],
-        html: makePinHtml(cl.rank, fill, cl.name),
-      });
-      const popup = `<div class="gp">
-        <div class="gp__h"><span class="badge badge--${cl.badge}">${BADGE_TEXT[cl.badge]}</span></div>
-        <div class="gp__big">${cl.name}</div>
-        <div class="gp__bd"><span>증가율 <b>${cl.rate}</b></span><span>${cl.cnt}건 (3개월)</span></div>
-      </div>`;
-      const m = L.marker(cl.c, { icon, riseOnHover: true })
-        .bindPopup(popup, { closeButton: false, offset: [0, -48] })
-        .addTo(map);
-      m.on('click', () => setActiveRow(cl.rank));
-      m.on('popupopen', () => setActiveRow(cl.rank));
-      markerMap.current[cl.rank] = m;
-    });
-
     setTimeout(() => map.invalidateSize(), 250);
     window.addEventListener('resize', () => map.invalidateSize());
     mapInst.current = map;
   }, []);
+
+  /* 분석 내용(모드)에 따라 마커를 다시 그린다 */
+  useEffect(() => {
+    const map = mapInst.current;
+    if (!map) return;
+    if (markerLayer.current) map.removeLayer(markerLayer.current);
+    const layer = L.layerGroup().addTo(map);
+    markerLayer.current = layer;
+    markerMap.current = {};
+
+    if (mode === '요금제 적용') {
+      FEE_CANDIDATES.forEach((lot) => {
+        const g = FEE_GRADE[lot.grade];
+        const fill = resolveColor(g.color);
+        const icon = L.divIcon({
+          className: 'cmk', iconSize: [44, 56], iconAnchor: [22, 54],
+          html: makePinHtml(lot.rank, fill, lot.name),
+        });
+        const badgeCls = { high: 'badge--severe', mid: 'badge--warn', low: 'badge--caution' }[lot.grade];
+        const popup = `<div class="gp">
+          <div class="gp__h"><span class="badge ${badgeCls}">전환 검토 ${g.label}</span></div>
+          <div class="gp__big">${lot.name}</div>
+          <div class="gp__bd"><span>배정 민원 <b>${lot.cnt}건</b></span><span>면수 ${lot.spaces}면</span></div>
+          <div class="gp__bd"><span>증가율(참고) <b>${lot.rate}</b></span></div>
+        </div>`;
+        const m = L.marker(lot.c, { icon, riseOnHover: true })
+          .bindPopup(popup, { closeButton: false, offset: [0, -48] })
+          .addTo(layer);
+        m.on('click', () => setActiveRow(lot.rank));
+        m.on('popupopen', () => setActiveRow(lot.rank));
+        markerMap.current[lot.rank] = m;
+      });
+      /* 후보 아님(유료·20면 미만)은 회색 P로 참고 표시 */
+      FEE_NON_CANDIDATES.forEach((lot) => {
+        const icon = L.divIcon({
+          className: '', iconSize: [26, 26], iconAnchor: [13, 13],
+          html: '<div style="width:26px;height:26px;border-radius:50%;background:#9ea1aa;color:#fff;border:2.5px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.25);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800">P</div>',
+        });
+        L.marker(lot.c, { icon })
+          .bindPopup(`<div class="gp"><div class="gp__big">${lot.name}</div><div class="gp__bd"><span>후보 아님 — <b>${lot.reason}</b></span></div></div>`, { closeButton: false })
+          .addTo(layer);
+      });
+    } else {
+      CLUSTERS.forEach(cl => {
+        const fill = resolveColor(BADGE_COLOR[cl.badge]);
+        const icon = L.divIcon({
+          className: 'cmk', iconSize: [44, 56], iconAnchor: [22, 54],
+          html: makePinHtml(cl.rank, fill, cl.name),
+        });
+        const popup = `<div class="gp">
+          <div class="gp__h"><span class="badge badge--${cl.badge}">${BADGE_TEXT[cl.badge]}</span></div>
+          <div class="gp__big">${cl.name}</div>
+          <div class="gp__bd"><span>증가율 <b>${cl.rate}</b></span><span>${cl.cnt}건 (3개월)</span></div>
+        </div>`;
+        const m = L.marker(cl.c, { icon, riseOnHover: true })
+          .bindPopup(popup, { closeButton: false, offset: [0, -48] })
+          .addTo(layer);
+        m.on('click', () => setActiveRow(cl.rank));
+        m.on('popupopen', () => setActiveRow(cl.rank));
+        markerMap.current[cl.rank] = m;
+      });
+    }
+  }, [mode]);
 
   const handleRowClick = (rank) => {
     setActiveRow(rank);
@@ -301,10 +363,32 @@ export default function ZoneRecommendation() {
 
               <div className="sim-result__body" ref={bodyRef}>
                 <div className="sim-sec">
-                  <h3 className="sim-sec__title">{MODE_TITLES[mode]}</h3>
-                  <p className="sim-sec__sub">종합점수 기준 : 민원 건수 40% / 증가율 30% / 단속 건수 20% / 공급부족 10%</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <h3 className="sim-sec__title" style={{ margin: 0 }}>{MODE_TITLES[mode]}</h3>
+                    {mode === '요금제 적용' && (
+                      /* 산정 기준 참고 팝오버 */
+                      <div className="freshness__ic" tabIndex={0} aria-label="산정 기준 안내" style={{ marginLeft: 'auto' }}>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+                          <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+                          <circle cx="12" cy="8" r="1.3" fill="currentColor" />
+                          <path d="M12 11.5v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                        </svg>
+                        <div className="freshness__pop freshness__pop--right" role="tooltip">
+                          <div className="freshness__pop-title">산정 기준</div>
+                          <ul className="basis-list">
+                            {FEE_NOTES.map((n) => <li key={n}>{n}</li>)}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <p className="sim-sec__sub">
+                    {mode === '요금제 적용'
+                      ? '무료 공영주차장(20면 이상) · 배정 민원 많은 순, 동률 시 면수 순'
+                      : '종합점수 기준 : 민원 건수 40% / 증가율 30% / 단속 건수 20% / 공급부족 10%'}
+                  </p>
                   <div className="rl">
-                    {RANKING.map((r, i) => (
+                    {(mode === '요금제 적용' ? [] : RANKING).map((r, i) => (
                       <div
                         key={r.rank}
                         className={`rl__row${activeRank === r.rank ? ' is-active' : ''}`}
@@ -327,6 +411,29 @@ export default function ZoneRecommendation() {
                         </div>
                       </div>
                     ))}
+                    {mode === '요금제 적용' && FEE_CANDIDATES.map((r, i) => (
+                      <div
+                        key={r.rank}
+                        className={`rl__row${activeRank === r.rank ? ' is-active' : ''}`}
+                        ref={el => rowRefs.current[i] = el}
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => handleRowClick(r.rank)}
+                      >
+                        <span className="rl__rank">{r.rank}</span>
+                        <div className="rl__main">
+                          <div className="rl__top">
+                            <span className="rl__name">
+                              <span className="dot" style={{ background: FEE_GRADE[r.grade].color }} />
+                              {r.name}
+                            </span>
+                            <span className="rl__val">
+                              <span className="rl__cnt">{r.cnt}건</span>
+                            </span>
+                          </div>
+                          <span className="rl__sub">면수 {r.spaces}면 · 증가율(참고) {r.rate}</span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -335,12 +442,22 @@ export default function ZoneRecommendation() {
 
           {/* 하단 범례 */}
           <div className="sim-legend">
-            <div className="map-legend">
-              <div className="map-legend__title">민원 증가율</div>
-              <div className="row"><span className="dot" style={{ background: 'var(--red-50)' }} />매우 높음 (45% 이상)</div>
-              <div className="row"><span className="dot" style={{ background: 'var(--orange-50)' }} />높음 (40~44%)</div>
-              <div className="row"><span className="dot" style={{ background: 'var(--blue-50)' }} />보통 (40% 미만)</div>
-            </div>
+            {mode === '요금제 적용' ? (
+              <div className="map-legend">
+                <div className="map-legend__title">전환 검토 우선순위</div>
+                <div className="row"><span className="dot" style={{ background: 'var(--red-50)' }} />높음 (배정 민원 {FEE_CUTS.highMin}건 이상)</div>
+                <div className="row"><span className="dot" style={{ background: 'var(--orange-50)' }} />중간 ({FEE_CUTS.midMin}~{FEE_CUTS.highMin - 1}건)</div>
+                <div className="row"><span className="dot" style={{ background: 'var(--blue-50)' }} />낮음 ({FEE_CUTS.midMin}건 미만)</div>
+                <div className="row"><span className="dot" style={{ background: '#9ea1aa' }} />후보 아님 (유료·20면 미만)</div>
+              </div>
+            ) : (
+              <div className="map-legend">
+                <div className="map-legend__title">민원 증가율</div>
+                <div className="row"><span className="dot" style={{ background: 'var(--red-50)' }} />매우 높음 (45% 이상)</div>
+                <div className="row"><span className="dot" style={{ background: 'var(--orange-50)' }} />높음 (40~44%)</div>
+                <div className="row"><span className="dot" style={{ background: 'var(--blue-50)' }} />보통 (40% 미만)</div>
+              </div>
+            )}
           </div>
         </section>
       </div>
