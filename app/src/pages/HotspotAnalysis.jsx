@@ -42,7 +42,7 @@ function makePinHtml(rank, fillColor, name) {
   const pin = `<svg class="cmk__flag" width="44" height="56" viewBox="0 0 44 56" fill="none">
     <path d="M22 54 C22 54 39 33 39 19 A17 17 0 1 0 5 19 C5 33 22 54 22 54 Z" fill="${fillColor}" stroke="#fff" stroke-width="2.5"/>
     <circle cx="22" cy="19" r="12.5" fill="rgba(255,255,255,0.92)"/>
-    <text x="22" y="19" text-anchor="middle" dominant-baseline="central" font-family="'Pretendard',sans-serif" font-size="16" font-weight="800" fill="${fillColor}">${rank}</text>
+    <text x="22" y="19" text-anchor="middle" dominant-baseline="central" font-family="'Pretendard',sans-serif" font-size="12" font-weight="800" fill="${fillColor}">${rank}</text>
   </svg>`;
   return pin + `<span class="cmk__lab">${name}</span>`;
 }

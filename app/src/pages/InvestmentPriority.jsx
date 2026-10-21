@@ -152,7 +152,7 @@ export default function InvestmentPriority() {
       const pin = '<svg class="cmk__flag" width="44" height="56" viewBox="0 0 44 56" fill="none">' +
         '<path d="M22 54 C22 54 39 33 39 19 A17 17 0 1 0 5 19 C5 33 22 54 22 54 Z" fill="' + fill + '" stroke="#fff" stroke-width="2.5"></path>' +
         '<circle cx="22" cy="19" r="12.5" fill="rgba(255,255,255,0.95)"></circle>' +
-        '<text x="22" y="19" text-anchor="middle" dominant-baseline="central" font-family="\'Pretendard\', sans-serif" font-size="16" font-weight="800" fill="' + fill + '">' + lot.rank + '</text></svg>';
+        '<text x="22" y="19" text-anchor="middle" dominant-baseline="central" font-family="\'Pretendard\', sans-serif" font-size="12" font-weight="800" fill="' + fill + '">' + lot.rank + '</text></svg>';
       const icon = L.divIcon({
         className: 'cmk', iconSize: [44, 56], iconAnchor: [22, 54],
         html: pin + '<span class="cmk__lab">' + lot.name + '</span>',
