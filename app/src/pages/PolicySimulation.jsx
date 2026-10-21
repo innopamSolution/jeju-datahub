@@ -5,6 +5,7 @@ import NotificationBell from '../components/NotificationBell';
 import PageCrumb from '../components/PageCrumb';
 import DsSelect from '../components/DsSelect';
 import Icon from '../components/Icon';
+import ConfirmDialog from '../components/ConfirmDialog';
 import { exportSectionsPdf, exportSectionsDocx, hBarChartHtml } from '../utils/pageExport';
 
 const AI_ICON = (
