@@ -20,10 +20,8 @@ export default function ConfirmDialog({ open, message, confirmLabel = '삭제', 
           <p style={{ margin: '8px 0 0', fontSize: 'var(--label1-size)', color: 'var(--text-neutral)' }}>삭제하면 되돌릴 수 없습니다.</p>
         </div>
         <div className="modal__foot modal__foot--split" style={{ paddingTop: 0 }}>
-          <button className="btn" type="button" style={{ height: 44 }} onClick={onCancel}>취소</button>
-          <button className="btn" type="button"
-            style={{ height: 44, color: 'var(--red-50)', borderColor: 'var(--red-90)' }}
-            onClick={onConfirm}>{confirmLabel}</button>
+          <button className="mt-act" type="button" onClick={onCancel}>취소</button>
+          <button className="mt-act mt-act--del" type="button" onClick={onConfirm}>{confirmLabel}</button>
         </div>
       </div>
     </div>
