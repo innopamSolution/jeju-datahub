@@ -7,6 +7,7 @@ import ReportPreviewModal from '../components/ReportPreviewModal';
 import Pager from '../components/Pager';
 import DsSelect from '../components/DsSelect';
 import Icon from '../components/Icon';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="24" height="24" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -74,6 +75,7 @@ export default function ReportList() {
   const [autoPage, setAutoPage] = useState(1);
   const [manualPage, setManualPage] = useState(1);
   const [previewReport, setPreviewReport] = useState(null);
+  const [delReport, setDelReport] = useState(null);
   const [highlight, setHighlight] = useState(null);
   const hlRef = useRef(null);
 
@@ -257,7 +259,7 @@ export default function ReportList() {
                       </div>
                     </td>
                     <td className="col-center">
-                      <button className="rt-del" type="button" aria-label="삭제" onClick={() => setManualRows((rows) => rows.filter((x) => x !== r))}>
+                      <button className="rt-del" type="button" aria-label="삭제" onClick={() => setDelReport(r)}>
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
                       </button>
                     </td>
@@ -274,6 +276,12 @@ export default function ReportList() {
       {previewReport && (
         <ReportPreviewModal report={previewReport} onClose={() => setPreviewReport(null)} />
       )}
+      <ConfirmDialog
+        open={!!delReport}
+        message="보고서를 삭제하시겠습니까?"
+        onCancel={() => setDelReport(null)}
+        onConfirm={() => { setManualRows((rows) => rows.filter((x) => x !== delReport)); setDelReport(null); }}
+      />
     </>
   );
 }

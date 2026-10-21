@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import NotificationBell from '../components/NotificationBell';
 import PageCrumb from '../components/PageCrumb';
 import DsSelect from '../components/DsSelect';
+import ConfirmDialog from '../components/ConfirmDialog';
 import { isAdmin, CURRENT_USER } from '../data/currentUser';
 
 const AI_ICON = (
@@ -39,6 +40,7 @@ export default function ReportManagement() {
 
   const [editingIndex, setEditingIndex] = useState(null);
   const [draft, setDraft] = useState(null);
+  const [delIdx, setDelIdx] = useState(null);
 
   if (!isAdmin()) {
     return (
@@ -60,6 +62,7 @@ export default function ReportManagement() {
     );
   }
 
+  const confirmDeleteRow = () => { if (delIdx !== null) removeRow(delIdx); setDelIdx(null); };
   const removeRow = (i) => {
     setRows((r) => r.filter((_, idx) => idx !== i));
     if (editingIndex === i) { setEditingIndex(null); setDraft(null); }
@@ -202,7 +205,7 @@ export default function ReportManagement() {
                       <td className="rt-date">{r.lastRun}</td>
                       <td className="col-center"><button className="mt-act" onClick={() => startEdit(i)}>수정</button></td>
                       <td className="col-center">
-                        <button className="rt-del" type="button" aria-label="삭제" onClick={() => removeRow(i)}>
+                        <button className="rt-del" type="button" aria-label="삭제" onClick={() => setDelIdx(i)}>
                           <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
                         </button>
                       </td>
@@ -217,6 +220,12 @@ export default function ReportManagement() {
           </div>
         </div>
       </div>
+      <ConfirmDialog
+        open={delIdx !== null}
+        message="자동 생성 설정을 삭제하시겠습니까?"
+        onCancel={() => setDelIdx(null)}
+        onConfirm={confirmDeleteRow}
+      />
     </>
   );
 }

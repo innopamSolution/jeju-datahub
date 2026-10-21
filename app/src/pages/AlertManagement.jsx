@@ -5,6 +5,7 @@ import NotificationBell from '../components/NotificationBell';
 import PageCrumb from '../components/PageCrumb';
 import Pager from '../components/Pager';
 import { CURRENT_USER } from '../data/currentUser';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="24" height="24" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -150,7 +151,9 @@ export default function AlertManagement() {
   }, [addOpen, critOpen]);
 
   const toggleSwitch = (i) => setReceivers((rs) => rs.map((r, j) => (j === i ? { ...r, on: !r.on } : r)));
+  const [delIdx, setDelIdx] = useState(null);
   const removeRow = (i) => setReceivers((rs) => rs.filter((_, j) => j !== i));
+  const confirmDelete = () => { if (delIdx !== null) removeRow(delIdx); setDelIdx(null); };
 
   useEffect(() => {
     const pages = Math.max(1, Math.ceil(receivers.length / PER_PAGE));
@@ -216,7 +219,7 @@ export default function AlertManagement() {
                           <span className="switch__knob" />
                         </button>
                       </td>
-                      <td className="col-center"><button className="mt-act mt-act--del" onClick={() => removeRow(i)}>삭제</button></td>
+                      <td className="col-center"><button className="mt-act mt-act--del" onClick={() => setDelIdx(i)}>삭제</button></td>
                     </tr>
                     );
                   })}
@@ -416,6 +419,12 @@ export default function AlertManagement() {
           </div>
         </div>
       )}
+      <ConfirmDialog
+        open={delIdx !== null}
+        message="수신자를 삭제하시겠습니까?"
+        onCancel={() => setDelIdx(null)}
+        onConfirm={confirmDelete}
+      />
     </>
   );
 }
