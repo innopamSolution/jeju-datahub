@@ -4,6 +4,7 @@ import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
 import AiReportPreview from '../components/AiReportPreview';
 import ScrollList from '../components/ScrollList';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 const AV = (
   <svg viewBox="0 0 36 36" fill="none" width="30" height="30" aria-hidden="true">
@@ -142,6 +143,9 @@ let msgId = 100;
 export default function AiAssistant() {
   const location = useLocation();
   const [messages, setMessages] = useState(INITIAL_MSGS);
+  /* 최근 대화 목록 — X로 개별 삭제(확인 모달) */
+  const [recents, setRecents] = useState(RECENT);
+  const [delRecent, setDelRecent] = useState(null);
   const [input, setInput] = useState(location.state?.prefill ?? '');
   const scrollRef = useRef(null);
   const fieldRef = useRef(null);
@@ -306,15 +310,24 @@ export default function AiAssistant() {
                 </button>
               </div>
               <ScrollList className="recent">
-                {RECENT.map((r, i) => (
-                  <button
+                {recents.map((r, i) => (
+                  <div
                     key={i}
                     className="recent__row"
+                    role="button"
+                    tabIndex={0}
                     onClick={() => setMessages(r.convo.map((m) => ({ ...m, id: ++msgId })))}
+                    onKeyDown={(e) => { if (e.key === 'Enter') setMessages(r.convo.map((m) => ({ ...m, id: ++msgId }))); }}
                   >
-                    <div className="recent__name">{r.name}</div>
-                    <div className="recent__time">{r.time}</div>
-                  </button>
+                    <div className="recent__main">
+                      <div className="recent__name">{r.name}</div>
+                      <div className="recent__time">{r.time}</div>
+                    </div>
+                    <button type="button" className="recent__x" aria-label={`${r.name} 삭제`} title="삭제"
+                      onClick={(e) => { e.stopPropagation(); setDelRecent(r); }}>
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                    </button>
+                  </div>
                 ))}
               </ScrollList>
             </div>
@@ -341,6 +354,12 @@ export default function AiAssistant() {
       {reportPreview && (
         <AiReportPreview report={reportPreview} onClose={() => setReportPreview(null)} />
       )}
+      <ConfirmDialog
+        open={!!delRecent}
+        message="대화를 삭제하시겠습니까?"
+        onCancel={() => setDelRecent(null)}
+        onConfirm={() => { setRecents((rs) => rs.filter((x) => x !== delRecent)); setDelRecent(null); }}
+      />
     </>
   );
 }
