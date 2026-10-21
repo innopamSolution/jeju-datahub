@@ -174,9 +174,15 @@ export default function PolicySimulation() {
   const toggleScenario = (id) => setSelectedScenarios((sel) =>
     sel.includes(id) ? sel.filter((x) => x !== id) : [...sel, id]);
   const toggleAllScenarios = () => setSelectedScenarios(allSelected ? [] : scenarios.map((sc) => sc.id));
+  /* 삭제는 확인 모달을 거친다 (delTarget: 삭제 대기 중인 시나리오) */
+  const [delTarget, setDelTarget] = useState(null);
   const removeScenario = (id) => {
     setScenarios((rows) => rows.filter((sc) => sc.id !== id));
     setSelectedScenarios((sel) => sel.filter((x) => x !== id));
+  };
+  const confirmDelete = () => {
+    if (delTarget) removeScenario(delTarget.id);
+    setDelTarget(null);
   };
 
   /* 목록에서 선택한 시나리오 — 상단 효과 예측에 반영 */
