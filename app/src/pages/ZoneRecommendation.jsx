@@ -444,7 +444,7 @@ export default function ZoneRecommendation() {
           <div className="sim-legend">
             {mode === '요금제 적용' ? (
               <div className="map-legend">
-                <div className="map-legend__title">전환 검토 우선순위</div>
+                <div className="map-legend__title">우선순위</div>
                 <div className="row"><span className="dot" style={{ background: 'var(--red-50)' }} />높음 (배정 민원 {FEE_CUTS.highMin}건 이상)</div>
                 <div className="row"><span className="dot" style={{ background: 'var(--orange-50)' }} />중간 ({FEE_CUTS.midMin}~{FEE_CUTS.highMin - 1}건)</div>
                 <div className="row"><span className="dot" style={{ background: 'var(--blue-50)' }} />낮음 ({FEE_CUTS.midMin}건 미만)</div>
