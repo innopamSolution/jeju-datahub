@@ -160,7 +160,7 @@ export default function ZoneRecommendation() {
       {
         type: 'table',
         title: '요금제 적용 추천 순위',
-        columns: ['순위', '주차장', '면수', '배정 민원', '민원 증가율(참고)', '전환 검토'],
+        columns: ['순위', '주차장', '면수', '배정 민원', '민원 증가율(참고)', '우선순위'],
         rows: FEE_CANDIDATES.map((r) => [r.rank, r.name, `${r.spaces}면`, `${r.cnt}건`, r.rate, FEE_GRADE[r.grade].label]),
       },
     ],
@@ -229,7 +229,7 @@ export default function ZoneRecommendation() {
         });
         const badgeCls = { high: 'badge--severe', mid: 'badge--warn', low: 'badge--caution' }[lot.grade];
         const popup = `<div class="gp">
-          <div class="gp__h"><span class="badge ${badgeCls}">전환 검토 ${g.label}</span></div>
+          <div class="gp__h"><span class="badge ${badgeCls}">우선순위 ${g.label}</span></div>
           <div class="gp__big">${lot.name}</div>
           <div class="gp__bd"><span>배정 민원 <b>${lot.cnt}건</b></span><span>면수 ${lot.spaces}면</span></div>
           <div class="gp__bd"><span>민원 증가율(참고) <b>${lot.rate}</b></span></div>
