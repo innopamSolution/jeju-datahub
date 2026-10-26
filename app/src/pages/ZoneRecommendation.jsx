@@ -20,31 +20,7 @@ const AI_ICON = (
   </svg>
 );
 
-const RANKING = [
-  { rank: 1,  name: '노형사거리',       dotColor: 'var(--red-50)',    rate: '+52%', cnt: 52 },
-  { rank: 2,  name: '연동 대로변',       dotColor: 'var(--red-50)',    rate: '+52%', cnt: 52 },
-  { rank: 3,  name: '이도2동 상업지구',  dotColor: 'var(--red-50)',    rate: '+52%', cnt: 52 },
-  { rank: 4,  name: '삼도1동 문화거리',  dotColor: 'var(--red-50)',    rate: '+48%', cnt: 48 },
-  { rank: 5,  name: '용담 해안도로',     dotColor: 'var(--red-50)',    rate: '+45%', cnt: 45 },
-  { rank: 6,  name: '아라동 주택가',     dotColor: 'var(--orange-50)', rate: '+44%', cnt: 44 },
-  { rank: 7,  name: '도남동 공원 인근',  dotColor: 'var(--orange-50)', rate: '+43%', cnt: 43 },
-  { rank: 8,  name: '화북동 전통시장',   dotColor: 'var(--orange-50)', rate: '+41%', cnt: 41 },
-  { rank: 9,  name: '일도2동 학교 주변', dotColor: 'var(--orange-50)', rate: '+40%', cnt: 40 },
-  { rank: 10, name: '삼양동 농산물시장', dotColor: 'var(--blue-50)',   rate: '+39%', cnt: 39 },
-  { rank: 11, name: '외도동 항구 일대',  dotColor: 'var(--blue-50)',   rate: '+38%', cnt: 38 },
-  { rank: 12, name: '노형동 카페 거리',  dotColor: 'var(--blue-50)',   rate: '+37%', cnt: 37 },
-  { rank: 13, name: '도두동 해변가',     dotColor: 'var(--blue-50)',   rate: '+36%', cnt: 36 },
-  { rank: 14, name: '이호동 관광명소',   dotColor: 'var(--blue-50)',   rate: '+35%', cnt: 35 },
-];
 
-const CLUSTERS = [
-  { name: '노형사거리',      c: [33.4790, 126.4760], rank: 1, badge: 'severe',  rate: '+52%', cnt: 52 },
-  { name: '연동 대로변',     c: [33.4866, 126.4900], rank: 2, badge: 'severe',  rate: '+52%', cnt: 52 },
-  { name: '이도2동 상업지구', c: [33.4995, 126.5320], rank: 3, badge: 'severe',  rate: '+52%', cnt: 52 },
-  { name: '제주공항 인근',   c: [33.5070, 126.4930], rank: 4, badge: 'warn',    rate: '+48%', cnt: 48 },
-  { name: '동문시장 주변',   c: [33.5130, 126.5270], rank: 5, badge: 'warn',    rate: '+45%', cnt: 45 },
-  { name: '아라동 주변',     c: [33.4560, 126.5470], rank: 6, badge: 'caution', rate: '+44%', cnt: 44 },
-];
 
 const BADGE_COLOR = { severe: 'var(--red-50)', warn: 'var(--orange-50)', caution: 'var(--blue-50)' };
 const BADGE_TEXT  = { severe: '매우높음', warn: '높음', caution: '보통' };
@@ -96,6 +72,49 @@ const FEE_NOTES = [
   '배정 범위(300m)를 바꾸면 순위가 달라집니다.',
 ];
 
+/* ── 공유주차제 적용: 읍면동 단위 '검토 지수' 산정 ──
+   검토 지수 = min(월평균 주차 민원 ÷ 50건, 공영 100면당 월 민원 ÷ 7건)
+   표시 순서 = 추세 반영 지수(검토 지수 × 증가계수 0.5~1.5), 검토 지수 1 이상 우선. 등급은 검토 지수 기준 */
+const SHARE_REGIONS_RAW = [
+  /* name, 월평균 주차 민원(건), 공영 주차면수(면), 민원 증가율(직전 동기간 대비, null=직전 10건 미만), 공한지 제외 시 기준 초과 여부, 좌표 */
+  { name: '아라동', monthly: 58, supply: 640, growth: 0.24, vacantFlag: false, c: [33.4560, 126.5470] },
+  { name: '연동',   monthly: 52, supply: 700, growth: 0.18, vacantFlag: false, c: [33.4866, 126.4900] },
+  { name: '노형동', monthly: 48, supply: 820, growth: 0.12, vacantFlag: true,  c: [33.4790, 126.4760] },
+  { name: '이도동', monthly: 44, supply: 560, growth: null, vacantFlag: true,  c: [33.4995, 126.5320] },
+  { name: '삼도동', monthly: 31, supply: 380, growth: 0.09, vacantFlag: false, c: [33.5120, 126.5180] },
+  { name: '화북동', monthly: 26, supply: 300, growth: null, vacantFlag: false, c: [33.5170, 126.5700] },
+  { name: '외도동', monthly: 19, supply: 410, growth: 0.04, vacantFlag: false, c: [33.4940, 126.4310] },
+  { name: '애월읍', monthly: 14, supply: 520, growth: null, vacantFlag: false, c: [33.4630, 126.3310] },
+];
+const SHARE_REGIONS = SHARE_REGIONS_RAW.map((r) => {
+  const per100 = r.monthly / r.supply * 100;                       // 공영 100면당 월 민원
+  const idx1 = r.monthly / 50;                                    // 월평균 민원 ÷ 50건
+  const idx2 = per100 / 7;                                        // 100면당 월 민원 ÷ 7건
+  const review = Math.min(idx1, idx2);                            // 검토 지수
+  const growthClamped = r.growth === null ? null : Math.max(-1, Math.min(1, r.growth));
+  const factor = growthClamped === null ? 1 : 1 + 0.5 * growthClamped; // 증가계수 0.5~1.5
+  const trend = review * factor;                                  // 추세 반영 지수
+  const grade = review >= 1 ? 'high' : review >= 0.7 ? 'mid' : 'low';
+  return { ...r, per100, review, factor, trend, grade };
+}).sort((a, b) => {
+  const aOver = a.review >= 1 ? 1 : 0, bOver = b.review >= 1 ? 1 : 0;
+  if (aOver !== bOver) return bOver - aOver;                      // 검토 지수 1 이상 우선
+  return b.trend - a.trend;                                       // 추세 반영 지수 순
+}).map((r, i) => ({ ...r, rank: i + 1 }));
+const SHARE_GRADE = {
+  high: { label: '높음', color: 'var(--red-50)', badge: 'badge--severe' },
+  mid:  { label: '중간', color: 'var(--orange-50)', badge: 'badge--warn' },
+  low:  { label: '낮음', color: 'var(--blue-50)', badge: 'badge--caution' },
+};
+const SHARE_NOTES = [
+  '검토 지수 = (월평균 주차 민원 ÷ 50건)과 (공영 100면당 월 민원 ÷ 7건) 중 작은 값',
+  '월평균 민원 = 조회 기간 민원 ÷ 개월 수 (조회 기간이 걸친 달별로 일수 비율을 더한 값, 온전한 달은 1개월)',
+  '표시 순서 = 추세 반영 지수(검토 지수 × 증가계수 0.5~1.5) 순 — 검토 지수 1 이상인 읍면동 우선. 등급은 검토 지수 기준',
+  "증가계수 = 1 + 0.5 × 민원 증가율(±100%에서 자름). 직전 기간 민원 10건 미만이면 계산하지 않고 계수 1 — 직전 기간 데이터가 없어 조회 기간을 반으로 갈라 비교(최근 121일 ↔ 이전 121일)",
+  '번호는 표시 순서이며 우선순위가 아닙니다. 검토 지수·등급은 기준을 넘은 정도이며 공유주차 적합도나 사업 우선순위가 아닙니다',
+  "'공한지를 빼면 후보' 배지: 공한지 주차장을 공급에서 빼면 두 기준을 모두 초과 (검토 지수 1 미만 읍면동에만 표시)",
+];
+
 const MODE_TITLES = {
   '요금제 적용':   '요금제 적용 추천 구역 순위',
   '공유주차제 적용': '공유주차제 적용 추천 구역 순위',
@@ -144,7 +163,6 @@ export default function ZoneRecommendation() {
     return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
   }, [exportOpen]);
 
-  const GRADE_LABEL = { 'var(--red-50)': '매우높음', 'var(--orange-50)': '높음', 'var(--blue-50)': '보통' };
   const exportData = () => (mode === '요금제 적용' ? {
     fileBase: '요금제적용_추천',
     title: MODE_TITLES[mode],
@@ -165,22 +183,22 @@ export default function ZoneRecommendation() {
       },
     ],
   } : {
-    fileBase: '구역추천_순위',
+    fileBase: '공유주차제_검토',
     title: MODE_TITLES[mode],
-    subtitle: '종합점수 기준 : 민원 건수 40% / 증가율 30% / 단속 건수 20% / 공급부족 10%',
+    subtitle: '읍·면·동 검토 지수 — 추세 반영 지수 순 (검토 지수 1 이상 우선) · 번호는 표시 순서',
     sections: [
       {
         type: 'chart',
-        title: '추천 구역별 민원 건수 (3개월)',
-        html: hBarChartHtml(RANKING.map((r) => ({
-          label: r.name, value: r.cnt, valueLabel: `${r.cnt}건 (${r.rate})`, color: r.dotColor,
+        title: '읍·면·동별 검토 지수',
+        html: hBarChartHtml(SHARE_REGIONS.map((r) => ({
+          label: r.name, value: Math.round(r.review * 100), valueLabel: r.review.toFixed(2), color: SHARE_GRADE[r.grade].color,
         }))),
       },
       {
         type: 'table',
-        title: '추천 구역 순위',
-        columns: ['순위', '구역', '증가율', '민원 건수', '적합도'],
-        rows: RANKING.map((r) => [r.rank, r.name, r.rate, `${r.cnt}건`, GRADE_LABEL[r.dotColor] ?? '-']),
+        title: '공유주차제 검토 목록',
+        columns: ['번호', '읍·면·동', '검토 지수', '추세 반영 지수', '월평균 민원', '100면당 월 민원', '증가계수', '비고'],
+        rows: SHARE_REGIONS.map((r) => [r.rank, r.name, r.review.toFixed(2), r.trend.toFixed(2), `${r.monthly}건`, `${r.per100.toFixed(1)}건`, r.factor.toFixed(2), r.review < 1 && r.vacantFlag ? '공한지를 빼면 후보' : '']),
       },
     ],
   });
@@ -252,23 +270,25 @@ export default function ZoneRecommendation() {
           .addTo(layer);
       });
     } else {
-      CLUSTERS.forEach(cl => {
-        const fill = resolveColor(BADGE_COLOR[cl.badge]);
+      SHARE_REGIONS.forEach(r => {
+        const g = SHARE_GRADE[r.grade];
+        const fill = resolveColor(g.color);
         const icon = L.divIcon({
           className: 'cmk', iconSize: [44, 56], iconAnchor: [22, 54],
-          html: makePinHtml(cl.rank, fill, cl.name),
+          html: makePinHtml(r.rank, fill, r.name),
         });
         const popup = `<div class="gp">
-          <div class="gp__h"><span class="badge badge--${cl.badge}">${BADGE_TEXT[cl.badge]}</span></div>
-          <div class="gp__big">${cl.name}</div>
-          <div class="gp__bd"><span>증가율 <b>${cl.rate}</b></span><span>${cl.cnt}건 (3개월)</span></div>
+          <div class="gp__h"><span class="badge ${g.badge}">검토 ${g.label}</span>${r.review < 1 && r.vacantFlag ? '<span class="badge badge--done">공한지를 빼면 후보</span>' : ''}</div>
+          <div class="gp__big">${r.name}</div>
+          <div class="gp__bd"><span>검토 지수 <b>${r.review.toFixed(2)}</b></span><span>추세 반영 ${r.trend.toFixed(2)}</span></div>
+          <div class="gp__bd"><span>월평균 민원 <b>${r.monthly}건</b></span><span>100면당 ${r.per100.toFixed(1)}건</span></div>
         </div>`;
-        const m = L.marker(cl.c, { icon, riseOnHover: true })
+        const m = L.marker(r.c, { icon, riseOnHover: true })
           .bindPopup(popup, { closeButton: false, offset: [0, -48] })
           .addTo(layer);
-        m.on('click', () => setActiveRow(cl.rank));
-        m.on('popupopen', () => setActiveRow(cl.rank));
-        markerMap.current[cl.rank] = m;
+        m.on('click', () => setActiveRow(r.rank));
+        m.on('popupopen', () => setActiveRow(r.rank));
+        markerMap.current[r.rank] = m;
       });
     }
   }, [mode]);
@@ -365,30 +385,28 @@ export default function ZoneRecommendation() {
                 <div className="sim-sec">
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <h3 className="sim-sec__title" style={{ margin: 0 }}>{MODE_TITLES[mode]}</h3>
-                    {mode === '요금제 적용' && (
-                      /* 산정 기준 참고 팝오버 */
-                      <div className="freshness__ic" tabIndex={0} aria-label="산정 기준 안내" style={{ marginLeft: 'auto' }}>
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
-                          <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
-                          <circle cx="12" cy="8" r="1.3" fill="currentColor" />
-                          <path d="M12 11.5v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                        </svg>
-                        <div className="freshness__pop freshness__pop--right" role="tooltip">
-                          <div className="freshness__pop-title">산정 기준</div>
-                          <ul className="basis-list">
-                            {FEE_NOTES.map((n) => <li key={n}>{n}</li>)}
-                          </ul>
-                        </div>
+                    {/* 산정 기준 참고 팝오버 (모드별 내용) */}
+                    <div className="freshness__ic" tabIndex={0} aria-label="산정 기준 안내" style={{ marginLeft: 'auto' }}>
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+                        <circle cx="12" cy="8" r="1.3" fill="currentColor" />
+                        <path d="M12 11.5v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
+                      <div className="freshness__pop freshness__pop--right" role="tooltip">
+                        <div className="freshness__pop-title">{mode === '요금제 적용' ? '산정 기준' : '검토 지수 산정 기준'}</div>
+                        <ul className="basis-list">
+                          {(mode === '요금제 적용' ? FEE_NOTES : SHARE_NOTES).map((n) => <li key={n}>{n}</li>)}
+                        </ul>
                       </div>
-                    )}
+                    </div>
                   </div>
                   <p className="sim-sec__sub">
                     {mode === '요금제 적용'
                       ? '무료 공영주차장(20면 이상) · 배정 민원 많은 순, 동률 시 면수 순'
-                      : '종합점수 기준 : 민원 건수 40% / 증가율 30% / 단속 건수 20% / 공급부족 10%'}
+                      : '읍·면·동 검토 지수 — 추세 반영 지수 순 (검토 지수 1 이상 우선) · 번호는 표시 순서'}
                   </p>
                   <div className="rl">
-                    {(mode === '요금제 적용' ? [] : RANKING).map((r, i) => (
+                    {mode !== '요금제 적용' && SHARE_REGIONS.map((r, i) => (
                       <div
                         key={r.rank}
                         className={`rl__row${activeRank === r.rank ? ' is-active' : ''}`}
@@ -400,14 +418,19 @@ export default function ZoneRecommendation() {
                         <div className="rl__main">
                           <div className="rl__top">
                             <span className="rl__name">
-                              <span className="dot" style={{ background: r.dotColor }} />
+                              <span className="dot" style={{ background: SHARE_GRADE[r.grade].color }} />
                               {r.name}
+                              {r.review < 1 && r.vacantFlag && (
+                                <span className="badge badge--done" style={{ marginLeft: 6, fontSize: 10 }}>공한지를 빼면 후보</span>
+                              )}
                             </span>
                             <span className="rl__val">
-                              <span className="rl__cnt" style={{ color: 'var(--red-40)' }}>{r.rate}</span>
+                              <span className="rl__cnt">지수 {r.review.toFixed(2)}</span>
                             </span>
                           </div>
-                          <span className="rl__sub">{r.cnt}건 (3개월)</span>
+                          <span className="rl__sub">
+                            월평균 민원 {r.monthly}건 · 100면당 {r.per100.toFixed(1)}건 · 증가계수 {r.factor.toFixed(2)}{r.growth === null ? ' (증가율 미산정)' : ''}
+                          </span>
                         </div>
                       </div>
                     ))}
@@ -452,10 +475,10 @@ export default function ZoneRecommendation() {
               </div>
             ) : (
               <div className="map-legend">
-                <div className="map-legend__title">민원 증가율</div>
-                <div className="row"><span className="dot" style={{ background: 'var(--red-50)' }} />매우 높음 (45% 이상)</div>
-                <div className="row"><span className="dot" style={{ background: 'var(--orange-50)' }} />높음 (40~44%)</div>
-                <div className="row"><span className="dot" style={{ background: 'var(--blue-50)' }} />보통 (40% 미만)</div>
+                <div className="map-legend__title">검토 등급 (검토 지수 기준)</div>
+                <div className="row"><span className="dot" style={{ background: 'var(--red-50)' }} />높음 (지수 1.0 이상 — 두 기준 초과)</div>
+                <div className="row"><span className="dot" style={{ background: 'var(--orange-50)' }} />중간 (0.7~1.0)</div>
+                <div className="row"><span className="dot" style={{ background: 'var(--blue-50)' }} />낮음 (0.7 미만)</div>
               </div>
             )}
           </div>
