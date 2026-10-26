@@ -219,7 +219,27 @@ export default function HotspotAnalysis() {
 
               <div className="sim-result__body" ref={bodyRef}>
                 <div className="sim-sec">
-                  <h3 className="sim-sec__title">불법 주차 집중 구역 순위</h3>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <h3 className="sim-sec__title" style={{ margin: 0 }}>불법 주차 집중 구역 순위</h3>
+                    {/* 순위 산정 기준 — 호버 시 안내 팝오버 */}
+                    <div className="freshness__ic" tabIndex={0} aria-label="순위 산정 기준 안내" style={{ marginLeft: 'auto' }}>
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+                        <circle cx="12" cy="8" r="1.3" fill="currentColor" />
+                        <path d="M12 11.5v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
+                      <div className="freshness__pop freshness__pop--right" role="tooltip">
+                        <div className="freshness__pop-title">순위 산정 기준</div>
+                        <ul className="basis-list">
+                          <li>구역은 반경 50m 내 3개 지점 이상의 민원·단속 위치를 묶은 것입니다(DBSCAN).</li>
+                          <li>종합점수(0~100) = 월평균 민원·단속 건수를 기준값 대비 점수화해 가중합한 값입니다.</li>
+                          <li>등급: 심각 80 · 경고 60 · 주의 40점 이상 — 주의 이상 구역만 표시됩니다.</li>
+                          <li>구역명은 단속 주소 → 장소명 → 주소 → '○○동 일대' 순으로 정합니다.</li>
+                          <li>가중치·기준값은 설정 &gt; 분석 지표 가중치 설정에서 변경할 수 있습니다(권한 필요).</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                   <p className="sim-sec__sub">종합점수 기준 : 민원 건수 60% / 단속 40%</p>
                   <div className="rl">
                     {VISIBLE_RANKING.map((r, i) => (
