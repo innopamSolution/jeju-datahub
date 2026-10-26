@@ -107,17 +107,16 @@ const SHARE_GRADE = {
   low:  { label: '낮음', color: 'var(--blue-50)', badge: 'badge--caution' },
 };
 const SHARE_NOTES = [
-  '검토 지수 = (월평균 주차 민원 ÷ 50건)과 (공영 100면당 월 민원 ÷ 7건) 중 작은 값',
+  '추천 순위 = 추세 반영 지수(검토 지수 × 증가계수 0.5~1.5) 순 — 민원 증가 추세를 반영하며, 검토 지수 1 이상(두 기준 초과) 읍면동이 우선합니다',
+  '검토 지수 = (월평균 주차 민원 ÷ 50건)과 (공영 100면당 월 민원 ÷ 7건) 중 작은 값 — 등급은 검토 지수 기준',
   '월평균 민원 = 조회 기간 민원 ÷ 개월 수 (조회 기간이 걸친 달별로 일수 비율을 더한 값, 온전한 달은 1개월)',
-  '표시 순서 = 추세 반영 지수(검토 지수 × 증가계수 0.5~1.5) 순 — 검토 지수 1 이상인 읍면동 우선. 등급은 검토 지수 기준',
-  "증가계수 = 1 + 0.5 × 민원 증가율(±100%에서 자름). 직전 기간 민원 10건 미만이면 계산하지 않고 계수 1 — 직전 기간 데이터가 없어 조회 기간을 반으로 갈라 비교(최근 121일 ↔ 이전 121일)",
-  '번호는 표시 순서이며 우선순위가 아닙니다. 검토 지수·등급은 기준을 넘은 정도이며 공유주차 적합도나 사업 우선순위가 아닙니다',
+  '증가계수 = 1 + 0.5 × 민원 증가율(±100%에서 자름). 직전 기간 민원 10건 미만이면 계산하지 않고 계수 1 — 직전 기간 데이터가 없어 조회 기간을 반으로 갈라 비교(최근 121일 ↔ 이전 121일)',
   "'공한지를 빼면 후보' 배지: 공한지 주차장을 공급에서 빼면 두 기준을 모두 초과 (검토 지수 1 미만 읍면동에만 표시)",
 ];
 
 const MODE_TITLES = {
   '요금제 적용':   '요금제 적용 추천 구역 순위',
-  '공유주차제 적용': '공유주차제 적용 검토 지역',
+  '공유주차제 적용': '공유주차제 적용 추천 구역 순위',
 };
 
 function resolveColor(cssVar) {
@@ -185,20 +184,20 @@ export default function ZoneRecommendation() {
   } : {
     fileBase: '공유주차제_검토',
     title: MODE_TITLES[mode],
-    subtitle: '읍·면·동 검토 지수 — 추세 반영 지수 순 (검토 지수 1 이상 우선) · 번호는 표시 순서',
+    subtitle: '민원 증가 추세 반영 — 추세 반영 지수(검토 지수 × 증가계수) 순, 검토 지수 1 이상 우선',
     sections: [
       {
         type: 'chart',
-        title: '읍·면·동별 검토 지수',
+        title: '읍·면·동별 추세 반영 지수',
         html: hBarChartHtml(SHARE_REGIONS.map((r) => ({
-          label: r.name, value: Math.round(r.review * 100), valueLabel: r.review.toFixed(2), color: SHARE_GRADE[r.grade].color,
+          label: r.name, value: Math.round(r.trend * 100), valueLabel: r.trend.toFixed(2), color: SHARE_GRADE[r.grade].color,
         }))),
       },
       {
         type: 'table',
-        title: '공유주차제 검토 목록',
-        columns: ['번호', '읍·면·동', '검토 지수', '추세 반영 지수', '월평균 민원', '100면당 월 민원', '증가계수', '비고'],
-        rows: SHARE_REGIONS.map((r) => [r.rank, r.name, r.review.toFixed(2), r.trend.toFixed(2), `${r.monthly}건`, `${r.per100.toFixed(1)}건`, r.factor.toFixed(2), r.review < 1 && r.vacantFlag ? '공한지를 빼면 후보' : '']),
+        title: '공유주차제 적용 추천 순위',
+        columns: ['순위', '읍·면·동', '추세 반영 지수', '검토 지수', '월평균 민원', '100면당 월 민원', '증가계수', '비고'],
+        rows: SHARE_REGIONS.map((r) => [r.rank, r.name, r.trend.toFixed(2), r.review.toFixed(2), `${r.monthly}건`, `${r.per100.toFixed(1)}건`, r.factor.toFixed(2), r.review < 1 && r.vacantFlag ? '공한지를 빼면 후보' : '']),
       },
     ],
   });
@@ -393,7 +392,7 @@ export default function ZoneRecommendation() {
                         <path d="M12 11.5v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                       </svg>
                       <div className="freshness__pop freshness__pop--right" role="tooltip">
-                        <div className="freshness__pop-title">{mode === '요금제 적용' ? '산정 기준' : '검토 지수 산정 기준'}</div>
+                        <div className="freshness__pop-title">{mode === '요금제 적용' ? '산정 기준' : '추천 순위 산정 기준'}</div>
                         <ul className="basis-list">
                           {(mode === '요금제 적용' ? FEE_NOTES : SHARE_NOTES).map((n) => <li key={n}>{n}</li>)}
                         </ul>
@@ -403,7 +402,7 @@ export default function ZoneRecommendation() {
                   <p className="sim-sec__sub">
                     {mode === '요금제 적용'
                       ? '무료 공영주차장(20면 이상) · 배정 민원 많은 순, 동률 시 면수 순'
-                      : '읍·면·동 검토 지수 — 추세 반영 지수 순 (검토 지수 1 이상 우선) · 번호는 표시 순서'}
+                      : '민원 증가 추세 반영 — 추세 반영 지수(검토 지수 × 증가계수) 순, 검토 지수 1 이상 우선'}
                   </p>
                   <div className="rl">
                     {mode !== '요금제 적용' && SHARE_REGIONS.map((r, i) => (
@@ -425,11 +424,11 @@ export default function ZoneRecommendation() {
                               )}
                             </span>
                             <span className="rl__val">
-                              <span className="rl__cnt">지수 {r.review.toFixed(2)}</span>
+                              <span className="rl__cnt">지수 {r.trend.toFixed(2)}</span>
                             </span>
                           </div>
                           <span className="rl__sub">
-                            월평균 민원 {r.monthly}건 · 100면당 {r.per100.toFixed(1)}건 · 증가계수 {r.factor.toFixed(2)}{r.growth === null ? ' (증가율 미산정)' : ''}
+                            검토 지수 {r.review.toFixed(2)} · 월평균 민원 {r.monthly}건 · 증가계수 {r.factor.toFixed(2)}{r.growth === null ? ' (증가율 미산정)' : ''}
                           </span>
                         </div>
                       </div>
