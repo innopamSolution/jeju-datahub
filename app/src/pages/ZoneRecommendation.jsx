@@ -117,7 +117,7 @@ const SHARE_NOTES = [
 
 const MODE_TITLES = {
   '요금제 적용':   '요금제 적용 추천 구역 순위',
-  '공유주차제 적용': '공유주차제 적용 추천 구역 순위',
+  '공유주차제 적용': '공유주차제 적용 검토 지역',
 };
 
 function resolveColor(cssVar) {
