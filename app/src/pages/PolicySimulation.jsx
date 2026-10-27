@@ -164,8 +164,8 @@ export default function PolicySimulation() {
   const [feeMethod, setFeeMethod] = useState('raise');   // 요금 인상 | 무료→유료 전환
   const [feeZone, setFeeZone] = useState('all');          // 적용 급지 (전체 지역 선택 시에만 노출)
   const [feeRatePct, setFeeRatePct] = useState('10');     // 인상률
-  const [simCity, setSimCity] = useState('제주시');
-  const [simDong, setSimDong] = useState('연동');
+  const [simCity, setSimCity] = useState('제주 전체');
+  const [simDong, setSimDong] = useState('전체');
   const [exportOpen, setExportOpen] = useState(false);
   const exportRef = useRef(null);
   /* 시나리오 비교 — 행 삭제 가능, 내보낼 시나리오 선택(기본 전체 선택). 선택은 인덱스 대신 id로 추적 */
