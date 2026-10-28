@@ -743,9 +743,8 @@ export default function Complaints() {
                     <span>{d.label}</span>
                     <button
                       type="button"
-                      role="radio"
-                      aria-checked={layers[d.key]}
-                      className={`layer-radio${layers[d.key] ? ' layer-radio--on' : ''}`}
+                      aria-pressed={layers[d.key]}
+                      className={`toggle${layers[d.key] ? ' toggle--on' : ''}`}
                       aria-label={d.label}
                     />
                   </div>
