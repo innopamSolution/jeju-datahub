@@ -120,7 +120,15 @@ const RANK_MODES = {
   },
   enforce: { title: '읍·면·동 단속 순위',   sub: '불법주차 단속 건수 집계', rows: inLegend(ENFORCE_REGIONS) },
   demand:  { title: '읍·면·동 수요부족 순위', sub: '주차 수요·공급 부족률 기준', rows: inLegend(DEMAND_REGIONS) },
+  /* 히트맵은 민원 건수 기반이므로 순위 카드는 민원 순위와 동일 구성 */
+  heat: {
+    title: '읍·면·동 민원 순위', sub: '민원 건수 집계 (히트맵 연동)',
+    rows: inLegend(REGIONS.map((r) => ({ rank: r.rank, name: r.name, dotColor: r.dotColor, value: `${r.count}건`, delta: r.delta, deltaClass: r.deltaClass, sub: `${r.topType} ${r.topPct}%` }))),
+  },
 };
+
+/* 히트맵 전용 범례 (연속 그라데이션) */
+const HEAT_GRADIENT = { 0.25: '#3b82f6', 0.5: '#22c55e', 0.7: '#f59e0b', 0.9: '#ef4444' };
 
 const LAYER_RADIO_DEFS = [
   { key: 'hotspot', label: '민원 다발 지역', defaultOn: true  },
