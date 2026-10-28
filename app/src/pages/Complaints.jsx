@@ -840,6 +840,8 @@ export default function Complaints() {
                   {regionsExpanded ? '접기' : `더보기 (${rankMode.rows.length - 5})`} <Icon name="chevron-down" size={16} style={{ color: 'var(--text-alternative)', ...(regionsExpanded ? { transform: 'rotate(180deg)' } : null) }} />
                 </button>
               )}
+              </>
+              )}
             </div>
 
             {/* 부정 민원 상위 지역 (Figma 250727 수정본: 민원 집중구역 → 감정 분석 랭킹으로 교체) */}
