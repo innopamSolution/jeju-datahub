@@ -784,20 +784,20 @@ export default function Complaints() {
                         aria-label={d.label}
                       />
                     </div>
-                    {/* 민원 다발 지역 선택 시: 읍면동 ↔ 히트맵 표현 방식 전환 */}
-                    {d.key === 'hotspot' && layers.hotspot && (
+                    {/* 선택된 지역 레이어: 읍면동 ↔ 히트맵 표현 방식 전환 */}
+                    {layers[d.key] && (
                       <div style={{ display: 'flex', gap: 4, padding: '0 0 8px 0' }}>
                         {[['region', '읍면동'], ['heat', '히트맵']].map(([mode, label]) => (
                           <button
                             key={mode}
                             type="button"
-                            onClick={() => setHotspotMode(mode)}
+                            onClick={() => setViewModes((prev) => ({ ...prev, [d.key]: mode }))}
                             style={{
                               height: 28, padding: '0 12px', borderRadius: 999, fontSize: 13, cursor: 'pointer',
-                              border: '1px solid ' + (hotspotMode === mode ? 'var(--primary-normal)' : 'var(--line-normal)'),
-                              background: hotspotMode === mode ? 'var(--blue-95)' : 'var(--card-bg)',
-                              color: hotspotMode === mode ? 'var(--primary-normal)' : 'var(--text-alternative)',
-                              fontWeight: hotspotMode === mode ? 600 : 500,
+                              border: '1px solid ' + (viewModes[d.key] === mode ? 'var(--primary-normal)' : 'var(--line-normal)'),
+                              background: viewModes[d.key] === mode ? 'var(--blue-95)' : 'var(--card-bg)',
+                              color: viewModes[d.key] === mode ? 'var(--primary-normal)' : 'var(--text-alternative)',
+                              fontWeight: viewModes[d.key] === mode ? 600 : 500,
                             }}
                           >{label}</button>
                         ))}
