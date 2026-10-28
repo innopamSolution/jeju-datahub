@@ -405,18 +405,9 @@ function GisMap({ layerState, baseMap, focusRef }) {
       radius: 26, blur: 22, maxZoom: 14, max: 1.6, minOpacity: 0.12,
       gradient: HEAT_GRADIENT,
     });
-    /* 순위 카드 → 지도 연동용 투명 마커 (히트맵 위에서 팝업 제공) */
-    const heatFocusLayer = L.layerGroup();
-    rankMarkers.heat = {};
-    regions.forEach((r) => {
-      const m = L.marker(r.c, { opacity: 0, keyboard: false }).bindPopup(popupHtml(r));
-      m.addTo(heatFocusLayer);
-      rankMarkers.heat[r.name] = m;
-    });
-
     layerGroupsRef.current = {
       hotspot: [boundaryLayer, regionGroup],
-      heat: [heatLayer, heatFocusLayer],
+      heat: [heatLayer],
       parking: [parkingGroup],
       enforce: enforceLayers,
       demand:  demandLayers,
