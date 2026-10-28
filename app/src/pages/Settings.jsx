@@ -83,10 +83,10 @@ const WEIGHT_MODELS = [
   {
     key: 'invest', label: '투자·보강 우선순위',
     metrics: [
-      { key: 'safety',    label: '안전위험도', sub: '시설물 안전점검 · 노후연수',    value: 35 },
+      { key: 'safety',    label: '안전위험도', sub: '시설물 안전점검 · 노후연수',    value: 25 },
       { key: 'complaint', label: '민원빈도',   sub: '수집플랫폼 표준 민원 데이터',   value: 25 },
-      { key: 'usage',     label: '이용패턴',   sub: '주차관제 점유율 · 단속건수',    value: 20 },
-      { key: 'accident',  label: '사고이력',   sub: '재난상황시스템 화재 · 출동',    value: 20 },
+      { key: 'usage',     label: '이용패턴',   sub: '주차관제 점유율 · 단속건수',    value: 25 },
+      { key: 'accident',  label: '사고이력',   sub: '재난상황시스템 화재 · 출동',    value: 25 },
     ],
   },
 ];
@@ -96,7 +96,7 @@ const DEFAULT_WEIGHTS = Object.fromEntries(WEIGHT_MODELS.map((m) => [
 ]));
 
 const HISTORY = [
-  { at: '2026-07-23 04:10', who: '이제주 (담당자)', item: '투자·보강 우선순위', change: '안전위험도 30 → 35, 사고이력 25 → 20 (시설 노후화 반영)' },
+  { at: '2026-07-23 04:10', who: '이제주 (담당자)', item: '투자·보강 우선순위', change: '안전위험도 35 → 25, 이용패턴 20 → 25, 사고이력 20 → 25 (균등 가중치 적용)' },
   { at: '2026-06-11 10:32', who: '김주차 (관리자)', item: '집중구역 분석',      change: '민원 50 → 60, 단속 50 → 40 (관광성수기 반영)' },
   { at: '2026-05-02 15:07', who: '김주차 (관리자)', item: '등급 구간',          change: '심각 기준 85 → 80점 하향' },
 ];

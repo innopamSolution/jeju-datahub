@@ -91,7 +91,7 @@ export default function InvestmentPriority() {
   const exportData = () => ({
     fileBase: '투자보강_우선순위',
     title: '투자·보강 우선순위',
-    subtitle: '종합점수 기준 : 안전위험도 35% / 민원빈도 25% / 이용패턴 20% / 사고이력 20%',
+    subtitle: '종합점수 기준 : 안전위험도 25% / 민원빈도 25% / 이용패턴 25% / 사고이력 25%',
     sections: [
       {
         type: 'chart',
@@ -265,7 +265,7 @@ export default function InvestmentPriority() {
               <div className="card-head">
                 <div>
                   <h2 className="card-head__title">투자·보강 우선순위</h2>
-                  <p className="card-head__sub">종합점수 기준 : 안전위험도 35% / 민원빈도 25% / 이용패턴 20% / 사고이력 20%</p>
+                  <p className="card-head__sub">종합점수 기준 : 안전위험도 25% / 민원빈도 25% / 이용패턴 25% / 사고이력 25%</p>
                 </div>
                 <div className="sim-export" ref={exportRef}>
                   <button className="btn" type="button" style={{ height: 36, padding: '0 var(--space-12)', fontSize: 'var(--label2-size)' }}
