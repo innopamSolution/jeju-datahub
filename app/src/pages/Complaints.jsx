@@ -745,26 +745,37 @@ export default function Complaints() {
               {/* 레이어 패널 */}
               <div className="layer-panel">
                 <div className="layer-panel__title">레이어 표시</div>
-                {/* 지역 구분 전체 표시/숨김 — 히트맵만 단독으로 보고 싶을 때 사용 */}
-                <div className="layer-row" onClick={() => setRegionsVisible((v) => !v)}>
-                  <span style={{ fontWeight: 600 }}>지역 구분</span>
-                  <button
-                    type="button"
-                    aria-pressed={regionsVisible}
-                    className={`toggle${regionsVisible ? ' toggle--on' : ''}`}
-                    aria-label="지역 구분 표시"
-                  />
-                </div>
                 {LAYER_RADIO_DEFS.map((d) => (
-                  <div key={d.key} className="layer-row" style={regionsVisible ? undefined : { opacity: 0.4, pointerEvents: 'none' }} onClick={() => selectRadioLayer(d.key)}>
-                    <span style={{ paddingLeft: 12 }}>{d.label}</span>
-                    <button
-                      type="button"
-                      role="radio"
-                      aria-checked={layers[d.key]}
-                      className={`layer-radio${layers[d.key] ? ' layer-radio--on' : ''}`}
-                      aria-label={d.label}
-                    />
+                  <div key={d.key}>
+                    <div className="layer-row" onClick={() => selectRadioLayer(d.key)}>
+                      <span>{d.label}</span>
+                      <button
+                        type="button"
+                        role="radio"
+                        aria-checked={layers[d.key]}
+                        className={`layer-radio${layers[d.key] ? ' layer-radio--on' : ''}`}
+                        aria-label={d.label}
+                      />
+                    </div>
+                    {/* 민원 다발 지역 선택 시: 읍면동 ↔ 히트맵 표현 방식 전환 */}
+                    {d.key === 'hotspot' && layers.hotspot && (
+                      <div style={{ display: 'flex', gap: 4, padding: '0 0 8px 12px' }}>
+                        {[['region', '읍면동'], ['heat', '히트맵']].map(([mode, label]) => (
+                          <button
+                            key={mode}
+                            type="button"
+                            onClick={() => setHotspotMode(mode)}
+                            style={{
+                              height: 24, padding: '0 10px', borderRadius: 999, fontSize: 12, cursor: 'pointer',
+                              border: '1px solid ' + (hotspotMode === mode ? 'var(--primary-normal)' : 'var(--line-normal)'),
+                              background: hotspotMode === mode ? 'var(--blue-95)' : 'var(--card-bg)',
+                              color: hotspotMode === mode ? 'var(--primary-normal)' : 'var(--text-alternative)',
+                              fontWeight: hotspotMode === mode ? 600 : 500,
+                            }}
+                          >{label}</button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
                 <div className="layer-panel__sep" />
