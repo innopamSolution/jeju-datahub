@@ -482,16 +482,9 @@ export default function Complaints() {
   const exportRef = useRef(null);
 
   const toggleLayer = (key) => setLayers((prev) => ({ ...prev, [key]: !prev[key] }));
-  /* 현재 선택된 라디오 레이어에 맞는 순위 카드 구성.
-     지역 레이어가 모두 꺼진 경우: 히트맵이 켜져 있으면 같은 기준(민원 건수)인
-     민원 순위를 연동 표시하고, 전부 꺼져 있으면 빈 상태 안내를 보여준다 */
-  const selectedRadio = LAYER_RADIO_DEFS.find((d) => layers[d.key])?.key ?? null;
-  const activeRadio = selectedRadio ?? 'hotspot';
-  const rankMode = selectedRadio
-    ? RANK_MODES[selectedRadio]
-    : layers.heat
-      ? { ...RANK_MODES.hotspot, sub: '민원 건수 집계 — 히트맵 연동' }
-      : null;
+  /* 현재 선택된 라디오 레이어에 맞는 순위 카드 구성 */
+  const activeRadio = LAYER_RADIO_DEFS.find((d) => layers[d.key])?.key ?? 'hotspot';
+  const rankMode = RANK_MODES[activeRadio];
 
   const selectRadioLayer = (key) => {
     setRegionsExpanded(false);
