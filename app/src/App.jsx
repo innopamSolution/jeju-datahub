@@ -13,11 +13,13 @@ import AiAssistant from './pages/AiAssistant';
 import AlertManagement from './pages/AlertManagement';
 import AlertInquiry from './pages/AlertInquiry';
 import Settings from './pages/Settings';
+import Login from './pages/Login';
 
 export default function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
+        <Route path="login" element={<Login />} />
         <Route element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="complaints" element={<Complaints />} />
