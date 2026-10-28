@@ -126,6 +126,7 @@ const LAYER_RADIO_DEFS = [
   { key: 'hotspot', label: '민원 다발 지역', defaultOn: true  },
   { key: 'enforce', label: '단속 집중 지역', defaultOn: false },
   { key: 'demand',  label: '수요 부족 지역', defaultOn: false },
+  { key: 'heat',    label: '히트맵(민원 건수)', defaultOn: false },
 ];
 
 const LAYER_TOGGLE_DEFS = [
