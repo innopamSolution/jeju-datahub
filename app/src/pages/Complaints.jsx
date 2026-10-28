@@ -760,7 +760,7 @@ export default function Complaints() {
                     </div>
                     {/* 민원 다발 지역 선택 시: 읍면동 ↔ 히트맵 표현 방식 전환 */}
                     {d.key === 'hotspot' && layers.hotspot && (
-                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4, padding: '0 0 8px 12px' }}>
+                      <div style={{ display: 'flex', gap: 4, padding: '0 0 8px 0' }}>
                         {[['region', '읍면동'], ['heat', '히트맵']].map(([mode, label]) => (
                           <button
                             key={mode}
