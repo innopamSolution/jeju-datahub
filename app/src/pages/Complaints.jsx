@@ -132,7 +132,6 @@ const LAYER_RADIO_DEFS = [
 ];
 
 const LAYER_TOGGLE_DEFS = [
-  { key: 'heat',         label: '히트맵(민원 건수)', defaultOn: false },
   { key: 'parking',      label: '공영주차장',  defaultOn: true },
   { key: 'dongBoundary', label: '행정동 경계', defaultOn: true },
 ];
