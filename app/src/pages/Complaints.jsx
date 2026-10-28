@@ -416,18 +416,11 @@ function GisMap({ layerState, baseMap, focusRef }) {
       ['삼도동', 15], ['화북동', 12], ['용담동', 10], ['이도2동', 9], ['외도동', 7],
     ].map(([name, v]) => ({ name, c: dongCoord[name], count: v }));
     const enforceHeatLayer = makeHeatLayer(enforceHeatDongs, 1000);
-    /* 수요 부족률 기반 히트맵 (DEMAND 순위 데이터와 동일 기준) */
-    const demandHeatDongs = [
-      ['아라동', 72], ['삼도동', 45], ['연동', 41], ['화북동', 33], ['노형동', 28],
-      ['이도동', 24], ['외도동', 21], ['봉개동', 18], ['오라동', 15], ['용담동', 12],
-    ].map(([name, v]) => ({ name, c: dongCoord[name], count: v }));
-    const demandHeatLayer = makeHeatLayer(demandHeatDongs, 2000);
 
     layerGroupsRef.current = {
       hotspot: [boundaryLayer, regionGroup],
       heatHotspot: [heatLayer],
       heatEnforce: [enforceHeatLayer],
-      heatDemand:  [demandHeatLayer],
       parking: [parkingGroup],
       enforce: enforceLayers,
       demand:  demandLayers,
@@ -504,7 +497,9 @@ export default function Complaints() {
 
   const toggleLayer = (key) => setLayers((prev) => ({ ...prev, [key]: !prev[key] }));
   /* 지역 레이어별 표현 방식: 읍면동(육각 폴리곤) ↔ 히트맵(밀도) */
-  const [viewModes, setViewModes] = useState({ hotspot: 'region', enforce: 'region', demand: 'region' });
+  const [viewModes, setViewModes] = useState({ hotspot: 'region', enforce: 'region' });
+  /* 수요 부족 지역은 부족률(비율) 지표라 밀도 히트맵 표현 대상에서 제외 */
+  const HEAT_CAPABLE = ['hotspot', 'enforce'];
   /* 현재 선택된 라디오 레이어에 맞는 순위 카드 구성 — 히트맵 모드여도
      목록은 동일 기준의 읍면동 순위를 그대로 보여준다 */
   const activeRadio = LAYER_RADIO_DEFS.find((d) => layers[d.key])?.key ?? 'hotspot';
@@ -516,10 +511,9 @@ export default function Complaints() {
     ...layers,
     hotspot: layers.hotspot && viewModes.hotspot === 'region',
     enforce: layers.enforce && viewModes.enforce === 'region',
-    demand:  layers.demand  && viewModes.demand  === 'region',
+    demand:  layers.demand,
     heatHotspot: layers.hotspot && viewModes.hotspot === 'heat',
     heatEnforce: layers.enforce && viewModes.enforce === 'heat',
-    heatDemand:  layers.demand  && viewModes.demand  === 'heat',
   };
 
   const selectRadioLayer = (key) => {
@@ -785,7 +779,7 @@ export default function Complaints() {
                       />
                     </div>
                     {/* 선택된 지역 레이어: 읍면동 ↔ 히트맵 표현 방식 전환 */}
-                    {layers[d.key] && (
+                    {layers[d.key] && HEAT_CAPABLE.includes(d.key) && (
                       <div style={{ display: 'flex', gap: 4, padding: '0 0 8px 0' }}>
                         {[['region', '읍면동'], ['heat', '히트맵']].map(([mode, label]) => (
                           <button
