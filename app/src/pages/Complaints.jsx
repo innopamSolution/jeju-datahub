@@ -402,12 +402,12 @@ function GisMap({ layerState, baseMap, focusRef }) {
         heatPoints.push([
           d.c[0] + rr * Math.sin(a) * 0.78,
           d.c[1] + rr * Math.cos(a),
-          0.35 + 0.65 * (d.count / maxCount),
+          0.12 + 0.38 * (d.count / maxCount),
         ]);
       }
     });
     const heatLayer = L.heatLayer(heatPoints, {
-      radius: 36, blur: 26, maxZoom: 14, max: 1.0, minOpacity: 0.25,
+      radius: 26, blur: 22, maxZoom: 14, max: 1.6, minOpacity: 0.12,
       gradient: HEAT_GRADIENT,
     });
     /* 순위 카드 → 지도 연동용 투명 마커 (히트맵 위에서 팝업 제공) */
