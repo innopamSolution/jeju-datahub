@@ -482,22 +482,18 @@ export default function Complaints() {
   const exportRef = useRef(null);
 
   const toggleLayer = (key) => setLayers((prev) => ({ ...prev, [key]: !prev[key] }));
-  /* 지역 구분(라디오 3종) 전체 표시/숨김 — 히트맵만 단독으로 보고 싶을 때 끈다.
-     선택 상태는 기억했다가 다시 켜면 그대로 복원 */
-  const [regionsVisible, setRegionsVisible] = useState(true);
-  /* 현재 선택된 라디오 레이어에 맞는 순위 카드 구성.
-     지역 구분을 숨긴 동안: 히트맵이 켜져 있으면 같은 기준(민원 건수)의 민원 순위를
-     연동 표시하고, 히트맵도 꺼져 있으면 안내 문구를 보여준다 */
+  /* 민원 다발 지역 표현 방식: 읍면동(육각 폴리곤) ↔ 히트맵(밀도) */
+  const [hotspotMode, setHotspotMode] = useState('region');
+  /* 현재 선택된 라디오 레이어에 맞는 순위 카드 구성 — 히트맵 모드여도
+     목록은 동일 기준(민원 건수)의 읍면동 순위를 그대로 보여준다 */
   const activeRadio = LAYER_RADIO_DEFS.find((d) => layers[d.key])?.key ?? 'hotspot';
-  const rankMode = regionsVisible
-    ? RANK_MODES[activeRadio]
-    : layers.heat
-      ? { ...RANK_MODES.hotspot, sub: '민원 건수 집계 — 히트맵 연동' }
-      : null;
-  /* 지도에 실제 적용되는 레이어 상태 (지역 구분 숨김 반영) */
+  const rankMode = RANK_MODES[activeRadio];
+  /* 지도에 실제 적용되는 레이어 상태 — 민원 다발 지역은 표현 방식에 따라
+     읍면동 레이어 또는 히트맵 레이어로 전환 */
   const mapLayerState = {
     ...layers,
-    ...Object.fromEntries(LAYER_RADIO_DEFS.map((d) => [d.key, layers[d.key] && regionsVisible])),
+    hotspot: layers.hotspot && hotspotMode === 'region',
+    heat: layers.hotspot && hotspotMode === 'heat',
   };
 
   const selectRadioLayer = (key) => {
