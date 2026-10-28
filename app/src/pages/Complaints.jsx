@@ -811,6 +811,20 @@ export default function Complaints() {
 
             {/* 레이어 연동 순위 카드 — 민원 다발/단속 집중/수요 부족 선택에 따라 전환 */}
             <div className="card hotspots">
+              {rankMode === null ? (
+                <>
+                  <div className="card-head">
+                    <div>
+                      <h2 className="card-head__title">지역 순위</h2>
+                      <p className="card-head__sub">레이어 연동</p>
+                    </div>
+                  </div>
+                  <div style={{ padding: '24px 8px', textAlign: 'center', fontSize: 13, color: 'var(--text-faint)' }}>
+                    지역 구분 또는 히트맵 레이어를 켜면<br />해당 기준의 지역 순위가 표시됩니다.
+                  </div>
+                </>
+              ) : (
+              <>
               <div className="card-head">
                 <div>
                   <h2 className="card-head__title">{rankMode.title}</h2>
