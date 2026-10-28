@@ -371,8 +371,57 @@ function GisMap({ layerState, baseMap, focusRef }) {
       }).bindPopup(`<b>${r.name} 행정동 경계</b>`).addTo(dongBoundaryLayer);
     });
 
+    /* ── 히트맵(민원 건수) 레이어 (신규) ──
+       읍면동 중심 좌표 주변에 민원 건수에 비례한 가중 포인트를 뿌려
+       연속적인 밀도 히트맵으로 표현 (REQ-SFR-003-03·07 히트맵 요구) */
+    const heatDongs = [
+      ...regions.map((r) => ({ name: r.name, c: r.c, count: r.count })),
+      { name: '이도2동', c: [33.4950, 126.5370], count: 9 },
+      { name: '화북동',  c: [33.5160, 126.5700], count: 8 },
+      { name: '삼양동',  c: [33.5210, 126.5880], count: 7 },
+      { name: '봉개동',  c: [33.4900, 126.6010], count: 6 },
+      { name: '오라동',  c: [33.4850, 126.5100], count: 5 },
+      { name: '외도동',  c: [33.4930, 126.4310], count: 4 },
+      { name: '이호동',  c: [33.4980, 126.4540], count: 4 },
+      { name: '도두동',  c: [33.5060, 126.4680], count: 3 },
+      { name: '용담동',  c: [33.5110, 126.5080], count: 2 },
+      { name: '건입동',  c: [33.5180, 126.5280], count: 2 },
+    ];
+    const maxCount = Math.max(...heatDongs.map((d) => d.count));
+    /* 시드 기반 의사난수 — 리렌더마다 모양이 바뀌지 않게 고정 */
+    const seeded = (i) => {
+      const x = Math.sin(i * 127.1 + 311.7) * 43758.5453;
+      return x - Math.floor(x);
+    };
+    const heatPoints = [];
+    heatDongs.forEach((d, di) => {
+      const n = Math.max(6, Math.round(d.count * 1.6));
+      for (let i = 0; i < n; i++) {
+        const a = seeded(di * 97 + i) * Math.PI * 2;
+        const rr = Math.sqrt(seeded(di * 97 + i + 51)) * 0.011;
+        heatPoints.push([
+          d.c[0] + rr * Math.sin(a) * 0.78,
+          d.c[1] + rr * Math.cos(a),
+          0.35 + 0.65 * (d.count / maxCount),
+        ]);
+      }
+    });
+    const heatLayer = L.heatLayer(heatPoints, {
+      radius: 36, blur: 26, maxZoom: 14, max: 1.0, minOpacity: 0.25,
+      gradient: HEAT_GRADIENT,
+    });
+    /* 순위 카드 → 지도 연동용 투명 마커 (히트맵 위에서 팝업 제공) */
+    const heatFocusLayer = L.layerGroup();
+    rankMarkers.heat = {};
+    regions.forEach((r) => {
+      const m = L.marker(r.c, { opacity: 0, keyboard: false }).bindPopup(popupHtml(r));
+      m.addTo(heatFocusLayer);
+      rankMarkers.heat[r.name] = m;
+    });
+
     layerGroupsRef.current = {
       hotspot: [boundaryLayer, regionGroup],
+      heat: [heatLayer, heatFocusLayer],
       parking: [parkingGroup],
       enforce: enforceLayers,
       demand:  demandLayers,
