@@ -794,14 +794,14 @@ export default function Complaints() {
               {/* 범례 */}
               <div className="map-legend">
                 <div className="map-legend__title">범례</div>
-                {regionsVisible && LEGEND_ITEMS.map((item) => (
+                {!mapLayerState.heat && LEGEND_ITEMS.map((item) => (
                   <div key={item.label} className="row">
                     <span className="dot" style={{ background: item.color }} />
                     {item.label}
                   </div>
                 ))}
-                {layers.heat && (
-                  <div style={regionsVisible ? { marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--line-normal)' } : undefined}>
+                {mapLayerState.heat && (
+                  <div>
                     <div style={{ width: 132, height: 8, borderRadius: 4, background: 'linear-gradient(90deg, #3b82f6, #22c55e, #f59e0b, #ef4444)' }} />
                     <div style={{ display: 'flex', justifyContent: 'space-between', width: 132, marginTop: 4, fontSize: 11, color: 'var(--text-faint)' }}>
                       <span>낮음</span><span>민원 건수</span><span>높음</span>
