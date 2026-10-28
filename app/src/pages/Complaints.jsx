@@ -486,11 +486,13 @@ export default function Complaints() {
   const activeRadio = LAYER_RADIO_DEFS.find((d) => layers[d.key])?.key ?? 'hotspot';
   const rankMode = RANK_MODES[activeRadio];
 
+  /* 지역 구분 레이어: 겹치면 혼란스러워 최대 1개만 켜지되, 다시 누르면 꺼서
+     히트맵만 단독으로 볼 수 있게 한다 */
   const selectRadioLayer = (key) => {
     setRegionsExpanded(false);
     setLayers((prev) => ({
     ...prev,
-    ...Object.fromEntries(LAYER_RADIO_DEFS.map((d) => [d.key, d.key === key])),
+    ...Object.fromEntries(LAYER_RADIO_DEFS.map((d) => [d.key, d.key === key ? !prev[key] : false])),
   }));
   };
 
