@@ -821,17 +821,19 @@ export default function Complaints() {
               {/* 범례 */}
               <div className="map-legend">
                 <div className="map-legend__title">범례</div>
-                {!mapLayerState.heat && LEGEND_ITEMS.map((item) => (
+                {!heatActive && LEGEND_ITEMS.map((item) => (
                   <div key={item.label} className="row">
                     <span className="dot" style={{ background: item.color }} />
                     {item.label}
                   </div>
                 ))}
-                {mapLayerState.heat && (
+                {heatActive && (
                   <div>
                     <div style={{ width: 132, height: 8, borderRadius: 4, background: 'linear-gradient(90deg, #3b82f6, #22c55e, #f59e0b, #ef4444)' }} />
                     <div style={{ display: 'flex', justifyContent: 'space-between', width: 132, marginTop: 4, fontSize: 11, color: 'var(--text-faint)' }}>
-                      <span>낮음</span><span>민원 건수</span><span>높음</span>
+                      <span>낮음</span>
+                      <span>{{ hotspot: '민원 건수', enforce: '단속 건수', demand: '부족률' }[activeRadio]}</span>
+                      <span>높음</span>
                     </div>
                   </div>
                 )}
