@@ -503,18 +503,23 @@ export default function Complaints() {
   const exportRef = useRef(null);
 
   const toggleLayer = (key) => setLayers((prev) => ({ ...prev, [key]: !prev[key] }));
-  /* 민원 다발 지역 표현 방식: 읍면동(육각 폴리곤) ↔ 히트맵(밀도) */
-  const [hotspotMode, setHotspotMode] = useState('region');
+  /* 지역 레이어별 표현 방식: 읍면동(육각 폴리곤) ↔ 히트맵(밀도) */
+  const [viewModes, setViewModes] = useState({ hotspot: 'region', enforce: 'region', demand: 'region' });
   /* 현재 선택된 라디오 레이어에 맞는 순위 카드 구성 — 히트맵 모드여도
-     목록은 동일 기준(민원 건수)의 읍면동 순위를 그대로 보여준다 */
+     목록은 동일 기준의 읍면동 순위를 그대로 보여준다 */
   const activeRadio = LAYER_RADIO_DEFS.find((d) => layers[d.key])?.key ?? 'hotspot';
   const rankMode = RANK_MODES[activeRadio];
-  /* 지도에 실제 적용되는 레이어 상태 — 민원 다발 지역은 표현 방식에 따라
+  const heatActive = layers[activeRadio] && viewModes[activeRadio] === 'heat';
+  /* 지도에 실제 적용되는 레이어 상태 — 각 지역 레이어는 표현 방식에 따라
      읍면동 레이어 또는 히트맵 레이어로 전환 */
   const mapLayerState = {
     ...layers,
-    hotspot: layers.hotspot && hotspotMode === 'region',
-    heat: layers.hotspot && hotspotMode === 'heat',
+    hotspot: layers.hotspot && viewModes.hotspot === 'region',
+    enforce: layers.enforce && viewModes.enforce === 'region',
+    demand:  layers.demand  && viewModes.demand  === 'region',
+    heatHotspot: layers.hotspot && viewModes.hotspot === 'heat',
+    heatEnforce: layers.enforce && viewModes.enforce === 'heat',
+    heatDemand:  layers.demand  && viewModes.demand  === 'heat',
   };
 
   const selectRadioLayer = (key) => {
