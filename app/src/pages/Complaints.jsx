@@ -731,7 +731,7 @@ export default function Complaints() {
           {/* 지도 카드 */}
           <div className="card map-card">
             <div className="map-body">
-              <GisMap layerState={layers} baseMap={baseMap} focusRef={mapFocusRef} />
+              <GisMap layerState={mapLayerState} baseMap={baseMap} focusRef={mapFocusRef} />
 
               {/* 일반지도 / 항공지도 전환 */}
               <div className="map-type">
