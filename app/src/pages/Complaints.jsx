@@ -418,7 +418,8 @@ function GisMap({ layerState, baseMap, focusRef }) {
       const m = rankMarkers[layerKey] && rankMarkers[layerKey][name];
       if (!m) return;
       map.flyTo(m.getLatLng(), Math.max(map.getZoom(), 13.5), { duration: 0.8 });
-      map.once('moveend', () => m.openPopup());
+      /* 히트맵 모드처럼 마커 레이어가 꺼져 있으면 이동만 하고 팝업은 생략 */
+      map.once('moveend', () => { if (m._map) m.openPopup(); });
     };
 
     /* 초기 레이어 적용 */
