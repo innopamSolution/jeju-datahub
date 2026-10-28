@@ -381,32 +381,53 @@ function GisMap({ layerState, baseMap, focusRef }) {
       { name: '용담동',  c: [33.5110, 126.5080], count: 2 },
       { name: '건입동',  c: [33.5180, 126.5280], count: 2 },
     ];
-    const maxCount = Math.max(...heatDongs.map((d) => d.count));
     /* 시드 기반 의사난수 — 리렌더마다 모양이 바뀌지 않게 고정 */
     const seeded = (i) => {
       const x = Math.sin(i * 127.1 + 311.7) * 43758.5453;
       return x - Math.floor(x);
     };
-    const heatPoints = [];
-    heatDongs.forEach((d, di) => {
-      const n = Math.max(6, Math.round(d.count * 1.6));
-      for (let i = 0; i < n; i++) {
-        const a = seeded(di * 97 + i) * Math.PI * 2;
-        const rr = Math.sqrt(seeded(di * 97 + i + 51)) * 0.011;
-        heatPoints.push([
-          d.c[0] + rr * Math.sin(a) * 0.78,
-          d.c[1] + rr * Math.cos(a),
-          0.12 + 0.38 * (d.count / maxCount),
-        ]);
-      }
-    });
-    const heatLayer = L.heatLayer(heatPoints, {
-      radius: 26, blur: 22, maxZoom: 14, max: 1.6, minOpacity: 0.12,
-      gradient: HEAT_GRADIENT,
-    });
+    /* 읍면동 값 목록 → 밀도 히트맵 레이어 공통 빌더 */
+    function makeHeatLayer(dongs, seedBase) {
+      const maxV = Math.max(...dongs.map((d) => d.count));
+      const pts = [];
+      dongs.forEach((d, di) => {
+        const n = Math.max(6, Math.round((d.count / maxV) * 60));
+        for (let i = 0; i < n; i++) {
+          const a = seeded(seedBase + di * 97 + i) * Math.PI * 2;
+          const rr = Math.sqrt(seeded(seedBase + di * 97 + i + 51)) * 0.011;
+          pts.push([
+            d.c[0] + rr * Math.sin(a) * 0.78,
+            d.c[1] + rr * Math.cos(a),
+            0.12 + 0.38 * (d.count / maxV),
+          ]);
+        }
+      });
+      return L.heatLayer(pts, {
+        radius: 26, blur: 22, maxZoom: 14, max: 1.6, minOpacity: 0.12,
+        gradient: HEAT_GRADIENT,
+      });
+    }
+    const dongCoord = Object.fromEntries(heatDongs.map((d) => [d.name, d.c]));
+    dongCoord['일도동'] = [33.5130, 126.5290];
+    const heatLayer = makeHeatLayer(heatDongs, 0);
+    /* 단속 건수 기반 히트맵 (ENFORCE 순위 데이터와 동일 기준) */
+    const enforceHeatDongs = [
+      ['연동', 32], ['노형동', 30], ['이도동', 28], ['아라동', 20], ['일도동', 18],
+      ['삼도동', 15], ['화북동', 12], ['용담동', 10], ['이도2동', 9], ['외도동', 7],
+    ].map(([name, v]) => ({ name, c: dongCoord[name], count: v }));
+    const enforceHeatLayer = makeHeatLayer(enforceHeatDongs, 1000);
+    /* 수요 부족률 기반 히트맵 (DEMAND 순위 데이터와 동일 기준) */
+    const demandHeatDongs = [
+      ['아라동', 72], ['삼도동', 45], ['연동', 41], ['화북동', 33], ['노형동', 28],
+      ['이도동', 24], ['외도동', 21], ['봉개동', 18], ['오라동', 15], ['용담동', 12],
+    ].map(([name, v]) => ({ name, c: dongCoord[name], count: v }));
+    const demandHeatLayer = makeHeatLayer(demandHeatDongs, 2000);
+
     layerGroupsRef.current = {
       hotspot: [boundaryLayer, regionGroup],
-      heat: [heatLayer],
+      heatHotspot: [heatLayer],
+      heatEnforce: [enforceHeatLayer],
+      heatDemand:  [demandHeatLayer],
       parking: [parkingGroup],
       enforce: enforceLayers,
       demand:  demandLayers,
