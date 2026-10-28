@@ -752,7 +752,7 @@ export default function Complaints() {
                 <div className="layer-panel__title">레이어 표시</div>
                 {/* 지역 구분 전체 표시/숨김 — 히트맵만 단독으로 보고 싶을 때 사용 */}
                 <div className="layer-row" onClick={() => setRegionsVisible((v) => !v)}>
-                  <span style={{ fontWeight: 600 }}>지역 구분 표시</span>
+                  <span style={{ fontWeight: 600 }}>지역 구분</span>
                   <button
                     type="button"
                     aria-pressed={regionsVisible}
