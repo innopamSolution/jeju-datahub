@@ -65,10 +65,25 @@ const DEFAULT_PERMS = Object.fromEntries(MENUS.map((m) => [
 /* ---------- 분석 지표 가중치 ---------- */
 const WEIGHT_MODELS = [
   {
-    key: 'hotspot', label: '집중구역 분석',
+    key: 'hotspot', label: '불법주차집중구역',
     metrics: [
       { key: 'complaint', label: '민원빈도', sub: '수집플랫폼 표준 민원 데이터', value: 60 },
       { key: 'enforce',   label: '단속건수', sub: '주차관제 단속 실적',          value: 40 },
+    ],
+  },
+  {
+    key: 'policy', label: '정책 시뮬레이션',
+    metrics: [
+      { key: 'complaint',  label: '민원빈도', sub: '수집플랫폼 표준 민원 데이터', value: 50 },
+      { key: 'congestion', label: '혼잡도',   sub: '주차관제 점유율 · 회전율',    value: 50 },
+    ],
+  },
+  {
+    key: 'lifestyle', label: '생활권 시뮬레이션',
+    metrics: [
+      { key: 'complaint',  label: '민원빈도', sub: '수집플랫폼 표준 민원 데이터', value: 40 },
+      { key: 'demand',     label: '수요밀도', sub: '주차 수요 추정 · 유동인구',   value: 30 },
+      { key: 'congestion', label: '혼잡도',   sub: '주차관제 점유율 · 회전율',    value: 30 },
     ],
   },
   {
