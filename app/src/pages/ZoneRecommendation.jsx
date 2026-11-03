@@ -145,7 +145,7 @@ export default function ZoneRecommendation() {
   const markerMap = useRef({});
   const rowRefs   = useRef([]);
   const bodyRef   = useRef(null);
-  const [period, setPeriod]       = useState('직접설정');
+  const [period, setPeriod]       = useState('최근1개월');
   const [city, setCity]           = useState('전체');
   const [dong, setDong]           = useState('전체');
   const [mode, setMode]           = useState('요금제 적용');

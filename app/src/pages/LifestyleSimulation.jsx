@@ -197,7 +197,7 @@ export default function LifestyleSimulation() {
   const cellRef     = useRef(500);
   const modeRef     = useRef('complaints');
   const [city, setCity] = useState('전체');
-  const [period, setPeriod] = useState('최근3개월');
+  const [period, setPeriod] = useState('최근1개월');
   const [dong, setDong] = useState('전체');
   const [gridSize, setGridSize] = useState('500m');
   const [sizeChip, setSizeChip] = useState('500M');
