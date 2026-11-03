@@ -8,7 +8,7 @@ import PageCrumb from '../components/PageCrumb';
 import MapTypeToggle from '../components/MapTypeToggle';
 import DateRangeField from '../components/DateRangeField';
 import RegionSelect from '../components/RegionSelect';
-import { exportHotspotPdf, exportHotspotDocx } from '../utils/hotspotExport';
+import { exportHotspotPdf, exportHotspotXlsx } from '../utils/hotspotExport';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="24" height="24" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -321,8 +321,8 @@ export default function HotspotAnalysis() {
                         PDF 파일 (.pdf)
                       </button>
                       <button type="button" role="menuitem" className="sim-export__item"
-                        onClick={() => { setExportOpen(false); exportHotspotDocx(ranking, exportMeta); }}>
-                        Word 파일 (.docx)
+                        onClick={() => { setExportOpen(false); exportHotspotXlsx(ranking, exportMeta); }}>
+                        Excel 파일 (.xlsx)
                       </button>
                     </div>
                   )}

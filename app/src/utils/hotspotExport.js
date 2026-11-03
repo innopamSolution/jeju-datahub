@@ -1,4 +1,5 @@
 import jsPDF from 'jspdf';
+import ExcelJS from 'exceljs';
 import html2canvas from 'html2canvas';
 import {
   Document, Packer, Paragraph, Table, TableRow, TableCell,
@@ -157,4 +158,59 @@ export async function exportHotspotDocx(ranking, meta) {
 
   const blob = await Packer.toBlob(doc);
   saveBlob(blob, `${FILE_BASE}.docx`);
+}
+
+/* 집중 구역 순위를 XLSX로 내보냄 — B3(민원 가중치) 셀을 바꾸면 종합점수·등급·순위가 수식으로 재계산된다 */
+export async function exportHotspotXlsx(ranking, meta = {}) {
+  const m = metaLines(meta);
+  const wb = new ExcelJS.Workbook();
+  const ws = wb.addWorksheet('집중구역 분석');
+  ws.columns = [
+    { width: 8 }, { width: 24 }, { width: 12 }, { width: 12 }, { width: 12 }, { width: 10 }, { width: 34 },
+  ];
+
+  ws.getCell('A1').value = '불법 주차 집중 구역 순위';
+  ws.getCell('A1').font = { bold: true, size: 14 };
+  ws.getCell('A2').value = m.period;
+
+  ws.getCell('A3').value = '민원 건수 가중치';
+  const wCell = ws.getCell('B3');
+  wCell.value = (meta.wc ?? 60) / 100;
+  wCell.numFmt = '0%';
+  wCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFF2CC' } };
+  wCell.border = { top: {style:'thin'}, bottom: {style:'thin'}, left: {style:'thin'}, right: {style:'thin'} };
+  ws.getCell('C3').value = '← 이 셀을 바꾸면 종합점수·등급·순위가 자동 재계산됩니다 (0~100%)';
+  ws.getCell('C3').font = { color: { argb: 'FF888888' }, size: 10 };
+  ws.getCell('A4').value = '단속 건수 가중치';
+  ws.getCell('B4').value = { formula: '1-B3' };
+  ws.getCell('B4').numFmt = '0%';
+
+  const HDR = 6;
+  const header = ['순위', '구역', '민원 점수', '단속 점수', '종합점수', '등급', '세부 내역'];
+  header.forEach((h, i) => {
+    const c = ws.getRow(HDR).getCell(i + 1);
+    c.value = h; c.font = { bold: true };
+    c.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF2F2F2' } };
+  });
+
+  const n = ranking.length;
+  ranking.forEach((r, i) => {
+    const row = ws.getRow(HDR + 1 + i);
+    const ri = HDR + 1 + i;
+    row.getCell(1).value = { formula: `RANK(E${ri},$E$${HDR + 1}:$E$${HDR + n})` };
+    row.getCell(2).value = r.name;
+    row.getCell(3).value = r.cs;
+    row.getCell(4).value = r.es;
+    row.getCell(5).value = { formula: `ROUND(C${ri}*$B$3+D${ri}*(1-$B$3),0)` };
+    row.getCell(6).value = { formula: `IF(E${ri}>=80,"심각",IF(E${ri}>=60,"경고",IF(E${ri}>=40,"주의","-")))` };
+    row.getCell(7).value = r.sub;
+  });
+
+  let nr = HDR + n + 2;
+  ws.getCell(`A${nr}`).value = '점수 산정 기준';
+  ws.getCell(`A${nr}`).font = { bold: true };
+  m.basis.forEach((b, i) => { ws.getCell(`A${nr + 1 + i}`).value = `· ${b}`; ws.getCell(`A${nr + 1 + i}`).font = { size: 10, color: { argb: 'FF555555' } }; });
+
+  const buf = await wb.xlsx.writeBuffer();
+  saveBlob(new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), `${FILE_BASE}.xlsx`);
 }
