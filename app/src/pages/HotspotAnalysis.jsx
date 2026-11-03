@@ -242,7 +242,8 @@ export default function HotspotAnalysis() {
                         style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'var(--text-alternative)' }}>
                         기본값(60/40)
                       </button>
-                      <button className="btn btn--primary" type="button" style={{ height: 28, padding: '0 12px', fontSize: 12 }}
+                      <button type="button"
+                        style={{ height: 28, padding: '0 14px', fontSize: 12, fontWeight: 600, border: 'none', borderRadius: 6, cursor: 'pointer', background: 'var(--primary-normal)', color: '#fff' }}
                         onClick={() => { setAppliedWc(draftWc); setAdvOpen(false); setShowResult(true); setActiveRank(null); }}>
                         적용
                       </button>
@@ -369,50 +370,6 @@ export default function HotspotAnalysis() {
         </section>
       </div>
 
-      {/* 분석식 조정 모달 — 설정 패널 타이틀 우측 버튼으로 진입, 적용 시 다음 분석 실행부터 반영 */}
-      {advOpen && (
-        <div className="modal">
-          <div className="modal__overlay" onClick={() => setAdvOpen(false)} />
-          <div className="modal__dialog modal__dialog--sm" role="dialog" aria-modal="true" aria-label="분석식 조정">
-            <div className="modal__body" style={{ padding: '28px 28px 8px' }}>
-              <h3 style={{ margin: 0, fontSize: 'var(--body1-size)', fontWeight: 'var(--weight-bold)', color: 'var(--text-strong)' }}>분석식 조정</h3>
-              <p style={{ margin: '6px 0 16px', fontSize: 'var(--label1-size)', color: 'var(--text-neutral)' }}>
-                종합점수 = 민원 건수·단속 건수 점수의 가중합 — 비율을 조정해 시뮬레이션할 수 있습니다.
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '12px', borderRadius: 8, background: 'var(--fill-normal)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13 }}>
-                  <span style={{ width: 60, color: 'var(--text-normal)' }}>민원 건수</span>
-                  <input
-                    type="range" min="0" max="100" step="5" value={draftWc}
-                    onChange={(e) => setDraftWc(Number(e.target.value))}
-                    style={{ flex: 1 }}
-                    aria-label="민원 건수 가중치"
-                  />
-                  <b style={{ width: 38, textAlign: 'right' }}>{draftWc}%</b>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, color: 'var(--text-alternative)' }}>
-                  <span style={{ width: 60 }}>단속 건수</span>
-                  <span style={{ flex: 1 }}>자동 반영 (합계 100%)</span>
-                  <b style={{ width: 38, textAlign: 'right' }}>{100 - draftWc}%</b>
-                </div>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
-                <span style={{ fontSize: 12, color: 'var(--text-alternative)' }}>기본값: 민원 60% / 단속 40%</span>
-                <button
-                  type="button"
-                  onClick={() => setDraftWc(DEFAULT_WC)}
-                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'var(--primary-normal)' }}
-                >기본값으로</button>
-              </div>
-            </div>
-            <div className="modal__foot modal__foot--split">
-              <button className="mt-act" type="button" onClick={() => setAdvOpen(false)}>취소</button>
-              <button className="mt-act" type="button" style={{ color: 'var(--primary-normal)', fontWeight: 600 }}
-                onClick={() => { setAppliedWc(draftWc); setAdvOpen(false); setShowResult(true); setActiveRank(null); }}>적용</button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
