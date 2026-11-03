@@ -6,7 +6,8 @@ import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
 import PageCrumb from '../components/PageCrumb';
 import MapTypeToggle from '../components/MapTypeToggle';
-import { exportSectionsPdf, exportSectionsDocx, hBarChartHtml } from '../utils/pageExport';
+import { exportSectionsPdf, hBarChartHtml } from '../utils/pageExport';
+import { exportInvestXlsx } from '../utils/investExport';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="24" height="24" aria-hidden="true" style={{ flexShrink: 0 }}>
@@ -75,6 +76,7 @@ export default function InvestmentPriority() {
   const rowRefs   = useRef([]);
   const listRef   = useRef(null);
   const [risk, setRisk] = useState('전체');
+  const [period, setPeriod] = useState('최근1개월');
   const [activeRank, setActiveRank] = useState(null);
   const [exportOpen, setExportOpen] = useState(false);
   const exportRef = useRef(null);
@@ -91,7 +93,7 @@ export default function InvestmentPriority() {
   const exportData = () => ({
     fileBase: '투자보강_우선순위',
     title: '투자·보강 우선순위',
-    subtitle: '종합점수 기준 : 안전위험도 25% / 민원빈도 25% / 이용패턴 25% / 사고이력 25%',
+    subtitle: `분석 기간 : ${period.replace('최근', '최근 ')} · 종합점수 기준 : 안전위험도 25% / 민원빈도 25% / 이용패턴 25% / 사고이력 25%`,
     sections: [
       {
         type: 'chart',
@@ -235,6 +237,14 @@ export default function InvestmentPriority() {
           {/* 지도 */}
           <div className="card map-card">
             <div className="map-controls">
+              <div className="risk-group">
+                <span className="ctrl__label">분석 기간</span>
+                <div className="risk-seg">
+                  {['최근1개월', '최근3개월', '최근6개월'].map((p) => (
+                    <button key={p} className={period === p ? 'is-active' : ''} onClick={() => setPeriod(p)}>{p}</button>
+                  ))}
+                </div>
+              </div>
               <div className="ctrl">
                 <span className="ctrl__label">행정구역</span>
                 <span className="select">제주 전체 <Icon name="chevron-down" size={18} /></span>
@@ -273,7 +283,7 @@ export default function InvestmentPriority() {
               <div className="card-head">
                 <div>
                   <h2 className="card-head__title">투자·보강 우선순위</h2>
-                  <p className="card-head__sub">종합점수 기준 : 안전위험도 25% / 민원빈도 25% / 이용패턴 25% / 사고이력 25%</p>
+                  <p className="card-head__sub">분석 기간 : {period.replace('최근', '최근 ')} · 종합점수 기준 : 안전위험도 25% / 민원빈도 25% / 이용패턴 25% / 사고이력 25%</p>
                 </div>
                 <div className="sim-export" ref={exportRef}>
                   <button className="btn" type="button" style={{ height: 36, padding: '0 var(--space-12)', fontSize: 'var(--label2-size)' }}
@@ -288,8 +298,8 @@ export default function InvestmentPriority() {
                         PDF 파일 (.pdf)
                       </button>
                       <button type="button" role="menuitem" className="sim-export__item"
-                        onClick={() => { setExportOpen(false); exportSectionsDocx(exportData()); }}>
-                        Word 파일 (.docx)
+                        onClick={() => { setExportOpen(false); exportInvestXlsx(LOTS, { period: period.replace('최근', '최근 ') }); }}>
+                        Excel 파일 (.xlsx)
                       </button>
                     </div>
                   )}
