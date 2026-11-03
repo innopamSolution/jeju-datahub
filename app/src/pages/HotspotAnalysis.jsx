@@ -214,7 +214,47 @@ export default function HotspotAnalysis() {
               )}
             </div>
 
-            <button className="btn-run" type="button" onClick={() => setShowResult(true)}>▷ 집중 구역 분석 실행</button>
+            {/* 분석식 조정(고급) — 기본은 접힘, 필요한 사용자만 펼쳐서 가중치를 조정 */}
+            <div className="field" style={{ marginTop: 4 }}>
+              <button
+                type="button"
+                onClick={() => setAdvOpen((o) => !o)}
+                aria-expanded={advOpen}
+                style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 13, color: 'var(--text-alternative)', display: 'flex', alignItems: 'center', gap: 4 }}
+              >
+                <span style={{ display: 'inline-block', transform: advOpen ? 'rotate(90deg)' : 'none', transition: 'transform .15s' }}>▸</span>
+                분석식 조정 (고급)
+              </button>
+              {advOpen && (
+                <div style={{ marginTop: 8, padding: 12, borderRadius: 8, background: 'var(--fill-normal)', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
+                    <span style={{ width: 64, color: 'var(--text-normal)' }}>민원 건수</span>
+                    <input
+                      type="range" min="0" max="100" step="5" value={draftWc}
+                      onChange={(e) => setDraftWc(Number(e.target.value))}
+                      style={{ flex: 1 }}
+                      aria-label="민원 건수 가중치"
+                    />
+                    <b style={{ width: 36, textAlign: 'right' }}>{draftWc}%</b>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text-alternative)' }}>
+                    <span style={{ width: 64 }}>단속 건수</span>
+                    <span style={{ flex: 1 }}>자동 반영 (합계 100%)</span>
+                    <b style={{ width: 36, textAlign: 'right' }}>{100 - draftWc}%</b>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: 12, color: 'var(--text-alternative)' }}>기본값: 민원 60% / 단속 40%</span>
+                    <button
+                      type="button"
+                      onClick={() => setDraftWc(DEFAULT_WC)}
+                      style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'var(--primary-normal)' }}
+                    >기본값으로</button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <button className="btn-run" type="button" onClick={() => { setAppliedWc(draftWc); setShowResult(true); setActiveRank(null); }}>▷ 집중 구역 분석 실행</button>
           </div>
 
           {/* 오른쪽 결과 패널 */}
