@@ -90,6 +90,11 @@ export default function HotspotAnalysis() {
   const [dong, setDong]         = useState('전체');
   const [showResult, setShowResult] = useState(true);
   const [activeRank, setActiveRank] = useState(null);
+  /* 분석식 조정(고급) — 입력값(draft)과 실행 시 적용된 값(applied)을 분리 */
+  const [advOpen, setAdvOpen]   = useState(false);
+  const [draftWc, setDraftWc]   = useState(DEFAULT_WC);
+  const [appliedWc, setAppliedWc] = useState(DEFAULT_WC);
+  const ranking = computeRanking(appliedWc);
   const [exportOpen, setExportOpen] = useState(false);
   const exportRef = useRef(null);
 
