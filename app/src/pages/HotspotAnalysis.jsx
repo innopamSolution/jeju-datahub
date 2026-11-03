@@ -92,6 +92,15 @@ export default function HotspotAnalysis() {
   const [activeRank, setActiveRank] = useState(null);
   /* 분석식 조정(고급) — 입력값(draft)과 실행 시 적용된 값(applied)을 분리 */
   const [advOpen, setAdvOpen]   = useState(false);
+  const advRef = useRef(null);
+  useEffect(() => {
+    if (!advOpen) return;
+    const onDoc = (e) => { if (advRef.current && !advRef.current.contains(e.target)) setAdvOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setAdvOpen(false); };
+    document.addEventListener('click', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+  }, [advOpen]);
   const [draftWc, setDraftWc]   = useState(DEFAULT_WC);
   const [appliedWc, setAppliedWc] = useState(DEFAULT_WC);
   const ranking = computeRanking(appliedWc);
