@@ -194,8 +194,15 @@ export default function HotspotAnalysis() {
 
           {/* 왼쪽 설정 패널 */}
           <div className="card sim-panel sim-panel--left">
-            <h2 className="sim-panel__title">불법 주차 집중 구역 분석 설정</h2>
-
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+              <h2 className="sim-panel__title" style={{ margin: 0 }}>불법 주차 집중 구역 분석 설정</h2>
+              <button
+                className="btn"
+                type="button"
+                style={{ height: 30, padding: '0 10px', fontSize: 12, flexShrink: 0 }}
+                onClick={() => { setDraftWc(appliedWc); setAdvOpen(true); }}
+              >분석식 조정</button>
+            </div>
 
             <div className="field">
               <label className="field__label">분석 지역</label>
