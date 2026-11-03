@@ -276,11 +276,11 @@ export default function HotspotAnalysis() {
                   {exportOpen && (
                     <div className="sim-export__menu" role="menu">
                       <button type="button" role="menuitem" className="sim-export__item"
-                        onClick={() => { setExportOpen(false); exportHotspotPdf(VISIBLE_RANKING); }}>
+                        onClick={() => { setExportOpen(false); exportHotspotPdf(ranking); }}>
                         PDF 파일 (.pdf)
                       </button>
                       <button type="button" role="menuitem" className="sim-export__item"
-                        onClick={() => { setExportOpen(false); exportHotspotDocx(VISIBLE_RANKING); }}>
+                        onClick={() => { setExportOpen(false); exportHotspotDocx(ranking); }}>
                         Word 파일 (.docx)
                       </button>
                     </div>
@@ -312,9 +312,9 @@ export default function HotspotAnalysis() {
                       </div>
                     </div>
                   </div>
-                  <p className="sim-sec__sub">종합점수 기준 : 민원 건수 60% / 단속 40%</p>
+                  <p className="sim-sec__sub">종합점수 기준 : 민원 건수 {appliedWc}% / 단속 {100 - appliedWc}%{appliedWc !== DEFAULT_WC ? ' (조정됨)' : ''}</p>
                   <div className="rl">
-                    {VISIBLE_RANKING.map((r, i) => (
+                    {ranking.map((r, i) => (
                       <div
                         key={r.rank}
                         className={`rl__row${activeRank === r.rank ? ' is-active' : ''}`}
