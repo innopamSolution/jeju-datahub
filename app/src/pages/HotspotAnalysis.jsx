@@ -209,10 +209,22 @@ export default function HotspotAnalysis() {
                 <button
                   className="btn"
                   type="button"
-                  style={{ height: 30, padding: '0 10px', fontSize: 12 }}
+                  style={{
+                    height: 30, padding: '0 10px', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6,
+                    ...(advOpen && {
+                      borderColor: 'var(--primary-normal)', color: 'var(--primary-normal)',
+                      background: 'rgba(59,112,247,0.08)',
+                    }),
+                  }}
                   aria-expanded={advOpen}
                   onClick={(e) => { e.stopPropagation(); setDraftWc(appliedWc); setAdvOpen((o) => !o); }}
-                >분석식 조정</button>
+                >
+                  분석식 조정
+                  <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"
+                    style={{ transform: advOpen ? 'rotate(180deg)' : 'none', transition: 'transform .15s' }}>
+                    <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
                 {/* 버튼 오른쪽에 뜨는 소형 팝오버 */}
                 {advOpen && (
                   <div
