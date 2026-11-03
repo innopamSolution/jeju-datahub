@@ -268,7 +268,7 @@ export default function HotspotAnalysis() {
             {/* 분석식을 기본값에서 변경한 경우에만 타이틀 아래에 적용 중인 식 표시 */}
             {appliedWc !== DEFAULT_WC && (
               <div style={{
-                margin: '4px 0 0', padding: '8px 12px', borderRadius: 8, fontSize: 12,
+                margin: '-12px 0 0', padding: '8px 12px', borderRadius: 8, fontSize: 12,
                 background: 'rgba(59,112,247,0.08)', color: 'var(--primary-normal)',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8,
               }}>
