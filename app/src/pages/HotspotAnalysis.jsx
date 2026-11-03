@@ -205,12 +205,51 @@ export default function HotspotAnalysis() {
           <div className="card sim-panel sim-panel--left">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
               <h2 className="sim-panel__title" style={{ margin: 0 }}>불법 주차 집중 구역 분석 설정</h2>
-              <button
-                className="btn"
-                type="button"
-                style={{ height: 30, padding: '0 10px', fontSize: 12, flexShrink: 0 }}
-                onClick={() => { setDraftWc(appliedWc); setAdvOpen(true); }}
-              >분석식 조정</button>
+              <div ref={advRef} style={{ position: 'relative', flexShrink: 0 }}>
+                <button
+                  className="btn"
+                  type="button"
+                  style={{ height: 30, padding: '0 10px', fontSize: 12 }}
+                  aria-expanded={advOpen}
+                  onClick={(e) => { e.stopPropagation(); setDraftWc(appliedWc); setAdvOpen((o) => !o); }}
+                >분석식 조정</button>
+                {/* 버튼 오른쪽에 뜨는 소형 팝오버 */}
+                {advOpen && (
+                  <div
+                    role="dialog" aria-label="분석식 조정"
+                    style={{
+                      position: 'absolute', left: 'calc(100% + 10px)', top: -8, zIndex: 1100,
+                      width: 264, padding: 14, background: 'var(--card-bg)',
+                      border: '1px solid var(--line-normal)', borderRadius: 12,
+                      boxShadow: '0 12px 32px rgba(23,23,25,0.18)',
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', marginBottom: 10 }}>분석식 조정</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 }}>
+                      <span style={{ width: 52 }}>민원 건수</span>
+                      <input type="range" min="0" max="100" step="5" value={draftWc}
+                        onChange={(e) => setDraftWc(Number(e.target.value))} style={{ flex: 1 }} aria-label="민원 건수 가중치" />
+                      <b style={{ width: 32, textAlign: 'right' }}>{draftWc}%</b>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--text-alternative)', marginTop: 6 }}>
+                      <span style={{ width: 52 }}>단속 건수</span>
+                      <span style={{ flex: 1 }}>자동 (합계 100%)</span>
+                      <b style={{ width: 32, textAlign: 'right' }}>{100 - draftWc}%</b>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
+                      <button type="button" onClick={() => setDraftWc(DEFAULT_WC)}
+                        style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'var(--text-alternative)' }}>
+                        기본값(60/40)
+                      </button>
+                      <button className="btn btn--primary" type="button" style={{ height: 28, padding: '0 12px', fontSize: 12 }}
+                        onClick={() => { setAppliedWc(draftWc); setAdvOpen(false); setShowResult(true); setActiveRank(null); }}>
+                        적용
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="field">
