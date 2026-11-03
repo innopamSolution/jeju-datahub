@@ -283,6 +283,21 @@ export default function HotspotAnalysis() {
             </div>
 
             <button className="btn-run" type="button" onClick={() => { setShowResult(true); setActiveRank(null); }}>▷ 집중 구역 분석 실행</button>
+
+            {/* 분석식을 기본값에서 변경한 경우에만 하단에 적용 중인 식 표시 */}
+            {appliedWc !== DEFAULT_WC && (
+              <div style={{
+                marginTop: 10, padding: '8px 12px', borderRadius: 8, fontSize: 12,
+                background: 'rgba(59,112,247,0.08)', color: 'var(--primary-normal)',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8,
+              }}>
+                <span>적용 분석식 : 민원 건수 {appliedWc}% + 단속 건수 {100 - appliedWc}%</span>
+                <button type="button"
+                  onClick={() => { setAppliedWc(DEFAULT_WC); setDraftWc(DEFAULT_WC); }}
+                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'inherit', textDecoration: 'underline', flexShrink: 0 }}
+                >초기화</button>
+              </div>
+            )}
           </div>
 
           {/* 오른쪽 결과 패널 */}
