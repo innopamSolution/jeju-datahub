@@ -85,7 +85,7 @@ export default function HotspotAnalysis() {
   const markerMap = useRef({});
   const rowRefs   = useRef([]);
   const bodyRef   = useRef(null);
-  const [period, setPeriod]     = useState('직접설정');
+  const [period, setPeriod]     = useState('최근1개월');
   const [city, setCity]         = useState('전체');
   const [dong, setDong]         = useState('전체');
   const [showResult, setShowResult] = useState(true);
@@ -104,6 +104,7 @@ export default function HotspotAnalysis() {
   const [draftWc, setDraftWc]   = useState(DEFAULT_WC);
   const [appliedWc, setAppliedWc] = useState(DEFAULT_WC);
   const ranking = computeRanking(appliedWc);
+  const exportMeta = { period: period === '직접설정' ? '2026-01 ~ 2026-05' : period.replace('최근', '최근 '), wc: appliedWc };
   const [exportOpen, setExportOpen] = useState(false);
   const exportRef = useRef(null);
 
@@ -249,11 +250,7 @@ export default function HotspotAnalysis() {
                       <span style={{ flex: 1 }}>자동 (합계 100%)</span>
                       <b style={{ width: 32, textAlign: 'right' }}>{100 - draftWc}%</b>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
-                      <button type="button" onClick={() => setDraftWc(DEFAULT_WC)}
-                        style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'var(--text-alternative)' }}>
-                        기본값(60/40)
-                      </button>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginTop: 10 }}>
                       <button type="button"
                         style={{ height: 28, padding: '0 14px', fontSize: 12, fontWeight: 600, border: 'none', borderRadius: 6, cursor: 'pointer', background: 'var(--primary-normal)', color: '#fff' }}
                         onClick={() => { setAppliedWc(draftWc); setAdvOpen(false); setShowResult(true); setActiveRank(null); }}>
@@ -320,11 +317,11 @@ export default function HotspotAnalysis() {
                   {exportOpen && (
                     <div className="sim-export__menu" role="menu">
                       <button type="button" role="menuitem" className="sim-export__item"
-                        onClick={() => { setExportOpen(false); exportHotspotPdf(ranking); }}>
+                        onClick={() => { setExportOpen(false); exportHotspotPdf(ranking, exportMeta); }}>
                         PDF 파일 (.pdf)
                       </button>
                       <button type="button" role="menuitem" className="sim-export__item"
-                        onClick={() => { setExportOpen(false); exportHotspotDocx(ranking); }}>
+                        onClick={() => { setExportOpen(false); exportHotspotDocx(ranking, exportMeta); }}>
                         Word 파일 (.docx)
                       </button>
                     </div>
@@ -356,7 +353,11 @@ export default function HotspotAnalysis() {
                       </div>
                     </div>
                   </div>
-                  <p className="sim-sec__sub">종합점수 기준 : 민원 건수 {appliedWc}% / 단속 {100 - appliedWc}%{appliedWc !== DEFAULT_WC ? ' (조정됨)' : ''}</p>
+                  <p className="sim-sec__sub">
+                    분석 기간 : {period === '직접설정' ? '2026-01 ~ 2026-05' : period.replace('최근', '최근 ')}
+                    <span aria-hidden="true" style={{ margin: '0 6px', color: 'var(--line-normal)' }}>|</span>
+                    종합점수 기준 : 민원 건수 {appliedWc}% / 단속 {100 - appliedWc}%{appliedWc !== DEFAULT_WC ? ' (조정됨)' : ''}
+                  </p>
                   <div className="rl">
                     {ranking.map((r, i) => (
                       <div

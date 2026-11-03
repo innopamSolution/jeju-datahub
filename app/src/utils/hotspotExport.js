@@ -7,7 +7,20 @@ import {
 
 const FILE_BASE = '불법주차_집중구역_순위';
 const TITLE = '불법 주차 집중 구역 순위';
-const SUBTITLE = '종합점수 기준 : 민원 건수 60% / 단속 40%';
+/* meta: { period, wc } — 분석 기간·적용 가중치 (미전달 시 기본값) */
+function metaLines(meta = {}) {
+  const period = meta.period || '최근 1개월';
+  const wc = meta.wc ?? 60;
+  return {
+    period: `분석 기간 : ${period}`,
+    weight: `종합점수 기준 : 민원 건수 ${wc}% / 단속 건수 ${100 - wc}%${wc !== 60 ? ' (가중치 조정 적용)' : ''}`,
+    basis: [
+      '구역은 반경 50m 내 3개 지점 이상의 민원·단속 위치를 묶은 것입니다(DBSCAN).',
+      '종합점수(0~100) = 월평균 민원·단속 건수를 기준값 대비 점수화해 가중합한 값입니다.',
+      '등급 : 심각 80점 이상 · 경고 60~79점 · 주의 40~59점 — 주의 이상 구역만 표시됩니다.',
+    ],
+  };
+}
 
 /* dotColor CSS 변수 → 등급 라벨/실색상 (PDF 캡처·DOCX 텍스트용) */
 const GRADE = {
@@ -27,12 +40,14 @@ function saveBlob(blob, filename) {
   URL.revokeObjectURL(url);
 }
 
-function hotspotHtml(ranking) {
+function hotspotHtml(ranking, meta) {
+  const m = metaLines(meta);
   return `
     <div style="font-family:var(--font-body, sans-serif);color:#171717;width:720px;padding:40px;background:#fff;">
       <div style="font-size:22px;font-weight:800;margin-bottom:6px;">${TITLE}</div>
       <div style="font-size:12px;color:#70737c;margin-bottom:4px;">제주 주차민원분석 솔루션 · 집중 구역 분석 결과</div>
-      <div style="font-size:12px;color:#70737c;margin-bottom:24px;">${SUBTITLE}</div>
+      <div style="font-size:12px;color:#70737c;margin-bottom:2px;">${m.period}</div>
+      <div style="font-size:12px;color:#70737c;margin-bottom:24px;">${m.weight}</div>
 
       <table style="width:100%;border-collapse:collapse;font-size:12px;">
         <thead>
@@ -60,15 +75,20 @@ function hotspotHtml(ranking) {
           }).join('')}
         </tbody>
       </table>
+
+      <div style="margin-top:20px;padding:14px 16px;background:#f5f6f8;border-radius:8px;">
+        <div style="font-size:12px;font-weight:800;margin-bottom:6px;">점수 산정 기준</div>
+        ${m.basis.map((b) => `<div style="font-size:11px;color:#555;line-height:1.7;">· ${b}</div>`).join('')}
+      </div>
     </div>
   `;
 }
 
 /* 집중 구역 순위를 PDF로 내보냄 (화면 렌더링 캡처 방식이라 한글 폰트 임베딩 불필요, A4 자동 분할) */
-export async function exportHotspotPdf(ranking) {
+export async function exportHotspotPdf(ranking, meta) {
   const host = document.createElement('div');
   host.style.cssText = 'position:fixed;left:-9999px;top:0;';
-  host.innerHTML = hotspotHtml(ranking);
+  host.innerHTML = hotspotHtml(ranking, meta);
   document.body.appendChild(host);
 
   try {
@@ -98,7 +118,8 @@ export async function exportHotspotPdf(ranking) {
 }
 
 /* 집중 구역 순위를 DOCX로 내보냄 (유니코드 네이티브라 폰트 임베딩 불필요) */
-export async function exportHotspotDocx(ranking) {
+export async function exportHotspotDocx(ranking, meta) {
+  const m = metaLines(meta);
   const border = {
     top: { style: BorderStyle.SINGLE, size: 2, color: 'E5E6EA' },
     bottom: { style: BorderStyle.SINGLE, size: 2, color: 'E5E6EA' },
@@ -125,8 +146,11 @@ export async function exportHotspotDocx(ranking) {
       children: [
         new Paragraph({ text: TITLE, heading: HeadingLevel.HEADING_1 }),
         new Paragraph({ children: [new TextRun({ text: '제주 주차민원분석 솔루션 · 집중 구역 분석 결과', color: '888888', size: 20 })] }),
-        new Paragraph({ children: [new TextRun({ text: SUBTITLE, color: '888888', size: 18 })], spacing: { after: 240 } }),
+        new Paragraph({ children: [new TextRun({ text: m.period, color: '888888', size: 18 })] }),
+        new Paragraph({ children: [new TextRun({ text: m.weight, color: '888888', size: 18 })], spacing: { after: 240 } }),
         new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [headerRow, ...rows] }),
+        new Paragraph({ children: [new TextRun({ text: '점수 산정 기준', bold: true, size: 20 })], spacing: { before: 300, after: 80 } }),
+        ...m.basis.map((b) => new Paragraph({ children: [new TextRun({ text: `· ${b}`, size: 18, color: '555555' })] })),
       ],
     }],
   });
