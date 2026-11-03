@@ -161,11 +161,7 @@ export default function HotspotAnalysis() {
       m.on('popupopen', () => setActiveRow(r.rank));
       markerMap.current[r.rank] = m;
     });
-
-    setTimeout(() => map.invalidateSize(), 250);
-    window.addEventListener('resize', () => map.invalidateSize());
-    mapInst.current = map;
-  }, []);
+  }, [appliedWc]);
 
   /* 목록 행 선택 → 지도를 해당 위치로 확대(줌 15)·중심 이동 후 팝업 표시 */
   const handleRowClick = (rank) => {
