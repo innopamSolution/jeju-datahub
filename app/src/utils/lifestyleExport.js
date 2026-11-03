@@ -25,12 +25,12 @@ function saveBlob(blob, filename) {
   URL.revokeObjectURL(url);
 }
 
-function lifestyleHtml({ modeLabel, gridSize, summary, sectionTitle, ranking }) {
+function lifestyleHtml({ modeLabel, gridSize, period, summary, sectionTitle, ranking }) {
   return `
     <div style="font-family:var(--font-body, sans-serif);color:#171717;width:720px;padding:40px;background:#fff;">
       <div style="font-size:22px;font-weight:800;margin-bottom:6px;">생활권 시뮬레이션 분석 결과</div>
       <div style="font-size:12px;color:#70737c;margin-bottom:4px;">제주 주차민원분석 솔루션 · 격자 기반 생활권 분석</div>
-      <div style="font-size:12px;color:#70737c;margin-bottom:24px;">분석 유형: <b>${modeLabel}</b> · 격자 크기: <b>${gridSize}</b></div>
+      <div style="font-size:12px;color:#70737c;margin-bottom:24px;">분석 기간: <b>${period ?? '최근 3개월'}</b> · 분석 유형: <b>${modeLabel}</b> · 격자 크기: <b>${gridSize}</b></div>
 
       <div style="font-size:15px;font-weight:700;margin:0 0 10px;border-left:4px solid #0066ff;padding-left:10px;">1. 분석 결과 요약</div>
       <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:24px;">
@@ -75,6 +75,13 @@ function lifestyleHtml({ modeLabel, gridSize, summary, sectionTitle, ranking }) 
           }).join('')}
         </tbody>
       </table>
+
+      <div style="margin-top:20px;padding:14px 16px;background:#f5f6f8;border-radius:8px;">
+        <div style="font-size:12px;font-weight:800;margin-bottom:6px;">산정 기준</div>
+        <div style="font-size:11px;color:#555;line-height:1.7;">· 격자(100m~1km) 단위로 조회 조건(기간·지역·격자 크기) 내 민원·수급·혼잡도를 집계합니다.</div>
+        <div style="font-size:11px;color:#555;line-height:1.7;">· 민원 건수·주차 수급 등급은 조회 조건 내 상대 순위(백분위) 기준입니다.</div>
+        <div style="font-size:11px;color:#555;line-height:1.7;">· 등급 : 심각·경고·주의 — 격자 히트맵 범례와 동일한 기준을 사용합니다.</div>
+      </div>
     </div>
   `;
 }
@@ -113,7 +120,7 @@ export async function exportLifestylePdf(data) {
 }
 
 /* 생활권 분석 결과를 DOCX로 내보냄 */
-export async function exportLifestyleDocx({ modeLabel, gridSize, summary, sectionTitle, ranking }) {
+export async function exportLifestyleDocx({ modeLabel, gridSize, period, summary, sectionTitle, ranking }) {
   const border = {
     top: { style: BorderStyle.SINGLE, size: 2, color: 'E5E6EA' },
     bottom: { style: BorderStyle.SINGLE, size: 2, color: 'E5E6EA' },
@@ -131,7 +138,7 @@ export async function exportLifestyleDocx({ modeLabel, gridSize, summary, sectio
       children: [
         new Paragraph({ text: '생활권 시뮬레이션 분석 결과', heading: HeadingLevel.HEADING_1 }),
         new Paragraph({ children: [new TextRun({ text: '제주 주차민원분석 솔루션 · 격자 기반 생활권 분석', color: '888888', size: 20 })] }),
-        new Paragraph({ children: [new TextRun({ text: `분석 유형: ${modeLabel}   ·   격자 크기: ${gridSize}`, color: '888888', size: 18 })], spacing: { after: 120 } }),
+        new Paragraph({ children: [new TextRun({ text: `분석 기간: ${period ?? '최근 3개월'} · 분석 유형: ${modeLabel}   ·   격자 크기: ${gridSize}`, color: '888888', size: 18 })], spacing: { after: 120 } }),
 
         heading('1. 분석 결과 요약'),
         new Table({
@@ -154,6 +161,12 @@ export async function exportLifestyleDocx({ modeLabel, gridSize, summary, sectio
             })),
           ],
         }),
+        new Paragraph({ children: [new TextRun({ text: '산정 기준', bold: true, size: 20 })], spacing: { before: 300, after: 80 } }),
+        ...[
+          '격자(100m~1km) 단위로 조회 조건(기간·지역·격자 크기) 내 민원·수급·혼잡도를 집계합니다.',
+          '민원 건수·주차 수급 등급은 조회 조건 내 상대 순위(백분위) 기준입니다.',
+          '등급 : 심각·경고·주의 — 격자 히트맵 범례와 동일한 기준을 사용합니다.',
+        ].map((b) => new Paragraph({ children: [new TextRun({ text: `· ${b}`, size: 18, color: '555555' })] })),
       ],
     }],
   });
