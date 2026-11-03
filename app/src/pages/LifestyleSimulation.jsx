@@ -235,6 +235,7 @@ export default function LifestyleSimulation() {
   }, [exportOpen]);
 
   const exportData = () => ({
+    period: period === '직접설정' ? '2026-01 ~ 2026-05' : period.replace('최근', '최근 '),
     modeLabel: ANALYSIS_TYPES.find((t) => t.key === analysisType)?.label ?? analysisType,
     gridSize: sizeChip,
     summary: modeCfg.summary,

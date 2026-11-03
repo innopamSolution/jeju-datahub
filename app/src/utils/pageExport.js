@@ -78,6 +78,12 @@ export async function toPngDataUrl(dataUrl, scale = 2) {
 /* ---------- PDF ---------- */
 
 function sectionBodyHtml(sec) {
+  if (sec.type === 'notes') {
+    return `
+      <div style="padding:14px 16px;background:#f5f6f8;border-radius:8px;">
+        ${sec.items.map((b) => `<div style="font-size:11px;color:#555;line-height:1.7;">· ${b}</div>`).join('')}
+      </div>`;
+  }
   if (sec.type === 'chart') {
     if (sec.image) {
       return `<img src="${sec.image.dataUrl}" style="width:100%;height:auto;display:block;" />`;
@@ -192,6 +198,12 @@ export async function exportSectionsDocx({ fileBase, title, subtitle, sections }
     const sec = sections[i];
     children.push(new Paragraph({ text: `${i + 1}. ${sec.title}`, heading: HeadingLevel.HEADING_2, spacing: { before: 240, after: 120 } }));
 
+    if (sec.type === 'notes') {
+      sec.items.forEach((b) => children.push(new Paragraph({
+        children: [new TextRun({ text: `· ${b}`, size: 18, color: '555555' })],
+      })));
+      continue;
+    }
     if (sec.type === 'chart') {
       const img = sec.image ?? await rasterizeHtml(sec.html);
       const docW = 600;

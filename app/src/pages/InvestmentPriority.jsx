@@ -114,6 +114,14 @@ export default function InvestmentPriority() {
         columns: ['순위', '주차장', '안전위험도', '민원빈도', '이용패턴', '사고이력'],
         rows: LOTS.map((lot) => [lot.rank, lot.name, lot.m.safety, lot.m.civil, lot.m.usage, lot.m.accident]),
       },
+      {
+        type: 'notes',
+        title: '산정 기준',
+        items: [
+          '종합점수 = 안전위험도·민원빈도·이용패턴·사고이력 지표의 가중합 (가중치는 설정 > 분석 지표 가중치 설정에서 변경 가능)',
+          '사고 이력은 최근 3개월 재난상황 데이터 기준이며, 우선순위는 높음·중간·낮음 등급으로 구분합니다.',
+        ],
+      },
     ],
   });
 

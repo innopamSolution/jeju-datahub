@@ -221,7 +221,7 @@ export default function PolicySimulation() {
     return {
       fileBase: '정책효과_시뮬레이션',
       title: '정책효과 시뮬레이션',
-      subtitle: `정책 유형: ${policyLabel}`,
+      subtitle: `정책 유형: ${policyLabel} · 대상 지역: ${simCity}${simDong && simDong !== '전체' ? ' ' + simDong : ''}`,
       sections: [
         {
           type: 'table',
@@ -247,6 +247,14 @@ export default function PolicySimulation() {
             valueLabel: `${sc.improvement}${sc.recommend ? ' (추천)' : ''}`,
             color: sc.recommend ? '#f97316' : '#0066ff',
           }))),
+        },
+        {
+          type: 'notes',
+          title: '산정 기준',
+          items: [
+            '효과 예측은 선택한 정책 변수(대상 지역·적용 조건·규모)를 최근 민원·주차 데이터 기반 모델에 적용한 추정치입니다.',
+            '시나리오 비교는 민원 감소율·혼잡도 개선·비용 수준을 기준으로 하며, 추천 배지는 종합 우위 시나리오에 부여됩니다.',
+          ],
         },
       ],
     };

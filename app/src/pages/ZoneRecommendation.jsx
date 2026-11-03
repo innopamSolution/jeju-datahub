@@ -165,7 +165,7 @@ export default function ZoneRecommendation() {
   const exportData = () => (mode === '요금제 적용' ? {
     fileBase: '요금제적용_추천',
     title: MODE_TITLES[mode],
-    subtitle: '무료 공영주차장(20면 이상) · 배정 민원 많은 순, 동률 시 면수 순 · 배정 범위 300m',
+    subtitle: `분석 기간 : ${period === '직접설정' ? '2026-01 ~ 2026-05' : period.replace('최근', '최근 ')} · 무료 공영주차장(20면 이상) · 배정 민원 많은 순, 동률 시 면수 순 · 배정 범위 300m`,
     sections: [
       {
         type: 'chart',
@@ -180,11 +180,12 @@ export default function ZoneRecommendation() {
         columns: ['순위', '주차장', '면수', '배정 민원', '민원 증가율(참고)', '우선순위'],
         rows: FEE_CANDIDATES.map((r) => [r.rank, r.name, `${r.spaces}면`, `${r.cnt}건`, r.rate, FEE_GRADE[r.grade].label]),
       },
+      { type: 'notes', title: '산정 기준', items: FEE_NOTES },
     ],
   } : {
     fileBase: '공유주차제_검토',
     title: MODE_TITLES[mode],
-    subtitle: '민원 증가 추세 반영 — 추세 반영 지수(검토 지수 × 증가계수) 순, 검토 지수 1 이상 우선',
+    subtitle: `분석 기간 : ${period === '직접설정' ? '2026-01 ~ 2026-05' : period.replace('최근', '최근 ')} · 민원 증가 추세 반영 — 추세 반영 지수(검토 지수 × 증가계수) 순, 검토 지수 1 이상 우선`,
     sections: [
       {
         type: 'chart',
@@ -199,6 +200,7 @@ export default function ZoneRecommendation() {
         columns: ['순위', '읍·면·동', '추세 반영 지수', '검토 지수', '월평균 민원', '100면당 월 민원', '증가계수', '비고'],
         rows: SHARE_REGIONS.map((r) => [r.rank, r.name, r.trend.toFixed(2), r.review.toFixed(2), `${r.monthly}건`, `${r.per100.toFixed(1)}건`, r.factor.toFixed(2), r.review < 1 && r.vacantFlag ? '공한지를 빼면 후보' : '']),
       },
+      { type: 'notes', title: '산정 기준', items: SHARE_NOTES },
     ],
   });
   const [activeRank, setActiveRank] = useState(null);
