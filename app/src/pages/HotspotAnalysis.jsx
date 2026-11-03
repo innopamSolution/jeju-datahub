@@ -126,7 +126,18 @@ export default function HotspotAnalysis() {
     map.attributionControl.setPosition('bottomleft');
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, opacity: 0.92, attribution: '© OpenStreetMap' }).addTo(map);
 
-    VISIBLE_RANKING.forEach((r) => {
+    setTimeout(() => map.invalidateSize(), 250);
+    window.addEventListener('resize', () => map.invalidateSize());
+    mapInst.current = map;
+  }, []);
+
+  /* 가중치 적용 결과에 따라 마커 재구성 */
+  useEffect(() => {
+    const map = mapInst.current;
+    if (!map) return;
+    Object.values(markerMap.current).forEach((m) => map.removeLayer(m));
+    markerMap.current = {};
+    ranking.forEach((r) => {
       const badge = DOT_BADGE[r.dotColor] ?? 'caution';
       const fill = resolveColor(r.dotColor);
       const icon = L.divIcon({
