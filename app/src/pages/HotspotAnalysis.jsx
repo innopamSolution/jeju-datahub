@@ -219,7 +219,7 @@ export default function HotspotAnalysis() {
                   aria-expanded={advOpen}
                   onClick={(e) => { e.stopPropagation(); setDraftWc(appliedWc); setAdvOpen((o) => !o); }}
                 >
-                  분석식 조정
+                  가중치 조정
                   <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"
                     style={{ transform: advOpen ? 'rotate(180deg)' : 'none', transition: 'transform .15s' }}>
                     <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -228,7 +228,7 @@ export default function HotspotAnalysis() {
                 {/* 버튼 오른쪽에 뜨는 소형 팝오버 */}
                 {advOpen && (
                   <div
-                    role="dialog" aria-label="분석식 조정"
+                    role="dialog" aria-label="가중치 조정"
                     style={{
                       position: 'absolute', left: 'calc(100% + 10px)', top: -8, zIndex: 1100,
                       width: 264, padding: 14, background: 'var(--card-bg)',
@@ -237,7 +237,7 @@ export default function HotspotAnalysis() {
                     }}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', marginBottom: 10 }}>분석식 조정</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', marginBottom: 10 }}>가중치 조정</div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 }}>
                       <span style={{ width: 52 }}>민원 건수</span>
                       <input type="range" min="0" max="100" step="5" value={draftWc}
@@ -272,7 +272,7 @@ export default function HotspotAnalysis() {
                 background: 'rgba(59,112,247,0.08)', color: 'var(--primary-normal)',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8,
               }}>
-                <span>적용 분석식 : 민원 건수 {appliedWc}% + 단속 건수 {100 - appliedWc}%</span>
+                <span>적용 가중치 : 민원 건수 {appliedWc}% + 단속 건수 {100 - appliedWc}%</span>
                 <button type="button"
                   onClick={() => { setAppliedWc(DEFAULT_WC); setDraftWc(DEFAULT_WC); }}
                   style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'inherit', textDecoration: 'underline', flexShrink: 0 }}
