@@ -769,10 +769,10 @@ input[type='number']:focus-visible {
 .rl__val { text-align: right; white-space: nowrap; flex-shrink: 0; }
 .rl__cnt { font-size: var(--headline1-size); font-weight: var(--weight-bold); color: var(--text-strong); }
 .rl__delta { font-size: var(--label2-size); font-weight: var(--weight-bold); margin-left: var(--space-6); position: relative; }
-/* 화살표 호버 시 전기 대비 증감율 툴팁 — 세로 스크롤 영역에 잘리지 않게 왼쪽에 표시 */
+/* 화살표 호버 시 전기 대비 증감율 툴팁 — 화살표 아래에 표시(오른쪽 끝이라 좌측으로 펼침) */
 .rl__delta[data-tip]:hover::after {
   content: attr(data-tip);
-  position: absolute; right: calc(100% + 8px); top: 50%; transform: translateY(-50%);
+  position: absolute; top: calc(100% + 6px); right: 0;
   background: var(--cool-neutral-15); color: #fff; font-size: 11px; font-weight: 500;
   line-height: 1.4; padding: 4px 8px; border-radius: 6px; white-space: nowrap;
   z-index: 60; pointer-events: none; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
