@@ -77,16 +77,16 @@ const SENTIMENT_REGIONS = [
 /* hotspot·enforce·demand는 겹치면 혼란스러워 셋 중 하나만 노출(라디오) */
 /* 레이어별 우측 순위 카드 데이터 — 지도 레이어 선택과 연동 */
 const ENFORCE_REGIONS = [
-  { rank: 1,  name: '연동',  dotColor: 'var(--red-50)',    value: '32건', delta: '▲5%', deltaClass: 't-up',   sub: '민원 52건 대비' },
-  { rank: 2,  name: '노형동',  dotColor: 'var(--orange-50)', value: '30건', delta: '▲3%', deltaClass: 't-up',   sub: '민원 38건 대비' },
-  { rank: 3,  name: '이도동',  dotColor: 'var(--orange-50)', value: '28건', delta: '▼2%', deltaClass: 't-down', sub: '민원 29건 대비' },
-  { rank: 4,  name: '아라동',  dotColor: 'var(--blue-50)',   value: '20건', delta: '▲4%', deltaClass: 't-up',   sub: '민원 21건 대비' },
-  { rank: 5,  name: '일도동',  dotColor: 'var(--blue-50)',   value: '18건', delta: '—',   deltaClass: 't-flat', sub: '민원 17건 대비' },
-  { rank: 6,  name: '삼도동',  dotColor: 'var(--green-50)',  value: '15건', delta: '▼1%', deltaClass: 't-down', sub: '민원 10건 대비' },
-  { rank: 7,  name: '화북동',  dotColor: 'var(--green-50)',  value: '12건', delta: '▲2%', deltaClass: 't-up',   sub: '민원 8건 대비' },
-  { rank: 8,  name: '용담동',  dotColor: 'var(--green-50)',  value: '10건', delta: '—',   deltaClass: 't-flat', sub: '민원 2건 대비' },
-  { rank: 9,  name: '이도2동', dotColor: 'var(--green-50)',  value: '9건',  delta: '▲1%', deltaClass: 't-up',   sub: '민원 9건 대비' },
-  { rank: 10, name: '외도동',  dotColor: 'var(--green-50)',  value: '7건',  delta: '▼1%', deltaClass: 't-down', sub: '민원 4건 대비' },
+  { rank: 1,  name: '연동',  dotColor: 'var(--red-50)',    value: '32건', delta: '▲5%', deltaClass: 't-up',   sub: '고정형 CCTV 65%' },
+  { rank: 2,  name: '노형동',  dotColor: 'var(--orange-50)', value: '30건', delta: '▲3%', deltaClass: 't-up',   sub: '고정형 CCTV 58%' },
+  { rank: 3,  name: '이도동',  dotColor: 'var(--orange-50)', value: '28건', delta: '▼2%', deltaClass: 't-down', sub: '고정형 CCTV 61%' },
+  { rank: 4,  name: '아라동',  dotColor: 'var(--blue-50)',   value: '20건', delta: '▲4%', deltaClass: 't-up',   sub: '이동형 CCTV 47%' },
+  { rank: 5,  name: '일도동',  dotColor: 'var(--blue-50)',   value: '18건', delta: '—',   deltaClass: 't-flat', sub: '고정형 CCTV 52%' },
+  { rank: 6,  name: '삼도동',  dotColor: 'var(--green-50)',  value: '15건', delta: '▼1%', deltaClass: 't-down', sub: '현장 단속 44%' },
+  { rank: 7,  name: '화북동',  dotColor: 'var(--green-50)',  value: '12건', delta: '▲2%', deltaClass: 't-up',   sub: '고정형 CCTV 55%' },
+  { rank: 8,  name: '용담동',  dotColor: 'var(--green-50)',  value: '10건', delta: '—',   deltaClass: 't-flat', sub: '이동형 CCTV 49%' },
+  { rank: 9,  name: '이도2동', dotColor: 'var(--green-50)',  value: '9건',  delta: '▲1%', deltaClass: 't-up',   sub: '고정형 CCTV 60%' },
+  { rank: 10, name: '외도동',  dotColor: 'var(--green-50)',  value: '7건',  delta: '▼1%', deltaClass: 't-down', sub: '고정형 CCTV 53%' },
 ];
 
 const DEMAND_REGIONS = [
