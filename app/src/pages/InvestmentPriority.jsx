@@ -46,7 +46,7 @@ const INVEST_WEIGHTS = [
   { key: 'safety',  label: '안전위험도' },
   { key: 'civil',   label: '민원 건수' },
   { key: 'usage',   label: '이용률' },
-  { key: 'enforce', label: '단속건수' },
+  { key: 'enforce', label: '사고이력' },
 ];
 const INVEST_DEFAULT_W = { safety: 25, civil: 25, usage: 25, enforce: 25 };
 const INVEST_COEFFS = [
