@@ -574,7 +574,7 @@ export default function Complaints() {
         type: 'table',
         title: '읍·면·동 수요부족 순위',
         columns: ['순위', '지역', '부족률', '전기 대비', '세부 내역'],
-        rows: RANK_MODES.demand.rows.map((r) => [r.rank, r.name, r.value, r.delta, r.sub]),
+        rows: RANK_MODES.demand.rows.map((r) => [r.rank, r.name, r.value, arrowOnly(r.delta), r.sub]),
       },
       {
         type: 'chart',
