@@ -384,7 +384,7 @@ export default function ZoneRecommendation() {
           {/* 왼쪽 설정 패널 */}
           <div className="card sim-panel sim-panel--left" style={{ zIndex: advOpen ? 1200 : undefined }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-              <h2 className="sim-panel__title" style={{ margin: 0 }}>구역 추천 설정</h2>
+              <h2 className="sim-panel__title" style={{ margin: 0, fontSize: 18, whiteSpace: 'nowrap' }}>구역 추천 설정</h2>
               {/* 분석 계수 조정 — 집중구역·정책·생활권과 동일 패턴, 분석 내용별 탭 */}
               <div ref={advRef} style={{ position: 'relative', flexShrink: 0 }}>
                 <button
