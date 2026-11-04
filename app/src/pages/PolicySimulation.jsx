@@ -217,6 +217,29 @@ export default function PolicySimulation() {
   const [activeId, setActiveId] = useState(0);
   const active = scenarios.find((sc) => sc.id === activeId) ?? scenarios[0] ?? null;
 
+  /* 종합 평가 가중치 조정(고급) — 입력값(draft)과 적용값(applied) 분리 */
+  const [advOpen, setAdvOpen] = useState(false);
+  const advRef = useRef(null);
+  const [draftW, setDraftW] = useState(DEFAULT_WEIGHTS);
+  const [appliedW, setAppliedW] = useState(DEFAULT_WEIGHTS);
+  useEffect(() => {
+    if (!advOpen) return;
+    const onDoc = (e) => { if (advRef.current && !advRef.current.contains(e.target)) setAdvOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setAdvOpen(false); };
+    document.addEventListener('click', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+  }, [advOpen]);
+  const apW = pctW(appliedW);
+  /* 적용된 가중치로 추천 시나리오(종합점수 최고)를 재산정 */
+  const recommendId = useMemo(() => {
+    if (scenarios.length === 0) return null;
+    return scenarios.reduce((best, sc) =>
+      scenarioScore(sc, appliedW) > scenarioScore(best, appliedW) ? sc : best
+    ).id;
+  }, [scenarios, appliedW]);
+  const isRecommend = (sc) => sc.id === recommendId;
+
   /* 시나리오 비교 필터 — 시나리오명 첫 구간(정책 유형)별 분류 */
   const [scFilter, setScFilter] = useState('all');
   const scType = (sc) => sc.name.split(' · ')[0];
