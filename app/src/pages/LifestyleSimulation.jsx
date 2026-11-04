@@ -481,7 +481,7 @@ export default function LifestyleSimulation() {
           {/* 왼쪽 설정 패널 */}
           <div className="card sim-panel sim-panel--left" style={{ zIndex: advOpen ? 1200 : undefined }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-              <h2 className="sim-panel__title" style={{ margin: 0 }}>생활권 분석 설정</h2>
+              <h2 className="sim-panel__title" style={{ margin: 0, fontSize: 18, whiteSpace: 'nowrap' }}>생활권 분석 설정</h2>
               {/* 분석 계수 조정 — 집중구역·정책과 동일 패턴(버튼 오른쪽 팝오버), 분석 유형별 탭 */}
               <div ref={advRef} style={{ position: 'relative', flexShrink: 0 }}>
                 <button
