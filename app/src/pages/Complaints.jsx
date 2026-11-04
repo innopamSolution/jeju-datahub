@@ -112,6 +112,8 @@ const LEGEND_ITEMS = [
    범례에 있는 등급(심각·경고·주의)만 목록에 노출 — 범례 밖 등급은 제외 */
 const LEGEND_COLORS = LEGEND_ITEMS.map((i) => i.color);
 const inLegend = (rows) => rows.filter((r) => LEGEND_COLORS.includes(r.dotColor));
+/* 증감율 숫자는 튀는 값이 많아 화살표(▲·▼·—)만 표시 */
+const arrowOnly = (d) => (d || '').replace(/[\d.%p]+/g, '').trim() || '—';
 
 const RANK_MODES = {
   hotspot: {
