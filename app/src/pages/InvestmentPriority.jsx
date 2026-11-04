@@ -39,6 +39,40 @@ const LOTS = [
   { rank: 11, name: '한경공영주차장',   tier: 'low',  score: 47, addr: '제주시 한경면 신창리',    spaces: 60,  year: 2019, age: 7,  m: { safety: 48, civil: 46, usage: 48, accident: 44 }, c: [33.344, 126.176] },
 ];
 
+/* 설정 > 분석 지표 가중치 설정 > 투자우선순위.
+   종합점수 가중치(4지표 합계 100% · 사고이력 미사용) + 분석 계수. */
+const INVEST_WEIGHTS = [
+  { key: 'safety',  label: '안전위험도' },
+  { key: 'civil',   label: '민원빈도' },
+  { key: 'usage',   label: '이용패턴' },
+  { key: 'enforce', label: '단속건수' },
+];
+const INVEST_DEFAULT_W = { safety: 25, civil: 25, usage: 25, enforce: 25 };
+const INVEST_COEFFS = [
+  { key: 'assignRange', label: '배정 범위',          min: 50, max: 1000, step: 10, def: 300, unit: 'm',   hint: '민원·단속 1건을 최근접 대상 주차장 1곳에 배정하는 범위' },
+  { key: 'highScore',   label: '상위 등급 기준점수',  min: 0,  max: 100,  step: 1,  def: 80,  unit: '점',  hint: '종합점수 이 값 이상이면 우선순위 높음(H)' },
+  { key: 'midScore',    label: '중간 등급 기준점수',  min: 0,  max: 100,  step: 1,  def: 60,  unit: '점',  hint: '이상이고 상위 미만이면 중간(M), 미만이면 낮음(L)' },
+  { key: 'showCount',   label: '표시 주차장 수',      min: 1,  max: 500,  step: 1,  def: 50,  unit: '개소', hint: '목록·지도 표시 수 (점수 계산엔 미사용)' },
+];
+const isDefaultW = (w) => INVEST_WEIGHTS.every(({ key }) => w[key] === INVEST_DEFAULT_W[key]);
+/* 4지표 가중치를 합계 100%로 정규화 (마지막 지표가 반올림 잔차 흡수) */
+function investPctW(w) {
+  const keys = INVEST_WEIGHTS.map((k) => k.key);
+  const s = keys.reduce((a, k) => a + w[k], 0) || 1;
+  const out = {}; let acc = 0;
+  keys.forEach((k, i) => {
+    if (i < keys.length - 1) { out[k] = Math.round((w[k] / s) * 100); acc += out[k]; }
+    else out[k] = 100 - acc;
+  });
+  return out;
+}
+function investDefaultCoeffs() {
+  const o = {};
+  INVEST_COEFFS.forEach((c) => { o[c.key] = c.def; });
+  return o;
+}
+const fmtCoeff = (v) => (Number.isInteger(v) ? String(v) : String(Math.round(v * 1000) / 1000));
+
 function resolveColor(cssVar) {
   const probe = document.createElement('span');
   probe.style.cssText = 'position:absolute;left:-9999px;top:-9999px';
