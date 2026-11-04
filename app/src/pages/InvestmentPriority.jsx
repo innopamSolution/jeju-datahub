@@ -56,16 +56,38 @@ const INVEST_COEFFS = [
   { key: 'showCount',   label: '표시 주차장 수',      min: 1,  max: 500,  step: 1,  def: 50,  unit: '개소', hint: '목록·지도 표시 수 (점수 계산엔 미사용)' },
 ];
 const isDefaultW = (w) => INVEST_WEIGHTS.every(({ key }) => w[key] === INVEST_DEFAULT_W[key]);
-/* 4지표 가중치를 합계 100%로 정규화 (마지막 지표가 반올림 잔차 흡수) */
-function investPctW(w) {
+/* idx 지표를 newVal로 조정 — 상위(0..idx-1)는 고정하고, 남은 몫을 하위(idx+1..)에 재분배해 합계 100% 유지.
+   마지막 지표는 하위가 없으므로 (100 - 상위합)으로 강제돼 합계를 맞춘다. */
+function adjustInvestWeights(w, idx, newVal) {
   const keys = INVEST_WEIGHTS.map((k) => k.key);
-  const s = keys.reduce((a, k) => a + w[k], 0) || 1;
-  const out = {}; let acc = 0;
-  keys.forEach((k, i) => {
-    if (i < keys.length - 1) { out[k] = Math.round((w[k] / s) * 100); acc += out[k]; }
-    else out[k] = 100 - acc;
-  });
-  return out;
+  const vals = keys.map((k) => w[k]);
+  const sumAbove = vals.slice(0, idx).reduce((a, b) => a + b, 0);
+  const maxForIdx = 100 - sumAbove;
+  const belowCount = keys.length - idx - 1;
+  const out = [...vals];
+  if (belowCount === 0) {
+    out[idx] = maxForIdx;                               // 마지막 지표: 합계 100 유지용
+  } else {
+    const v = Math.max(0, Math.min(maxForIdx, newVal));
+    out[idx] = v;
+    const remaining = maxForIdx - v;                    // 하위에 나눠줄 몫
+    const belowVals = vals.slice(idx + 1);
+    const belowSum = belowVals.reduce((a, b) => a + b, 0);
+    let assigned = 0;
+    for (let j = 0; j < belowCount; j++) {
+      const k = idx + 1 + j;
+      let share;
+      if (j === belowCount - 1) share = Math.max(0, remaining - assigned); // 마지막 하위가 잔차 흡수
+      else {
+        share = belowSum > 0 ? Math.round((remaining * belowVals[j]) / belowSum) : Math.round(remaining / belowCount);
+        assigned += share;
+      }
+      out[k] = share;
+    }
+  }
+  const res = {};
+  keys.forEach((k, i) => { res[k] = out[i]; });
+  return res;
 }
 function investDefaultCoeffs() {
   const o = {};
