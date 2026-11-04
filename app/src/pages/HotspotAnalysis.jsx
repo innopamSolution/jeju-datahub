@@ -428,9 +428,9 @@ export default function HotspotAnalysis() {
                               <span className="dot" style={{ background: r.dotColor }} />
                               {r.name}
                             </span>
-                            <span className="rl__val"><span className="rl__cnt">{r.score}</span></span>
+                            <span className={`badge badge--${DOT_BADGE[r.dotColor]}`}>{BADGE_TEXT[DOT_BADGE[r.dotColor]]}</span>
                           </div>
-                          <span className="rl__sub">{r.sub}</span>
+                          <span className="rl__sub">종합점수 {r.score} ({r.sub})</span>
                         </div>
                       </div>
                     ))}
