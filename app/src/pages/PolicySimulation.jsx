@@ -486,67 +486,6 @@ export default function PolicySimulation() {
           <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--line-alternative)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
               <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>시나리오 비교</h2>
-              {/* 종합 평가 가중치 조정 — 집중구역 분석과 동일 패턴(버튼 오른쪽 팝오버) */}
-              <div ref={advRef} style={{ position: 'relative', flexShrink: 0 }}>
-                <button
-                  className="btn"
-                  type="button"
-                  style={{
-                    height: 30, padding: '0 10px', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6,
-                    ...(advOpen && {
-                      borderColor: 'var(--primary-normal)', color: 'var(--primary-normal)',
-                      background: 'rgba(59,112,247,0.08)',
-                    }),
-                  }}
-                  aria-expanded={advOpen}
-                  onClick={(e) => { e.stopPropagation(); setDraftW(appliedW); setAdvOpen((o) => !o); }}
-                >
-                  가중치 조정
-                  <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"
-                    style={{ transform: advOpen ? 'rotate(180deg)' : 'none', transition: 'transform .15s' }}>
-                    <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-                {advOpen && (
-                  <div
-                    role="dialog" aria-label="종합 평가 가중치 조정"
-                    style={{
-                      position: 'absolute', left: 'calc(100% + 10px)', top: -8, zIndex: 1100,
-                      width: 300, padding: 16, background: 'var(--card-bg)',
-                      border: '1px solid var(--line-normal)', borderRadius: 12,
-                      boxShadow: '0 12px 32px rgba(23,23,25,0.18)',
-                    }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', marginBottom: 4 }}>종합 평가 가중치 조정</div>
-                    <div style={{ fontSize: 11, color: 'var(--text-alternative)', marginBottom: 12 }}>추천 시나리오 선정 기준 (합계 100%로 자동 환산)</div>
-                    {WEIGHT_META.map(({ key, label }) => {
-                      const shown = pctW(draftW)[key];
-                      return (
-                        <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, marginBottom: 8 }}>
-                          <span style={{ width: 56 }}>{label}</span>
-                          <input type="range" min="0" max="100" step="5" value={draftW[key]}
-                            onChange={(e) => setDraftW((w) => ({ ...w, [key]: Number(e.target.value) }))}
-                            style={{ flex: 1 }} aria-label={`${label} 가중치`} />
-                          <b style={{ width: 36, textAlign: 'right' }}>{shown}%</b>
-                        </div>
-                      );
-                    })}
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 12 }}>
-                      <button type="button"
-                        onClick={() => setDraftW(DEFAULT_WEIGHTS)}
-                        style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'var(--text-alternative)', textDecoration: 'underline' }}>
-                        기본값
-                      </button>
-                      <button type="button"
-                        style={{ height: 28, padding: '0 14px', fontSize: 12, fontWeight: 600, border: 'none', borderRadius: 6, cursor: 'pointer', background: 'var(--primary-normal)', color: '#fff' }}
-                        onClick={() => { setAppliedW(draftW); setAdvOpen(false); }}>
-                        적용
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
               {/* 정책 유형별 필터: 시나리오명 첫 구간 기준, 괄호는 건수 */}
               <div className="sc-filter">
                 {[['all', `전체 (${scenarios.length})`], ...scCategories.map((c) => [c.key, `${c.key} (${c.count})`])].map(([key, label]) => (
