@@ -119,8 +119,8 @@ function lotPopup(lot, fill, t) {
     '<div class="lp__meta">준공 ' + lot.year + '년 (' + lot.age + '년 경과)</div>' +
     '<div class="lp__metrics">' +
       bar('안전위험도', lot.m.safety) +
-      bar('민원 빈도', lot.m.civil) +
-      bar('이용 패턴', lot.m.usage) +
+      bar('민원 건수', lot.m.civil) +
+      bar('이용률', lot.m.usage) +
       bar('사고 이력', lot.m.accident) +
     '</div></div>';
 }
