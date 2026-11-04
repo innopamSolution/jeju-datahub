@@ -339,28 +339,124 @@ export default function InvestmentPriority() {
               <div className="card-head">
                 <div>
                   <h2 className="card-head__title">투자·보강 우선순위</h2>
-                  <p className="card-head__sub">분석 기간 : {period.replace('최근', '최근 ')} · 종합점수 기준 : 안전위험도 25% / 민원빈도 25% / 이용패턴 25% / 사고이력 25%</p>
+                  <p className="card-head__sub">분석 기간 : {period.replace('최근', '최근 ')} · 종합점수 기준 : {weightLine}{isDefaultW(appliedW) ? '' : ' (조정됨)'}</p>
                 </div>
-                <div className="sim-export" ref={exportRef}>
-                  <button className="btn" type="button" style={{ height: 36, padding: '0 var(--space-12)', fontSize: 'var(--label2-size)' }}
-                    aria-haspopup="menu" aria-expanded={exportOpen}
-                    onClick={(e) => { e.stopPropagation(); setExportOpen((o) => !o); }}>
-                    <Icon name="download" size={16} /> 내보내기
-                  </button>
-                  {exportOpen && (
-                    <div className="sim-export__menu" role="menu">
-                      <button type="button" role="menuitem" className="sim-export__item"
-                        onClick={() => { setExportOpen(false); exportSectionsPdf(exportData()); }}>
-                        PDF 파일 (.pdf)
-                      </button>
-                      <button type="button" role="menuitem" className="sim-export__item"
-                        onClick={() => { setExportOpen(false); exportInvestXlsx(LOTS, { period: period.replace('최근', '최근 ') }); }}>
-                        Excel 파일 (.xlsx)
-                      </button>
-                    </div>
-                  )}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  {/* 분석 계수 조정 — 종합점수 가중치 + 분석 계수 (다른 분석 화면과 동일 패턴) */}
+                  <div ref={advRef} style={{ position: 'relative', flexShrink: 0 }}>
+                    <button
+                      className="btn"
+                      type="button"
+                      style={{
+                        height: 36, padding: '0 var(--space-12)', fontSize: 'var(--label2-size)', display: 'inline-flex', alignItems: 'center', gap: 6,
+                        ...(advOpen && { borderColor: 'var(--primary-normal)', color: 'var(--primary-normal)', background: 'rgba(59,112,247,0.08)' }),
+                      }}
+                      aria-expanded={advOpen}
+                      onClick={(e) => { e.stopPropagation(); openAdv(); }}
+                    >
+                      분석 계수 조정
+                      <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"
+                        style={{ transform: advOpen ? 'rotate(180deg)' : 'none', transition: 'transform .15s' }}>
+                        <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    {advOpen && (
+                      <div
+                        role="dialog" aria-label="분석 계수 조정"
+                        style={{
+                          position: 'absolute', right: 0, top: 'calc(100% + 8px)', zIndex: 1100,
+                          width: 340, maxHeight: 480, overflowY: 'auto', padding: 16, background: 'var(--card-bg)',
+                          border: '1px solid var(--line-normal)', borderRadius: 12,
+                          boxShadow: '0 12px 32px rgba(23,23,25,0.18)',
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', marginBottom: 12 }}>분석 계수 조정</div>
+
+                        {/* 종합점수 가중치 (합계 100%) */}
+                        <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-neutral)', marginBottom: 8 }}>종합점수 가중치 (합계 100%)</div>
+                        {INVEST_WEIGHTS.map(({ key, label }) => {
+                          const shown = investPctW(draftW)[key];
+                          return (
+                            <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, marginBottom: 8 }}>
+                              <span style={{ width: 64 }}>{label}</span>
+                              <input type="range" min="0" max="100" step="5" value={draftW[key]}
+                                onChange={(e) => setDraftW((w) => ({ ...w, [key]: Number(e.target.value) }))}
+                                style={{ flex: 1 }} aria-label={`${label} 가중치`} />
+                              <b style={{ width: 36, textAlign: 'right' }}>{shown}%</b>
+                            </div>
+                          );
+                        })}
+
+                        {/* 분석 계수 */}
+                        <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-neutral)', margin: '4px 0 8px', paddingTop: 12, borderTop: '1px solid var(--line-alternative)' }}>분석 계수</div>
+                        {INVEST_COEFFS.map((c) => (
+                          <div key={c.key} style={{ marginBottom: 12 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 }}>
+                              <span style={{ flex: 1 }}>{c.label}</span>
+                              <input type="range" min={c.min} max={c.max} step={c.step} value={draftC[c.key]}
+                                onChange={(e) => setDraftC((o) => ({ ...o, [c.key]: Number(e.target.value) }))}
+                                style={{ width: 96 }} aria-label={`${c.label} 계수`} />
+                              <b style={{ width: 48, textAlign: 'right' }}>{fmtCoeff(draftC[c.key])}{c.unit && ` ${c.unit}`}</b>
+                            </div>
+                            {c.hint && <div style={{ fontSize: 10.5, color: 'var(--text-alternative)', marginTop: 2 }}>{c.hint}</div>}
+                            <div style={{ fontSize: 10.5, color: 'var(--text-assistive)', marginTop: 2 }}>범위 {fmtCoeff(c.min)} ~ {fmtCoeff(c.max)} · 기본값 {fmtCoeff(c.def)}</div>
+                          </div>
+                        ))}
+
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4, paddingTop: 12, borderTop: '1px solid var(--line-alternative)' }}>
+                          <button type="button"
+                            onClick={() => { setDraftW(INVEST_DEFAULT_W); setDraftC(investDefaultCoeffs()); }}
+                            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'var(--text-alternative)', textDecoration: 'underline' }}>
+                            기본값
+                          </button>
+                          <button type="button"
+                            style={{ height: 28, padding: '0 14px', fontSize: 12, fontWeight: 600, border: 'none', borderRadius: 6, cursor: 'pointer', background: 'var(--primary-normal)', color: '#fff' }}
+                            onClick={() => { setAppliedW(draftW); setAppliedC(draftC); setAdvOpen(false); }}>
+                            적용
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="sim-export" ref={exportRef}>
+                    <button className="btn" type="button" style={{ height: 36, padding: '0 var(--space-12)', fontSize: 'var(--label2-size)' }}
+                      aria-haspopup="menu" aria-expanded={exportOpen}
+                      onClick={(e) => { e.stopPropagation(); setExportOpen((o) => !o); }}>
+                      <Icon name="download" size={16} /> 내보내기
+                    </button>
+                    {exportOpen && (
+                      <div className="sim-export__menu" role="menu">
+                        <button type="button" role="menuitem" className="sim-export__item"
+                          onClick={() => { setExportOpen(false); exportSectionsPdf(exportData()); }}>
+                          PDF 파일 (.pdf)
+                        </button>
+                        <button type="button" role="menuitem" className="sim-export__item"
+                          onClick={() => { setExportOpen(false); exportInvestXlsx(LOTS, { period: period.replace('최근', '최근 '), weights: apW, coeffs: appliedC }); }}>
+                          Excel 파일 (.xlsx)
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
+              {isAdjusted && (
+                <div style={{
+                  margin: '0 0 12px', padding: '8px 12px', borderRadius: 8, fontSize: 12,
+                  background: 'rgba(59,112,247,0.08)', color: 'var(--primary-normal)',
+                  display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8,
+                }}>
+                  <span>
+                    {!isDefaultW(appliedW) && <>적용 가중치 : {weightLine}</>}
+                    {!isDefaultW(appliedW) && changedCoeffs.length > 0 && <br />}
+                    {changedCoeffs.length > 0 && <>적용 계수 : {changedCoeffs.map((c) => `${c.label} ${fmtCoeff(c.def)}→${fmtCoeff(appliedC[c.key])}`).join(' · ')}</>}
+                  </span>
+                  <button type="button" onClick={resetAll}
+                    style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'inherit', textDecoration: 'underline', flexShrink: 0 }}>
+                    초기화
+                  </button>
+                </div>
+              )}
               <div className="prio-list" ref={listRef}>
                 {LOTS.map((lot, i) => {
                   const t = TIER[lot.tier];
