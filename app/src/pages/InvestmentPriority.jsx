@@ -124,10 +124,32 @@ export default function InvestmentPriority() {
     return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
   }, [exportOpen]);
 
+  /* 분석 계수 조정 — 설정>투자우선순위(종합점수 가중치 + 분석 계수)를 사용자 화면에서 조정 */
+  const [advOpen, setAdvOpen] = useState(false);
+  const advRef = useRef(null);
+  const [draftW, setDraftW] = useState(INVEST_DEFAULT_W);
+  const [appliedW, setAppliedW] = useState(INVEST_DEFAULT_W);
+  const [draftC, setDraftC] = useState(investDefaultCoeffs);
+  const [appliedC, setAppliedC] = useState(investDefaultCoeffs);
+  useEffect(() => {
+    if (!advOpen) return;
+    const onDoc = (e) => { if (advRef.current && !advRef.current.contains(e.target)) setAdvOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setAdvOpen(false); };
+    document.addEventListener('click', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+  }, [advOpen]);
+  const openAdv = () => { setDraftW(appliedW); setDraftC(appliedC); setAdvOpen((o) => !o); };
+  const resetAll = () => { setAppliedW(INVEST_DEFAULT_W); setDraftW(INVEST_DEFAULT_W); setAppliedC(investDefaultCoeffs()); setDraftC(investDefaultCoeffs()); };
+  const apW = investPctW(appliedW);
+  const changedCoeffs = INVEST_COEFFS.filter((c) => appliedC[c.key] !== c.def);
+  const isAdjusted = !isDefaultW(appliedW) || changedCoeffs.length > 0;
+  const weightLine = `안전위험도 ${apW.safety}% / 민원빈도 ${apW.civil}% / 이용패턴 ${apW.usage}% / 단속건수 ${apW.enforce}%`;
+
   const exportData = () => ({
     fileBase: '투자보강_우선순위',
     title: '투자·보강 우선순위',
-    subtitle: `분석 기간 : ${period.replace('최근', '최근 ')} · 종합점수 기준 : 안전위험도 25% / 민원빈도 25% / 이용패턴 25% / 사고이력 25%`,
+    subtitle: `분석 기간 : ${period.replace('최근', '최근 ')} · 종합점수 기준 : ${weightLine}${isDefaultW(appliedW) ? '' : ' (조정됨)'}`,
     sections: [
       {
         type: 'chart',
