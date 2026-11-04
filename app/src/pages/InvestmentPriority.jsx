@@ -217,7 +217,7 @@ export default function InvestmentPriority() {
         type: 'notes',
         title: '산정 기준',
         items: [
-          `종합점수 = 안전위험도·민원 건수·이용률·단속건수 지표의 가중합 (적용 가중치 : ${weightLine})`,
+          `종합점수 = 안전위험도·민원 건수·이용률·사고이력 지표의 가중합 (적용 가중치 : ${weightLine})`,
           `우선순위 등급 : 상위 ${appliedC.highScore}점 이상(높음) · 중간 ${appliedC.midScore}점 이상(중간) · 미만(낮음) / 배정 범위 ${appliedC.assignRange}m${changedCoeffs.length ? ' · 계수 조정 적용' : ''}`,
         ],
       },
