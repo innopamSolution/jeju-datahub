@@ -224,7 +224,7 @@ export default function HotspotAnalysis() {
           {/* 왼쪽 설정 패널 */}
           <div className="card sim-panel sim-panel--left" style={{ zIndex: advOpen ? 1200 : undefined }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-              <h2 className="sim-panel__title" style={{ margin: 0 }}>불법 주차 집중 구역 분석 설정</h2>
+              <h2 className="sim-panel__title" style={{ margin: 0, fontSize: 16, whiteSpace: 'nowrap' }}>불법 주차 집중 구역 분석 설정</h2>
               <div ref={advRef} style={{ position: 'relative', flexShrink: 0 }}>
                 <button
                   className="btn"
