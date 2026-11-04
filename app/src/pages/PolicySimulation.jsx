@@ -243,6 +243,20 @@ export default function PolicySimulation() {
   /* 기본값에서 변경된 계수 목록 (적용 기준) */
   const ALL_COEFFS = [...COMMON_COEFFS, ...Object.values(TYPE_COEFFS).flat()];
   const changedCoeffs = ALL_COEFFS.filter((c) => appliedC[c.key] !== c.def);
+  /* 계수 1개 행 (팝오버 공통/유형별 섹션에서 공유) */
+  const renderCoeff = (c) => (
+    <div key={c.key} style={{ marginBottom: 12 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 }}>
+        <span style={{ flex: 1 }}>{c.label}</span>
+        <input type="range" min={c.min} max={c.max} step={c.step} value={draftC[c.key]}
+          onChange={(e) => setDraftC((o) => ({ ...o, [c.key]: Number(e.target.value) }))}
+          style={{ width: 110 }} aria-label={`${c.label} 계수`} />
+        <b style={{ width: 44, textAlign: 'right' }}>{fmtCoeff(draftC[c.key])}{c.unit && ` ${c.unit}`}</b>
+      </div>
+      {c.hint && <div style={{ fontSize: 10.5, color: 'var(--text-alternative)', marginTop: 2 }}>{c.hint}</div>}
+      <div style={{ fontSize: 10.5, color: 'var(--text-assistive)', marginTop: 2 }}>범위 {fmtCoeff(c.min)} ~ {fmtCoeff(c.max)} · 기본값 {fmtCoeff(c.def)}</div>
+    </div>
+  );
 
   /* 시나리오 비교 필터 — 시나리오명 첫 구간(정책 유형)별 분류 */
   const [scFilter, setScFilter] = useState('all');
