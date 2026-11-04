@@ -1151,6 +1151,19 @@ input[type='number']:focus-visible {
 
 /* 결과 패널 내보내기 드롭다운 (PDF/DOCX 선택) */
 .sim-export { position: relative; }
+/* 분석 계수 조정 팝오버의 가운데 스크롤 영역 — 스크롤 가능할 때만 상·하단 그림자 표시(CSS 스크롤 쉐도우) */
+.coeff-scroll {
+  overflow-y: auto;
+  flex: 1;
+  padding: 0 16px;
+  background:
+    linear-gradient(var(--card-bg) 30%, rgba(255, 255, 255, 0)) 0 0 / 100% 22px no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0), var(--card-bg) 70%) 0 100% / 100% 22px no-repeat,
+    radial-gradient(farthest-side at 50% 0, rgba(23, 23, 25, 0.16), rgba(23, 23, 25, 0)) 0 0 / 100% 9px no-repeat,
+    radial-gradient(farthest-side at 50% 100%, rgba(23, 23, 25, 0.16), rgba(23, 23, 25, 0)) 0 100% / 100% 9px no-repeat;
+  background-attachment: local, local, scroll, scroll;
+}
+
 .sim-export__menu {
   position: absolute;
   top: calc(100% + var(--space-4));
