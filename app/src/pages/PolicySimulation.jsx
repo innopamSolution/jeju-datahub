@@ -388,7 +388,12 @@ export default function PolicySimulation() {
                   >
                     <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', marginBottom: 12 }}>분석 계수 조정</div>
 
-                    {/* 정책 유형 탭 */}
+                    {/* 공통 계수 — 모든 정책 유형에 적용 */}
+                    <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-neutral)', marginBottom: 8 }}>공통</div>
+                    {COMMON_COEFFS.map(renderCoeff)}
+
+                    {/* 정책 유형별 계수 */}
+                    <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-neutral)', margin: '4px 0 8px', paddingTop: 12, borderTop: '1px solid var(--line-alternative)' }}>정책 유형별</div>
                     <div className="segment" style={{ marginBottom: 12 }}>
                       {Object.entries(POLICY_LABEL).map(([k, l]) => (
                         <button key={k} type="button"
@@ -397,23 +402,10 @@ export default function PolicySimulation() {
                           onClick={() => setCoeffTab(k)}>{l}</button>
                       ))}
                     </div>
-
-                    {coeffsFor(coeffTab).map((c) => (
-                      <div key={c.key} style={{ marginBottom: 12 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 }}>
-                          <span style={{ flex: 1 }}>{c.label}</span>
-                          <input type="range" min={c.min} max={c.max} step={c.step} value={draftC[c.key]}
-                            onChange={(e) => setDraftC((o) => ({ ...o, [c.key]: Number(e.target.value) }))}
-                            style={{ width: 110 }} aria-label={`${c.label} 계수`} />
-                          <b style={{ width: 44, textAlign: 'right' }}>{fmtCoeff(draftC[c.key])}{c.unit && ` ${c.unit}`}</b>
-                        </div>
-                        {c.hint && <div style={{ fontSize: 10.5, color: 'var(--text-alternative)', marginTop: 2 }}>{c.hint}</div>}
-                        <div style={{ fontSize: 10.5, color: 'var(--text-assistive)', marginTop: 2 }}>범위 {fmtCoeff(c.min)} ~ {fmtCoeff(c.max)} · 기본값 {fmtCoeff(c.def)}</div>
-                      </div>
-                    ))}
+                    {(TYPE_COEFFS[coeffTab] ?? []).map(renderCoeff)}
                     {(TYPE_COEFFS[coeffTab] ?? []).length === 0 && (
                       <div style={{ fontSize: 11, color: 'var(--text-alternative)', margin: '-4px 0 8px', lineHeight: 1.6 }}>
-                        ※ {POLICY_LABEL[coeffTab]} 유형의 산식 계수(조성비 등)는 명세 고정값이라 조정 대상이 아닙니다. 위 공통 계수만 적용됩니다.
+                        ※ {POLICY_LABEL[coeffTab]} 유형의 산식 계수(조성비 등)는 명세 고정값이라 조정 대상이 아닙니다. 공통 계수만 적용됩니다.
                       </div>
                     )}
 
