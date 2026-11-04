@@ -44,8 +44,8 @@ const LOTS = [
    종합점수 가중치(4지표 합계 100% · 사고이력 미사용) + 분석 계수. */
 const INVEST_WEIGHTS = [
   { key: 'safety',  label: '안전위험도' },
-  { key: 'civil',   label: '민원빈도' },
-  { key: 'usage',   label: '이용패턴' },
+  { key: 'civil',   label: '민원 건수' },
+  { key: 'usage',   label: '이용률' },
   { key: 'enforce', label: '단속건수' },
 ];
 const INVEST_DEFAULT_W = { safety: 25, civil: 25, usage: 25, enforce: 25 };
