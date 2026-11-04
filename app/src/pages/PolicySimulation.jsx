@@ -332,7 +332,6 @@ export default function PolicySimulation() {
           <div className="card" style={{ padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 20, position: 'relative', zIndex: advOpen ? 5 : undefined }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
               <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-strong)' }}>정책 변수 설정</h2>
-              <span style={{ fontSize: 'var(--caption1-size)', color: 'var(--text-alternative)' }}>정책 변수 입력 → 효과 예측 → 시나리오 비교</span>
               {/* 종합 평가 가중치 조정 — 집중구역 분석과 동일 패턴(버튼 오른쪽 팝오버) */}
               <div ref={advRef} style={{ position: 'relative', flexShrink: 0, marginLeft: 'auto' }}>
                 <button
