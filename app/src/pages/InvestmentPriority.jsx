@@ -436,7 +436,8 @@ export default function InvestmentPriority() {
                             적용
                           </button>
                         </div>
-                      </div>
+                      </div>,
+                      document.body
                     )}
                   </div>
                   <div className="sim-export" ref={exportRef}>
