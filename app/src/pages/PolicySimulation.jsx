@@ -33,32 +33,38 @@ const COST_BADGE = {
   low: { bg: '#dcfce7', color: '#15803d' },
 };
 
-/* 정책 시뮬레이션 종합 평가 가중치 — 민원 감소·혼잡 개선·비용 효율
-   (설정 > 분석 지표 가중치 설정의 '정책 시뮬레이션'과 동일 기준을 사용자 화면에서 조정) */
-const COST_SCORE = { high: 30, mid: 60, low: 100 }; // 비용이 낮을수록 효율 점수 높음
-const WEIGHT_META = [
-  { key: 'reduction', label: '민원 감소' },
-  { key: 'congestion', label: '혼잡 개선' },
-  { key: 'cost', label: '비용 효율' },
+/* 설정 > 분석 지표 가중치 설정 > 정책시뮬레이션의 '분석 계수'를 사용자 화면에서 조정.
+   계수는 정책 유형별로 다르며, 명세 고정값(허용 범위가 1개 값)은 제외하고 조정 가능한 것만 노출한다. */
+const COMMON_COEFFS = [
+  { key: 'occBase', label: '기준 점유율', min: 0.3, max: 1, step: 0.05, def: 0.85, unit: '', hint: '정상이용 U0 = 면수 × 이 값 (점유율 실측 결측으로 상수)' },
+  { key: 'absorb',  label: '흡수율',      min: 0.3, max: 1, step: 0.05, def: 0.5,  unit: '', hint: '확충 면수 중 불법주차를 흡수하는 비율' },
 ];
-const DEFAULT_WEIGHTS = { reduction: 50, congestion: 30, cost: 20 };
-const isDefaultW = (w) => WEIGHT_META.every(({ key }) => w[key] === DEFAULT_WEIGHTS[key]);
-
-/* 입력 가중치를 합계 100%로 정규화 (비용이 반올림 잔차 흡수) */
-function pctW(w) {
-  const s = w.reduction + w.congestion + w.cost || 1;
-  const reduction = Math.round((w.reduction / s) * 100);
-  const congestion = Math.round((w.congestion / s) * 100);
-  return { reduction, congestion, cost: 100 - reduction - congestion };
+const TYPE_COEFFS = {
+  parking: [],
+  road: [
+    { key: 'resSlot',    label: '주거지역형 100m당 확보구획', min: 8,   max: 20,  step: 0.1,  def: 14.4, unit: '면' },
+    { key: 'comSlot',    label: '상업지역형 100m당 확보구획', min: 8,   max: 16,  step: 0.1,  def: 12,   unit: '면' },
+    { key: 'slotAbsorb', label: '구획 흡수율 α_B',           min: 0.5, max: 1,   step: 0.05, def: 0.8,  unit: '' },
+    { key: 'balloon',    label: '풍선효과율 s',              min: 0.1, max: 0.3, step: 0.05, def: 0.2,  unit: '' },
+  ],
+  fee: [
+    { key: 'elasticity', label: '가격탄력성 ε',              min: -0.6, max: -0.1, step: 0.05, def: -0.3, unit: '' },
+    { key: 'convDrop',   label: '유료전환 수요감소율 λ',     min: 0.15, max: 0.5,  step: 0.05, def: 0.3,  unit: '' },
+    { key: 'transfer',   label: '전이율 τ',                  min: 0.1,  max: 0.3,  step: 0.05, def: 0.2,  unit: '' },
+    { key: 'localShare', label: '전이 중 같은 지역 비율 τ_local', min: 0.3, max: 0.7, step: 0.05, def: 0.5, unit: '' },
+  ],
+};
+const POLICY_LABEL = { parking: '주차장 확충', road: '이면도로 정비', fee: '요금제 적용' };
+/* 현재 정책 유형에서 조정 가능한 계수 목록 (공통 + 유형별) */
+const coeffsFor = (type) => [...COMMON_COEFFS, ...(TYPE_COEFFS[type] ?? [])];
+/* 전체 계수 기본값 맵 */
+function defaultCoeffs() {
+  const o = {};
+  [...COMMON_COEFFS, ...Object.values(TYPE_COEFFS).flat()].forEach((c) => { o[c.key] = c.def; });
+  return o;
 }
-/* 시나리오 종합점수 — 각 지표를 0~100으로 환산해 가중합 (추천 시나리오 선정 기준) */
-function scenarioScore(sc, w) {
-  const p = pctW(w);
-  const redN = Math.min(100, (Math.abs(parseInt(sc.reduction, 10)) / 30) * 100);
-  const impN = Math.min(100, (Math.abs(parseInt(sc.improvement, 10)) / 30) * 100);
-  const costN = COST_SCORE[sc.costLevel] ?? 50;
-  return (redN * p.reduction + impN * p.congestion + costN * p.cost) / 100;
-}
+/* 소수 표기 — 정수는 그대로, 아니면 유효 자리만 */
+const fmtCoeff = (v) => (Number.isInteger(v) ? String(v) : String(Math.round(v * 100) / 100));
 
 const TH = ({ center, children }) => (
   <th style={{ padding: '12px 16px', textAlign: center ? 'center' : 'left', fontSize: 13, fontWeight: 600, color: 'var(--text-neutral)', borderBottom: '1px solid var(--line-alternative)', whiteSpace: 'nowrap', background: 'var(--cool-neutral-99)', position: 'sticky', top: 0, zIndex: 1 }}>
