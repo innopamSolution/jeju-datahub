@@ -182,7 +182,7 @@ export default function InvestmentPriority() {
     });
   };
   const resetAll = () => { setAppliedW(INVEST_DEFAULT_W); setDraftW(INVEST_DEFAULT_W); setAppliedC(investDefaultCoeffs()); setDraftC(investDefaultCoeffs()); };
-  const apW = investPctW(appliedW);
+  const apW = appliedW;
   const changedCoeffs = INVEST_COEFFS.filter((c) => appliedC[c.key] !== c.def);
   const isAdjusted = !isDefaultW(appliedW) || changedCoeffs.length > 0;
   const weightLine = `안전위험도 ${apW.safety}% / 민원빈도 ${apW.civil}% / 이용패턴 ${apW.usage}% / 단속건수 ${apW.enforce}%`;
