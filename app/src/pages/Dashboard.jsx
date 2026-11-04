@@ -439,7 +439,6 @@ export default function Dashboard() {
                     <span className="region__num">{r.num}</span>
                     <span className="region__name">{r.name}</span>
                   </span>
-                  <span className={`region__trend t-${r.trend}`}>{r.trendLabel}</span>
                 </div>
                 <div className="region__value"><b>{r.value}</b><span>건</span></div>
                 <div className="region__delta">
