@@ -185,7 +185,7 @@ export default function InvestmentPriority() {
   const apW = appliedW;
   const changedCoeffs = INVEST_COEFFS.filter((c) => appliedC[c.key] !== c.def);
   const isAdjusted = !isDefaultW(appliedW) || changedCoeffs.length > 0;
-  const weightLine = `안전위험도 ${apW.safety}% / 민원빈도 ${apW.civil}% / 이용패턴 ${apW.usage}% / 단속건수 ${apW.enforce}%`;
+  const weightLine = INVEST_WEIGHTS.map(({ key, label }) => `${label} ${apW[key]}%`).join(' / ');
 
   const exportData = () => ({
     fileBase: '투자보강_우선순위',
