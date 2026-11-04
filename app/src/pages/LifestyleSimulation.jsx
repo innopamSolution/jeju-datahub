@@ -508,27 +508,33 @@ export default function LifestyleSimulation() {
                     role="dialog" aria-label="분석 계수 조정"
                     style={{
                       position: 'absolute', left: 'calc(100% + 10px)', top: -8, zIndex: 1100,
-                      width: 340, maxHeight: 460, overflowY: 'auto', padding: 16, background: 'var(--card-bg)',
+                      width: 340, maxHeight: 460, display: 'flex', flexDirection: 'column', overflow: 'hidden',
+                      background: 'var(--card-bg)',
                       border: '1px solid var(--line-normal)', borderRadius: 12,
                       boxShadow: '0 12px 32px rgba(23,23,25,0.18)',
                     }}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', marginBottom: 12 }}>분석 계수 조정</div>
-
-                    {/* 분석 유형 탭 (민원 건수는 계수 없음) */}
-                    <div className="segment" style={{ marginBottom: 12 }}>
-                      {Object.entries(LIFE_TAB_LABEL).map(([k, l]) => (
-                        <button key={k} type="button"
-                          className={`segment__btn ${coeffTab === k ? 'segment__btn--active' : ''}`}
-                          style={{ fontSize: 11, padding: '0 8px' }}
-                          onClick={() => setCoeffTab(k)}>{l}</button>
-                      ))}
+                    {/* 헤더 고정 (제목 + 분석 유형 탭) */}
+                    <div style={{ padding: '16px 16px 12px', flexShrink: 0 }}>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', marginBottom: 12 }}>분석 계수 조정</div>
+                      <div className="segment">
+                        {Object.entries(LIFE_TAB_LABEL).map(([k, l]) => (
+                          <button key={k} type="button"
+                            className={`segment__btn ${coeffTab === k ? 'segment__btn--active' : ''}`}
+                            style={{ fontSize: 11, padding: '0 8px' }}
+                            onClick={() => setCoeffTab(k)}>{l}</button>
+                        ))}
+                      </div>
                     </div>
 
-                    {LIFE_COEFFS[coeffTab].map(renderCoeff)}
+                    {/* 가운데 스크롤 */}
+                    <div style={{ overflowY: 'auto', padding: '0 16px', flex: 1 }}>
+                      {LIFE_COEFFS[coeffTab].map(renderCoeff)}
+                    </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4, paddingTop: 12, borderTop: '1px solid var(--line-alternative)' }}>
+                    {/* 하단 고정 푸터 */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderTop: '1px solid var(--line-alternative)', flexShrink: 0, background: 'var(--card-bg)' }}>
                       <button type="button"
                         onClick={() => setDraftC(lifeDefaultCoeffs())}
                         style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'var(--text-alternative)', textDecoration: 'underline' }}>
