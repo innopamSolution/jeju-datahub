@@ -43,12 +43,12 @@ const LOTS = [
 /* 설정 > 분석 지표 가중치 설정 > 투자우선순위.
    종합점수 가중치(4지표 합계 100% · 사고이력 미사용) + 분석 계수. */
 const INVEST_WEIGHTS = [
-  { key: 'safety',   label: '안전위험도' },
-  { key: 'civil',    label: '민원 건수' },
-  { key: 'usage',    label: '이용률' },
-  { key: 'accident', label: '사고이력' },
+  { key: 'safety',  label: '안전위험도' },
+  { key: 'civil',   label: '민원 건수' },
+  { key: 'usage',   label: '이용률' },
+  { key: 'enforce', label: '단속건수' },
 ];
-const INVEST_DEFAULT_W = { safety: 25, civil: 25, usage: 25, accident: 25 };
+const INVEST_DEFAULT_W = { safety: 25, civil: 25, usage: 25, enforce: 25 };
 const INVEST_COEFFS = [
   { key: 'assignRange', label: '배정 범위',          min: 50, max: 1000, step: 10, def: 300, unit: 'm',   hint: '민원·단속 1건을 최근접 대상 주차장 1곳에 배정하는 범위' },
   { key: 'highScore',   label: '상위 등급 기준점수',  min: 0,  max: 100,  step: 1,  def: 80,  unit: '점',  hint: '종합점수 이 값 이상이면 우선순위 높음(H)' },
