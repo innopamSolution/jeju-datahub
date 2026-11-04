@@ -316,7 +316,10 @@ export default function PolicySimulation() {
       <header className="topbar">
         <div>
           <PageCrumb group="분석·시뮬레이션" page="정책 효과 시뮬레이션" />
-          <h1 className="page-title">정책효과시뮬레이션</h1>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
+            <h1 className="page-title" style={{ margin: 0 }}>정책효과시뮬레이션</h1>
+            <span style={{ fontSize: 'var(--caption1-size)', color: 'var(--text-alternative)' }}>정책 변수 입력 → 효과 예측 → 시나리오 비교</span>
+          </div>
           <p className="page-sub" style={{ color: 'var(--orange-39)' }}>※ 참고: 가정값에 기반한 시뮬레이션 결과이며 실제 정책 효과를 보장하지 않습니다.</p>
         </div>
         <div className="topbar__actions">
