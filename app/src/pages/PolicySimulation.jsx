@@ -307,8 +307,10 @@ export default function PolicySimulation() {
           title: '산정 기준',
           items: [
             '효과 예측은 선택한 정책 변수(대상 지역·적용 조건·규모)를 최근 민원·주차 데이터 기반 모델에 적용한 추정치입니다.',
-            `종합 평가 가중치 : 민원 감소 ${apW.reduction}% · 혼잡 개선 ${apW.congestion}% · 비용 효율 ${apW.cost}%${isDefaultW(appliedW) ? '' : ' (조정됨)'}`,
-            '추천 배지는 각 지표를 0~100으로 환산해 위 가중치로 합산한 종합점수가 가장 높은 시나리오에 부여됩니다.',
+            `적용 분석 계수 : ${changedCoeffs.length === 0
+              ? '기본값(설정 > 분석 지표 가중치 설정 > 정책시뮬레이션 기준)'
+              : changedCoeffs.map((c) => `${c.label} ${fmtCoeff(c.def)}→${fmtCoeff(appliedC[c.key])}`).join(' · ')}`,
+            '분석 계수는 정책 유형별로 다르며, 명세 고정값은 조정되지 않습니다.',
           ],
         },
       ],
