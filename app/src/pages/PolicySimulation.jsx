@@ -294,8 +294,8 @@ export default function PolicySimulation() {
           title: '시나리오별 혼잡도 개선 비교',
           html: hBarChartHtml(selected.map((sc) => ({
             label: shortName(sc.name), value: Math.abs(parseInt(sc.improvement, 10)),
-            valueLabel: `${sc.improvement}${sc.recommend ? ' (추천)' : ''}`,
-            color: sc.recommend ? '#f97316' : '#0066ff',
+            valueLabel: `${sc.improvement}${isRecommend(sc) ? ' (추천)' : ''}`,
+            color: isRecommend(sc) ? '#f97316' : '#0066ff',
           }))),
         },
         {
