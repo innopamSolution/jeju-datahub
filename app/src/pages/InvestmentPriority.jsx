@@ -395,7 +395,7 @@ export default function InvestmentPriority() {
                         <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', padding: '16px 16px 10px', flexShrink: 0 }}>분석 계수 조정</div>
 
                         {/* 가운데 스크롤 영역 */}
-                        <div style={{ overflowY: 'auto', padding: '0 16px', flex: 1 }}>
+                        <div className="coeff-scroll">
                         {/* 종합점수 가중치 (합계 100%) */}
                         <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-neutral)', marginBottom: 8 }}>종합점수 가중치 (합계 100%)</div>
                         {INVEST_WEIGHTS.map(({ key, label }) => {
