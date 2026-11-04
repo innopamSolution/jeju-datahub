@@ -860,7 +860,7 @@ export default function Complaints() {
                         </span>
                         <span className="rl__val">
                           <span className="rl__cnt">{r.value}</span>
-                          <span className={`rl__delta ${r.deltaClass}`} style={{ cursor: 'help' }}
+                          <span className={`rl__delta ${r.deltaClass}`}
                             title={`전기 대비 ${(r.delta || '—').replace('—', '변동 없음')}`}>{arrowOnly(r.delta)}</span>
                         </span>
                       </div>
