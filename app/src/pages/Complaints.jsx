@@ -568,7 +568,7 @@ export default function Complaints() {
         type: 'table',
         title: '읍·면·동 단속 순위',
         columns: ['순위', '지역', '단속 건수', '전기 대비', '세부 내역'],
-        rows: RANK_MODES.enforce.rows.map((r) => [r.rank, r.name, r.value, r.delta, r.sub]),
+        rows: RANK_MODES.enforce.rows.map((r) => [r.rank, r.name, r.value, arrowOnly(r.delta), r.sub]),
       },
       {
         type: 'table',
