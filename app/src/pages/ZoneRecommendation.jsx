@@ -432,7 +432,7 @@ export default function ZoneRecommendation() {
                     </div>
 
                     {/* 가운데 스크롤 */}
-                    <div style={{ overflowY: 'auto', padding: '0 16px', flex: 1 }}>
+                    <div className="coeff-scroll">
                       {ZONE_COEFFS[coeffTab].map(renderCoeff)}
                     </div>
 
