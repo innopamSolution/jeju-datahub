@@ -289,8 +289,8 @@ export default function PolicySimulation() {
           title: '시나리오별 민원 감소율 비교',
           html: hBarChartHtml(selected.map((sc) => ({
             label: shortName(sc.name), value: Math.abs(parseInt(sc.reduction, 10)),
-            valueLabel: `${sc.reduction}${isRecommend(sc) ? ' (추천)' : ''}`,
-            color: isRecommend(sc) ? '#f97316' : '#0066ff',
+            valueLabel: `${sc.reduction}${sc.recommend ? ' (추천)' : ''}`,
+            color: sc.recommend ? '#f97316' : '#0066ff',
           }))),
         },
         {
