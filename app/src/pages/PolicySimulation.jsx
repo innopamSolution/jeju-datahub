@@ -55,8 +55,6 @@ const TYPE_COEFFS = {
   ],
 };
 const POLICY_LABEL = { parking: '주차장 확충', road: '이면도로 정비', fee: '요금제 적용' };
-/* 현재 정책 유형에서 조정 가능한 계수 목록 (공통 + 유형별) */
-const coeffsFor = (type) => [...COMMON_COEFFS, ...(TYPE_COEFFS[type] ?? [])];
 /* 전체 계수 기본값 맵 */
 function defaultCoeffs() {
   const o = {};
