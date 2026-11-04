@@ -382,8 +382,85 @@ export default function ZoneRecommendation() {
             <MapTypeToggle getMap={() => mapInst.current} />
 
           {/* 왼쪽 설정 패널 */}
-          <div className="card sim-panel sim-panel--left">
-            <h2 className="sim-panel__title">구역 추천 설정</h2>
+          <div className="card sim-panel sim-panel--left" style={{ zIndex: advOpen ? 1200 : undefined }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+              <h2 className="sim-panel__title" style={{ margin: 0 }}>구역 추천 설정</h2>
+              {/* 분석 계수 조정 — 집중구역·정책·생활권과 동일 패턴, 분석 내용별 탭 */}
+              <div ref={advRef} style={{ position: 'relative', flexShrink: 0 }}>
+                <button
+                  className="btn"
+                  type="button"
+                  style={{
+                    height: 30, padding: '0 10px', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6,
+                    ...(advOpen && {
+                      borderColor: 'var(--primary-normal)', color: 'var(--primary-normal)',
+                      background: 'rgba(59,112,247,0.08)',
+                    }),
+                  }}
+                  aria-expanded={advOpen}
+                  onClick={(e) => { e.stopPropagation(); openAdv(); }}
+                >
+                  분석 계수 조정
+                  <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"
+                    style={{ transform: advOpen ? 'rotate(180deg)' : 'none', transition: 'transform .15s' }}>
+                    <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                {advOpen && (
+                  <div
+                    role="dialog" aria-label="분석 계수 조정"
+                    style={{
+                      position: 'absolute', left: 'calc(100% + 10px)', top: -8, zIndex: 1100,
+                      width: 340, maxHeight: 460, overflowY: 'auto', padding: 16, background: 'var(--card-bg)',
+                      border: '1px solid var(--line-normal)', borderRadius: 12,
+                      boxShadow: '0 12px 32px rgba(23,23,25,0.18)',
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', marginBottom: 12 }}>분석 계수 조정</div>
+
+                    <div className="segment" style={{ marginBottom: 12 }}>
+                      {ZONE_TAB.map((t) => (
+                        <button key={t.key} type="button"
+                          className={`segment__btn ${coeffTab === t.key ? 'segment__btn--active' : ''}`}
+                          style={{ fontSize: 11, padding: '0 8px' }}
+                          onClick={() => setCoeffTab(t.key)}>{t.label}</button>
+                      ))}
+                    </div>
+
+                    {ZONE_COEFFS[coeffTab].map(renderCoeff)}
+
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4, paddingTop: 12, borderTop: '1px solid var(--line-alternative)' }}>
+                      <button type="button"
+                        onClick={() => setDraftC(zoneDefaultCoeffs())}
+                        style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'var(--text-alternative)', textDecoration: 'underline' }}>
+                        기본값
+                      </button>
+                      <button type="button"
+                        style={{ height: 28, padding: '0 14px', fontSize: 12, fontWeight: 600, border: 'none', borderRadius: 6, cursor: 'pointer', background: 'var(--primary-normal)', color: '#fff' }}
+                        onClick={() => { setAppliedC(draftC); setAdvOpen(false); }}>
+                        적용
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {changedCoeffs.length > 0 && (
+              <div style={{
+                padding: '8px 12px', borderRadius: 8, fontSize: 12,
+                background: 'rgba(59,112,247,0.08)', color: 'var(--primary-normal)',
+                display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8,
+              }}>
+                <span>적용 계수 : {changedCoeffs.map((c) => `${c.label} ${fmtCoeff(c.def)}→${fmtCoeff(appliedC[c.key])}`).join(' · ')}</span>
+                <button type="button"
+                  onClick={resetCoeffs}
+                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'inherit', textDecoration: 'underline', flexShrink: 0 }}>
+                  초기화
+                </button>
+              </div>
+            )}
 
             <div className="field">
               <label className="field__label">분석 내용</label>
