@@ -209,15 +209,15 @@ export default function InvestmentPriority() {
       },
       {
         type: 'table',
-        title: '세부 지표 (안전위험도 · 민원빈도 · 이용패턴 · 사고이력)',
-        columns: ['순위', '주차장', '안전위험도', '민원빈도', '이용패턴', '사고이력'],
+        title: '세부 지표 (안전위험도 · 민원 건수 · 이용률 · 사고이력)',
+        columns: ['순위', '주차장', '안전위험도', '민원 건수', '이용률', '사고이력'],
         rows: LOTS.map((lot) => [lot.rank, lot.name, lot.m.safety, lot.m.civil, lot.m.usage, lot.m.accident]),
       },
       {
         type: 'notes',
         title: '산정 기준',
         items: [
-          `종합점수 = 안전위험도·민원빈도·이용패턴·단속건수 지표의 가중합 (적용 가중치 : ${weightLine})`,
+          `종합점수 = 안전위험도·민원 건수·이용률·단속건수 지표의 가중합 (적용 가중치 : ${weightLine})`,
           `우선순위 등급 : 상위 ${appliedC.highScore}점 이상(높음) · 중간 ${appliedC.midScore}점 이상(중간) · 미만(낮음) / 배정 범위 ${appliedC.assignRange}m${changedCoeffs.length ? ' · 계수 조정 적용' : ''}`,
         ],
       },
@@ -293,7 +293,7 @@ export default function InvestmentPriority() {
         <div>
           <PageCrumb group="분석·시뮬레이션" page="투자우선순위 보드" />
           <h1 className="page-title">공영주차장 투자·보강 우선순위 보드</h1>
-          <p className="page-sub">안전위험도 · 민원빈도 · 이용패턴 · 사고이력 종합 지표 자동 산정</p>
+          <p className="page-sub">안전위험도 · 민원 건수 · 이용률 · 사고이력 종합 지표 자동 산정</p>
         </div>
         <div className="topbar__actions">
           <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}>{AI_ICON} AI 대화 시작하기</button>
