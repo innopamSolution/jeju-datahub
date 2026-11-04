@@ -860,7 +860,7 @@ export default function Complaints() {
                         </span>
                         <span className="rl__val">
                           <span className="rl__cnt">{r.value}</span>
-                          <span className={`rl__delta ${r.deltaClass}`}>{r.delta}</span>
+                          <span className={`rl__delta ${r.deltaClass}`}>{arrowOnly(r.delta)}</span>
                         </span>
                       </div>
                       <span className="rl__sub">{r.sub}</span>
