@@ -372,8 +372,7 @@ export default function PolicySimulation() {
                     }}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', marginBottom: 4 }}>분석 계수 조정</div>
-                    <div style={{ fontSize: 11, color: 'var(--text-alternative)', marginBottom: 12 }}>설정 &gt; 분석 지표 가중치 설정과 동일 기준 · 명세 고정값은 제외</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', marginBottom: 12 }}>분석 계수 조정</div>
 
                     {/* 정책 유형 탭 */}
                     <div className="segment" style={{ marginBottom: 12 }}>
