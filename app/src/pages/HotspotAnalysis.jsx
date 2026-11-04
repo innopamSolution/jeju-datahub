@@ -115,6 +115,13 @@ export default function HotspotAnalysis() {
   }, [advOpen]);
   const [draftWc, setDraftWc]   = useState(DEFAULT_WC);
   const [appliedWc, setAppliedWc] = useState(DEFAULT_WC);
+  /* 분석 계수(민원·단속 월기준값) — 다른 분석 화면과 통일. 목업이라 순위 재계산엔 반영되지 않는 표시용 */
+  const [draftC, setDraftC]     = useState(hotspotDefaultCoeffs);
+  const [appliedC, setAppliedC] = useState(hotspotDefaultCoeffs);
+  const openAdv = () => { setDraftWc(appliedWc); setDraftC(appliedC); setAdvOpen((o) => !o); };
+  const resetAdv = () => { setAppliedWc(DEFAULT_WC); setDraftWc(DEFAULT_WC); setAppliedC(hotspotDefaultCoeffs()); setDraftC(hotspotDefaultCoeffs()); };
+  const changedCoeffs = HOTSPOT_COEFFS.filter((c) => appliedC[c.key] !== c.def);
+  const isAdjusted = appliedWc !== DEFAULT_WC || changedCoeffs.length > 0;
   const ranking = computeRanking(appliedWc);
   const exportMeta = { period: period === '직접설정' ? '2026-01 ~ 2026-05' : period.replace('최근', '최근 '), wc: appliedWc };
   const [exportOpen, setExportOpen] = useState(false);
