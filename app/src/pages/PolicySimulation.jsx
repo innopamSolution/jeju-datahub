@@ -554,7 +554,7 @@ export default function PolicySimulation() {
                       <span className="badge" style={{ background: COST_BADGE[s.costLevel].bg, color: COST_BADGE[s.costLevel].color }}>{s.cost}</span>
                     </TD>
                     <TD center>
-                      {s.recommend && <span className="badge" style={{ background: 'var(--blue-95)', color: 'var(--primary)', fontWeight: 700 }}>추천</span>}
+                      {isRecommend(s) && <span className="badge" style={{ background: 'var(--blue-95)', color: 'var(--primary)', fontWeight: 700 }}>추천</span>}
                     </TD>
                     <TD center>
                       <button
