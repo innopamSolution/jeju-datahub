@@ -176,8 +176,8 @@ export default function InvestmentPriority() {
         type: 'notes',
         title: '산정 기준',
         items: [
-          '종합점수 = 안전위험도·민원빈도·이용패턴·사고이력 지표의 가중합 (가중치는 설정 > 분석 지표 가중치 설정에서 변경 가능)',
-          '사고 이력은 최근 3개월 재난상황 데이터 기준이며, 우선순위는 높음·중간·낮음 등급으로 구분합니다.',
+          `종합점수 = 안전위험도·민원빈도·이용패턴·단속건수 지표의 가중합 (적용 가중치 : ${weightLine})`,
+          `우선순위 등급 : 상위 ${appliedC.highScore}점 이상(높음) · 중간 ${appliedC.midScore}점 이상(중간) · 미만(낮음) / 배정 범위 ${appliedC.assignRange}m${changedCoeffs.length ? ' · 계수 조정 적용' : ''}`,
         ],
       },
     ],
