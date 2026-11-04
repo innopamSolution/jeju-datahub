@@ -37,6 +37,37 @@ const ANALYSIS_TYPES = [
   { key: 'congestion', label: '혼잡도' },
 ];
 
+/* 설정 > 분석 지표 가중치 설정 > 생활권시뮬레이션의 '분석 계수'.
+   계수는 분석 유형(주차 수급·혼잡도)별로 다르며, 민원 건수는 계수가 없다(백분위 순위만). */
+const LIFE_COEFFS = {
+  demand: [
+    { key: 'supMinComp', label: '수급 최소 월평균 민원', min: 1, max: 30, step: 1, def: 5,  unit: '건', hint: '월평균 민원이 이 건수 미만인 격자는 수급 분석에서 제외' },
+    { key: 'supB1',      label: '수급 경계 보통',        min: 1, max: 99, step: 1, def: 20, unit: '%',  hint: '부족률 ≥ 이 값이면 보통(하한)' },
+    { key: 'supB2',      label: '수급 경계 주의',        min: 1, max: 99, step: 1, def: 40, unit: '%' },
+    { key: 'supB3',      label: '수급 경계 경고',        min: 1, max: 99, step: 1, def: 60, unit: '%' },
+    { key: 'supB4',      label: '수급 경계 심각',        min: 1, max: 99, step: 1, def: 80, unit: '%' },
+  ],
+  congestion: [
+    { key: 'occBase',    label: '기준 점유율',          min: 0.3, max: 1,   step: 0.05,  def: 0.85,  unit: '', hint: '정상이용 U0 = 면수 × 이 값 (실측 결측으로 상수)' },
+    { key: 'conB1',      label: '혼잡 경계 보통',        min: 50,  max: 100, step: 1,     def: 88,    unit: '점', hint: '지수 1.0=100점 기준 고정 경계(하한)' },
+    { key: 'conB2',      label: '혼잡 경계 주의',        min: 50,  max: 100, step: 1,     def: 92,    unit: '점' },
+    { key: 'conB3',      label: '혼잡 경계 경고',        min: 50,  max: 100, step: 1,     def: 96,    unit: '점' },
+    { key: 'conB4',      label: '혼잡 경계 심각',        min: 50,  max: 100, step: 1,     def: 100,   unit: '점' },
+    { key: 'catchM',     label: '적발 배수 m',          min: 1,   max: 10,  step: 1,     def: 3,     unit: '', hint: '미적발 불법주차 보정 배수(민원엔 미적용)' },
+    { key: 'fixedW',     label: '고정형 단속 가중치',    min: 0.1, max: 1,   step: 0.05,  def: 0.5,   unit: '' },
+    { key: 'coordFix',   label: '단속 좌표 결측 보정',   min: 1,   max: 4,   step: 0.005, def: 1.815, unit: '', hint: '1 ÷ 단속 좌표 보유율(평균 0.551)' },
+    { key: 'compW',      label: '민원 반영 가중치',      min: 0,   max: 2,   step: 0.1,   def: 1,     unit: '', hint: '0이면 명세 방식(단속만)' },
+    { key: 'congMinSlot',label: '혼잡도 면수 하한',      min: 0,   max: 50,  step: 1,     def: 20,    unit: '면', hint: '이 면수 미만 격자는 분석에서 제외' },
+  ],
+};
+const LIFE_TAB_LABEL = { demand: '주차 수급', congestion: '혼잡도' };
+function lifeDefaultCoeffs() {
+  const o = {};
+  Object.values(LIFE_COEFFS).flat().forEach((c) => { o[c.key] = c.def; });
+  return o;
+}
+const fmtCoeff = (v) => (Number.isInteger(v) ? String(v) : String(Math.round(v * 1000) / 1000));
+
 const LOCATIONS = [
   '연동 대로변', '제주도청 인근', '신광초등학교 주변', '제주공항 인근', '동문시장 주변',
   '한림해수욕장 근처', '이도2동 상업지구', '노형 사거리', '삼도동 골목', '아라동 주택가',
