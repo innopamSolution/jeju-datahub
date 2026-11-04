@@ -125,22 +125,40 @@ export default function InvestmentPriority() {
     return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
   }, [exportOpen]);
 
-  /* 분석 계수 조정 — 설정>투자우선순위(종합점수 가중치 + 분석 계수)를 사용자 화면에서 조정 */
+  /* 분석 계수 조정 — 설정>투자우선순위(종합점수 가중치 + 분석 계수)를 사용자 화면에서 조정.
+     side-col의 overflow-y:auto에 잘리지 않도록 팝오버는 포털(fixed 위치)로 띄운다. */
   const [advOpen, setAdvOpen] = useState(false);
-  const advRef = useRef(null);
+  const advRef = useRef(null);        // 버튼 래퍼
+  const popRef = useRef(null);        // 포털 팝오버
+  const [popPos, setPopPos] = useState({ top: 0, left: 0 });
   const [draftW, setDraftW] = useState(INVEST_DEFAULT_W);
   const [appliedW, setAppliedW] = useState(INVEST_DEFAULT_W);
   const [draftC, setDraftC] = useState(investDefaultCoeffs);
   const [appliedC, setAppliedC] = useState(investDefaultCoeffs);
   useEffect(() => {
     if (!advOpen) return;
-    const onDoc = (e) => { if (advRef.current && !advRef.current.contains(e.target)) setAdvOpen(false); };
+    const onDoc = (e) => {
+      if (advRef.current && advRef.current.contains(e.target)) return;
+      if (popRef.current && popRef.current.contains(e.target)) return;
+      setAdvOpen(false);
+    };
     const onKey = (e) => { if (e.key === 'Escape') setAdvOpen(false); };
     document.addEventListener('click', onDoc);
     document.addEventListener('keydown', onKey);
     return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
   }, [advOpen]);
-  const openAdv = () => { setDraftW(appliedW); setDraftC(appliedC); setAdvOpen((o) => !o); };
+  const openAdv = () => {
+    setDraftW(appliedW); setDraftC(appliedC);
+    setAdvOpen((o) => {
+      const next = !o;
+      if (next && advRef.current) {
+        const r = advRef.current.getBoundingClientRect();
+        const W = 340;
+        setPopPos({ top: r.bottom + 8, left: Math.max(8, r.right - W) });
+      }
+      return next;
+    });
+  };
   const resetAll = () => { setAppliedW(INVEST_DEFAULT_W); setDraftW(INVEST_DEFAULT_W); setAppliedC(investDefaultCoeffs()); setDraftC(investDefaultCoeffs()); };
   const apW = investPctW(appliedW);
   const changedCoeffs = INVEST_COEFFS.filter((c) => appliedC[c.key] !== c.def);
