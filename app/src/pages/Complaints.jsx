@@ -562,7 +562,7 @@ export default function Complaints() {
         type: 'table',
         title: '읍·면·동 민원 순위',
         columns: ['순위', '지역', '민원 건수', '전기 대비', '주요 유형'],
-        rows: RANK_MODES.hotspot.rows.map((r) => [r.rank, r.name, r.value, r.delta, r.sub]),
+        rows: RANK_MODES.hotspot.rows.map((r) => [r.rank, r.name, r.value, arrowOnly(r.delta), r.sub]),
       },
       {
         type: 'table',
