@@ -516,21 +516,6 @@ export default function PolicySimulation() {
               )}
             </div>
           </div>
-          {!isDefaultW(appliedW) && (
-            <div style={{
-              padding: '8px 24px', fontSize: 12,
-              background: 'rgba(59,112,247,0.08)', color: 'var(--primary-normal)',
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8,
-              borderBottom: '1px solid var(--line-alternative)',
-            }}>
-              <span>적용 가중치 : 민원 감소 {apW.reduction}% · 혼잡 개선 {apW.congestion}% · 비용 효율 {apW.cost}%</span>
-              <button type="button"
-                onClick={() => { setAppliedW(DEFAULT_WEIGHTS); setDraftW(DEFAULT_WEIGHTS); }}
-                style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'inherit', textDecoration: 'underline', flexShrink: 0 }}>
-                초기화
-              </button>
-            </div>
-          )}
           <div style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
