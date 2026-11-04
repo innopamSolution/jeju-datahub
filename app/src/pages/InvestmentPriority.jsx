@@ -420,15 +420,16 @@ export default function InvestmentPriority() {
                         <div className="coeff-scroll">
                         {/* 종합점수 가중치 (합계 100%) */}
                         <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-neutral)', marginBottom: 8 }}>종합점수 가중치 (합계 100%)</div>
-                        {INVEST_WEIGHTS.map(({ key, label }) => {
-                          const shown = investPctW(draftW)[key];
+                        {INVEST_WEIGHTS.map(({ key, label }, idx) => {
+                          const last = idx === INVEST_WEIGHTS.length - 1;
                           return (
                             <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, marginBottom: 8 }}>
                               <span style={{ width: 64 }}>{label}</span>
                               <input type="range" min="0" max="100" step="5" value={draftW[key]}
-                                onChange={(e) => setDraftW((w) => ({ ...w, [key]: Number(e.target.value) }))}
-                                style={{ flex: 1 }} aria-label={`${label} 가중치`} />
-                              <b style={{ width: 36, textAlign: 'right' }}>{shown}%</b>
+                                disabled={last}
+                                onChange={(e) => setDraftW((w) => adjustInvestWeights(w, idx, Number(e.target.value)))}
+                                style={{ flex: 1, opacity: last ? 0.5 : 1 }} aria-label={`${label} 가중치`} />
+                              <b style={{ width: 36, textAlign: 'right' }}>{draftW[key]}%</b>
                             </div>
                           );
                         })}
