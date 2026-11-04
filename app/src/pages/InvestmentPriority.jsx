@@ -492,7 +492,7 @@ export default function InvestmentPriority() {
               </div>
               {isAdjusted && (
                 <div style={{
-                  margin: '0 0 12px', padding: '8px 12px', borderRadius: 8, fontSize: 12,
+                  margin: '6px 0 12px', padding: '8px 12px', borderRadius: 8, fontSize: 12,
                   background: 'rgba(59,112,247,0.08)', color: 'var(--primary-normal)',
                   display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8,
                 }}>
