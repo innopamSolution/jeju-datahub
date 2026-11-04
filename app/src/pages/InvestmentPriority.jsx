@@ -419,7 +419,8 @@ export default function InvestmentPriority() {
                         {/* 가운데 스크롤 영역 */}
                         <div className="coeff-scroll">
                         {/* 종합점수 가중치 (합계 100%) */}
-                        <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-neutral)', marginBottom: 8 }}>종합점수 가중치 (합계 100%)</div>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-neutral)', marginBottom: 2 }}>종합점수 가중치 (합계 100%)</div>
+                        <div style={{ fontSize: 10.5, color: 'var(--text-alternative)', marginBottom: 8 }}>위에서 조정하면 아래 항목이 자동 재분배됩니다 (마지막 항목 자동).</div>
                         {INVEST_WEIGHTS.map(({ key, label }, idx) => {
                           const last = idx === INVEST_WEIGHTS.length - 1;
                           return (
