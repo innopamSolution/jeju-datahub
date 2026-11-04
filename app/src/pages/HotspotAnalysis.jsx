@@ -56,6 +56,18 @@ function computeRanking(wC) {
     .map((z, i) => ({ ...z, rank: i + 1 }));
 }
 
+/* 설정 > 분석 지표 가중치 설정 > 불법 주차 집중 구역 분석의 '분석 계수' (가중치는 민원/단속 wC로 별도 관리) */
+const HOTSPOT_COEFFS = [
+  { key: 'compMonthBase', label: '민원 월기준값', min: 1, max: 1000, step: 1, def: 30, unit: '건/월', hint: '월 민원 몇 건을 100점으로 볼지 — 종합점수 = min(월평균/기준값,1)×가중치' },
+  { key: 'enfMonthBase',  label: '단속 월기준값', min: 1, max: 1000, step: 1, def: 60, unit: '건/월', hint: '월 단속 몇 건을 100점으로 볼지' },
+];
+function hotspotDefaultCoeffs() {
+  const o = {};
+  HOTSPOT_COEFFS.forEach((c) => { o[c.key] = c.def; });
+  return o;
+}
+const fmtCoeff = (v) => (Number.isInteger(v) ? String(v) : String(Math.round(v * 1000) / 1000));
+
 const DOT_BADGE = { 'var(--red-50)': 'severe', 'var(--orange-50)': 'warn', 'var(--blue-50)': 'caution' };
 const BADGE_TEXT = { severe: '심각', warn: '경고', caution: '주의' };
 
