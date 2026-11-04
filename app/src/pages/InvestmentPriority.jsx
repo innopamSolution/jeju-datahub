@@ -379,12 +379,13 @@ export default function InvestmentPriority() {
                         <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </button>
-                    {advOpen && (
+                    {advOpen && createPortal(
                       <div
+                        ref={popRef}
                         role="dialog" aria-label="분석 계수 조정"
                         style={{
-                          position: 'absolute', right: 0, top: 'calc(100% + 8px)', zIndex: 1100,
-                          width: 340, maxHeight: 480, overflowY: 'auto', padding: 16, background: 'var(--card-bg)',
+                          position: 'fixed', top: popPos.top, left: popPos.left, zIndex: 3000,
+                          width: 340, maxHeight: 'min(480px, calc(100vh - 24px))', overflowY: 'auto', padding: 16, background: 'var(--card-bg)',
                           border: '1px solid var(--line-normal)', borderRadius: 12,
                           boxShadow: '0 12px 32px rgba(23,23,25,0.18)',
                         }}
