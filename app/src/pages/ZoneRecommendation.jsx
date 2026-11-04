@@ -119,6 +119,30 @@ const MODE_TITLES = {
   '공유주차제 적용': '공유주차제 적용 추천 구역 순위',
 };
 
+/* 설정 > 분석 지표 가중치 설정 > 구역추천의 '분석 계수'. 분석 내용(요금제/공유주차제)별로 다르다. */
+const ZONE_COEFFS = {
+  fee: [
+    { key: 'assignRange', label: '배정 범위',            min: 100, max: 1000, step: 10,  def: 300, unit: 'm',   hint: '민원·단속 1건을 최근접 후보 주차장 1곳에 배정하는 범위 — 순위를 좌우' },
+    { key: 'minSpaces',   label: '전환 대상 최소 주차면수', min: 0,   max: 100,  step: 1,   def: 20,  unit: '면',  hint: '이 면수 미만 주차장은 제외' },
+    { key: 'fulfillThr',  label: '충족률 임계값',          min: 50,  max: 84,   step: 1,   def: 50,  unit: '%',   hint: '이상이면 요금제(FEE), 미만이면 공유주차제(SHARE)' },
+    { key: 'compMonth',   label: '민원 월기준값',          min: 0,   max: 500,  step: 1,   def: 50,  unit: '건',  hint: '월평균 민원이 이 건수 미만인 읍면동은 추천 제외' },
+    { key: 'illegalBase', label: '불법주차 기준값',        min: 0.5, max: 5,    step: 0.1, def: 1,   unit: '대/일', hint: '불법주차 추정량 E0가 이 값 미만이면 판정 제외' },
+  ],
+  share: [
+    { key: 'compRatioBase', label: '민원비율 기준값', min: 3, max: 20, step: 0.5, def: 7, unit: '건/100면·월', hint: '공영 100면당 월 민원이 이 값 이상이면 공유주차 검토 후보' },
+  ],
+};
+const ZONE_TAB = [
+  { key: 'fee',   label: '요금제 적용',   mode: '요금제 적용' },
+  { key: 'share', label: '공유주차제 적용', mode: '공유주차제 적용' },
+];
+function zoneDefaultCoeffs() {
+  const o = {};
+  Object.values(ZONE_COEFFS).flat().forEach((c) => { o[c.key] = c.def; });
+  return o;
+}
+const fmtCoeff = (v) => (Number.isInteger(v) ? String(v) : String(Math.round(v * 1000) / 1000));
+
 function resolveColor(cssVar) {
   const probe = document.createElement('span');
   probe.style.cssText = 'position:absolute;left:-9999px;top:-9999px';
