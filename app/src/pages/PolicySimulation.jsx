@@ -378,36 +378,42 @@ export default function PolicySimulation() {
                     role="dialog" aria-label="분석 계수 조정"
                     style={{
                       position: 'absolute', right: 0, top: 'calc(100% + 8px)', zIndex: 1100,
-                      width: 340, maxHeight: 460, overflowY: 'auto', padding: 16, background: 'var(--card-bg)',
+                      width: 340, maxHeight: 460, display: 'flex', flexDirection: 'column', overflow: 'hidden',
+                      background: 'var(--card-bg)',
                       border: '1px solid var(--line-normal)', borderRadius: 12,
                       boxShadow: '0 12px 32px rgba(23,23,25,0.18)',
                     }}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', marginBottom: 12 }}>분석 계수 조정</div>
+                    {/* 헤더 고정 */}
+                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', padding: '16px 16px 10px', flexShrink: 0 }}>분석 계수 조정</div>
 
-                    {/* 공통 계수 — 모든 정책 유형에 적용 */}
-                    <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-neutral)', marginBottom: 8 }}>공통</div>
-                    {COMMON_COEFFS.map(renderCoeff)}
+                    {/* 가운데 스크롤 (공통 + 정책 유형별) */}
+                    <div style={{ overflowY: 'auto', padding: '0 16px', flex: 1 }}>
+                      {/* 공통 계수 — 모든 정책 유형에 적용 */}
+                      <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-neutral)', marginBottom: 8 }}>공통</div>
+                      {COMMON_COEFFS.map(renderCoeff)}
 
-                    {/* 정책 유형별 계수 */}
-                    <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-neutral)', margin: '4px 0 8px', paddingTop: 12, borderTop: '1px solid var(--line-alternative)' }}>정책 유형별</div>
-                    <div className="segment" style={{ marginBottom: 12 }}>
-                      {Object.entries(POLICY_LABEL).map(([k, l]) => (
-                        <button key={k} type="button"
-                          className={`segment__btn ${coeffTab === k ? 'segment__btn--active' : ''}`}
-                          style={{ fontSize: 11, padding: '0 6px' }}
-                          onClick={() => setCoeffTab(k)}>{l}</button>
-                      ))}
-                    </div>
-                    {(TYPE_COEFFS[coeffTab] ?? []).map(renderCoeff)}
-                    {(TYPE_COEFFS[coeffTab] ?? []).length === 0 && (
-                      <div style={{ fontSize: 11, color: 'var(--text-alternative)', margin: '-4px 0 8px', lineHeight: 1.6 }}>
-                        ※ {POLICY_LABEL[coeffTab]} 유형의 산식 계수(조성비 등)는 명세 고정값이라 조정 대상이 아닙니다. 공통 계수만 적용됩니다.
+                      {/* 정책 유형별 계수 */}
+                      <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-neutral)', margin: '4px 0 8px', paddingTop: 12, borderTop: '1px solid var(--line-alternative)' }}>정책 유형별</div>
+                      <div className="segment" style={{ marginBottom: 12 }}>
+                        {Object.entries(POLICY_LABEL).map(([k, l]) => (
+                          <button key={k} type="button"
+                            className={`segment__btn ${coeffTab === k ? 'segment__btn--active' : ''}`}
+                            style={{ fontSize: 11, padding: '0 6px' }}
+                            onClick={() => setCoeffTab(k)}>{l}</button>
+                        ))}
                       </div>
-                    )}
+                      {(TYPE_COEFFS[coeffTab] ?? []).map(renderCoeff)}
+                      {(TYPE_COEFFS[coeffTab] ?? []).length === 0 && (
+                        <div style={{ fontSize: 11, color: 'var(--text-alternative)', margin: '-4px 0 8px', lineHeight: 1.6 }}>
+                          ※ {POLICY_LABEL[coeffTab]} 유형의 산식 계수(조성비 등)는 명세 고정값이라 조정 대상이 아닙니다. 공통 계수만 적용됩니다.
+                        </div>
+                      )}
+                    </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4, paddingTop: 12, borderTop: '1px solid var(--line-alternative)' }}>
+                    {/* 하단 고정 푸터 */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderTop: '1px solid var(--line-alternative)', flexShrink: 0, background: 'var(--card-bg)' }}>
                       <button type="button"
                         onClick={() => setDraftC(defaultCoeffs())}
                         style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'var(--text-alternative)', textDecoration: 'underline' }}>
