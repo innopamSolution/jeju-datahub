@@ -237,42 +237,73 @@ export default function HotspotAnalysis() {
                     }),
                   }}
                   aria-expanded={advOpen}
-                  onClick={(e) => { e.stopPropagation(); setDraftWc(appliedWc); setAdvOpen((o) => !o); }}
+                  onClick={(e) => { e.stopPropagation(); openAdv(); }}
                 >
-                  가중치 조정
+                  분석 계수 조정
                   <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"
                     style={{ transform: advOpen ? 'rotate(180deg)' : 'none', transition: 'transform .15s' }}>
                     <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>
-                {/* 버튼 오른쪽에 뜨는 소형 팝오버 */}
+                {/* 버튼 오른쪽 팝오버 — 종합점수 가중치 + 분석 계수 (다른 분석 화면과 통일) */}
                 {advOpen && (
                   <div
-                    role="dialog" aria-label="가중치 조정"
+                    role="dialog" aria-label="분석 계수 조정"
                     style={{
                       position: 'absolute', left: 'calc(100% + 10px)', top: -8, zIndex: 1100,
-                      width: 264, padding: 14, background: 'var(--card-bg)',
+                      width: 320, maxHeight: 460, display: 'flex', flexDirection: 'column', overflow: 'hidden',
+                      background: 'var(--card-bg)',
                       border: '1px solid var(--line-normal)', borderRadius: 12,
                       boxShadow: '0 12px 32px rgba(23,23,25,0.18)',
                     }}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', marginBottom: 10 }}>가중치 조정</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 }}>
-                      <span style={{ width: 52 }}>민원 건수</span>
-                      <input type="range" min="0" max="100" step="5" value={draftWc}
-                        onChange={(e) => setDraftWc(Number(e.target.value))} style={{ flex: 1 }} aria-label="민원 건수 가중치" />
-                      <b style={{ width: 32, textAlign: 'right' }}>{draftWc}%</b>
+                    {/* 헤더 고정 */}
+                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', padding: '16px 16px 10px', flexShrink: 0 }}>분석 계수 조정</div>
+
+                    {/* 가운데 스크롤 */}
+                    <div className="coeff-scroll">
+                      {/* 종합점수 가중치 (합계 100%) */}
+                      <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-neutral)', marginBottom: 8 }}>종합점수 가중치 (합계 100%)</div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, marginBottom: 8 }}>
+                        <span style={{ width: 56 }}>민원 건수</span>
+                        <input type="range" min="0" max="100" step="5" value={draftWc}
+                          onChange={(e) => setDraftWc(Number(e.target.value))} style={{ flex: 1 }} aria-label="민원 건수 가중치" />
+                        <b style={{ width: 36, textAlign: 'right' }}>{draftWc}%</b>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--text-alternative)', marginBottom: 4 }}>
+                        <span style={{ width: 56 }}>단속 건수</span>
+                        <span style={{ flex: 1 }}>자동 (합계 100%)</span>
+                        <b style={{ width: 36, textAlign: 'right' }}>{100 - draftWc}%</b>
+                      </div>
+
+                      {/* 분석 계수 */}
+                      <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-neutral)', margin: '8px 0', paddingTop: 12, borderTop: '1px solid var(--line-alternative)' }}>분석 계수</div>
+                      {HOTSPOT_COEFFS.map((c) => (
+                        <div key={c.key} style={{ marginBottom: 12 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 }}>
+                            <span style={{ flex: 1 }}>{c.label}</span>
+                            <input type="range" min={c.min} max={c.max} step={c.step} value={draftC[c.key]}
+                              onChange={(e) => setDraftC((o) => ({ ...o, [c.key]: Number(e.target.value) }))}
+                              style={{ width: 96 }} aria-label={`${c.label} 계수`} />
+                            <b style={{ width: 56, textAlign: 'right' }}>{fmtCoeff(draftC[c.key])} {c.unit}</b>
+                          </div>
+                          {c.hint && <div style={{ fontSize: 10.5, color: 'var(--text-alternative)', marginTop: 2 }}>{c.hint}</div>}
+                          <div style={{ fontSize: 10.5, color: 'var(--text-assistive)', marginTop: 2 }}>범위 {fmtCoeff(c.min)} ~ {fmtCoeff(c.max)} · 기본값 {fmtCoeff(c.def)}</div>
+                        </div>
+                      ))}
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--text-alternative)', marginTop: 6 }}>
-                      <span style={{ width: 52 }}>단속 건수</span>
-                      <span style={{ flex: 1 }}>자동 (합계 100%)</span>
-                      <b style={{ width: 32, textAlign: 'right' }}>{100 - draftWc}%</b>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginTop: 10 }}>
+
+                    {/* 하단 고정 푸터 */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderTop: '1px solid var(--line-alternative)', flexShrink: 0, background: 'var(--card-bg)' }}>
+                      <button type="button"
+                        onClick={() => { setDraftWc(DEFAULT_WC); setDraftC(hotspotDefaultCoeffs()); }}
+                        style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'var(--text-alternative)', textDecoration: 'underline' }}>
+                        기본값
+                      </button>
                       <button type="button"
                         style={{ height: 28, padding: '0 14px', fontSize: 12, fontWeight: 600, border: 'none', borderRadius: 6, cursor: 'pointer', background: 'var(--primary-normal)', color: '#fff' }}
-                        onClick={() => { setAppliedWc(draftWc); setAdvOpen(false); setShowResult(true); setActiveRank(null); }}>
+                        onClick={() => { setAppliedWc(draftWc); setAppliedC(draftC); setAdvOpen(false); setShowResult(true); setActiveRank(null); }}>
                         적용
                       </button>
                     </div>
@@ -281,16 +312,20 @@ export default function HotspotAnalysis() {
               </div>
             </div>
 
-            {/* 분석식을 기본값에서 변경한 경우에만 타이틀 아래에 적용 중인 식 표시 */}
-            {appliedWc !== DEFAULT_WC && (
+            {/* 기본값에서 변경한 경우에만 타이틀 아래에 적용 값 표시 */}
+            {isAdjusted && (
               <div style={{
                 margin: '-12px 0 0', padding: '8px 12px', borderRadius: 8, fontSize: 12,
                 background: 'rgba(59,112,247,0.08)', color: 'var(--primary-normal)',
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8,
+                display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8,
               }}>
-                <span>적용 가중치 : 민원 건수 {appliedWc}% + 단속 건수 {100 - appliedWc}%</span>
+                <span>
+                  {appliedWc !== DEFAULT_WC && <>적용 가중치 : 민원 건수 {appliedWc}% + 단속 건수 {100 - appliedWc}%</>}
+                  {appliedWc !== DEFAULT_WC && changedCoeffs.length > 0 && <br />}
+                  {changedCoeffs.length > 0 && <>적용 계수 : {changedCoeffs.map((c) => `${c.label} ${fmtCoeff(c.def)}→${fmtCoeff(appliedC[c.key])}`).join(' · ')}</>}
+                </span>
                 <button type="button"
-                  onClick={() => { setAppliedWc(DEFAULT_WC); setDraftWc(DEFAULT_WC); }}
+                  onClick={resetAdv}
                   style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'inherit', textDecoration: 'underline', flexShrink: 0 }}
                 >초기화</button>
               </div>
