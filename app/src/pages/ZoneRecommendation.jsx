@@ -186,6 +186,41 @@ export default function ZoneRecommendation() {
     return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
   }, [exportOpen]);
 
+  /* 분석 계수 조정 — 설정>분석 계수를 사용자 화면에서, 분석 내용(요금제·공유주차제)별 탭으로 조정 */
+  const [advOpen, setAdvOpen] = useState(false);
+  const advRef = useRef(null);
+  const [coeffTab, setCoeffTab] = useState('fee');
+  const [draftC, setDraftC] = useState(zoneDefaultCoeffs);
+  const [appliedC, setAppliedC] = useState(zoneDefaultCoeffs);
+  useEffect(() => {
+    if (!advOpen) return;
+    const onDoc = (e) => { if (advRef.current && !advRef.current.contains(e.target)) setAdvOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setAdvOpen(false); };
+    document.addEventListener('click', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+  }, [advOpen]);
+  const openAdv = () => {
+    setDraftC(appliedC);
+    setCoeffTab(mode === '공유주차제 적용' ? 'share' : 'fee');
+    setAdvOpen((o) => !o);
+  };
+  const resetCoeffs = () => { setAppliedC(zoneDefaultCoeffs()); setDraftC(zoneDefaultCoeffs()); };
+  const changedCoeffs = Object.values(ZONE_COEFFS).flat().filter((c) => appliedC[c.key] !== c.def);
+  const renderCoeff = (c) => (
+    <div key={c.key} style={{ marginBottom: 12 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 }}>
+        <span style={{ flex: 1 }}>{c.label}</span>
+        <input type="range" min={c.min} max={c.max} step={c.step} value={draftC[c.key]}
+          onChange={(e) => setDraftC((o) => ({ ...o, [c.key]: Number(e.target.value) }))}
+          style={{ width: 96 }} aria-label={`${c.label} 계수`} />
+        <b style={{ width: 52, textAlign: 'right' }}>{fmtCoeff(draftC[c.key])}{c.unit && ` ${c.unit}`}</b>
+      </div>
+      {c.hint && <div style={{ fontSize: 10.5, color: 'var(--text-alternative)', marginTop: 2 }}>{c.hint}</div>}
+      <div style={{ fontSize: 10.5, color: 'var(--text-assistive)', marginTop: 2 }}>범위 {fmtCoeff(c.min)} ~ {fmtCoeff(c.max)} · 기본값 {fmtCoeff(c.def)}</div>
+    </div>
+  );
+
   const exportData = () => (mode === '요금제 적용' ? {
     fileBase: '요금제적용_추천',
     title: MODE_TITLES[mode],
