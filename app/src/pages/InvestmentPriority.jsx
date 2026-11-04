@@ -426,8 +426,10 @@ export default function InvestmentPriority() {
                             <div style={{ fontSize: 10.5, color: 'var(--text-assistive)', marginTop: 2 }}>범위 {fmtCoeff(c.min)} ~ {fmtCoeff(c.max)} · 기본값 {fmtCoeff(c.def)}</div>
                           </div>
                         ))}
+                        </div>
 
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4, paddingTop: 12, borderTop: '1px solid var(--line-alternative)' }}>
+                        {/* 하단 고정 푸터 */}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderTop: '1px solid var(--line-alternative)', flexShrink: 0, background: 'var(--card-bg)' }}>
                           <button type="button"
                             onClick={() => { setDraftW(INVEST_DEFAULT_W); setDraftC(investDefaultCoeffs()); }}
                             style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: 12, color: 'var(--text-alternative)', textDecoration: 'underline' }}>
