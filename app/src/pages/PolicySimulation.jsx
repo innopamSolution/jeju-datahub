@@ -389,7 +389,7 @@ export default function PolicySimulation() {
                     <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-strong)', padding: '16px 16px 10px', flexShrink: 0 }}>분석 계수 조정</div>
 
                     {/* 가운데 스크롤 (공통 + 정책 유형별) */}
-                    <div style={{ overflowY: 'auto', padding: '0 16px', flex: 1 }}>
+                    <div className="coeff-scroll">
                       {/* 공통 계수 — 모든 정책 유형에 적용 */}
                       <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-neutral)', marginBottom: 8 }}>공통</div>
                       {COMMON_COEFFS.map(renderCoeff)}
