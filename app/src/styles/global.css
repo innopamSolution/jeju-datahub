@@ -1449,11 +1449,13 @@ input[type='number']:focus-visible {
 /* 위험단계 알림: 셀렉트 2개라 조금 더 압축 */
 .alert-select,
 .alert-select select { min-width: 108px; }
-/* 위험 단계 판정 기준 안내 (필터바 아래) */
+/* 위험 단계 판정 기준 안내 — 필터 컨트롤 바로 아래, 경계선 위 */
+.filterbar--alert { border-bottom: none; margin-bottom: 0; padding-bottom: var(--space-10); }
 .alert-criteria {
   display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-8) var(--space-16);
-  padding: 0 var(--space-40);
-  margin: calc(var(--space-24) * -1) 0 var(--space-24);
+  padding: 0 var(--space-40) var(--space-16);
+  margin: 0 0 var(--space-24);
+  border-bottom: 1px solid var(--line-alternative);
   font-size: var(--label2-size); color: var(--text-neutral);
 }
 .alert-criteria__label { font-weight: var(--weight-bold); color: var(--text-normal); }
