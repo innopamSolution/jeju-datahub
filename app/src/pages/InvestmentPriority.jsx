@@ -333,6 +333,29 @@ export default function InvestmentPriority() {
     });
   }, [risk]);
 
+  // 기간 설정 팝오버 위치/바깥 클릭·ESC
+  useLayoutEffect(() => {
+    if (!datePopOpen) return;
+    placeDatePop();
+    const onDoc = (e) => {
+      if (datePickRef.current && datePickRef.current.contains(e.target)) return;
+      if (datePopRef.current && datePopRef.current.contains(e.target)) return;
+      setDatePopOpen(false);
+    };
+    const onKey = (e) => { if (e.key === 'Escape') setDatePopOpen(false); };
+    const onReflow = () => placeDatePop();
+    document.addEventListener('click', onDoc);
+    document.addEventListener('keydown', onKey);
+    window.addEventListener('resize', onReflow);
+    window.addEventListener('scroll', onReflow, true);
+    return () => {
+      document.removeEventListener('click', onDoc);
+      document.removeEventListener('keydown', onKey);
+      window.removeEventListener('resize', onReflow);
+      window.removeEventListener('scroll', onReflow, true);
+    };
+  }, [datePopOpen]);
+
   const handleRowClick = (rank) => {
     const mk = markerMap.current[rank];
     if (!mk || !mapInst.current) return;
