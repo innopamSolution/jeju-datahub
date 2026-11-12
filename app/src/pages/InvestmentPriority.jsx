@@ -432,6 +432,7 @@ export default function InvestmentPriority() {
             <div>
               <div className="stat__label">높음 우선순위</div>
               <div className="stat__value">{highCount}<span className="stat__unit">개소</span></div>
+              <div className="stat__delta">{periodLabel} 기준</div>
             </div>
           </div>
           <div className="card stat">
