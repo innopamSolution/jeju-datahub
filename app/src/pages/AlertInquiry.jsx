@@ -5,6 +5,7 @@ import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
 import PageCrumb from '../components/PageCrumb';
 import Pager from '../components/Pager';
+import { useCriteria } from '../lib/alertCriteria';
 
 const AI_ICON = (
   <svg viewBox="0 0 36 36" fill="none" width="24" height="24" aria-hidden="true" style={{ flexShrink: 0 }}>
