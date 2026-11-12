@@ -272,14 +272,37 @@ export default function Dashboard() {
   const [dateFrom, setDateFrom] = useState('2025-11-01');
   const [dateTo, setDateTo] = useState('2025-12-01');
   const datePickRef = useRef(null);
+  const datePopRef = useRef(null);
+  const [datePopPos, setDatePopPos] = useState({ top: 0, left: 0 });
+
+  const placeDatePop = () => {
+    const el = datePickRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const W = 360;
+    setDatePopPos({ top: Math.round(r.bottom + 8), left: Math.round(Math.max(12, Math.min(r.left, window.innerWidth - W - 12))) });
+  };
 
   useEffect(() => {
     if (!datePopOpen) return;
-    const onDoc = (e) => { if (datePickRef.current && !datePickRef.current.contains(e.target)) setDatePopOpen(false); };
+    placeDatePop();
+    const onDoc = (e) => {
+      if (datePickRef.current && datePickRef.current.contains(e.target)) return;
+      if (datePopRef.current && datePopRef.current.contains(e.target)) return;
+      setDatePopOpen(false);
+    };
     const onKey = (e) => { if (e.key === 'Escape') setDatePopOpen(false); };
+    const onReflow = () => placeDatePop();
     document.addEventListener('click', onDoc);
     document.addEventListener('keydown', onKey);
-    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+    window.addEventListener('resize', onReflow);
+    window.addEventListener('scroll', onReflow, true);
+    return () => {
+      document.removeEventListener('click', onDoc);
+      document.removeEventListener('keydown', onKey);
+      window.removeEventListener('resize', onReflow);
+      window.removeEventListener('scroll', onReflow, true);
+    };
   }, [datePopOpen]);
 
 
