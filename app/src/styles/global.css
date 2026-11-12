@@ -856,6 +856,8 @@ input[type='number']:focus-visible {
 }
 .select .ic { color: var(--text-neutral); }
 .risk-group { display: flex; align-items: center; gap: var(--space-12); }
+/* 분석 기간은 왼쪽, 우선순위(마지막 그룹)는 오른쪽 정렬 */
+.map-controls .risk-group:last-child { margin-left: auto; }
 .btn-reset {
   height: 34px; padding: 0 var(--space-12); border-radius: var(--radius-8);
   border: 1px solid var(--line-normal); background: var(--card-bg);
