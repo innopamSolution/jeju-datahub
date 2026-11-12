@@ -399,7 +399,7 @@ export default function InvestmentPriority() {
             <div className="stat__icon stat__icon--blue"><Icon name="company" size={28} /></div>
             <div>
               <div className="stat__label">분석대상 주차장</div>
-              <div className="stat__value">28<span className="stat__unit">개소</span></div>
+              <div className="stat__value">{totalLots}<span className="stat__unit">개소</span></div>
               <div className="stat__delta">제주시 · 서귀포시 전역</div>
             </div>
           </div>
