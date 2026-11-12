@@ -426,43 +426,6 @@ export default function InvestmentPriority() {
           {/* 지도 */}
           <div className="card map-card">
             <div className="map-controls">
-              <div className="risk-group">
-                <span className="ctrl__label">분석 기간</span>
-                <div className="risk-seg">
-                  {['최근1개월', '최근3개월', '최근6개월'].map((p) => (
-                    <button key={p} className={!customRange && period === p ? 'is-active' : ''} onClick={() => { setPeriod(p); setCustomRange(null); }}>{p}</button>
-                  ))}
-                  <button
-                    ref={datePickRef}
-                    className={customRange || datePopOpen ? 'is-active' : ''}
-                    type="button"
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
-                    aria-haspopup="true" aria-expanded={datePopOpen}
-                    onClick={(e) => { e.stopPropagation(); setDatePopOpen((o) => !o); }}
-                  >
-                    <Icon name="calendar" size={16} /> {customRange ? `${customRange.from} ~ ${customRange.to}` : '기간 설정'}
-                  </button>
-                </div>
-                {datePopOpen && createPortal(
-                  <div className="date-pop" ref={datePopRef} style={{ top: datePopPos.top, left: datePopPos.left }} onClick={(e) => e.stopPropagation()}>
-                    <div className="date-pop__row">
-                      <label className="date-pop__field">
-                        <span>시작일</span>
-                        <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
-                      </label>
-                      <label className="date-pop__field">
-                        <span>종료일</span>
-                        <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
-                      </label>
-                    </div>
-                    <div className="date-pop__foot">
-                      <button className="btn" type="button" style={{ height: 38 }} onClick={() => setDatePopOpen(false)}>취소</button>
-                      <button className="btn btn--apply" type="button" style={{ height: 38 }} onClick={applyDateRange}>적용</button>
-                    </div>
-                  </div>,
-                  document.body,
-                )}
-              </div>
               <div className="ctrl">
                 <span className="ctrl__label">행정구역</span>
                 <span className="select">제주 전체 <Icon name="chevron-down" size={18} /></span>
