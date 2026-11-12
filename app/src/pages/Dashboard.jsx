@@ -283,7 +283,7 @@ export default function Dashboard() {
     setDatePopPos({ top: Math.round(r.bottom + 8), left: Math.round(Math.max(12, Math.min(r.left, window.innerWidth - W - 12))) });
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!datePopOpen) return;
     placeDatePop();
     const onDoc = (e) => {
