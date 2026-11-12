@@ -966,7 +966,7 @@ export default function Complaints() {
               <div className="card-head card-head--row">
                 <div>
                   <h2 className="card-head__title">부정 민원 상위 지역</h2>
-                  <p className="card-head__sub">감정 분석 기준 · 부정 비율 순</p>
+                  <p className="card-head__sub">감정 분석 기준 · 부정 비율 순 · {basisLabel(period, customRange)}</p>
                 </div>
                 <SentiCriteriaInfo size={16} align="right" />
               </div>
