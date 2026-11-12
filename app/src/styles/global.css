@@ -891,8 +891,9 @@ input[type='number']:focus-visible {
 .senti-pop__title { font-size: var(--label1-size); font-weight: var(--weight-bold); color: var(--text-strong); }
 .senti-pop__defs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-8); }
 .senti-pop__defs li {
-  display: grid; grid-template-columns: 40px 1fr; gap: var(--space-8); align-items: start;
+  display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: var(--space-8); align-items: start;
   font-size: var(--label2-size); line-height: 1.45; color: var(--text-neutral);
+  word-break: keep-all; overflow-wrap: anywhere;
 }
 .senti-tag {
   display: inline-flex; align-items: center; justify-content: center;
