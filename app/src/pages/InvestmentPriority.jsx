@@ -7,6 +7,7 @@ import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
 import PageCrumb from '../components/PageCrumb';
 import MapTypeToggle from '../components/MapTypeToggle';
+import DataFreshness from '../components/DataFreshness';
 import { exportSectionsPdf, hBarChartHtml } from '../utils/pageExport';
 import { exportInvestXlsx } from '../utils/investExport';
 
