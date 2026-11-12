@@ -670,7 +670,11 @@ export default function PolicySimulation() {
                       <div style={{ fontSize: 'var(--caption1-size)', color: 'var(--text-alternative)', marginTop: 4 }}>{s.at}</div>
                     </TD>
                     <TD center><span style={{ fontWeight: 700, color: 'var(--primary)' }}>{s.reduction}</span></TD>
-                    <TD center><span style={{ fontWeight: 700, color: '#16a34a' }}>{s.improvement}</span></TD>
+                    <TD center>
+                      {/^\+?0%$/.test((s.improvement || '').trim())
+                        ? <span style={{ fontWeight: 600, color: 'var(--text-alternative)' }}>변화없음</span>
+                        : <span style={{ fontWeight: 700, color: '#16a34a' }}>{s.improvement}</span>}
+                    </TD>
                     <TD center>
                       <span className="badge" style={{ background: COST_BADGE[s.costLevel].bg, color: COST_BADGE[s.costLevel].color }}>{s.cost}</span>
                     </TD>
