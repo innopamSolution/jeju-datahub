@@ -591,7 +591,7 @@ export default function PolicySimulation() {
               </div>
               <div style={{ padding: '16px 20px', borderRadius: 12, background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
                 <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 6 }}>예상 혼잡도 개선</div>
-                <div style={{ fontSize: congChanged ? 28 : 20, fontWeight: 800, color: '#16a34a' }}>{active ? (congChanged ? `${impPct}% 개선` : '혼잡도 변화 없음') : '—'}</div>
+                <div style={{ fontSize: congChanged ? 28 : 18, fontWeight: 800, color: '#16a34a' }}>{active ? (congChanged ? <>{impPct}%<span style={{ fontSize: 15, fontWeight: 700, marginLeft: 3 }}>개선</span></> : '혼잡도 변화 없음') : '—'}</div>
                 <div style={{ fontSize: 12, color: 'var(--text-neutral)', marginTop: 4 }}>혼잡 지수 {BASE_CONGESTION.toFixed(2)} → {congRoundedFlat ? afterCongRaw.toFixed(3) : afterCongestion}</div>
                 <div style={{ fontSize: 12, color: 'var(--text-assistive)', marginTop: 2 }}>
                   혼잡 지수 0~1 · 낮을수록 원활{congRoundedFlat ? ' · 소수점 이하 변화(반올림 표시)' : ''}
