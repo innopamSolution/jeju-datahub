@@ -945,8 +945,8 @@ export default function Complaints() {
                         </span>
                         <span className="rl__val">
                           <span className="rl__cnt">{r.value}</span>
-                          <span className={`rl__delta ${r.deltaClass}`}
-                            data-tip={`전기 대비 ${(r.delta || '—').replace('—', '변동 없음')}`}>{arrowOnly(r.delta)}</span>
+                          <span className={`rl__delta rl__delta--multi ${r.deltaClass}`}
+                            data-tip={deltaTip(r.delta, period, customRange)}>{arrowOnly(r.delta)}</span>
                         </span>
                       </div>
                       <span className="rl__sub">{r.sub}</span>
