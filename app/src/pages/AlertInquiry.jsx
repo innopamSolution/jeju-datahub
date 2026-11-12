@@ -137,6 +137,8 @@ export default function AlertInquiry() {
   useEffect(() => { setPage(1); }, [level, period, city, dong, customRange]);
 
   const pageRows = rows.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+  /* 조회 기간 기준 라벨 — 통계 카드 하단에 현재 선택한 기간을 표시 */
+  const periodBasis = customRange ? `${dateFrom} ~ ${dateTo}` : (PERIODS.find(([k]) => k === period)?.[1] ?? '선택 기간');
 
   const nSevere = rows.filter((r) => r.level === 'severe').length;
   const nWarn = rows.filter((r) => r.level === 'warn').length;
