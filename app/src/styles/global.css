@@ -1461,7 +1461,7 @@ input[type='number']:focus-visible {
 }
 .alert-criteria__label { font-weight: var(--weight-bold); color: var(--text-normal); }
 .alert-criteria__item { display: inline-flex; align-items: center; gap: var(--space-6); }
-.alert-criteria__note { color: var(--text-assistive); }
+.alert-criteria__note { color: var(--text-alternative); }
 .alert-card__hint { font-size: var(--label1-size); color: var(--text-neutral); }
 .alert-empty { padding: var(--space-40); text-align: center; color: var(--text-neutral); font-size: var(--body2-size); }
 .content--alert { padding: 0 var(--space-40) var(--space-32); overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: var(--space-24); scrollbar-width: thin; scrollbar-color: var(--line-normal) transparent; }
