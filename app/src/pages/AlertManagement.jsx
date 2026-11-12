@@ -162,7 +162,7 @@ export default function AlertManagement() {
   }, [receivers.length, recvPage]);
 
   const openCrit = () => { setCritDraft(crit); setCritOpen(true); };
-  const saveCrit = () => { setCrit(critDraft); setCritOpen(false); };
+  const saveCrit = () => { setCriteria(critDraft); setCritOpen(false); };
 
   return (
     <>
