@@ -527,13 +527,37 @@ export default function Complaints() {
   }));
   };
 
-  useEffect(() => {
+  const exportMenuRef = useRef(null);
+  const [exportPos, setExportPos] = useState({ top: 0, left: 0 });
+
+  const placeExport = () => {
+    const el = exportRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const W = 168;
+    setExportPos({ top: Math.round(r.bottom + 8), left: Math.round(Math.max(12, Math.min(r.right - W, window.innerWidth - W - 12))) });
+  };
+
+  useLayoutEffect(() => {
     if (!exportOpen) return;
-    const onDoc = (e) => { if (exportRef.current && !exportRef.current.contains(e.target)) setExportOpen(false); };
+    placeExport();
+    const onDoc = (e) => {
+      if (exportRef.current && exportRef.current.contains(e.target)) return;
+      if (exportMenuRef.current && exportMenuRef.current.contains(e.target)) return;
+      setExportOpen(false);
+    };
     const onKey = (e) => { if (e.key === 'Escape') setExportOpen(false); };
+    const onReflow = () => placeExport();
     document.addEventListener('click', onDoc);
     document.addEventListener('keydown', onKey);
-    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+    window.addEventListener('resize', onReflow);
+    window.addEventListener('scroll', onReflow, true);
+    return () => {
+      document.removeEventListener('click', onDoc);
+      document.removeEventListener('keydown', onKey);
+      window.removeEventListener('resize', onReflow);
+      window.removeEventListener('scroll', onReflow, true);
+    };
   }, [exportOpen]);
 
   const exportData = () => ({
