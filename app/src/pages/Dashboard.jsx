@@ -102,7 +102,7 @@ function regionDelta(delta, period, customRange) {
   if (!m) return { cls: 't-flat', text: `${meta.label} 동일` };
   const dir = m[1] === '▲' ? 'up' : 'down';
   const n = Math.max(1, Math.round(parseFloat(m[2]) * meta.factor));
-  return { cls: `t-${dir}`, text: `${m[1]} ${meta.label} ${n}% ${dir === 'up' ? '상승' : '하락'}` };
+  return { cls: `t-${dir}`, text: `${m[1]} ${meta.label} ${n}% ${dir === 'up' ? '민원증가' : '민원하락'}` };
 }
 
 /* 최근 질문이 없을 때 보여줄 기본 추천 질문 */
