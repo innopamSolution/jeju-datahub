@@ -59,6 +59,7 @@ function fmtDate(s) { return s.split(' ')[0].replace(/-/g, '.'); }
 
 export default function AlertInquiry() {
   const navigate = useNavigate();
+  const crit = useCriteria();            // 설정(위험단계 알림 관리)과 공유되는 알림 기준
   const [level, setLevel] = useState('all');
   const [period, setPeriod] = useState('3');
   const [city, setCity] = useState('all');
