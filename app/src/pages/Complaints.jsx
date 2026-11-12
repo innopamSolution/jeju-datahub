@@ -901,7 +901,7 @@ export default function Complaints() {
 
               {/* 범례 */}
               <div className="map-legend">
-                <div className="map-legend__title">범례 ({{ hotspot: '민원 건수', enforce: '단속 건수', demand: '부족률' }[activeRadio]} 기준)</div>
+                <div className="map-legend__title">범례 ({{ hotspot: '민원 건수', enforce: '단속 건수', demand: '부족률' }[activeRadio]} 기준 · {customRange || period})</div>
                 {!heatActive && LEGEND_ITEMS.map((item) => (
                   <div key={item.label} className="row">
                     <span className="dot" style={{ background: item.color }} />
