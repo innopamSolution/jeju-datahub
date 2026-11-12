@@ -897,7 +897,7 @@ input[type='number']:focus-visible {
 }
 .senti-tag {
   display: inline-flex; align-items: center; justify-content: center;
-  height: 20px; border-radius: var(--radius-8);
+  width: 40px; height: 20px; border-radius: var(--radius-8);
   font-size: 12px; font-weight: var(--weight-bold); color: var(--static-white);
 }
 .senti-tag--pos { background: var(--green-50, #22a06b); }
