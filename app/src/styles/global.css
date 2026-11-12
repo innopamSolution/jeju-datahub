@@ -886,7 +886,9 @@ input[type='number']:focus-visible {
   border-radius: var(--radius-12);
   box-shadow: var(--shadow-overlay);
   cursor: default;
+  white-space: normal;
 }
+.senti-pop, .senti-pop * { white-space: normal; }
 .senti-info:hover .senti-pop, .senti-info:focus .senti-pop { display: flex; }
 .senti-pop__title { font-size: var(--label1-size); font-weight: var(--weight-bold); color: var(--text-strong); }
 .senti-pop__defs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-8); }
