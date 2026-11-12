@@ -483,7 +483,7 @@ export default function Dashboard() {
                 </div>
                 <div className="region__value"><b>{r.value}</b><span>건</span></div>
                 <div className="region__delta">
-                  {r.delta ? <><span className={`t-${r.delta.dir}`}>{r.delta.label}</span> 전일 대비</> : '전기 동일 · 전일 대비'}
+                  {(() => { const d = regionDelta(r.delta, period, customRange); return <span className={d.cls}>{d.text}</span>; })()}
                 </div>
                 <div className="stackbar">
                   {r.breakdown.map((b) => (
