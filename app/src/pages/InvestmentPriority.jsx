@@ -154,6 +154,9 @@ export default function InvestmentPriority() {
   const TIER_OF = { 높음: 'high', 중간: 'mid', 낮음: 'low' };
   const matchRisk = (lot) => risk === '전체' || lot.tier === TIER_OF[risk];
   const visibleLots = LOTS.filter(matchRisk);
+  // KPI — 실제 데이터와 연동
+  const totalLots = LOTS.length;
+  const highCount = LOTS.filter((l) => l.tier === 'high').length;
   // 활성 분석 기간 라벨 + 사고 KPI 산출(커스텀 기간은 기간 길이를 프리셋에 매핑)
   const periodLabel = customRange ? `${customRange.from} ~ ${customRange.to}` : period.replace('최근', '최근 ');
   const rangeMonths = (r) => Math.max(1, Math.round((new Date(r.to) - new Date(r.from)) / (1000 * 60 * 60 * 24 * 30)));
