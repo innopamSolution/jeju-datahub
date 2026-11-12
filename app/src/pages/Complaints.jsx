@@ -667,7 +667,7 @@ export default function Complaints() {
             <button
               key={k}
               type="button"
-              className={`segment__btn${!customRange && period === k ? ' segment__btn--active' : ''}`}
+              className={`segment__btn${!customRange && !datePopOpen && period === k ? ' segment__btn--active' : ''}`}
               onClick={() => { setPeriod(k); setRangeLabel(l); setCustomRange(null); }}
             >{l}</button>
           ))}
