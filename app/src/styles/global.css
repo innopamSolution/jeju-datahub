@@ -896,7 +896,16 @@ input[type='number']:focus-visible {
 .senti-pop--right { left: auto; right: -8px; }
 /* portal 로 body 에 띄우는 고정 팝오버 (스크롤 컨테이너 overflow 에 안 잘림) */
 .senti-pop--fixed { position: fixed; top: auto; right: auto; left: auto; z-index: 1000; display: flex; }
-.senti-pop__title { font-size: var(--label1-size); font-weight: var(--weight-bold); color: var(--text-strong); }
+.senti-pop__title { font-size: var(--label1-size); font-weight: var(--weight-bold); color: var(--text-strong); padding-right: 24px; }
+.senti-pop__close {
+  position: absolute; top: 10px; right: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; padding: 0;
+  border: none; border-radius: var(--radius-8);
+  background: none; color: var(--text-assistive); cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+.senti-pop__close:hover { background: var(--fill-normal); color: var(--text-neutral); }
 .senti-pop__defs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-8); }
 .senti-pop__defs li {
   display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: var(--space-8); align-items: start;
