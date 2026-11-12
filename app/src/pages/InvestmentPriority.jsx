@@ -400,7 +400,7 @@ export default function InvestmentPriority() {
             <div>
               <div className="stat__label">분석대상 주차장</div>
               <div className="stat__value">{totalLots}<span className="stat__unit">개소</span></div>
-              <div className="stat__delta">제주시 · 서귀포시 전역</div>
+              <div className="stat__delta">제주도 전역</div>
             </div>
           </div>
           <div className="card stat">
