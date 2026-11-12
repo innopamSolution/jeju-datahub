@@ -41,6 +41,13 @@ const LOTS = [
   { rank: 11, name: '한경공영주차장',   tier: 'low',  score: 47, addr: '제주시 한경면 신창리',    spaces: 60,  year: 2019, age: 7,  m: { safety: 48, civil: 46, usage: 48, accident: 44 }, c: [33.344, 126.176] },
 ];
 
+// 분석 기간별 사고 발생 현황 (KPI 연동 — 라벨·건수·대상이 분석 기간에 맞춰 변경)
+const ACCIDENT_BY_PERIOD = {
+  '최근1개월': { count: 0, lots: '사고 없음' },
+  '최근3개월': { count: 2, lots: '노형 · 연동 주차장' },
+  '최근6개월': { count: 3, lots: '노형 · 연동 · 성산 주차장' },
+};
+
 /* 설정 > 분석 지표 가중치 설정 > 투자우선순위.
    종합점수 가중치(4지표 합계 100% · 사고이력 미사용) + 분석 계수. */
 const INVEST_WEIGHTS = [
