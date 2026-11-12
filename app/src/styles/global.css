@@ -1302,7 +1302,7 @@ input[type='number']:focus-visible {
 .rpt-cfg__head .card-head__title { margin: 0; }
 .btn-edit { height: 36px; padding: 0 var(--space-20); border-radius: var(--radius-8); border: 1px solid var(--line-normal); background: var(--card-bg); color: var(--text-neutral); font-family: var(--font-body); font-size: var(--label1-size); font-weight: var(--weight-semibold); cursor: pointer; transition: background var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out); }
 .btn-edit:hover { background: var(--fill-alternative); border-color: var(--line-strong); }
-.rpt-cfg__body { padding: var(--space-24) var(--space-28) var(--space-28); display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-24); flex-wrap: wrap; }
+.rpt-cfg__body { padding: var(--space-16) var(--space-28) var(--space-28); display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-24); flex-wrap: wrap; }
 .rpt-cfg__fields { display: flex; gap: var(--space-20); align-items: center; flex-wrap: wrap; }
 .rpt-cfg__fields .field { flex: 0 0 auto; flex-direction: row; align-items: center; gap: var(--space-10); }
 .rpt-cfg__fields .field__label { white-space: nowrap; }
