@@ -352,8 +352,8 @@ export default function Dashboard() {
             onClick={(e) => { e.stopPropagation(); setDatePopOpen((o) => !o); }}>
             <Icon name="calendar" size={18} /> {customRange ? `${customRange.from} ~ ${customRange.to}` : '기간 선택'}
           </button>
-          {datePopOpen && (
-            <div className="date-pop">
+          {datePopOpen && createPortal(
+            <div className="date-pop" ref={datePopRef} style={{ top: datePopPos.top, left: datePopPos.left }} onClick={(e) => e.stopPropagation()}>
               <div className="date-pop__row">
                 <label className="date-pop__field">
                   <span>시작일</span>
@@ -368,7 +368,8 @@ export default function Dashboard() {
                 <button className="btn" type="button" style={{ height: 38 }} onClick={() => setDatePopOpen(false)}>취소</button>
                 <button className="btn btn--apply" type="button" style={{ height: 38 }} onClick={applyDateRange}>적용</button>
               </div>
-            </div>
+            </div>,
+            document.body,
           )}
         </div>
 
