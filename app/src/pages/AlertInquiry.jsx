@@ -280,17 +280,22 @@ export default function AlertInquiry() {
                   <th className="col-center">지역</th>
                   <th>내용</th>
                   <th className="col-center">일시</th>
-                  <th className="col-center">민원 수</th>
+                  <th className="col-center">현재 민원 수</th>
                 </tr>
               </thead>
               <tbody>
                 {pageRows.map((r, i) => {
                   const m = META[r.level];
+                  const prev = alertPrevCount(r);
+                  const delta = r.count - prev;
                   return (
                     <tr key={i}>
                       <td className="col-center"><span className={`badge ${m.badge}`}>{m.label}</span></td>
                       <td className="col-center">{r.region === '전체' ? r.city : r.region}</td>
-                      <td><span className="rt-name">{r.name}</span></td>
+                      <td>
+                        <span className="rt-name">{r.name}</span>
+                        <span className="rt-name__sub">전일 대비 · {prevMmdd(r.date)}→{mmdd(r.date)} · 증가 {delta}건 ({prev}→{r.count}건)</span>
+                      </td>
                       <td className="col-center rt-date">{fmtDate(r.date)}</td>
                       <td className="col-center">{r.count}건</td>
                     </tr>
