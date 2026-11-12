@@ -1321,8 +1321,19 @@ input[type='number']:focus-visible {
 .rpt-card__head { padding: var(--space-24) var(--space-28) var(--space-16); }
 .rpt-card__head .card-head__title { margin: 0; }
 .rpt-list, .rpt-manual { padding: 0; }
-.rpt-toolbar { display: flex; align-items: center; gap: var(--space-12); padding: var(--space-20) var(--space-16) 0; flex-wrap: wrap; }
-.rpt-toolbar .filterbar__label { margin-left: var(--space-8); }
+/* 보고서 목록 툴바: 필터바와 동일하게 한 줄 유지(압축 + 넘칠 때만 가로 스크롤) */
+.rpt-toolbar {
+  display: flex; align-items: center; gap: var(--space-10);
+  padding: var(--space-20) var(--space-16) var(--space-8);
+  flex-wrap: nowrap;
+  overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: thin; scrollbar-color: var(--line-normal) transparent;
+}
+.rpt-toolbar::-webkit-scrollbar { height: 6px; }
+.rpt-toolbar::-webkit-scrollbar-thumb { background: var(--line-normal); border-radius: var(--radius-full); }
+.rpt-toolbar > * { flex: 0 0 auto; }
+.rpt-toolbar .rpt-search { flex: 0 1 240px; min-width: 160px; }
+.rpt-toolbar .filterbar__label { margin-left: var(--space-8); white-space: nowrap; }
 .rpt-search { display: flex; align-items: center; gap: var(--space-8); width: 280px; height: 40px; padding: 0 var(--space-12); border: 1px solid var(--line-normal); border-radius: var(--radius-8); background: var(--card-bg); }
 .rpt-search .ic { color: var(--text-assistive); flex-shrink: 0; }
 .rpt-search input { flex: 1; min-width: 0; border: none; outline: none; background: none; font-family: var(--font-body); font-size: var(--label2-size); color: var(--text-normal); }
