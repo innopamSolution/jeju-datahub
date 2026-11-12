@@ -930,7 +930,7 @@ export default function Complaints() {
               <div className="card-head">
                 <div>
                   <h2 className="card-head__title">{rankMode.title}</h2>
-                  <p className="card-head__sub">{rankMode.sub}</p>
+                  <p className="card-head__sub">{rankMode.sub} · {basisLabel(period, customRange)}</p>
                 </div>
               </div>
               <div className="rl">
