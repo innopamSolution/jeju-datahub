@@ -139,6 +139,9 @@ export default function AlertInquiry() {
   const pageRows = rows.slice((page - 1) * PER_PAGE, page * PER_PAGE);
   /* 조회 기간 기준 라벨 — 통계 카드 하단에 현재 선택한 기간을 표시 */
   const periodBasis = customRange ? `${dateFrom} ~ ${dateTo}` : (PERIODS.find(([k]) => k === period)?.[1] ?? '선택 기간');
+  /* 실제 조회 범위(언제부터 언제까지)를 YYYY.MM.DD 형식으로 표기 */
+  const fmtDate = (d) => `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
+  const rangeText = (() => { const b = rangeBounds(); return `${fmtDate(b.from)} ~ ${fmtDate(b.to)}`; })();
 
   const nSevere = rows.filter((r) => r.level === 'severe').length;
   const nWarn = rows.filter((r) => r.level === 'warn').length;
