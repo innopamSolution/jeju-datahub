@@ -860,7 +860,7 @@ input[type='number']:focus-visible {
 .select .ic { color: var(--text-neutral); }
 .risk-group { margin-left: auto; display: flex; align-items: center; gap: var(--space-12); }
 .btn-reset {
-  height: 38px; padding: 0 var(--space-14); border-radius: var(--radius-8);
+  height: 34px; padding: 0 var(--space-12); border-radius: var(--radius-8);
   border: 1px solid var(--line-normal); background: var(--card-bg);
   font-family: var(--font-body); font-size: var(--label1-size); font-weight: var(--weight-semibold);
   color: var(--text-neutral); cursor: pointer; white-space: nowrap;
