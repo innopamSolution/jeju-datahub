@@ -13,7 +13,7 @@ const SOURCES = [
 export default function DataFreshness({
   updated = '2025.12.01 · 14:32',
   title = '데이터 기준일',
-  cols = ['데이터', '기준일', '갱신 주기'],
+  cols = ['데이터', '기준일'],
   sources = SOURCES,
 }) {
   return (
