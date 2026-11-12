@@ -890,6 +890,10 @@ input[type='number']:focus-visible {
 }
 .senti-pop, .senti-pop * { white-space: normal; }
 .senti-info:hover .senti-pop, .senti-info:focus .senti-pop { display: flex; }
+/* 카드 헤더 우측 정렬용: 제목 왼쪽 · ⓘ 오른쪽 */
+.card-head--row { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-12); }
+/* 오른쪽 끝 아이콘 → 팝업을 왼쪽으로 열어 화면 밖으로 안 나가게 */
+.senti-pop--right { left: auto; right: -8px; }
 .senti-pop__title { font-size: var(--label1-size); font-weight: var(--weight-bold); color: var(--text-strong); }
 .senti-pop__defs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-8); }
 .senti-pop__defs li {
