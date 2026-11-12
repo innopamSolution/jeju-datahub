@@ -1408,9 +1408,9 @@ input[type='number']:focus-visible {
 /* ============================================================
    위험단계 알림 조회 (content--alert, filterbar 확장)
    ============================================================ */
-.filterbar { flex-wrap: wrap; }
-/* AlertInquiry 전용: 한 줄 유지(압축 + 넘칠 때만 가로 스크롤) */
-.filterbar--scroll {
+/* 상단 필터바 공통: 한 줄 유지(압축 + 넘칠 때만 가로 스크롤)
+   — 대시보드·민원현황·위험단계 알림 조회 공용 */
+.filterbar {
   flex-wrap: nowrap;
   gap: var(--space-10);
   overflow-x: auto;
@@ -1418,17 +1418,18 @@ input[type='number']:focus-visible {
   scrollbar-width: thin;
   scrollbar-color: var(--line-normal) transparent;
 }
-.filterbar--scroll::-webkit-scrollbar { height: 6px; }
-.filterbar--scroll::-webkit-scrollbar-thumb { background: var(--line-normal); border-radius: var(--radius-full); }
-.filterbar--scroll > * { flex: 0 0 auto; }
-.filterbar--scroll .filterbar__label { white-space: nowrap; }
-.filterbar--scroll .filter-sep { height: 20px; }
-.filterbar--scroll .segment { gap: 4px; }
-.filterbar--scroll .segment__btn { height: 34px; padding: 0 var(--space-12); }
-.filterbar--scroll .alert-select,
-.filterbar--scroll .alert-select select { min-width: 108px; }
-.filterbar--scroll .alert-select select { height: 34px; }
-.filterbar--scroll .filterbar__right { margin-left: auto; white-space: nowrap; padding-left: var(--space-8); }
+.filterbar::-webkit-scrollbar { height: 6px; }
+.filterbar::-webkit-scrollbar-thumb { background: var(--line-normal); border-radius: var(--radius-full); }
+.filterbar > * { flex: 0 0 auto; }
+.filterbar .filterbar__label { white-space: nowrap; }
+.filterbar .filter-sep { height: 20px; }
+.filterbar .segment { gap: 4px; }
+.filterbar .segment__btn { height: 34px; padding: 0 var(--space-12); }
+.filterbar .ds-select select { height: 34px; }
+.filterbar .filterbar__right { margin-left: auto; white-space: nowrap; padding-left: var(--space-8); }
+/* 위험단계 알림: 셀렉트 2개라 조금 더 압축 */
+.alert-select,
+.alert-select select { min-width: 108px; }
 .alert-card__hint { font-size: var(--label1-size); color: var(--text-neutral); }
 .alert-empty { padding: var(--space-40); text-align: center; color: var(--text-neutral); font-size: var(--body2-size); }
 .content--alert { padding: 0 var(--space-40) var(--space-32); overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: var(--space-24); scrollbar-width: thin; scrollbar-color: var(--line-normal) transparent; }
