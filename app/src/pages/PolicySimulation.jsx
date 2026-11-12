@@ -25,6 +25,7 @@ const SCENARIOS = [
   { name: '요금제 적용 · 제주시 연동 · 요금 인상 · +10% · 3개월', at: '2026.11.27 10:15', reduction: '-12%', improvement: '+9%', cost: '저', costLevel: 'low', recommend: false },
   { name: '주차장 확충 · 제주시 노형동 · 복층화 · 80면 · 6개월', at: '2026.11.25 13:22', reduction: '-18%', improvement: '+14%', cost: '중', costLevel: 'mid', recommend: false },
   { name: '요금제 적용 · 제주 전체 1급지 · 요금 인상 · +20% · 6개월', at: '2026.11.21 15:31', reduction: '-16%', improvement: '+11%', cost: '저', costLevel: 'low', recommend: false },
+  { name: '요금제 적용 · 제주시 이도동 · 요금 동결 · ±0% · 3개월', at: '2026.11.20 09:40', reduction: '-4%', improvement: '+0%', cost: '저', costLevel: 'low', recommend: false },
 ];
 
 const COST_BADGE = {
