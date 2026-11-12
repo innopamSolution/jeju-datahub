@@ -1193,6 +1193,12 @@ input[type='number']:focus-visible {
   padding: var(--space-8);
   animation: datePopIn var(--duration-fast) var(--ease-out);
 }
+.sim-export__menu--fixed {
+  position: fixed;
+  top: auto;
+  right: auto;
+  z-index: 1000;
+}
 .sim-export__item {
   display: flex;
   align-items: center;
