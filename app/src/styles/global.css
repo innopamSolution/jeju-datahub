@@ -855,7 +855,7 @@ input[type='number']:focus-visible {
   color: var(--text-strong); cursor: pointer;
 }
 .select .ic { color: var(--text-neutral); }
-.risk-group { margin-left: auto; display: flex; align-items: center; gap: var(--space-12); }
+.risk-group { display: flex; align-items: center; gap: var(--space-12); }
 .btn-reset {
   height: 34px; padding: 0 var(--space-12); border-radius: var(--radius-8);
   border: 1px solid var(--line-normal); background: var(--card-bg);
