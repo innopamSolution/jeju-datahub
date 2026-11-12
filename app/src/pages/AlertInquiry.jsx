@@ -82,7 +82,7 @@ export default function AlertInquiry() {
     setPopPos({ top: Math.round(r.bottom + 8), left: Math.round(Math.max(12, Math.min(r.right - W, window.innerWidth - W - 12))) });
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!popOpen) return;
     placePop();
     const onDoc = (e) => {
