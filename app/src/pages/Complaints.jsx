@@ -117,6 +117,35 @@ const inLegend = (rows) => rows.filter((r) => LEGEND_COLORS.includes(r.dotColor)
 /* 증감율 숫자는 튀는 값이 많아 화살표(▲·▼·—)만 표시 */
 const arrowOnly = (d) => (d || '').replace(/[\d.%p]+/g, '').trim() || '—';
 
+/* 조회 단위별 비교 기준 — period 값(어제/최근 1주일/최근 1개월) → 기준 라벨·증감율 배율.
+   factor 는 기본 delta(주간 기준)를 각 기간 크기에 맞춰 환산하는 계수(짧은 기간일수록 변동 작음). */
+const PERIOD_META = {
+  '어제':       { label: '전일 대비', basis: '전일 기준',      factor: 0.4 },
+  '최근 1주일': { label: '전주 대비', basis: '최근 1주일 기준', factor: 1 },
+  '최근 1개월': { label: '전월 대비', basis: '최근 1개월 기준', factor: 1.8 },
+};
+const parseDelta = (delta) => {
+  const m = (delta || '').match(/([▲▼])\s*(\d+(?:\.\d+)?)(%p|%)?/);
+  if (!m) return { arrow: '—', num: 0, suffix: '%' };
+  return { arrow: m[1], num: parseFloat(m[2]), suffix: m[3] || '%' };
+};
+const scaleDelta = (base, factor) =>
+  base.arrow === '—' ? '변동 없음' : `${base.arrow}${Math.max(1, Math.round(base.num * factor))}${base.suffix}`;
+/* 화살표 아래 툴팁 내용 — 전일/전주/전월(+ 기간 선택 시 전기) 대비를 모두 나열하고
+   현재 조회 단위에 해당하는 줄을 ▸ 로 강조한다. 여러 줄은 \n 으로 구분(white-space: pre). */
+const deltaTip = (delta, period, customRange) => {
+  const base = parseDelta(delta);
+  const curKey = customRange ? '기간' : period;
+  const lines = Object.entries(PERIOD_META).map(([k, meta]) => {
+    const active = k === curKey;
+    return `${active ? '▸ ' : '  '}${meta.label}  ${scaleDelta(base, meta.factor)}`;
+  });
+  if (customRange) lines.unshift(`▸ ${customRange} 대비  ${scaleDelta(base, 1.2)}`);
+  return lines.join('\n');
+};
+const basisLabel = (period, customRange) =>
+  customRange ? `${customRange} 기준` : (PERIOD_META[period]?.basis ?? '전기 기준');
+
 const RANK_MODES = {
   hotspot: {
     title: '읍·면·동 민원 순위', sub: '민원 건수 집계',
