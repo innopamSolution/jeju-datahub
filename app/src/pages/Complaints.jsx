@@ -663,7 +663,7 @@ export default function Complaints() {
       <div className="filterbar">
         <span className="filterbar__label">조회 단위</span>
         <div className="segment">
-          {[['어제','어제'],['주간','주간'],['월간','월간']].map(([k, l]) => (
+          {[['어제','어제'],['최근 1주일','최근 1주일'],['최근 1개월','최근 1개월']].map(([k, l]) => (
             <button
               key={k}
               type="button"
