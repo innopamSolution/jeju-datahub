@@ -906,9 +906,9 @@ input[type='number']:focus-visible {
 .senti-pop__sec { display: flex; flex-direction: column; gap: var(--space-4); border-top: 1px solid var(--line-alternative); padding-top: var(--space-12); }
 .senti-pop__sub { font-size: var(--label2-size); font-weight: var(--weight-bold); color: var(--text-strong); }
 .senti-pop__sub span { font-weight: var(--weight-medium); color: var(--text-assistive); }
-.senti-pop__txt { margin: 0; font-size: var(--label2-size); line-height: 1.5; color: var(--text-neutral); }
+.senti-pop__txt { margin: 0; font-size: var(--label2-size); line-height: 1.5; color: var(--text-neutral); word-break: keep-all; overflow-wrap: anywhere; }
 .senti-pop__list { margin: 0; padding: 0 0 0 16px; display: flex; flex-direction: column; gap: var(--space-4); }
-.senti-pop__list li { font-size: var(--label2-size); line-height: 1.45; color: var(--text-neutral); }
+.senti-pop__list li { font-size: var(--label2-size); line-height: 1.45; color: var(--text-neutral); word-break: keep-all; overflow-wrap: anywhere; }
 .senti-pop__rule {
   font-size: var(--label2-size); line-height: 1.45; color: var(--text-neutral);
   background: var(--fill-normal); border-radius: var(--radius-8); padding: var(--space-8) var(--space-12);
