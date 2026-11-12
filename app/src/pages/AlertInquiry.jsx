@@ -193,8 +193,8 @@ export default function AlertInquiry() {
             onClick={(e) => { e.stopPropagation(); setPopOpen((o) => !o); }}>
             <Icon name="calendar" size={18} /> 기간 선택
           </button>
-          {popOpen && (
-            <div className="date-pop">
+          {popOpen && createPortal(
+            <div className="date-pop" ref={popRef} style={{ top: popPos.top, left: popPos.left }} onClick={(e) => e.stopPropagation()}>
               <div className="date-pop__row">
                 <label className="date-pop__field">
                   <span>시작일</span>
@@ -209,7 +209,8 @@ export default function AlertInquiry() {
                 <button className="btn" type="button" style={{ height: 38 }} onClick={() => setPopOpen(false)}>취소</button>
                 <button className="btn btn--apply" type="button" style={{ height: 38 }} onClick={applyDate}>적용</button>
               </div>
-            </div>
+            </div>,
+            document.body,
           )}
         </div>
         <span className="filterbar__right">조회 결과 <strong>{rows.length}건</strong></span>
