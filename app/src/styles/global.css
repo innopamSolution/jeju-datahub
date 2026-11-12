@@ -849,7 +849,7 @@ input[type='number']:focus-visible {
 .ctrl__label { font-size: var(--label1-size); color: var(--text-neutral); font-weight: var(--weight-semibold); white-space: nowrap; }
 .select {
   display: inline-flex; align-items: center; justify-content: space-between; gap: var(--space-12);
-  min-width: 150px; height: 42px; padding: 0 var(--space-14);
+  min-width: 140px; height: 34px; padding: 0 var(--space-14);
   border-radius: var(--radius-10);
   border: 1px solid var(--line-normal);
   background: var(--card-bg);
