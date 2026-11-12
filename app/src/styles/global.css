@@ -777,10 +777,9 @@ input[type='number']:focus-visible {
   line-height: 1.4; padding: 4px 8px; border-radius: 6px; white-space: nowrap;
   z-index: 60; pointer-events: none; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-/* 조회 단위 연동 다중 기준 툴팁 — 여러 줄(전일/전주/전월 대비) 좌측 정렬 표시 */
+/* 조회 단위 연동 툴팁 — 텍스트 길이에 맞춰 한 줄로 표시 */
 .rl__delta--multi[data-tip]:hover::after {
-  white-space: pre; text-align: left; font-variant-numeric: tabular-nums;
-  padding: 8px 10px; line-height: 1.5; min-width: 128px;
+  white-space: nowrap; text-align: left; font-variant-numeric: tabular-nums;
 }
 .t-up { color: var(--red-40); }
 .t-down { color: var(--green-40); }
