@@ -450,7 +450,18 @@ export default function InvestmentPriority() {
             <div className="map-controls">
               <div className="ctrl">
                 <span className="ctrl__label">행정구역</span>
-                <span className="select">제주 전체 <Icon name="chevron-down" size={18} /></span>
+                <div className="ds-select">
+                  <select aria-label="시/도" value={city} onChange={(e) => { setCity(e.target.value); setDong('전체'); }}>
+                    {CITIES.map((c) => <option key={c} value={c}>{c === '전체' ? '제주 전체' : c}</option>)}
+                  </select>
+                  <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
+                </div>
+                <div className="ds-select">
+                  <select aria-label="읍면동" value={dong} onChange={(e) => setDong(e.target.value)}>
+                    {dongList.map((d) => <option key={d} value={d}>{d === '전체' ? '읍면동 전체' : d}</option>)}
+                  </select>
+                  <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
+                </div>
               </div>
               <div className="risk-group">
                 <span className="ctrl__label">우선순위</span>
@@ -459,7 +470,16 @@ export default function InvestmentPriority() {
                     <button key={r} className={risk === r ? 'is-active' : ''} onClick={() => setRisk(r)}>{r}</button>
                   ))}
                 </div>
-                <button className="btn-reset" type="button" onClick={() => setRisk('전체')}>초기화</button>
+                <button className="btn-reset" type="button" onClick={() => { setRisk('전체'); setCity('전체'); setDong('전체'); setSortKey('score-desc'); }}>초기화</button>
+              </div>
+              <div className="ctrl">
+                <span className="ctrl__label">정렬 기준</span>
+                <div className="ds-select">
+                  <select aria-label="정렬 기준" value={sortKey} onChange={(e) => setSortKey(e.target.value)}>
+                    {SORTS.map(([k, l]) => <option key={k} value={k}>{l}</option>)}
+                  </select>
+                  <span className="ds-select__ic"><Icon name="chevron-down" size={18} /></span>
+                </div>
               </div>
             </div>
 
