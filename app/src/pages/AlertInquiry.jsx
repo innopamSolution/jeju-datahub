@@ -57,6 +57,16 @@ const PERIODS = [['yesterday', '어제'], ['week', '최근 1주일'], ['1', '최
 
 function fmtDate(s) { return s.split(' ')[0].replace(/-/g, '.'); }
 
+// 알림 발생 근거(비교 기준·비교 기간·증가 건수) 산출 — 전일 대비 민원 증가율 기준
+function alertPct(r) { const m = /(\d+)\s*%/.exec(r.name); return m ? Number(m[1]) : 0; }
+function alertPrevCount(r) { const p = alertPct(r); return p > 0 ? Math.round(r.count / (1 + p / 100)) : r.count; }
+function mmdd(s) { return s.slice(5, 10).replace('-', '.'); }
+function prevMmdd(s) {
+  const d = new Date(`${s.slice(0, 10)}T00:00:00`);
+  d.setDate(d.getDate() - 1);
+  return `${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
+}
+
 export default function AlertInquiry() {
   const navigate = useNavigate();
   const crit = useCriteria();            // 설정(위험단계 알림 관리)과 공유되는 알림 기준
