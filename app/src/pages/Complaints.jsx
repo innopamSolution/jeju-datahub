@@ -146,10 +146,10 @@ const LAYER_DEFS = [...LAYER_RADIO_DEFS, ...LAYER_TOGGLE_DEFS];
 /* 민원 감정 3분할 바 (긍정/보통/부정) */
 function SentiBar({ pos, neu, neg, width = 120, height = 6 }) {
   return (
-    <div style={{ display: 'flex', width, height, borderRadius: height / 2, overflow: 'hidden', flexShrink: 0 }}>
-      <div style={{ width: `${neg}%`, background: 'var(--red-50)' }} />
-      <div style={{ width: `${neu}%`, background: '#f97316' }} />
-      <div style={{ width: `${pos}%`, background: 'var(--green-50)' }} />
+    <div style={{ display: 'flex', gap: 2, width, height, flexShrink: 0 }}>
+      <div style={{ width: `${neg}%`, background: 'var(--red-50)', borderRadius: height / 2 }} />
+      <div style={{ width: `${neu}%`, background: '#f97316', borderRadius: height / 2 }} />
+      <div style={{ width: `${pos}%`, background: 'var(--green-50)', borderRadius: height / 2 }} />
     </div>
   );
 }
