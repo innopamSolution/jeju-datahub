@@ -8,11 +8,17 @@ const SOURCES = [
 ];
 
 /* 헤더 서브 문구: 가장 최신 갱신 시각만 보여주고,
-   ⓘ 호버 시 데이터별 기준일 팝오버를 띄운다 (데이터마다 갱신 주기가 다름) */
-export default function DataFreshness() {
+   ⓘ 호버 시 데이터별 기준일 팝오버를 띄운다 (데이터마다 갱신 주기가 다름)
+   props 로 갱신 시각·표 제목·헤더·목록을 바꿔 화면별로 재사용한다. */
+export default function DataFreshness({
+  updated = '2025.12.01 · 14:32',
+  title = '데이터 기준일',
+  cols = ['데이터', '기준일', '갱신 주기'],
+  sources = SOURCES,
+}) {
   return (
     <div className="page-sub freshness">
-      최근 갱신 2025.12.01 · 14:32
+      최근 갱신 {updated}
       <div className="freshness__ic" tabIndex={0} aria-label="데이터 기준일 안내">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true">
           <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
@@ -20,13 +26,13 @@ export default function DataFreshness() {
           <path d="M12 11.5v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
         </svg>
         <div className="freshness__pop" role="tooltip">
-          <div className="freshness__pop-title">데이터 기준일</div>
+          <div className="freshness__pop-title">{title}</div>
           <table className="freshness__table">
             <thead>
-              <tr><th>데이터</th><th>기준일</th><th>갱신 주기</th></tr>
+              <tr><th>{cols[0]}</th><th>{cols[1]}</th><th>{cols[2]}</th></tr>
             </thead>
             <tbody>
-              {SOURCES.map((s) => (
+              {sources.map((s) => (
                 <tr key={s.name}>
                   <td>{s.name}</td>
                   <td>{s.date}</td>
