@@ -311,7 +311,6 @@ export default function InvestmentPriority() {
         <div>
           <PageCrumb group="분석·시뮬레이션" page="투자우선순위 보드" />
           <h1 className="page-title">공영주차장 투자·보강 우선순위 보드</h1>
-          <p className="page-sub">안전위험도 · 민원 건수 · 이용률 · 사고이력 종합 지표 자동 산정</p>
           <DataFreshness
             updated="2026.04.16"
             title={`지표별 산정 기준 (${period.replace('최근', '최근 ')})`}
