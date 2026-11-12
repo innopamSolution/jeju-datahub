@@ -8,8 +8,10 @@ import { createPortal } from 'react-dom';
 export default function SentiCriteriaInfo({ size = 16, align = 'left' }) {
   const anchorRef = useRef(null);
   const popRef = useRef(null);
-  const [open, setOpen] = useState(false);
+  const [hover, setHover] = useState(false);
+  const [pinned, setPinned] = useState(false); // 클릭 시 고정 (마우스를 떼도 유지)
   const [pos, setPos] = useState({ top: -9999, left: -9999 });
+  const open = hover || pinned;
 
   const place = () => {
     const a = anchorRef.current;
