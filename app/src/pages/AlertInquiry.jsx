@@ -68,14 +68,37 @@ export default function AlertInquiry() {
   const [dateFrom, setDateFrom] = useState('2026-01-01');
   const [dateTo, setDateTo] = useState('2026-05-31');
   const pickRef = useRef(null);
+  const popRef = useRef(null);
+  const [popPos, setPopPos] = useState({ top: 0, left: 0 });
+
+  const placePop = () => {
+    const el = pickRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const W = 360;
+    setPopPos({ top: Math.round(r.bottom + 8), left: Math.round(Math.max(12, Math.min(r.right - W, window.innerWidth - W - 12))) });
+  };
 
   useEffect(() => {
     if (!popOpen) return;
-    const onDoc = (e) => { if (pickRef.current && !pickRef.current.contains(e.target)) setPopOpen(false); };
+    placePop();
+    const onDoc = (e) => {
+      if (pickRef.current && pickRef.current.contains(e.target)) return;
+      if (popRef.current && popRef.current.contains(e.target)) return;
+      setPopOpen(false);
+    };
     const onKey = (e) => { if (e.key === 'Escape') setPopOpen(false); };
+    const onReflow = () => placePop();
     document.addEventListener('click', onDoc);
     document.addEventListener('keydown', onKey);
-    return () => { document.removeEventListener('click', onDoc); document.removeEventListener('keydown', onKey); };
+    window.addEventListener('resize', onReflow);
+    window.addEventListener('scroll', onReflow, true);
+    return () => {
+      document.removeEventListener('click', onDoc);
+      document.removeEventListener('keydown', onKey);
+      window.removeEventListener('resize', onReflow);
+      window.removeEventListener('scroll', onReflow, true);
+    };
   }, [popOpen]);
 
   const rangeBounds = () => {
