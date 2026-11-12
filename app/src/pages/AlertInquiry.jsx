@@ -184,11 +184,11 @@ export default function AlertInquiry() {
         <span className="filterbar__label">기간</span>
         <div className="segment">
           {PERIODS.map(([k, l]) => (
-            <button key={k} className={`segment__btn${period === k ? ' segment__btn--active' : ''}`} type="button" onClick={() => { setPeriod(k); setCustomRange(null); }}>{l}</button>
+            <button key={k} className={`segment__btn${!customRange && !popOpen && period === k ? ' segment__btn--active' : ''}`} type="button" onClick={() => { setPeriod(k); setCustomRange(null); }}>{l}</button>
           ))}
         </div>
         <div className="date-pick" ref={pickRef}>
-          <button className={`segment__btn${customRange ? ' segment__btn--active' : ''}`} type="button"
+          <button className={`segment__btn${customRange || popOpen ? ' segment__btn--active' : ''}`} type="button"
             style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }} aria-haspopup="true" aria-expanded={popOpen}
             onClick={(e) => { e.stopPropagation(); setPopOpen((o) => !o); }}>
             <Icon name="calendar" size={18} /> 기간 선택
