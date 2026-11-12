@@ -44,6 +44,23 @@ export default function SentiCriteriaInfo({ size = 16, align = 'left' }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
+  // 고정(클릭)된 상태에서는 바깥 클릭 / ESC 로만 닫는다
+  useLayoutEffect(() => {
+    if (!pinned) return;
+    const onDoc = (e) => {
+      if (anchorRef.current && anchorRef.current.contains(e.target)) return;
+      if (popRef.current && popRef.current.contains(e.target)) return;
+      setPinned(false);
+    };
+    const onKey = (e) => { if (e.key === 'Escape') setPinned(false); };
+    document.addEventListener('mousedown', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDoc);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [pinned]);
+
   return (
     <span
       ref={anchorRef}
