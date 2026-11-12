@@ -85,6 +85,16 @@ export default function SentiCriteriaInfo({ size = 16, align = 'left' }) {
           ref={popRef}
           style={{ top: pos.top, left: pos.left }}
         >
+          <button
+            type="button"
+            className="senti-pop__close"
+            aria-label="닫기"
+            onClick={(e) => { e.stopPropagation(); setPinned(false); setHover(false); }}
+          >
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
           <div className="senti-pop__title">감정 분류 기준</div>
           <ul className="senti-pop__defs">
             <li><span className="senti-tag senti-tag--pos">긍정</span>불만 없음 (신고·문의·요청)</li>
