@@ -125,7 +125,6 @@ function lotPopup(lot, fill, t) {
       '<span class="lp__name">' + lot.name + '</span></div>' +
     '<div class="lp__meta">' + lot.addr + ' · 총 ' + lot.spaces + '면</div>' +
     '<div class="lp__meta">준공 ' + lot.year + '년 (' + lot.age + '년 경과)</div>' +
-    '<div class="lp__cap">지표별 환산 점수 (100점 만점 · 건수·이용률 등을 점수화)</div>' +
     '<div class="lp__metrics">' +
       bar('안전위험도', lot.m.safety) +
       bar('민원 건수', lot.m.civil) +
