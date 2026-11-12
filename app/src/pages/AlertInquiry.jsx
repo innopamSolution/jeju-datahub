@@ -266,7 +266,7 @@ export default function AlertInquiry() {
             <div>
               <div className="stat__label">누적 민원 수</div>
               <div className="stat__value">{sum.toLocaleString()}<span className="stat__unit">건</span></div>
-              <div className="stat__delta">선택 기간 합계</div>
+              <div className="stat__delta">{rangeText} 합계</div>
             </div>
           </div>
         </section>
