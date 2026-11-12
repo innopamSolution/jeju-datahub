@@ -742,8 +742,9 @@ export default function Complaints() {
             onClick={(e) => { e.stopPropagation(); setExportOpen((o) => !o); }}>
             <Icon name="download" size={18} /> 내보내기
           </button>
-          {exportOpen && (
-            <div className="sim-export__menu" role="menu">
+          {exportOpen && createPortal(
+            <div className="sim-export__menu sim-export__menu--fixed" role="menu" ref={exportMenuRef}
+              style={{ top: exportPos.top, left: exportPos.left }} onClick={(e) => e.stopPropagation()}>
               <button type="button" role="menuitem" className="sim-export__item"
                 onClick={() => { setExportOpen(false); exportSectionsPdf(exportData()); }}>
                 PDF 파일 (.pdf)
@@ -752,7 +753,8 @@ export default function Complaints() {
                 onClick={() => { setExportOpen(false); exportSectionsDocx(exportData()); }}>
                 Word 파일 (.docx)
               </button>
-            </div>
+            </div>,
+            document.body
           )}
         </div>
       </div>
