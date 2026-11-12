@@ -142,7 +142,7 @@ export default function InvestmentPriority() {
   const rowRefs   = useRef([]);
   const listRef   = useRef(null);
   const [risk, setRisk] = useState('전체');
-  const [period, setPeriod] = useState('최근3개월');
+  const [period, setPeriod] = useState('최근1년');
   // 분석 기간 — 커스텀 기간 설정(날짜 선택)
   const [customRange, setCustomRange] = useState(null); // { from, to } (YYYY.MM.DD)
   const [datePopOpen, setDatePopOpen] = useState(false);
