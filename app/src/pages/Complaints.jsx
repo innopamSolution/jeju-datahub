@@ -14,6 +14,7 @@ import { SEOGWIPO_PARKING } from '../data/seogwipoParking';
 import { JEJU_PARKING } from '../data/jejuParking';
 import { exportSectionsPdf, exportSectionsDocx, hBarChartHtml, stackBarChartHtml } from '../utils/pageExport';
 import DataFreshness from '../components/DataFreshness';
+import SentiCriteriaInfo from '../components/SentiCriteriaInfo';
 
 const FROWN_ICON = (
   <svg viewBox="0 0 24 24" width="26" height="26" fill="none" aria-hidden="true">
