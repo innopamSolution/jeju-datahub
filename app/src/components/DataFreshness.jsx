@@ -29,14 +29,12 @@ export default function DataFreshness({
           <div className="freshness__pop-title">{title}</div>
           <table className="freshness__table">
             <thead>
-              <tr><th>{cols[0]}</th><th>{cols[1]}</th><th>{cols[2]}</th></tr>
+              <tr>{cols.map((c, i) => <th key={i}>{c}</th>)}</tr>
             </thead>
             <tbody>
               {sources.map((s) => (
                 <tr key={s.name}>
-                  <td>{s.name}</td>
-                  <td>{s.date}</td>
-                  <td>{s.cycle}</td>
+                  {[s.name, s.date, s.cycle].slice(0, cols.length).map((v, i) => <td key={i}>{v}</td>)}
                 </tr>
               ))}
             </tbody>
