@@ -393,7 +393,8 @@ export default function InvestmentPriority() {
               <div className="card-head" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 10 }}>
                 <div style={{ minWidth: 0 }}>
                   <h2 className="card-head__title">투자·보강 우선순위</h2>
-                  <p className="card-head__sub">분석 기간 : {period.replace('최근', '최근 ')} · 종합점수 기준 : {weightLine}{isDefaultW(appliedW) ? '' : ' (조정됨)'}</p>
+                  <p className="card-head__sub prio-cond">조회 조건 · {period.replace('최근', '최근 ')} · 제주 전체 · 우선순위 {risk} · 결과 {visibleLots.length}개소</p>
+                  <p className="card-head__sub">종합점수 기준 : {weightLine}{isDefaultW(appliedW) ? '' : ' (조정됨)'}</p>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, justifyContent: 'flex-end' }}>
                   {/* 분석 계수 조정 — 종합점수 가중치 + 분석 계수 (다른 분석 화면과 동일 패턴) */}
