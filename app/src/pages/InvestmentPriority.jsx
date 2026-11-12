@@ -282,6 +282,19 @@ export default function InvestmentPriority() {
     mapInst.current = map;
   }, []);
 
+  // 우선순위 조회 조건에 따라 지도 마커 표시/숨김
+  useEffect(() => {
+    const map = mapInst.current;
+    if (!map) return;
+    map.closePopup();
+    LOTS.forEach((lot) => {
+      const mk = markerMap.current[lot.rank];
+      if (!mk) return;
+      if (matchRisk(lot)) mk.addTo(map);
+      else map.removeLayer(mk);
+    });
+  }, [risk]);
+
   const handleRowClick = (rank) => {
     const mk = markerMap.current[rank];
     if (!mk || !mapInst.current) return;
