@@ -873,9 +873,9 @@ input[type='number']:focus-visible {
 .senti-info {
   position: relative;
   display: inline-flex; align-items: center; justify-content: center;
-  color: var(--text-assistive); cursor: help;
+  color: var(--primary); cursor: help;
 }
-.senti-info:hover, .senti-info:focus { color: var(--blue-50); outline: none; }
+.senti-info:hover, .senti-info:focus { color: var(--blue-45); outline: none; }
 .senti-pop {
   position: absolute; top: calc(100% + 8px); left: -8px;
   z-index: 9999;
