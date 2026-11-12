@@ -587,7 +587,7 @@ export default function PolicySimulation() {
                 <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--primary)' }}>{active ? (redPct === 0 ? <span style={{ fontSize: 18 }}>변화 없음</span> : <>{Math.abs(redPct)}%<span style={{ fontSize: 15, fontWeight: 700, marginLeft: 3 }}>감소</span></>) : '—'}</div>
                 <div style={{ fontSize: 12, color: 'var(--text-neutral)', marginTop: 4 }}>{BASE_MONTHLY}건 → {afterMonthly}건</div>
                 {active && redPct !== 0 && (
-                  <div style={{ fontSize: 12, color: 'var(--text-assistive)', marginTop: 2 }}>월평균 약 {Math.abs(BASE_MONTHLY - afterMonthly)}건 감소 예상</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-alternative)', marginTop: 2 }}>월평균 약 {Math.abs(BASE_MONTHLY - afterMonthly)}건 감소 예상</div>
                 )}
               </div>
               <div style={{ padding: '16px 20px', borderRadius: 12, background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
