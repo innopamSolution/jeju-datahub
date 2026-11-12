@@ -521,13 +521,16 @@ export default function InvestmentPriority() {
                 </div>
               )}
               <div className="prio-list" ref={listRef}>
-                {LOTS.map((lot, i) => {
+                {visibleLots.length === 0 && (
+                  <div className="alert-empty" style={{ padding: 'var(--space-24)' }}>조회 조건에 해당하는 주차장이 없습니다.</div>
+                )}
+                {visibleLots.map((lot) => {
                   const t = TIER[lot.tier];
                   return (
                     <div
                       key={lot.rank}
                       className={`prio-row${activeRank === lot.rank ? ' is-active' : ''}`}
-                      ref={(el) => (rowRefs.current[i] = el)}
+                      ref={(el) => (rowRefs.current[lot.rank - 1] = el)}
                       onClick={() => handleRowClick(lot.rank)}
                     >
                       <span className="prio-row__rank">{lot.rank}</span>
