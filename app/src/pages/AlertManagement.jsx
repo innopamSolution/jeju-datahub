@@ -4,6 +4,7 @@ import Icon from '../components/Icon';
 import NotificationBell from '../components/NotificationBell';
 import PageCrumb from '../components/PageCrumb';
 import Pager from '../components/Pager';
+import { useCriteria, setCriteria } from '../lib/alertCriteria';
 import { CURRENT_USER } from '../data/currentUser';
 import ConfirmDialog from '../components/ConfirmDialog';
 
