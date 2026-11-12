@@ -676,7 +676,7 @@ export default function Complaints() {
         {/* 기간 선택 팝오버 */}
         <div className="date-pick" ref={datePickRef}>
           <button
-            className={`segment__btn${customRange ? ' segment__btn--active' : ''}`}
+            className={`segment__btn${customRange || datePopOpen ? ' segment__btn--active' : ''}`}
             type="button"
             style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
             onClick={(e) => { e.stopPropagation(); setDatePopOpen((o) => !o); }}
