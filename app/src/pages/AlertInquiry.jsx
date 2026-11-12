@@ -52,9 +52,6 @@ const META = {
 
 const TODAY = new Date('2026-05-31T23:59:59');
 
-// 위험단계 알림 관리의 '알림 기준'과 동일한 기본값(민원 증가율 % 이상 + 최소 건수)
-const ALERT_CRIT = { severe: 30, warn: 20, caution: 10, minCount: 10 };
-
 const LEVELS = [['all', '전체'], ['severe', '심각'], ['warn', '경고'], ['caution', '주의']];
 const PERIODS = [['yesterday', '어제'], ['week', '최근 1주일'], ['1', '최근 1개월'], ['3', '최근 3개월']];
 
