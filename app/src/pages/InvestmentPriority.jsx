@@ -346,10 +346,6 @@ export default function InvestmentPriority() {
                 <span className="ctrl__label">행정구역</span>
                 <span className="select">제주 전체 <Icon name="chevron-down" size={18} /></span>
               </div>
-              <div className="ctrl">
-                <span className="ctrl__label">정렬 기준</span>
-                <span className="select">종합점수 높은순 <Icon name="chevron-down" size={18} /></span>
-              </div>
               <div className="risk-group">
                 <span className="ctrl__label">우선순위</span>
                 <div className="risk-seg">
