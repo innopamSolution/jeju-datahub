@@ -89,6 +89,22 @@ const REGIONS = [
   },
 ];
 
+/* 조회 단위별 증감 비교 기준 — period(어제/최근 1주일/최근 1개월) → 기준 라벨·환산 계수.
+   저장된 delta 값은 '어제(전일)' 기준이라, 더 긴 기간일수록 누적 변동이 커지도록 factor 로 환산한다. */
+const DASH_BASIS = {
+  '어제':       { label: '전일대비', factor: 1 },
+  '최근 1주일': { label: '전주대비', factor: 2.0 },
+  '최근 1개월': { label: '전월대비', factor: 3.4 },
+};
+function regionDelta(delta, period, customRange) {
+  const meta = customRange ? { label: '전기대비', factor: 2.5 } : (DASH_BASIS[period] ?? { label: '전기대비', factor: 1 });
+  const m = (delta?.label || '').match(/([▲▼])\s*(\d+(?:\.\d+)?)/);
+  if (!m) return { cls: 't-flat', text: `${meta.label} 동일` };
+  const dir = m[1] === '▲' ? 'up' : 'down';
+  const n = Math.max(1, Math.round(parseFloat(m[2]) * meta.factor));
+  return { cls: `t-${dir}`, text: `${m[1]} ${meta.label} ${n}% ${dir === 'up' ? '상승' : '하락'}` };
+}
+
 /* 최근 질문이 없을 때 보여줄 기본 추천 질문 */
 const DEFAULT_AI_QUESTIONS = [
   '불법주정차 단속 관련 조례 검색해줘',
