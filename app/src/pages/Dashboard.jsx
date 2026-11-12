@@ -340,7 +340,7 @@ export default function Dashboard() {
       <div className="filterbar">
         <span className="filterbar__label">조회 단위</span>
         <div className="segment">
-          {['어제', '주간', '월간'].map((k) => (
+          {['어제', '최근 1주일', '최근 1개월'].map((k) => (
             <button key={k} type="button" className={`segment__btn ${!customRange && !datePopOpen && period === k ? 'segment__btn--active' : ''}`} onClick={() => { setPeriod(k); setCustomRange(null); }}>{k}</button>
           ))}
         </div>
