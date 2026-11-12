@@ -321,12 +321,12 @@ export default function InvestmentPriority() {
           <DataFreshness
             updated="2026.04.16"
             title={`지표별 산정 기준 (${period.replace('최근', '최근 ')})`}
-            cols={['지표', '산정 기간', '갱신 주기']}
+            cols={['지표', '산정 기간', '최근 갱신일']}
             sources={[
-              { name: '안전위험도', date: period.replace('최근', '최근 '), cycle: '분기' },
-              { name: '민원 건수', date: period.replace('최근', '최근 '), cycle: '일 1회' },
-              { name: '이용률', date: period.replace('최근', '최근 '), cycle: '일 1회' },
-              { name: '사고 이력', date: period.replace('최근', '최근 '), cycle: '수시' },
+              { name: '안전위험도', date: period.replace('최근', '최근 '), cycle: '2026.01.15' },
+              { name: '민원 건수', date: period.replace('최근', '최근 '), cycle: '2026.04.16' },
+              { name: '이용률', date: period.replace('최근', '최근 '), cycle: '2026.04.16' },
+              { name: '사고 이력', date: period.replace('최근', '최근 '), cycle: '2026.03.28' },
             ]}
           />
         </div>
