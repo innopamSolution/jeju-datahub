@@ -579,14 +579,18 @@ export default function PolicySimulation() {
             <div style={{ flex: 1, minHeight: 0 }}><EffectChart reduction={redPct} /></div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div style={{ padding: '16px 20px', borderRadius: 12, background: 'var(--blue-99)', border: '1px solid var(--blue-90)' }}>
-                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 6 }}>민원 감소 예측</div>
-                <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--primary)' }}>{active ? active.reduction : '—'}</div>
-                <div style={{ fontSize: 12, color: 'var(--text-neutral)', marginTop: 4 }}>{BASE_MONTHLY}건 → {afterMonthly}건 월평균</div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 6 }}>예상 월평균 민원 감소</div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--primary)' }}>{active ? (redPct === 0 ? '변화 없음' : `${Math.abs(redPct)}% 감소`) : '—'}</div>
+                <div style={{ fontSize: 12, color: 'var(--text-neutral)', marginTop: 4 }}>{BASE_MONTHLY}건 → {afterMonthly}건</div>
+                {active && redPct !== 0 && (
+                  <div style={{ fontSize: 12, color: 'var(--text-assistive)', marginTop: 2 }}>월평균 약 {Math.abs(BASE_MONTHLY - afterMonthly)}건 감소 예상</div>
+                )}
               </div>
               <div style={{ padding: '16px 20px', borderRadius: 12, background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
-                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 6 }}>혼잡도 개선</div>
-                <div style={{ fontSize: 28, fontWeight: 800, color: '#16a34a' }}>{active ? active.improvement : '—'}</div>
-                <div style={{ fontSize: 12, color: 'var(--text-neutral)', marginTop: 4 }}>혼잡 지수 {BASE_CONGESTION} → {afterCongestion}</div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-neutral)', marginBottom: 6 }}>예상 혼잡도 개선</div>
+                <div style={{ fontSize: congChanged ? 28 : 20, fontWeight: 800, color: '#16a34a' }}>{active ? (congChanged ? `${impPct}% 개선` : '혼잡도 변화 없음') : '—'}</div>
+                <div style={{ fontSize: 12, color: 'var(--text-neutral)', marginTop: 4 }}>혼잡 지수 {BASE_CONGESTION.toFixed(2)} → {afterCongestion}</div>
+                <div style={{ fontSize: 12, color: 'var(--text-assistive)', marginTop: 2 }}>혼잡 지수 0~1 · 낮을수록 원활</div>
               </div>
             </div>
           </div>
