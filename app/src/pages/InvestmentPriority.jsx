@@ -134,6 +134,10 @@ export default function InvestmentPriority() {
   const listRef   = useRef(null);
   const [risk, setRisk] = useState('전체');
   const [period, setPeriod] = useState('최근1개월');
+  // 조회 조건(우선순위) → 지도·순위 필터
+  const TIER_OF = { 높음: 'high', 중간: 'mid', 낮음: 'low' };
+  const matchRisk = (lot) => risk === '전체' || lot.tier === TIER_OF[risk];
+  const visibleLots = LOTS.filter(matchRisk);
   const [activeRank, setActiveRank] = useState(null);
   const [exportOpen, setExportOpen] = useState(false);
   const exportRef = useRef(null);
