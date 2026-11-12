@@ -142,10 +142,40 @@ export default function InvestmentPriority() {
   const listRef   = useRef(null);
   const [risk, setRisk] = useState('전체');
   const [period, setPeriod] = useState('최근1개월');
+  // 분석 기간 — 커스텀 기간 설정(날짜 선택)
+  const [customRange, setCustomRange] = useState(null); // { from, to } (YYYY.MM.DD)
+  const [datePopOpen, setDatePopOpen] = useState(false);
+  const [dateFrom, setDateFrom] = useState('2026-01-01');
+  const [dateTo, setDateTo] = useState('2026-03-31');
+  const datePickRef = useRef(null);
+  const datePopRef = useRef(null);
+  const [datePopPos, setDatePopPos] = useState({ top: 0, left: 0 });
   // 조회 조건(우선순위) → 지도·순위 필터
   const TIER_OF = { 높음: 'high', 중간: 'mid', 낮음: 'low' };
   const matchRisk = (lot) => risk === '전체' || lot.tier === TIER_OF[risk];
   const visibleLots = LOTS.filter(matchRisk);
+  // 활성 분석 기간 라벨 + 사고 KPI 산출(커스텀 기간은 기간 길이를 프리셋에 매핑)
+  const periodLabel = customRange ? `${customRange.from} ~ ${customRange.to}` : period.replace('최근', '최근 ');
+  const rangeMonths = (r) => Math.max(1, Math.round((new Date(r.to) - new Date(r.from)) / (1000 * 60 * 60 * 24 * 30)));
+  const accKey = customRange
+    ? (rangeMonths(customRange) <= 1 ? '최근1개월' : rangeMonths(customRange) <= 3 ? '최근3개월' : '최근6개월')
+    : period;
+  const acc = ACCIDENT_BY_PERIOD[accKey] ?? ACCIDENT_BY_PERIOD['최근3개월'];
+  const accLabel = customRange ? '선택 기간 사고' : `${period.replace('최근', '최근 ')} 사고`;
+  const placeDatePop = () => {
+    const el = datePickRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const W = 360;
+    setDatePopPos({ top: Math.round(r.bottom + 8), left: Math.round(Math.max(12, Math.min(r.left, window.innerWidth - W - 12))) });
+  };
+  const applyDateRange = () => {
+    if (dateFrom && dateTo) {
+      const fmt = (s) => s.replace(/-/g, '.');
+      setCustomRange({ from: fmt(dateFrom), to: fmt(dateTo) });
+    }
+    setDatePopOpen(false);
+  };
   const [activeRank, setActiveRank] = useState(null);
   const [exportOpen, setExportOpen] = useState(false);
   const exportRef = useRef(null);
