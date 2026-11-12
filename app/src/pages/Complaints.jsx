@@ -131,17 +131,13 @@ const parseDelta = (delta) => {
 };
 const scaleDelta = (base, factor) =>
   base.arrow === '—' ? '변동 없음' : `${base.arrow}${Math.max(1, Math.round(base.num * factor))}${base.suffix}`;
-/* 화살표 아래 툴팁 내용 — 전일/전주/전월(+ 기간 선택 시 전기) 대비를 모두 나열하고
-   현재 조회 단위에 해당하는 줄을 ▸ 로 강조한다. 여러 줄은 \n 으로 구분(white-space: pre). */
+/* 화살표 아래 툴팁 내용 — 현재 조회 단위에 해당하는 비교 기준만 표시한다.
+   어제 → 전일 대비, 최근 1주일 → 전주 대비, 최근 1개월 → 전월 대비, 기간 선택 → 선택 기간 대비. */
 const deltaTip = (delta, period, customRange) => {
   const base = parseDelta(delta);
-  const curKey = customRange ? '기간' : period;
-  const lines = Object.entries(PERIOD_META).map(([k, meta]) => {
-    const active = k === curKey;
-    return `${active ? '▸ ' : '  '}${meta.label}  ${scaleDelta(base, meta.factor)}`;
-  });
-  if (customRange) lines.unshift(`▸ ${customRange} 대비  ${scaleDelta(base, 1.2)}`);
-  return lines.join('\n');
+  if (customRange) return `${customRange} 대비 ${scaleDelta(base, 1.2)}`;
+  const meta = PERIOD_META[period];
+  return meta ? `${meta.label} ${scaleDelta(base, meta.factor)}` : `전기 대비 ${scaleDelta(base, 1)}`;
 };
 const basisLabel = (period, customRange) =>
   customRange ? `${customRange} 기준` : (PERIOD_META[period]?.basis ?? '전기 기준');
