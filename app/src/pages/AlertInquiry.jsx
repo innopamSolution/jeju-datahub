@@ -247,7 +247,7 @@ export default function AlertInquiry() {
             <div>
               <div className="stat__label">조회 알림 건수</div>
               <div className="stat__value">{rows.length}<span className="stat__unit">건</span></div>
-              <div className="stat__delta">선택 조건 기준</div>
+              <div className="stat__delta">{periodBasis} 기준</div>
             </div>
           </div>
           <div className="card stat">
