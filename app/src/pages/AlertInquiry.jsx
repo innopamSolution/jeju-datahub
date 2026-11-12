@@ -216,6 +216,15 @@ export default function AlertInquiry() {
         <span className="filterbar__right">조회 결과 <strong>{rows.length}건</strong></span>
       </div>
 
+      {/* 위험 단계 판정 기준 안내 */}
+      <div className="alert-criteria">
+        <span className="alert-criteria__label">위험 단계 판정 기준</span>
+        <span className="alert-criteria__item"><span className="badge badge--severe">심각</span> 증가율 {ALERT_CRIT.severe}% 이상</span>
+        <span className="alert-criteria__item"><span className="badge badge--warn">경고</span> {ALERT_CRIT.warn}% 이상</span>
+        <span className="alert-criteria__item"><span className="badge badge--caution">주의</span> {ALERT_CRIT.caution}% 이상</span>
+        <span className="alert-criteria__note">· 민원 {ALERT_CRIT.minCount}건 이상일 때 발생 (최소 건수 미만이면 미발생)</span>
+      </div>
+
       {/* 콘텐츠 */}
       <div className="content content--alert">
         {/* 통계 카드 */}
