@@ -410,9 +410,9 @@ export default function InvestmentPriority() {
           <div className="card stat">
             <div className="stat__icon stat__icon--orange"><Icon name="car" size={28} /></div>
             <div>
-              <div className="stat__label">{period.replace('최근', '최근 ')} 사고</div>
-              <div className="stat__value">{(ACCIDENT_BY_PERIOD[period] ?? ACCIDENT_BY_PERIOD['최근3개월']).count}<span className="stat__unit">건</span></div>
-              <div className="stat__delta">{(ACCIDENT_BY_PERIOD[period] ?? ACCIDENT_BY_PERIOD['최근3개월']).lots}</div>
+              <div className="stat__label">{accLabel}</div>
+              <div className="stat__value">{acc.count}<span className="stat__unit">건</span></div>
+              <div className="stat__delta">{acc.lots}</div>
             </div>
           </div>
         </section>
