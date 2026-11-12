@@ -220,7 +220,6 @@ export default function AlertInquiry() {
 
       {/* 위험 단계 판정 기준 안내 */}
       <div className="alert-criteria">
-        <span className="alert-criteria__label">위험 단계 판정 기준</span>
         <span className="alert-criteria__item"><span className="badge badge--severe">심각</span> 증가율 {crit.severe}% 이상</span>
         <span className="alert-criteria__item"><span className="badge badge--warn">경고</span> {crit.warn}% 이상</span>
         <span className="alert-criteria__item"><span className="badge badge--caution">주의</span> {crit.caution}% 이상</span>
