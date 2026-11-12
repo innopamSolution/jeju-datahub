@@ -1449,6 +1449,16 @@ input[type='number']:focus-visible {
 /* 위험단계 알림: 셀렉트 2개라 조금 더 압축 */
 .alert-select,
 .alert-select select { min-width: 108px; }
+/* 위험 단계 판정 기준 안내 (필터바 아래) */
+.alert-criteria {
+  display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-8) var(--space-16);
+  padding: 0 var(--space-40);
+  margin: calc(var(--space-24) * -1) 0 var(--space-24);
+  font-size: var(--label2-size); color: var(--text-neutral);
+}
+.alert-criteria__label { font-weight: var(--weight-bold); color: var(--text-normal); }
+.alert-criteria__item { display: inline-flex; align-items: center; gap: var(--space-6); }
+.alert-criteria__note { color: var(--text-assistive); }
 .alert-card__hint { font-size: var(--label1-size); color: var(--text-neutral); }
 .alert-empty { padding: var(--space-40); text-align: center; color: var(--text-neutral); font-size: var(--body2-size); }
 .content--alert { padding: 0 var(--space-40) var(--space-32); overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: var(--space-24); scrollbar-width: thin; scrollbar-color: var(--line-normal) transparent; }
