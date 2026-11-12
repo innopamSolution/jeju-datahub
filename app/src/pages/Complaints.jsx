@@ -938,37 +938,7 @@ export default function Complaints() {
                   <h2 className="card-head__title">부정 민원 상위 지역</h2>
                   <p className="card-head__sub">감정 분석 기준 · 부정 비율 순</p>
                 </div>
-                <span className="senti-info" tabIndex={0} aria-label="감정 분류 기준 안내">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
-                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
-                    <path d="M12 11v5.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                    <circle cx="12" cy="7.6" r="1.2" fill="currentColor" />
-                  </svg>
-                  <div className="senti-pop senti-pop--right" role="tooltip">
-                    <div className="senti-pop__title">감정 분류 기준</div>
-                    <ul className="senti-pop__defs">
-                      <li><span className="senti-tag senti-tag--pos">긍정</span>불만 없음 (신고·문의·요청)</li>
-                      <li><span className="senti-tag senti-tag--neu">보통</span>불만은 있으나 감정이 실리지 않음 (사무적 지적, 가벼운 아쉬움)</li>
-                      <li><span className="senti-tag senti-tag--neg">부정</span>민원 처리 주체(기관·부서·시설 관리·제도와 처리 결과·응대)를 향한 불만이 감정으로 드러남</li>
-                    </ul>
-                    <div className="senti-pop__sec">
-                      <div className="senti-pop__sub">‘부정’으로 보는 신호 <span>(하나 이상)</span></div>
-                      <p className="senti-pop__txt">미조치·지연 항의, 응대 항의, 따지는 반문, 부정 감정어(완곡한 표현 포함), 불신·단념, 짜증 섞인 어미·말 끊기, 반말 힐난</p>
-                    </div>
-                    <div className="senti-pop__sec">
-                      <div className="senti-pop__sub">‘부정’으로 올리지 않는 경우</div>
-                      <ul className="senti-pop__list">
-                        <li>사연이 심각해도 감정 없이 사실만 설명한 경우</li>
-                        <li>제3자(차주·업자·이웃·다른 운전자)나 상황에 대한 불만</li>
-                        <li>무뚝뚝하거나 짧은 대답, 방언 어미</li>
-                        <li>사실 확인·경위 설명·절차 문의</li>
-                      </ul>
-                    </div>
-                    <div className="senti-pop__rule">
-                      욕설·성희롱 단어가 있으면 강도와 관계없이 <strong>‘부정’</strong>
-                    </div>
-                  </div>
-                </span>
+                <SentiCriteriaInfo size={16} align="right" />
               </div>
               <div className="rl">
                 {(sentiExpanded ? SENTIMENT_REGIONS : SENTIMENT_REGIONS.slice(0, 5)).map((s) => (
