@@ -1371,8 +1371,8 @@ input[type='number']:focus-visible {
 .rt tbody tr:last-child td { border-bottom: none; }
 .rt tbody tr { transition: background var(--duration-fast) var(--ease-out); }
 .rt tbody tr:hover td { background: var(--fill-alternative); }
-.rt-name { font-size: var(--headline2-size); font-weight: var(--weight-semibold); color: var(--text-strong); letter-spacing: -0.01em; }
-.rt-name__sub { display: block; margin-top: var(--space-4); font-size: var(--label2-size); font-weight: var(--weight-regular); color: var(--text-assistive); letter-spacing: -0.01em; }
+.rt-name { font-size: var(--body1-size); font-weight: var(--weight-semibold); color: var(--text-strong); letter-spacing: -0.01em; }
+.rt-name__sub { display: block; margin-top: var(--space-4); font-size: var(--label2-size); font-weight: var(--weight-regular); color: var(--text-alternative); letter-spacing: -0.01em; }
 .rt-date { font-family: var(--font-sans); color: var(--text-neutral); }
 .col-center { text-align: center; }
 .rpt-list .rt td:not(:first-child),
