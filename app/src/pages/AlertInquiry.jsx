@@ -158,7 +158,7 @@ export default function AlertInquiry() {
       </header>
 
       {/* 필터 바 */}
-      <div className="filterbar">
+      <div className="filterbar filterbar--alert">
         <span className="filterbar__label">단계</span>
         <div className="segment">
           {LEVELS.map(([k, l]) => (
