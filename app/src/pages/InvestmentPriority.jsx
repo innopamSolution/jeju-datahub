@@ -312,6 +312,17 @@ export default function InvestmentPriority() {
           <PageCrumb group="분석·시뮬레이션" page="투자우선순위 보드" />
           <h1 className="page-title">공영주차장 투자·보강 우선순위 보드</h1>
           <p className="page-sub">안전위험도 · 민원 건수 · 이용률 · 사고이력 종합 지표 자동 산정</p>
+          <DataFreshness
+            updated="2026.04.16"
+            title={`지표별 산정 기준 (${period.replace('최근', '최근 ')})`}
+            cols={['지표', '산정 기간', '갱신 주기']}
+            sources={[
+              { name: '안전위험도', date: period.replace('최근', '최근 '), cycle: '분기' },
+              { name: '민원 건수', date: period.replace('최근', '최근 '), cycle: '일 1회' },
+              { name: '이용률', date: period.replace('최근', '최근 '), cycle: '일 1회' },
+              { name: '사고 이력', date: period.replace('최근', '최근 '), cycle: '수시' },
+            ]}
+          />
         </div>
         <div className="topbar__actions">
           <button className="btn btn--ai" type="button" onClick={() => navigate('/ai-assistant', { state: { focus: true } })}>{AI_ICON} AI 대화 시작하기</button>
