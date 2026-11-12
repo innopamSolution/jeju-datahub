@@ -268,7 +268,10 @@ export default function PolicySimulation() {
   const BASE_MONTHLY = 52;
   const BASE_CONGESTION = 0.78;
   const afterMonthly = Math.round(BASE_MONTHLY * (1 + redPct / 100));
-  const afterCongestion = (BASE_CONGESTION * (1 - impPct / 100)).toFixed(2);
+  const afterCongRaw = BASE_CONGESTION * (1 - impPct / 100);
+  const afterCongestion = afterCongRaw.toFixed(2);
+  const congChanged = impPct !== 0;                                   // 실제 변화 여부
+  const congRoundedFlat = congChanged && afterCongestion === BASE_CONGESTION.toFixed(2); // 변했지만 반올림상 동일
 
   useEffect(() => {
     if (!exportOpen) return;
