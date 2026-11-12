@@ -67,10 +67,11 @@ export default function SentiCriteriaInfo({ size = 16, align = 'left' }) {
       className="senti-info"
       tabIndex={0}
       aria-label="감정 분류 기준 안내"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-      onFocus={() => setOpen(true)}
-      onBlur={() => setOpen(false)}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onFocus={() => setHover(true)}
+      onBlur={() => setHover(false)}
+      onClick={(e) => { e.stopPropagation(); setPinned((p) => !p); }}
     >
       <svg viewBox="0 0 24 24" width={size} height={size} fill="none" aria-hidden="true">
         <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
