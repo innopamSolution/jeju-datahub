@@ -1306,6 +1306,9 @@ input[type='number']:focus-visible {
 .rpt-cfg__fields { display: flex; gap: var(--space-20); align-items: center; flex-wrap: wrap; }
 .rpt-cfg__fields .field { flex: 0 0 auto; flex-direction: row; align-items: center; gap: var(--space-10); }
 .rpt-cfg__fields .field__label { white-space: nowrap; }
+/* 설정바 셀렉트 크기를 상단 필터바와 동일하게(높이 34·폭 140) */
+.rpt-cfg__fields .ds-select { width: 140px; }
+.rpt-cfg__fields .ds-select select { height: 34px; width: 100%; min-width: 0; }
 .seg-row { display: flex; gap: var(--space-8); }
 .seg-pill { height: 46px; padding: 0 var(--space-20); border-radius: var(--radius-10); border: 1px solid var(--line-normal); background: var(--card-bg); font-family: var(--font-body); font-size: var(--label1-size); font-weight: var(--weight-semibold); color: var(--text-neutral); cursor: pointer; white-space: nowrap; transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out); }
 .seg-pill:hover { background: var(--fill-alternative); }
