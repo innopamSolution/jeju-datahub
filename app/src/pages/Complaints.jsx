@@ -148,7 +148,7 @@ function SentiBar({ pos, neu, neg, width = 120, height = 6 }) {
   return (
     <div style={{ display: 'flex', width, height, borderRadius: height / 2, overflow: 'hidden', flexShrink: 0 }}>
       <div style={{ width: `${neg}%`, background: 'var(--red-50)' }} />
-      <div style={{ width: `${neu}%`, background: 'var(--cool-neutral-80)' }} />
+      <div style={{ width: `${neu}%`, background: 'var(--cool-neutral-70)' }} />
       <div style={{ width: `${pos}%`, background: 'var(--green-50)' }} />
     </div>
   );
