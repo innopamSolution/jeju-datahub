@@ -150,10 +150,33 @@ export default function InvestmentPriority() {
   const datePickRef = useRef(null);
   const datePopRef = useRef(null);
   const [datePopPos, setDatePopPos] = useState({ top: 0, left: 0 });
+  // 행정구역(시/도·읍면동) + 정렬 기준
+  const [city, setCity] = useState('전체');
+  const [dong, setDong] = useState('전체');
+  const [sortKey, setSortKey] = useState('score-desc');
+  const cityOf = (lot) => lot.addr.split(' ')[0];
+  const dongOf = (lot) => lot.addr.split(' ')[1];
+  const CITIES = ['전체', ...Array.from(new Set(LOTS.map(cityOf)))];
+  const dongList = ['전체', ...Array.from(new Set(LOTS.filter((l) => city === '전체' || cityOf(l) === city).map(dongOf)))];
+  const SORTS = [
+    ['score-desc', '종합점수 높은순'],
+    ['score-asc', '종합점수 낮은순'],
+    ['age-desc', '준공 오래된순'],
+    ['spaces-desc', '면수 많은순'],
+  ];
+  const SORT_FN = {
+    'score-desc': (a, b) => b.score - a.score,
+    'score-asc': (a, b) => a.score - b.score,
+    'age-desc': (a, b) => b.age - a.age,
+    'spaces-desc': (a, b) => b.spaces - a.spaces,
+  };
+  const regionLabel = city === '전체' ? '제주 전체' : (dong === '전체' ? city : `${city} ${dong}`);
   // 조회 조건(우선순위) → 지도·순위 필터
   const TIER_OF = { 높음: 'high', 중간: 'mid', 낮음: 'low' };
   const matchRisk = (lot) => risk === '전체' || lot.tier === TIER_OF[risk];
-  const visibleLots = LOTS.filter(matchRisk);
+  const visibleLots = LOTS
+    .filter((l) => matchRisk(l) && (city === '전체' || cityOf(l) === city) && (dong === '전체' || dongOf(l) === dong))
+    .sort(SORT_FN[sortKey] ?? SORT_FN['score-desc']);
   // KPI — 실제 데이터와 연동
   const totalLots = LOTS.length;
   const highCount = LOTS.filter((l) => l.tier === 'high').length;
