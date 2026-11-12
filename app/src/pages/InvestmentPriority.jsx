@@ -407,7 +407,7 @@ export default function InvestmentPriority() {
             <div className="stat__icon stat__icon--red"><Icon name="warning" size={28} /></div>
             <div>
               <div className="stat__label">높음 우선순위</div>
-              <div className="stat__value">7<span className="stat__unit">개소</span></div>
+              <div className="stat__value">{highCount}<span className="stat__unit">개소</span></div>
             </div>
           </div>
           <div className="card stat">
