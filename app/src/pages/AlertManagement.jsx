@@ -83,8 +83,8 @@ export default function AlertManagement() {
   const [receivers, setReceivers] = useState(INITIAL_RECEIVERS);
   const [addOpen, setAddOpen] = useState(false);
   const [critOpen, setCritOpen] = useState(false);
-  const [crit, setCrit] = useState({ severe: 30, warn: 20, caution: 10, minCount: 10 });
-  const [critDraft, setCritDraft] = useState({ severe: 30, warn: 20, caution: 10, minCount: 10 });
+  const crit = useCriteria();            // 설정 ↔ 조회 공유 스토어
+  const [critDraft, setCritDraft] = useState(crit);
   const [addCity, setAddCity] = useState('전체');
   const [addDong, setAddDong] = useState('전체');
   const [recvPage, setRecvPage] = useState(1);
