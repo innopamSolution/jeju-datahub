@@ -667,6 +667,10 @@ export default function PolicySimulation() {
                     </TD>
                     <TD>
                       <span style={{ fontWeight: 600, color: 'var(--text-strong)' }}>{s.name}</span>
+                      {s.coeffAdjusted && (
+                        <span title={`분석 계수 조정: ${s.coeffNote}`}
+                          style={{ marginLeft: 6, fontSize: 11, fontWeight: 600, color: 'var(--primary)', whiteSpace: 'nowrap' }}>(계수조정)</span>
+                      )}
                       <div style={{ fontSize: 'var(--caption1-size)', color: 'var(--text-alternative)', marginTop: 4 }}>{s.at}</div>
                     </TD>
                     <TD center><span style={{ fontWeight: 700, color: 'var(--primary)' }}>{s.reduction}</span></TD>
