@@ -297,8 +297,14 @@ export default function PolicySimulation() {
           type: 'table',
           title: '시나리오 비교',
           columns: ['순번', '시나리오', '민원 감소', '혼잡 개선', '비용 수준', '추천'],
-          rows: selected.map((sc, i) => [i + 1, sc.name, sc.reduction, sc.improvement, sc.cost, sc.recommend ? '추천' : '—']),
+          rows: selected.map((sc, i) => [i + 1, `${sc.name}${sc.coeffAdjusted ? ' (계수조정)' : ''}`, sc.reduction, sc.improvement, sc.cost, sc.recommend ? '추천' : '—']),
         },
+        /* 분석 계수를 조정해 산출한 시나리오가 있으면 그 내역을 별도로 명시 */
+        ...(selected.some((sc) => sc.coeffAdjusted) ? [{
+          type: 'notes',
+          title: '분석 계수 조정 내역',
+          items: selected.filter((sc) => sc.coeffAdjusted).map((sc) => `${sc.name} — ${sc.coeffNote}`),
+        }] : []),
         /* 선택된 모든 시나리오를 지표별 막대 차트로 비교 (추천 시나리오는 주황색) */
         {
           type: 'chart',
