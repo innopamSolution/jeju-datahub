@@ -374,6 +374,11 @@ export default function AiAssistant() {
       {reportPreview && (
         <AiReportPreview report={reportPreview} onClose={() => setReportPreview(null)} />
       )}
+      <SatisfactionSurvey
+        open={survey}
+        onClose={() => setSurvey(false)}
+        onSubmit={() => { try { localStorage.setItem('aiSurveyDone', '1'); } catch { /* 무시 */ } }}
+      />
       <ConfirmDialog
         open={!!delRecent}
         message="대화를 삭제하시겠습니까?"
