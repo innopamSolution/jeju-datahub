@@ -178,6 +178,11 @@ export default function AiAssistant() {
 
   const [reportPreview, setReportPreview] = useState(null);
 
+  /* 만족도 조사 — 채팅 3건 초과 시 1회 노출 */
+  const chatCountRef = useRef(0);
+  const surveyShownRef = useRef(false);
+  const [survey, setSurvey] = useState(false);
+
   const newChat = () => {
     setMessages([{ role: 'ai', text: INITIAL_MSGS[0].text, id: ++msgId }]);
     setInput('');
