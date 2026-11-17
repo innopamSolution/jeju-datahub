@@ -2090,8 +2090,8 @@ export default function Explorer({ onNavigate = () => {}, focus = null }) {
                     <Icon name="IconSwapRightOutlined" size={19} />
                   </div>
                 </div>
-                <button onClick={closeCompare} style={{ position: 'absolute', top: 14, right: 14, zIndex: 5, display: 'flex', alignItems: 'center', gap: 8, height: 32, padding: '0 13px', border: 'none', borderRadius: 8, background: 'rgba(15,20,28,0.85)', color: '#fff', fontSize: 12, fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer', boxShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
-                  <Icon name="IconCloseOutlined" size={13} />비교 닫기
+                <button onClick={closeCompare} style={{ position: 'absolute', top: 60, right: 14, zIndex: 5, display: 'flex', alignItems: 'center', gap: 8, height: 36, padding: '0 16px', border: 'none', borderRadius: 8, background: '#fff', color: 'var(--ant-text)', fontSize: 13, fontWeight: 700, fontFamily: 'inherit', cursor: 'pointer', boxShadow: '0 2px 12px rgba(0,0,0,0.45)', transition: 'background .15s, color .15s' }} onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--ant-primary)'; e.currentTarget.style.color = '#fff'; }} onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = 'var(--ant-text)'; }}>
+                  <Icon name="IconCloseOutlined" size={14} />비교 닫기
                 </button>
                 <div style={{ position: 'absolute', top: 14, left: 14, zIndex: 5, display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ fontSize: 12, fontWeight: 700, color: '#fff', background: 'var(--ant-primary)', width: 24, height: 24, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 'none' }}>A</span>
