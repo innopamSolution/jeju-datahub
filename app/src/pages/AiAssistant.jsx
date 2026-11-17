@@ -7,8 +7,8 @@ import ScrollList from '../components/ScrollList';
 import ConfirmDialog from '../components/ConfirmDialog';
 import SatisfactionSurvey from '../components/SatisfactionSurvey';
 
-/* 만족도 조사 노출 임계치 — 채팅(사용자 전송) 건수가 이 값을 넘으면 1회 표시 */
-const SURVEY_AFTER = 3;
+/* 만족도 조사 노출 주기 — 채팅(사용자 전송)이 이 값의 배수가 될 때마다 표시 */
+const SURVEY_EVERY = 3;
 
 const AV = (
   <svg viewBox="0 0 36 36" fill="none" width="30" height="30" aria-hidden="true">
