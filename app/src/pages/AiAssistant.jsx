@@ -202,16 +202,11 @@ export default function AiAssistant() {
     setMessages((m) => [...m, { role: 'user', text: v, id: ++msgId }]);
     setInput('');
 
-    /* 만족도 조사 — 채팅(사용자 전송) 건수가 임계치를 넘으면 1회 노출 */
+    /* 만족도 조사 — 채팅(사용자 전송)이 3건마다(3·6·9…) 노출 */
     chatCountRef.current += 1;
-    if (!surveyShownRef.current && chatCountRef.current > SURVEY_AFTER) {
-      let alreadyDone = false;
-      try { alreadyDone = !!localStorage.getItem('aiSurveyDone'); } catch { /* 무시 */ }
-      if (!alreadyDone) {
-        surveyShownRef.current = true;
-        const st = setTimeout(() => setSurvey(true), 1200);
-        timers.current.push(st);
-      }
+    if (chatCountRef.current % SURVEY_EVERY === 0) {
+      const st = setTimeout(() => setSurvey(true), 1200);
+      timers.current.push(st);
     }
 
     /* 대시보드 '최근 질문' 목록용 저장 (최근 3건, 중복 제거) */
