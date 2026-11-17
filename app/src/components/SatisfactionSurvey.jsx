@@ -44,7 +44,7 @@ export default function SatisfactionSurvey({ open, onClose, onSubmit }) {
           <>
             <div className="modal__body">
               <p className="survey__thanks">
-                소중한 의견이 등록되었습니다. <strong>{score}점</strong>으로 평가해 주셨습니다.
+                소중한 의견이 등록되었습니다.
                 <br />더 나은 AI 어시스턴트를 위해 활용하겠습니다.
               </p>
             </div>
