@@ -371,7 +371,6 @@ export default function AiAssistant() {
       <SatisfactionSurvey
         open={survey}
         onClose={() => setSurvey(false)}
-        onSubmit={() => { try { localStorage.setItem('aiSurveyDone', '1'); } catch { /* 무시 */ } }}
       />
       <ConfirmDialog
         open={!!delRecent}
