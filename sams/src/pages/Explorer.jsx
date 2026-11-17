@@ -1714,7 +1714,8 @@ export default function Explorer({ onNavigate = () => {}, focus = null }) {
                 <div style={{ marginLeft: 12, paddingLeft: 8, borderLeft: '2px solid var(--ant-border-secondary)', display: isOpen ? 'block' : 'none' }}>
                   {g.items.map((it) => {
                     const c = CAT_MAP[it.cat];
-                    const isActive = s.activeId === it.id || s.drawerId === it.id;
+                    // 시점 비교 중이면 비교 대상 두 자료도 활성 상태(배경색)로 보여준다.
+                    const isActive = s.activeId === it.id || s.drawerId === it.id || (s.compareOpen && (cmpNodeA?.item?.id === it.id || cmpNodeB?.item?.id === it.id));
                     const isHover = s.hoveredId === it.id;
                     let rowBg = 'transparent';
                     if (isActive) { rowBg = '#ECEEFC'; }
