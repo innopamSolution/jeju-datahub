@@ -178,9 +178,8 @@ export default function AiAssistant() {
 
   const [reportPreview, setReportPreview] = useState(null);
 
-  /* 만족도 조사 — 채팅 3건 초과 시 1회 노출 */
+  /* 만족도 조사 — 채팅 3건마다 노출 */
   const chatCountRef = useRef(0);
-  const surveyShownRef = useRef(false);
   const [survey, setSurvey] = useState(false);
 
   const newChat = () => {
