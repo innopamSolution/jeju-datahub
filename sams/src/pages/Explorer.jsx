@@ -242,6 +242,14 @@ function itemToTimelineNode(it) {
   return { id: it.id, date: it.date.replace(/-/g, '.'), label: it.title, cat: 'actual', struct: null, item: it };
 }
 
+// 배경 드론 레이어: 성수 클러스터의 시기(1~4차)마다 드론 3D 자료가 하나씩 있다. 선택한 아이템의 시기에 맞는 것을 지도에 얹는다.
+const DRONE_SPACE = '성수 클러스터';
+const DRONE_LAYER = 'sams-drone';
+const droneItems = () => ITEMS.filter((i) => i.space === DRONE_SPACE && i.cat === 'model3d');
+const droneForPeriod = (period) => droneItems().find((i) => i.period === period) || null;
+// 기본 상태: 3D 타일이 실제로 있는 드론 중 가장 최신
+const latestDrone = () => droneItems().filter((i) => i.tilesetUrl).sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))[0] || null;
+
 // 시점 비교는 3D 데이터(포인트클라우드·3D 모델)만 대상으로 한다. 사진·영상·문서·이벤트 등은 제외.
 function comparableNodes() {
   return ITEMS
@@ -863,6 +871,36 @@ export default function Explorer({ onNavigate = () => {}, focus = null }) {
   }
   useEffect(() => { syncSpaceSites(); }, [state.basemap, state.three3DActive, state.compareOpen, state.drawerId, state.activeId]);
 
+  // 배경 드론 데이터: 선택한 아이템(또는 시기 패널)의 시기에 맞는 드론 3D 타일을 지도에 얹는다.
+  //  · 아무것도 선택하지 않았으면(기본) 가장 최신 드론, 날짜가 없는 아이템이면 지금 보이는 것을 그대로 둔다.
+  //  · 그 시기의 드론 타일이 없으면 보여주지 않는다. 일반지도·위성이거나 3D 렌더링·시점 비교 중이어도 숨긴다.
+  const droneRef = useRef({ id: null });
+  function syncDrone() {
+    const map = mapRef.current;
+    if (!map || !layersReadyRef.current) return;
+    const st = stateRef.current;
+    const sel = st.drawerId ? itemById(st.drawerId) : null;
+    let target;
+    if (sel && sel.period == null) target = droneItems().find((i) => i.id === droneRef.current.id) || null; // 시기를 알 수 없으면 지금 것을 유지
+    else if (sel || st.periodDrawer) { const d = droneForPeriod(sel ? sel.period : st.periodDrawer); target = d && d.tilesetUrl ? d : null; }
+    else target = latestDrone();
+    const cur = droneRef.current.id;
+    const exists = !!map.getLayer(DRONE_LAYER);
+    if (exists && (!target || cur !== target.id)) { map.removeLayer(DRONE_LAYER); droneRef.current.id = null; }
+    if (!target) return;
+    const visible = st.basemap === '3d' && !st.three3DActive && !st.compareOpen;
+    if (!map.getLayer(DRONE_LAYER)) {
+      if (!visible) return; // 안 보일 때는 만들지 않는다(타일을 받지 않게)
+      addTilesLayer(maplibregl, map, {
+        layerId: DRONE_LAYER, beforeId: 'space-sites-fill', url: target.tilesetUrl, lngLat: [target.lng, target.lat], probe: target.probe, cacheMB: 256,
+        onError: (err) => console.warn('[drone] 불러오기 실패', err),
+      });
+      droneRef.current.id = target.id;
+    }
+    map.setLayoutProperty(DRONE_LAYER, 'visibility', visible ? 'visible' : 'none');
+  }
+  useEffect(() => { syncDrone(); }, [state.basemap, state.three3DActive, state.compareOpen, state.drawerId, state.periodDrawer]);
+
   function updateMapControls(v) {
     const map = mapRef.current;
     if (!map || !nav3DRef.current) return;
@@ -996,6 +1034,7 @@ export default function Explorer({ onNavigate = () => {}, focus = null }) {
       // 첫 화면부터 3D 지도(위성+지형, 기울인 시점)로 연다.
       if (stateRef.current.basemap === '3d') setBasemap('3d');
       initSpaceSites(map);
+      syncDrone(); // 첫 화면부터 가장 최신 드론 데이터를 올린다
       // 처음 화면은 프로젝트 영역(모든 사이트의 폴리곤)이 한눈에 들어오게 맞춘다.
       // 멀리 떨어진 사이트(역삼·판교 등)까지 넣으면 성수가 점으로 보이므로, 첫 사이트(성수 클러스터)에서 5km 안의 사이트로 맞춘다.
       const base = SITES.find((x) => x.center);
