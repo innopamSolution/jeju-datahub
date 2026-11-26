@@ -270,7 +270,7 @@ function cmpPtsLabel(node) {
   return node.pc ? node.pc.pts : node.item.extra;
 }
 
-export default function Explorer({ onNavigate = () => {}, focus = null }) {
+export default function Explorer({ onNavigate = () => {}, focus = null, resetTick = 0 }) {
   const [state, setState] = useState(initialState);
   const stateRef = useRef(state);
   stateRef.current = state;
@@ -871,6 +871,55 @@ export default function Explorer({ onNavigate = () => {}, focus = null }) {
   }
   useEffect(() => { syncSpaceSites(); }, [state.basemap, state.three3DActive, state.compareOpen, state.drawerId, state.activeId]);
 
+  // 처음 화면: 프로젝트 영역(모든 사이트의 폴리곤)이 한눈에 들어오게 맞춘다. (로고를 눌러 처음 상태로 돌아갈 때도 쓴다)
+  // 멀리 떨어진 사이트(역삼·판교 등)까지 넣으면 성수가 점으로 보이므로, 첫 사이트(성수 클러스터)에서 5km 안의 사이트로 맞춘다.
+  function fitHome(map, duration) {
+    const base = SITES.find((x) => x.center);
+    const near = (x) => !!x.center && !!base && Math.hypot((x.center[0] - base.center[0]) * 88.7, (x.center[1] - base.center[1]) * 111) < 5;
+    const pts = SITES.filter((x) => x.polygon && near(x)).flatMap((x) => x.polygon);
+    if (pts.length) {
+      const b = pts.reduce((bb, q) => bb.extend(q), new maplibregl.LngLatBounds(pts[0], pts[0]));
+      map.fitBounds(b, { padding: 48, pitch: 55, bearing: 0, maxZoom: 16, duration });
+    }
+  }
+
+  // 로고: 처음 상태(선택·필터·패널·3D·비교를 모두 닫고 기본 지도, 처음 화면 위치)로 돌린다.
+  function resetToDefault() {
+    const map = mapRef.current;
+    if (map) map.resize(); // 관리 화면에서 넘어올 때는 지도가 숨겨져 있었으므로 크기를 먼저 맞춘다
+    clearRelatedPreview();
+    if (hoverPopupRef.current) { hoverPopupRef.current.remove(); hoverPopupRef.current = null; }
+    if (detailPopupRef.current) { detailPopupRef.current.remove(); detailPopupRef.current = null; }
+    popupReopenRef.current = null;
+    drawerReturnRef.current = null;
+    const prevActive = stateRef.current.activeId;
+    if (prevActive) setFS(prevActive, 'active', false);
+    if (map && map.getLayer('sams-3d')) map.removeLayer('sams-3d'); // 3D 렌더링 중이었으면 닫는다
+    setAnnoAdd(false); setAnnoDraft(null); setAnnoViewId(null); setAnnoMenu(null);
+    setPanoViewer(null); setVideoViewer(null);
+    setCollapsed(new Set());
+    patch({
+      keyword: '', activeCats: {}, compareOpen: false, groupBy: 'space', advOpen: false,
+      drawerId: null, siteDrawer: null, periodDrawer: null, yearSel: {}, periodSel: {}, siteSel: {},
+      project: '전체 프로젝트', epsg: '좌표계 전체', boundsFilter: false,
+      hoveredId: null, docHover: null, activeId: null, three3DActive: false, three3DTitle: '',
+    });
+    setBasemap('3d');
+    if (map) { map.setPadding({ top: 0, bottom: 0, left: 0, right: 0 }); fitHome(map, 900); }
+    // 왼쪽 목록은 맨 위로
+    const row = document.querySelector('[data-row-id]');
+    for (let el = row && row.parentElement; el; el = el.parentElement) {
+      if (el.scrollHeight > el.clientHeight && /auto|scroll/.test(getComputedStyle(el).overflowY)) { el.scrollTo({ top: 0, behavior: 'smooth' }); break; }
+    }
+  }
+  const resetTickRef = useRef(resetTick);
+  useEffect(() => {
+    if (resetTick === resetTickRef.current) return;
+    resetTickRef.current = resetTick;
+    resetToDefault();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetTick]);
+
   // 배경 드론 데이터: 선택한 아이템(또는 시기 패널)의 시기에 맞는 드론 3D 타일을 지도에 얹는다.
   //  · 아무것도 선택하지 않았으면(기본) 가장 최신 드론, 날짜가 없는 아이템이면 지금 보이는 것을 그대로 둔다.
   //  · 그 시기의 드론 타일이 없으면 보여주지 않는다. 일반지도·위성이거나 3D 렌더링·시점 비교 중이어도 숨긴다.
@@ -1035,15 +1084,7 @@ export default function Explorer({ onNavigate = () => {}, focus = null }) {
       if (stateRef.current.basemap === '3d') setBasemap('3d');
       initSpaceSites(map);
       syncDrone(); // 첫 화면부터 가장 최신 드론 데이터를 올린다
-      // 처음 화면은 프로젝트 영역(모든 사이트의 폴리곤)이 한눈에 들어오게 맞춘다.
-      // 멀리 떨어진 사이트(역삼·판교 등)까지 넣으면 성수가 점으로 보이므로, 첫 사이트(성수 클러스터)에서 5km 안의 사이트로 맞춘다.
-      const base = SITES.find((x) => x.center);
-      const near = (x) => !!x.center && !!base && Math.hypot((x.center[0] - base.center[0]) * 88.7, (x.center[1] - base.center[1]) * 111) < 5;
-      const pts = SITES.filter((x) => x.polygon && near(x)).flatMap((x) => x.polygon);
-      if (pts.length) {
-        const b = pts.reduce((bb, q) => bb.extend(q), new maplibregl.LngLatBounds(pts[0], pts[0]));
-        map.fitBounds(b, { padding: 48, pitch: 55, maxZoom: 16, duration: 0 });
-      }
+      fitHome(map, 0);
     });
 
     ['unclustered', 'event-flags'].forEach((layerId) => {
@@ -1577,7 +1618,7 @@ export default function Explorer({ onNavigate = () => {}, focus = null }) {
       {/* Header */}
       <header style={{ height: 56, flex: 'none', display: 'flex', alignItems: 'center', gap: 44, padding: '0 20px', background: 'var(--ant-bg)', borderBottom: '1px solid var(--ant-border-secondary)', zIndex: 20 }}>
         <div style={{ display: 'flex', alignItems: 'center', flex: 'none' }}>
-          <Logo onClick={() => onNavigate('explorer')} />
+          <Logo onClick={() => { resetToDefault(); onNavigate('explorer'); }} />
         </div>
         <nav style={{ display: 'flex', alignItems: 'center', gap: 4, height: '100%', flex: 'none' }}>
           <div style={{ display: 'flex', alignItems: 'center', padding: '8px 16px', borderRadius: 8, fontSize: 14, fontWeight: 600, color: 'var(--ant-text-heading)', background: '#ECEEFC' }}>데이터 탐색</div>
